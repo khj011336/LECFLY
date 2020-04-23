@@ -1,0 +1,261 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+}
+
+html {
+    overflow-y: scroll;
+}
+@font-face { font-family: 'Cafe24Simplehae'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Simplehae.woff') format('woff'); font-weight: normal; font-style: normal; }
+body,
+p,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+form,
+table,
+th,
+td,
+fieldset,
+input,
+textarea,
+select,
+button,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre {
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: none;
+    font-family:'Cafe24Simplehae', "돋움", Dotum, Droid Sans, AppleSDGothicNeo, AppleGothic, Helvetica, Sans-serif;
+}
+
+/* 아이폰 가로모드 글자 크기 확대 방지: -webkit-text-size-adjust:none; */
+body,
+input,
+textarea,
+select,
+button {
+    color: #585858;
+    font-size: 12px;
+    font-family: 'Cafe24Simplehae';
+}
+
+header,
+footer,
+nav,
+aside,
+section,
+article {
+    display: block;
+}
+
+fieldset,
+img {
+    border: 0;
+}
+
+img {
+    -ms-interpolation-mode: bicubic !important;
+    border: 0;
+}
+
+table {
+    padding: 0;
+    border-spacing: 0px;
+    border: 0;
+    border-collapse: collapse;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+a {
+    color: #585858;
+    text-decoration: none;
+}
+
+a:link {
+    color: #606060;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffa172;
+}
+
+.clear {
+    clear: both;
+}
+#MADwrap{
+    width: 1200px;
+    margin: 0px auto;
+    
+}
+.MADcon{
+    display: flex;
+    height: 150px;
+    padding: 10px;
+    border-radius:3px;
+      box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+}
+.MADIMG{
+    width: 170px;
+    height: 130px;
+}
+.MADT{
+    font-size: 20px;
+}
+.MADB{
+    font-size: 15px;
+    margin-top: 10px;
+}
+.MADtail{
+    width: 250px;
+    margin-left: 20px;
+    overflow-y: auto;
+     box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+    padding: 0px 10px;
+}
+.MADtailb{
+    width: 180px;
+    height:200px;
+    margin-left: 20px;
+    overflow-y: auto;
+     box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+    padding: 0px 10px;
+    margin: auto 0px;
+}
+.confirmT{
+    padding: 0px 20px;
+      padding-top: 5px;
+    overflow-y: hidden;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+    border-radius: 3px;
+    
+}
+.confirmTB{
+   margin: 0px 10px 10px 10px;
+      padding-top: 2px;
+    overflow-y: hidden;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+    border-radius: 3px;
+    width: 1020px;
+    
+}
+.confirmTB:hover{
+	height: 500px;
+
+	}
+.confirmT:hover{
+	height: 500px;
+}
+.MADIMG img{
+    width: 170px;
+    height: 130px;
+}
+.MADvt{
+    margin: 33.5px 0px;
+}
+
+.MADcontent{
+    width: 750px;
+    margin-left: 20px;
+}
+.MADmenu{
+    height: 30px;
+    padding: 10px;
+    background-color: threeddarkshadow;
+}
+.verhover{
+	margin-top: 30px;
+	background-color: yellow;
+}
+
+.percen{
+    width: 100%;
+    height: 40px;
+    line-height: 3.5;
+    font-weight:bolder;
+    border-bottom: 1px solid black;
+  
+}
+.perton{
+       border-bottom: 1px solid black;
+    width: 100%;
+    height: 30px;
+    line-height: 2.5;
+    font-weight: bolder;
+}
+#MADMAIN{
+    padding: 20px;
+   
+}
+#MADhead{
+    padding: 20px;
+}
+.MADbutton{
+    text-align: center;
+    height: 20px;
+    line-height: 2;
+    
+}
+.MADE{
+    margin-top: 25px;
+    position: relative;
+}
+.MADmenu div{
+	display: inline-block;
+}
+.MADmenu div p{
+	font-weight: bolder;
+	color: white;
+	width: 1020px;
+	display: inline-block;
+}
+.MADE div{
+    display: inline-block;
+}
+#pshoee{
+	text-align: end;
+	color:white;
+}
+.MADE input[type='text']{
+    width: 400px;
+    height: 25px;
+    margin-left: 10px;
+     box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+}
+.MADE input[type='button']{
+    width: 50px;
+    height: 25px;
+    margin-left: 10px;
+    position: absolute;
+    bottom: 1px;
+}
+.MADmenu{
+    
+    font-size: 15px;
+     border-radius: 3px 0px;
+}
+.MADmenu select{
+    font-size: 15px;
+    
+}
+
+#MADwrap *{
+    box-sizing: border-box;
+}

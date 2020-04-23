@@ -1,0 +1,311 @@
+
+/* 초기화  */
+charset "UTF-8 "; * {
+	font-family: 'Cafe24Simplehae', sans-serif;
+}
+
+/* wrapper( nav, content 포함) */
+#fundingPayment_wrapper {
+	margin: 0px auto;
+	width: 1200px;
+	min-height: 800px;
+}
+
+/* nav */
+#fundingPayment_nav {
+	width: 800px;
+	height: inherit;
+	float: left;
+	display: inline-block;
+}
+
+#fundingPayment_title {
+	position: relative;
+	bottom: 15px;
+	display: inline;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.fundingPayment_title_color {
+	color: orange;
+}
+
+.fundingPayment_title_box {
+	padding: 20px;
+}
+
+.fundingPayment_subtitle {
+	float: right;
+	position: relative;
+	top: 33px;
+}
+
+.fundingPayment_order_sheet {
+	color: black;
+}
+
+.fundingPayment_basket, .fundingPayment_order_finish {
+	color: gray;
+}
+
+#fundingPayment_nav_table {
+	position: relative;
+	float: left;
+	display: inline-block;
+	border-collapse: collapse;
+	margin-bottom: 15px;
+}
+
+#fundingPayment_table_font_bold {
+	font-weight: bold;
+}
+
+.fundingPayment_nav_table_td {
+	position: relative;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	padding: 15px 0px;
+}
+
+.fundingPayment_text_right {
+	text-align: right;
+}
+
+.fundingPayment_delivery_info_table_td {
+	width: 214px;
+	position: relative;
+	border-top: 1px solid black;
+	padding: 15px 0px 4px 0px;
+	border-collapse: collapse;
+	border: 0px;
+}
+
+
+input[name=fundingPayment_name], input[name=fundingPayment_email], input[name=fundingPayment_tel],
+ input[name=fundingPayment_address] ,input[name=fundingPayment_remain_address], input[name=fundingPayment_delivery_demand], input[name=fundingPayment_discountCoupon] {
+	height: 30px;
+	border-radius: 5px;
+}
+
+input[value=검색], input[value=조회] {
+	position: relative;
+	width: 65px;
+	height: 35px;
+	border-radius: 5px;
+	padding-right: 0px;
+	text-align: center;
+	bottom: 1px;
+	background-color: orange;
+	font-weight: bold;
+}
+
+.fundingPayment_delivery_infor_table_td_last {
+	border-bottom: 1px solid black;
+	padding-bottom: 15px;
+}
+
+.fundingPayment_discount_info_table_td {
+	width: 210px;
+	height: 29px;
+	position: relative;
+	border-bottom: 1px solid black;
+	padding: 15px 0px 15px 0px;
+}
+
+.fundingPayment_discount_info_table_td_top {
+	padding-top: 0px;
+}
+
+.fundingPayment_number_color {
+	color: red;
+}
+
+.fundingPayment_discount_info_td_bottom {
+	border-bottom: 0px;
+}
+
+/* content */
+#fundingPayment_content {
+	width: 400px;
+	height: 500px;
+	display: inline-block;
+	position: fixed;
+	top: 203px;
+}
+
+#fundingPayment_content_table {
+	border-collapse: collapse;
+	width: 400px;
+}
+
+.fundingPayment_content_table_td {
+	padding: 12px 0px;
+}
+
+.fundingPayment_content_table_td_bottom {
+	border-bottom: 1px solid black;
+	height: 18px;
+}
+
+.fundingPayment_table_agree_td {
+	text-align: center;
+	border-bottom: 1px solid black;
+	padding: 15px 0px;
+	border-collapse: collapse;
+}
+
+input[value=결제하기] {
+	width: 400px;
+	height: 35px;
+	border-radius: 5px;
+	bottom: 1px;
+	background-color: orange;
+	font-weight: bold;
+	border-collapse: collapse;
+}
+
+.fundingPayment_payment_title_bold {
+	font-weight: bold;
+}
+
+.fundingPayment_payment_agree_dummy {
+	border-bottom: 1px solid black;
+}
+
+#fundingPayment_payment_mathod {
+	width: 800px;
+	height: 500px;
+	height: inherit;
+	display: inline-block;
+	padding-bottom: 100px;
+}
+
+.fundingPayment_top, .fundingPayment_bottom {
+	margin-bottom: 50px;
+}
+
+#fundingPayment_payment_card, #fundingPayment_payment_phone,
+	#fundingPayment_payment_account, #fundingPayment_payment_virtual,
+	#fundingPayment_payment_kakaopay, #fundingPayment_payment_naverpay,
+	#fundingPayment_payment_payco {
+	margin-left: 30px;
+	border: 0px;
+	background-color: white;
+}
+
+.fundingPayment_last_button {
+	padding: 15px 0px 15px 0px;
+}
+
+/* mypage 쿠폰 등록 CSS */
+.fundingPayment_registerCoupon {
+	position: relative;
+	top: 596px;
+	left: -79px;
+	font-size: 12pt;
+	padding: 10px;
+	color: white;
+	background-color: orange;
+	border-radius: 5px;
+	text-decoration: none;
+	cursor: pointer;
+	transition: all 0.3s ease-out;
+	background-clip: padding-box;
+	font-size: 12pt;
+	z-index: 20;
+}
+
+.fundingPayment_registerCoupon:hover {
+	background: orangered;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.7);
+	transition: opacity 500ms;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.overlay:target {
+	visibility: visible;
+	opacity: 1;
+}
+
+.popup {
+	margin: 280px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	width: 400px;
+	height: 220px;
+	position: relative;
+	transition: all 5s ease-in-out;
+}
+
+.fundingPayment_coupon_h2 {
+	margin-top: 0;
+	padding: 15px 0px;
+}
+
+.popup .close {
+	position: absolute;
+	top: 0px;
+	right: 10px;
+	transition: all 200ms;
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #333;
+}
+
+.popup .close:hover {
+	color: black;
+}
+
+.popup .mypage_coupon_content {
+	max-height: 200px;
+	overflow: auto;
+	text-align: center;
+}
+
+input[name=mypage_coupon] {
+	width: 310px;
+	height: 35px;
+	padding-left: 5px;
+	text-align: center;
+}
+
+input[name=register_coupon] {
+	height: 38px;
+	background-color: orange;
+	color: white;
+	text-align: center;
+}
+
+#mypage_coupon_p {
+	padding: 15px 0px;
+	text-align: left;
+	font-weight: bold;
+	font-size: 15px;
+	text-align: left;
+}
+
+#mypage_coupon_ul {
+	font-size: 14px;
+	color: gray;
+}
+
+@media screen and (max-width: 400px) {
+	.mypage_registerCoupon {
+		width: 400px;
+	}
+	.popup {
+		width: 400px;
+	}
+}

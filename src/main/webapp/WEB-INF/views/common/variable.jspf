@@ -1,0 +1,59 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%String path = request.getContextPath()+"/resource/";%>
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/imask/3.4.0/imask.min.js"></script>
+<!-- jquery -->
+<!-- ---------------------css--------------------------- -->
+<link href="resource/img/l4.PNG" rel="shortcut icon" type="image/x-icon">
+<link rel="stylesheet" href="resource/css/create_new_member.css">
+<link rel="stylesheet" href="resource/css/creator.css">
+<link rel="stylesheet" href="resource/css/CSCenter.css">
+<link rel="stylesheet" href="resource/css/fundingPayment.css">
+<!-- <link rel="stylesheet" href="resource/css/fundingRegister.css"> -->
+<link rel="stylesheet" href="resource/css/lecplay.css">
+<link rel="stylesheet" href="resource/css/goodsPayment.css">
+<link rel="stylesheet" href="resource/css/login.css">
+<link rel="stylesheet" href="resource/css/main.css">
+<link rel="stylesheet" href="resource/css/search.css">
+<link rel="stylesheet" href="resource/css/side_nav.css">
+<link rel="stylesheet" href="resource/css/mypage.css">
+<link rel="stylesheet" href="resource/css/lectureRegister.css">
+<link rel="stylesheet" href="resource/css/main_banner.css">
+<link rel="stylesheet" href="resource/css/fundingreg.css" type="text/css">
+<link rel="stylesheet" href="resource/css/card_register.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway|Rock+Salt|Source+Code+Pro:300,400,600">
+<link rel="stylesheet" href="resource/css/receive_board.css">
+<!-- ------------------------------------------------------------ -->
+<!-- 폰트 -->
+<!-- <link rel="stylesheet" href="resource/css/paymentCreditForm.css"> -->
+<link rel="stylesheet" href="resource/css/mypage_list.css">
+<link rel="stylesheet" href="resource/css/paymentFinished.css">
+<link rel="stylesheet" href="resource/css/paymentSendEmail.css">
+<link rel="stylesheet" href="resource/css/shoppingCart.css">
+<link rel="stylesheet" href="resource/css/paymentDetail.css">
+<link rel="stylesheet" href="resource/css/mypage_list.css">
+
+
+<link type="text/css" rel="stylesheet" href="resource/css/mypage_um.css"> <!-- 세현추가 -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.4.0/css/fontawesome.css"
+	type="text/css" rel="stylesheet">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.4.0/css/solid.css"
+	type="text/css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+	integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+	crossorigin="anonymous">
+
+	<!-- 폰트 -->
+
+		
