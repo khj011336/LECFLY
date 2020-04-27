@@ -15,7 +15,7 @@
 		<div id="header" class="header" style="z-index:30;">
 			<%@ include file="common/header.jsp"%>
 		</div>
-		<%@ include file="../common/side_nav.jsp"%>
+<%-- 		<%@ include file="../common/side_nav.jsp"%> --%>
 		<div id="homemain">
 		<%@ include file="ETC/main.jsp"%>
 	</div>
