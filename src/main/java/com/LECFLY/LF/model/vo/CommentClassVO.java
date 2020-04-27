@@ -10,7 +10,7 @@ public class CommentClassVO {
 	int cMGroup;     //                            클래스 댓글 그룹
 	int cMOrder;     //                            클래스 댓글 순서
 	int cMDepth;     //   1      					클래스 댓글 깊이
-	String cMIF;        //   CURRENT_TIMESTAMP        클래스 댓글 내용
+	String cMIF;        //   					클래스 댓글 내용
 	Timestamp cMDate;      //   CURRENT_TIMESTAMP        클래스 댓글 등록날자
 	
 	
