@@ -23,10 +23,11 @@
 <!-- 공통변수 처리 설정 jspf -->
 <jsp-config>
   <jsp-property-group>
-  <url-pattern>/home.jsp</url-pattern>
+  <url-pattern>Creator/*</url-pattern>
   <include-prelude>/common/variable.jspf</include-prelude>
   </jsp-property-group>
   </jsp-config>
+  
   <!-- 공통변수 처리 설정 jspf -->
   
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
@@ -37,7 +38,7 @@
 	
 	<!-- 	웰컴파일리스트 -->
 	<welcome-file-list>
-	<welcom-file></welcom-file>
+	<welcom-file>/home.jsp</welcom-file>
 	</welcome-file-list>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->

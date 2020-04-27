@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- 
-
    <div id="MADwrap">
         <div id="MADhead">
             <h4 style="font-size: 30px;">댓글 관리</h4>

@@ -1,11 +1,6 @@
-<%@page import="mvc.UploadServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     
-    <link href="creator.css" type="text/css" rel="stylesheet">
 <script>
 $("#uplUP").change(function () {
 $.ajax({
