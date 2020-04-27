@@ -13,7 +13,4 @@ public class CouponVO {
 	Timestamp createdDay;  // CURRENT_TIMESTAMP  쿠폰 생성 날자  (사용기한등에 이용)
 	Timestamp endDay;      //                    유효기간
 	
-	
-	
-	
 }
