@@ -5,9 +5,9 @@ import java.util.List;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 
 public interface ILectureDAO {
-	List<LectureVO> showLectureList(boolean order);
-	List<LectureVO> showLectureList(int offset,  int limit);
-	List<LectureVO> showLectureList(int offset, int limit ,boolean order);
+	List<LectureVO> showLectureList(int id , boolean order);
+	List<LectureVO> showLectureList(int id , int offset,  int limit);
+	List<LectureVO> showLectureList(int id , int offset, int limit,boolean order);
 	
 	boolean isCreator(int id);
 	boolean insertNewLecture(LectureVO Lvo);

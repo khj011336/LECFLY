@@ -12,24 +12,7 @@ import com.LECFLY.LF.model.vo.creator.LectureVO;
 public class LectureMysqlDAOImpl implements ILectureDAO {
 	@Autowired
 	JdbcTemplate jtem;
-	@Override
-	public List<LectureVO> showLectureList(boolean order) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<LectureVO> showLectureList(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<LectureVO> showLectureList(int offset, int limit, boolean order) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public boolean isCreator(int id) {
 		// TODO Auto-generated method stub
@@ -65,6 +48,24 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	public boolean deleteLecture() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public List<LectureVO> showLectureList(int id, boolean order) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<LectureVO> showLectureList(int id, int offset, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<LectureVO> showLectureList(int id, int offset, int limit, boolean order) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

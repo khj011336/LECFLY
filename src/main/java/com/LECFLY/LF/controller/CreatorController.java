@@ -12,6 +12,12 @@ public class CreatorController {
 		System.out.println("도착");
 		return "home";
 	}
-	
+	@RequestMapping(value ="creator.LF", method= RequestMethod.GET)
+	public String showLectureList() {
+		System.out.println("크리에이터");
+		System.out.println("도착2");
+		return "creator/creator_center";
+		
+	}
 	
 }

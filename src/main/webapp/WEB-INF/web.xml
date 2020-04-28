@@ -28,6 +28,8 @@
   </jsp-property-group>
   </jsp-config>
   
+   
+  
   <!-- 공통변수 처리 설정 jspf -->
   
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
