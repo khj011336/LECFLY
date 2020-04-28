@@ -1,4 +1,4 @@
-package mvc;
+package com.LECFLY.LF.videosrc;
 
 public interface CommandHandler {
 // 인터페이스 동적 매핑을위한 파일
