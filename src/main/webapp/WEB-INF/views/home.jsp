@@ -17,7 +17,7 @@
 		</div>
 <%-- 		<%@ include file="../common/side_nav.jsp"%> --%>
 		<div id="homemain">
-		<%@ include file="ETC/main.jsp"%>
+<%-- 		<%@ include file="ETC/main.jsp"%> --%>
 	</div>
 		<div id="footer" class="footer">
 			<%@ include file="common/footer.jsp"%>
