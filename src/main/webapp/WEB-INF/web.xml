@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app version="3.1" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_3_1.xsd">
 
 <!-- 업로드 서블릿관리 설정 temp -->
 <!-- <servlet> -->
@@ -21,12 +21,12 @@
  <!-- 업로드 서블릿관리 설정 temp -->
  
 <!-- 공통변수 처리 설정 jspf -->
-<!-- <jsp-config> -->
-<!--   <jsp-property-group> -->
-<!--   <url-pattern></url-pattern> -->
-<!--   <include-prelude>views/common/pubLink.jspf</include-prelude> -->
-<!--   </jsp-property-group> -->
-<!--   </jsp-config> -->
+<jsp-config>
+  <jsp-property-group>
+  <url-pattern>*.jsp</url-pattern>
+  <include-prelude>/resources/variable/pubLink.jspf</include-prelude>
+  </jsp-property-group>
+  </jsp-config>
   
   <!-- 공통변수 처리 설정 jspf -->
   
@@ -35,11 +35,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
 	</context-param>
-	
-	<!-- 	웰컴파일리스트 -->
-	<welcome-file-list>
-	<welcom-file>home.LF</welcom-file>
-	</welcome-file-list>
+
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -76,5 +72,8 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>*.LF</url-pattern>
 	</servlet-mapping>
-
+	<!-- 	웰컴파일리스트 -->
+	<welcome-file-list>
+	<welcome-file>home.LF</welcome-file>
+	</welcome-file-list>
 </web-app>

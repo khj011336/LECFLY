@@ -9,7 +9,7 @@ public class CreatorController {
 	
 	@RequestMapping(value = "home.LF", method = RequestMethod.GET )
 	public String temphome() {
-		
+		System.out.println("도착");
 		return "home";
 	}
 	
