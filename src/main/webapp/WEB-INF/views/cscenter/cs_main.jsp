@@ -10,7 +10,7 @@
        </ul>
     </div>
     <div id="CS_page">
-   		<%@ include file="Lecfly_CS_1.jsp"%>
+   		<%@ include file="cs_qna.jsp"%>
    </div>
 </div>
 
