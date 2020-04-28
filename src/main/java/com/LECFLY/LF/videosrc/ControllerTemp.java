@@ -1,4 +1,4 @@
-package mvc;
+package com.LECFLY.LF.videosrc;
 
 import java.io.FileReader;
 import java.io.IOException;

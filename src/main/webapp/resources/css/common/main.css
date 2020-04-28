@@ -398,7 +398,13 @@ input:focus {
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
-
+.video_info_creator_img { /* 비디오 리스트_크리에이터 사진 */
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	vertical-align: middle;
+	display: inline-block;
+}
 .main_video_info_creator_img { /* 비디오 리스트_크리에이터 사진 */
 	width: 25px;
 	height: 25px;
