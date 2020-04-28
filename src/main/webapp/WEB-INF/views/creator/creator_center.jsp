@@ -14,11 +14,11 @@
 		<div id="header" class='header'>
 			<%@ include file="../common/header.jsp"%>
 		</div>
-		<%@ include file="Creside_nav.jsp"%>
-		<%@ include file="CreStatus.jsp" %>
-		<div id="Cre_main">
+<%-- 		<%@ include file="Creside_nav.jsp"%> --%>
+<%-- 		<%@ include file="CreStatus.jsp" %> --%>
+<!-- 		<div id="Cre_main"> -->
 			
-			<%@ include file="_myclass.jsp"%>
+<%-- 			<%@ include file="_myclass.jsp"%> --%>
 		</div>
 		<div id="footer" class='footer'>
 			<%@ include file="../common/footer.jsp"%>
