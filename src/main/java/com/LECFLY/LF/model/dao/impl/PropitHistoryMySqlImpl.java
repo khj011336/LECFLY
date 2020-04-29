@@ -22,13 +22,13 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 	@Autowired
 	JdbcTemplate jtem;
 	
-	private final int ERROR_BY_ID = -1; 
-	private final int ERROR_BY_UPLOADER_ID = -2;
-	private final int ERROR_BY_SAVE_MONEY = -3;
-	private final int ERROR_BY_GET_MONEY = -4;
-	private final int ERROR_BY_CATEGORY = -5;
-	private final int ERROR_BY_DETAIL = -6;
-	private final int ERROR_BY_DAY = -7;
+	private static final int ERROR_BY_ID = -1; 
+	private static final int ERROR_BY_UPLOADER_ID = -2;
+	private static final int ERROR_BY_SAVE_MONEY = -3;
+	private static final int ERROR_BY_GET_MONEY = -4;
+	private static final int ERROR_BY_CATEGORY = -5;
+	private static final int ERROR_BY_DETAIL = -6;
+	private static final int ERROR_BY_DAY = -7;
 	private static final int PASS_CHECK_NUM = 1;
 	
 	private static final Map<Integer, String> INT_ERROR_RT_STR = new HashMap<>();
@@ -39,14 +39,13 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 	// Map 에 해당하는 값을 리턴하려고함
 	private static String getErrorStr(int intErrorCode) {
 		System.out.println("intErrorCode = " + intErrorCode); 
-		PropitHistoryMySqlImpl phmi = new PropitHistoryMySqlImpl();
-		INT_ERROR_RT_STR.put(phmi.ERROR_BY_ID, "id는 0이거나 음수");
-		INT_ERROR_RT_STR.put(phmi.ERROR_BY_UPLOADER_ID, "uploaderId는 0이거나 음수");
-		INT_ERROR_RT_STR.put(phmi.ERROR_BY_SAVE_MONEY, "saveMoney는  음수");
-		INT_ERROR_RT_STR.put(phmi.ERROR_BY_GET_MONEY, "getMoney는  음수");
-		INT_ERROR_RT_STR.put(phmi.ERROR_BY_CATEGORY, "category는 지정한범위 (1, 2, 3) 이외의 수");
-		INT_ERROR_RT_STR.put(phmi.ERROR_BY_DETAIL, "detail == null");
-		INT_ERROR_RT_STR.put(phmi.ERROR_BY_DAY, "day == null");
+		INT_ERROR_RT_STR.put(ERROR_BY_ID, "id는 0이거나 음수");
+		INT_ERROR_RT_STR.put(ERROR_BY_UPLOADER_ID, "uploaderId는 0이거나 음수");
+		INT_ERROR_RT_STR.put(ERROR_BY_SAVE_MONEY, "saveMoney는  음수");
+		INT_ERROR_RT_STR.put(ERROR_BY_GET_MONEY, "getMoney는  음수");
+		INT_ERROR_RT_STR.put(ERROR_BY_CATEGORY, "category는 지정한범위 (1, 2, 3) 이외의 수");
+		INT_ERROR_RT_STR.put(ERROR_BY_DETAIL, "detail == null");
+		INT_ERROR_RT_STR.put(ERROR_BY_DAY, "day == null");
 		INT_ERROR_RT_STR.put(PASS_CHECK_NUM, "checkGetSqlProfitHistoryVO().. 통과성공");
 		return INT_ERROR_RT_STR.get(intErrorCode);
 	}
@@ -55,7 +54,6 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 	// profitHistory 모든값 제대로 들어왔는지 체크하는함수 -1 ~ -7/ 1 rt
 	private static int checkGetSqlProfitHistoryVO(ProfitHistoryVO profitHistory) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 - HH시 mm분 ss초");
-		PropitHistoryMySqlImpl phmi = new PropitHistoryMySqlImpl();
 		
 		int id = profitHistory.getId();
 		int uploderId = profitHistory.getUploaderId();
@@ -68,35 +66,35 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 		if(id < 0) {
 			System.out.println("id <= 0 / id는 0이거나 음수");
 			System.out.println("id = " + id);
-			return phmi.ERROR_BY_ID;
+			return ERROR_BY_ID;
 		}
 		if(uploderId <= 0) {
 			System.out.println("uploaderId <= 0 / uploaderId는 0이거나 음수");
 			System.out.println("uploderId = " + uploderId);
-			return phmi.ERROR_BY_UPLOADER_ID;
+			return ERROR_BY_UPLOADER_ID;
 		}
 		if(saveMoney < 0) {
 			System.out.println("saveMoney < 0 / saveMoney는  음수");
 			System.out.println("saveMoney = " + saveMoney);
-			return phmi.ERROR_BY_SAVE_MONEY;
+			return ERROR_BY_SAVE_MONEY;
 		}
 		if(getMoney < 0) {
 			System.out.println("getMoney < 0 / getMoney는  음수");
 			System.out.println("getMoney = " + getMoney);
-			return phmi.ERROR_BY_GET_MONEY;
+			return ERROR_BY_GET_MONEY;
 		}
 		if (category < 0 || category > 3) {
 			System.out.println("category < 0 || category > 3 / category는 지정한범위 (1, 2, 3) 이외의 수");
 			System.out.println("category = " + category);
-			return phmi.ERROR_BY_CATEGORY;
+			return ERROR_BY_CATEGORY;
 		}
 		if(detail == null) {
 			System.out.println("detail == null");
-			return phmi.ERROR_BY_DETAIL;
+			return ERROR_BY_DETAIL;
 		}
 		if(day == null) {
 			System.out.println("day == null");
-			return phmi.ERROR_BY_DAY;
+			return ERROR_BY_DAY;
 		}
 		String fmtDay = sdf.format(day);
 		System.out.printf("id = %d, uploderId = %d, saveMoney = %d, getMoney= %d, "
@@ -109,7 +107,6 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 	class PropitHistoryImplRowMapper implements RowMapper<ProfitHistoryVO>{
 		@Override
 		public ProfitHistoryVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-			PropitHistoryMySqlImpl phmi = new PropitHistoryMySqlImpl();
 			int id = rs.getInt("id");
 			int uploaderId = rs.getInt("uploader_id");
 			int saveMoney = rs.getInt("save_money");   
@@ -121,10 +118,10 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 			ProfitHistoryVO phv = new ProfitHistoryVO(id, uploaderId, saveMoney, getMoney, category, detail, day);
 			int checkPhv = checkGetSqlProfitHistoryVO(phv);
 			if(checkPhv == PASS_CHECK_NUM) {
-				System.out.println(phmi.getErrorStr(checkPhv)); // 안에 Map 이되어있어서 key int 값넣으면 해당 값을 리턴
+				System.out.println(getErrorStr(checkPhv)); // 안에 Map 이되어있어서 key int 값넣으면 해당 값을 리턴
 				return phv;
 			} else
-				System.out.println(phmi.getErrorStr(checkPhv)); // 안에 Map 이되어있어서 key int 값넣으면 해당 값을 리턴
+				System.out.println(getErrorStr(checkPhv)); // 안에 Map 이되어있어서 key int 값넣으면 해당 값을 리턴
 			return null;
 		}
 		
