@@ -18,6 +18,10 @@ public class MemberVO {
 	int checkCreater;      //  check_creater	tinyint            default 0     (0:일반회원 1:신청중인회원 2:거절된 회원 3:크리에티어권한받은 회원)
 	int loginCount;        //  login_count		int                                
 	Timestamp loginedAt;   //  logined_at		timestamp                          
-	String address;        //  address			varchar(128)                           
+	String baiscAddress;	//	basic_address	varchar(256)
+	String detailAddress;	//	detail_address	varchar(256)
+	int postalCode;			//	postalcode	int
+	String addressName;		//	address_name	varchar(24)
+	String receiverName;	//	receiver_name	varchar(24)                       
 	                                                                           
 }
