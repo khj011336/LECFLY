@@ -26,10 +26,101 @@ $(document).ready(function() {
 	
 	$(document).on("click",'#nav_board_payment', function() {
 		$(".container-fluid").load("admin_board_payment.jsp");
-	});// 이용권 결제내역
+	}); // 이용권 결제내역
+	
+	$(document).on("click",'#nav_board_member', function() {
+		$(".container-fluid").load("admin_board_member.jsp");
+	}); // 회원내역
+	
+	$(document).on("click",'#nav_board_creator', function() {
+		$(".container-fluid").load("admin_board_creator.jsp");
+	}); // 크리에이터내역
+	
+	$(document).on("click",'#nav_board_lecture', function() {
+		$(".container-fluid").load("admin_board_lecture.jsp");
+	}); // 강의내역
+	
+	$(document).on("click",'#nav_board_notice', function() {
+		$(".container-fluid").load("admin_board_notice.jsp");
+	});// 공지내역
+	
+	$(document).on("click",'#nav_board_faq', function() {
+		$(".container-fluid").load("admin_board_faq.jsp");
+	}); // 자주묻는질문
+	
+	$(document).on("click",'#nav_board_qna', function() {
+		$(".container-fluid").load("admin_board_qna.jsp");
+	}); // 문의내역
 });
 
 </script>
+<style type="text/css">
+
+/* 관리자 리스트 출력 폼 */
+.admin_table_wrap {/* 결과물 출력부 래퍼 */
+	margin: 0 auto;
+	text-align:center;
+	padding: 0 30px;
+	table-layout: fixed
+}
+.admin_table_wrap > table {
+	border-top: 2px solid black; 
+	border-bottom: 2px solid black; 
+	width:100%;
+}
+.admin_table_wrap td {
+	border: .1px solid lightgray; 
+}
+.admin_table_head > th {
+	background-color: #e8e8e8;
+}
+.admin_table_filter > table {/* 결과물 정렬기준 */
+	margin: 30px;
+	width:100%;
+}
+
+.admin_table_filter th {
+	background-color: #e8e8e8;
+}
+.admin_table_filter caption {
+	caption-side: top;
+	
+}
+.date_filter{/* 기간검색 */
+	padding: 0px;
+}
+.board_sort_filter ul{
+	list-style: none;
+}
+.board_sort_filter li{
+	display: inline-block;
+}
+.board_result_count {
+	color: orangered;
+}
+.admin_search_btns {
+ 	text-align:center;
+}
+/* 결과 상단 출력결과 및 정렬 */
+.admin_search_result {
+	margin-left: 30px;
+}
+.admin_search_edit {
+	float: left;
+}
+.admin_search_edit li{
+	margin-left: 30px; 
+}
+.admin_search_sort{
+	float: right;
+	margin-right: 30px;
+}
+.admin_search_sort li{
+/* 	margin-right: 5px; */
+} 
+
+</style>
+
 </head>
 
 <body>
