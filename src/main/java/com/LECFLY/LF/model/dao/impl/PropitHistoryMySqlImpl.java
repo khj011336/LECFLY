@@ -150,6 +150,18 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 	public static final String SQL_SELECT_PROFIT_HISTORY_GET_ID_TO_UPLOADER_ID = 
 			"select id from profit_histories where uploder_id = ?";
 	
+	public static final String SQL_UPDATE_PROFIT_HISTORY_BY_UPLOADER_ID = 
+			"update profit_histories set save_money = ?, " + 
+								"get_money =?, category = ?, detail = ?, day = ? where uploader_id = ?";
+	
+	public static final String SQL_UPDATE_PROFIT_HISTORY_BY_ID = 
+			"update profit_histories set uploader_id = ?, save_money = ?, " + 
+					"get_money =?, category = ?, detail = ?, day = ? where id = ?";
+	
+	public static final String SQL_UPDATE_SAVE_MONEY_BY_ID = 
+			"update profit_histories set save_money = ? where id = ?";
+	
+	
 	@Override
 	public boolean insertNewProfitHistory(ProfitHistoryVO profitHistory) {
 		int r = jtem.update(SQL_INSERT_NEW_PROFIT_HISTORY, profitHistory.getUploaderId());
@@ -242,19 +254,50 @@ public class PropitHistoryMySqlImpl implements IProfitHistoryDAO {
 
 	@Override
 	public boolean updateProfitHistoryByUploaderId(int uploaderId, ProfitHistoryVO profitHistory) {
-		// TODO Auto-generated method stub
+		System.out.println("updateProfitHistoryByUploaderId()...");
+		if( profitHistory != null && (uploaderId >= 1) ) {
+			int r = jtem.update(SQL_UPDATE_PROFIT_HISTORY_BY_UPLOADER_ID, 
+					profitHistory.getSaveMoney(), profitHistory.getGetMoney(), profitHistory.getCategory(),
+						profitHistory.getDetail(), profitHistory.getDay(), uploaderId);
+			System.out.println("r == 1 false 라면 확인필요");
+			System.out.println("r == " + r );
+			return true;
+		} else {
+			System.out.println("profitHistory가 null 이거나 !(uploaderId >= 1)일때 .. 1 보다 작을때");
+			System.out.println("uploaderId = " + uploaderId + "/ profitHistory = " + profitHistory);
+		}
 		return false;
 	}
 
 	@Override
 	public boolean updateProfitHistoryById(int id, ProfitHistoryVO profitHistory) {
-		// TODO Auto-generated method stub
+		System.out.println("updateProfitHistoryById()...");
+		if( profitHistory != null && (id >= 1) ) {
+			int r = jtem.update(SQL_UPDATE_PROFIT_HISTORY_BY_ID, profitHistory.getUploaderId(), 
+					profitHistory.getSaveMoney(), profitHistory.getGetMoney(), profitHistory.getCategory(),
+						profitHistory.getDetail(), profitHistory.getDay(), id );
+			System.out.println("r == 1 false 라면 확인필요");
+			System.out.println("r == " + r );
+			return true;
+		} else {
+			System.out.println("profitHistory가 null 이거나 !(id >= 1)일때 .. 1 보다 작을때");
+			System.out.println("id = " + id + "/ profitHistory = " + profitHistory);
+		}
 		return false;
 	}
 
 	@Override
 	public boolean updateSaveMoneyById(int id, int saveMoney) {
-		// TODO Auto-generated method stub
+		System.out.println("updateSaveMoneyById()... ");
+		if(id >= 1 && saveMoney >= 0 ) {
+			int r = jtem.update(SQL_UPDATE_SAVE_MONEY_BY_ID, saveMoney, id);
+			System.out.println("r == 1 false 라면 확인필요");
+			System.out.println( "r = " + r );
+			return (r == 1);
+		} else {
+			System.out.println(getErrorStr(ERROR_BY_ID) + " 거나 " + 
+									getErrorStr(ERROR_BY_SAVE_MONEY) + "이다.");
+		}
 		return false;
 	}
 

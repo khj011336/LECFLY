@@ -46,38 +46,6 @@ public class ProfitHistoryVO {
 	}
 
 	// GETTER
-	public static int getDefId() {
-		return DEF_ID;
-	}
-
-	public static int getEventLecture() {
-		return EVENT_LECTURE;
-	}
-
-	public static int getEventKit() {
-		return EVENT_KIT;
-	}
-
-	public static int getEventFunding() {
-		return EVENT_FUNDING;
-	}
-
-	public static int getEventEtc() {
-		return EVENT_ETC;
-	}
-
-	public static int getDefSaveMoney() {
-		return DEF_SAVE_MONEY;
-	}
-
-	public static int getDefGetMoney() {
-		return DEF_GET_MONEY;
-	}
-
-	public static String[] getEventStr() {
-		return EVENT_STR;
-	}
-
 	public int getId() {
 		return id;
 	}
