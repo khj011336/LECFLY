@@ -21,13 +21,9 @@ public interface ILoginSVC {
 			String pic, String name, String nicname, TimeStamp birthday, int gender, 
 			String email, String password, String phNumber, int agreeReceive, 
 			String baiscAddress, String detailAddress, int postalCode);
-	//이메일 찾기 위한 전화번호 유무 확인후 인증번호 발송
-	boolean checkPhNumber(String phNumber);
-	//인중번호 확인
-	boolean checkRight(String number);
 	//이메일 찾기
 	//find_login.lf (proc; post; dao; 비회원)			이메일찾기proc실행(findEmail(phNumber) )
-	boolean findEmail();
+	boolean findEmail(String phNumber, String name);
 	
 	//비밀번호 찾기
 	//find_pw.lf (proc; post; dao; 비회원)			비밀번호 재발급proc실행(createNewPWToEmail(email)
