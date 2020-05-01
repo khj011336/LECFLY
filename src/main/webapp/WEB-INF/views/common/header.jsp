@@ -30,7 +30,7 @@
 			<li id= "CSCenter"><a href="#">고객섬김센터</a></li>
 			<li id= "TEST"><a href="" >크리에이터센터</a>
 			</li>
-			<li  id= "TEST2" style="z-index:30;"><a href="" >로그인</a></li>
+			<li id= "TEST2" style="z-index:30;"><a href="login.LF" >로그인</a></li>
 		</ul>
 	</div>
 </div>
