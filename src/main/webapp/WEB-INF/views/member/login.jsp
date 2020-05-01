@@ -30,7 +30,7 @@
 <div id="emtpy_space"></div>
 <div id="login_wrap">
     <div id="login_top">
-        <h2 id="login_title"><a href="../home.jsp" class="logo_link login_a"><img src="../resource/img/logo/LecFly_LOGO_B_C.png" ></a></h2>
+        <h2 id="login_title"><a href="home.LF" class="logo_link login_a"><img src="../resource/img/logo/LecFly_LOGO_B_C.png" ></a></h2>
         <h2 id="login_subtitle">LOGIN</h2>
     </div>
     <div id="login_middle">
@@ -46,7 +46,7 @@
     </div>
     <div id="login_bottom">
         <div id="login_btn">
-           	<a href="../home.jsp" class="login_a">로그인</a>
+           	<a href="home.LF" class="login_a">로그인</a>
         </div>
     </div>
 </div>
