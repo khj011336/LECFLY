@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<h4>결제내역 조회</h4>
+  
+<h4>크리에이터 관리</h4>
 
 <div class="admin_table_filter">
 	<table>
 		<caption>검색조건설정</caption>
 		<tr>
-			<th>날짜 검색</th>
+			<th>기간검색</th>
 			<td>
 				<span class="date_filter"><a href="#">오늘</a></span> |
 				<span class="date_filter"><a href="#">3일</a></span> |
@@ -17,35 +17,24 @@
 			</td>
 		</tr>
 		<tr>
-			<th>상품 종류</th>
+			<th>분류 선택</th>
 			<td>
 				<select name="">
    					<option value="">전체</option>
-  					<option value="">이용권</option>
-    				<option value="">키트</option>
-    				<option value="">펀딩</option>
-    			</select>
-			</td>
-		</tr>
-		<tr>
-			<th>결제 종류</th>
-			<td>
-				<select name="">
-   					<option value="">결제 완료</option>
-  					<option value="">결제 대기</option>
-    				<option value="">결제 취소</option>
-    			</select>
+  					<option value="">회원</option>
+    				<option value="" selected="selected">크리에이터</option>
+				</select>
 			</td>
 		</tr>
 		<tr>
 			<th>키워드 검색</th>
 			<td>
 				<select name="">
-					<option value="">상품코드</option>
-   					<option value="">상품명</option>
-  					<option value="">판매자</option>
-  					<option value="">구매자</option>
-    			</select>
+   					<option value="">전체</option>
+    				<option value="">크리에이터번호</option>
+    				<option value="">닉네임</option>
+    				<option value="">상태</option>
+				</select>
 			<input type="text" size="40"></td>
 		</tr>
 		<tr>
@@ -78,7 +67,9 @@
 	</ul>	
 	<ul class="admin_search_sort">	
 		<li><a href="#">정확도순</a></li>
-		<li><a href="#">결제일순</a></li>
+		<li><a href="#">승인일순</a></li>
+		<li><a href="#">최근방문순</a></li>
+		
 	</ul>
 </div>    
 
@@ -89,15 +80,15 @@
 		<tr class="admin_table_head">
 			<th width=2%><input type="checkbox"/></th> 
 			<th>번호</th> 
-			<th>결제번호</th> 
-			<th>구매회원 ID</th> 
-			<th>판매회원 ID</th> 
-			<th>종류</th> 
-			<th>상품명</th>
-			<th>결제수단</th> 
-			<th>총 결제금액</th>
-			<th>배송상태</th>
-			<th>결제날짜</th>
+			<th>크리에이터번호</th> 
+			<th>프로필이미지</th> 
+			<th>이름</th> 
+			<th>닉네임</th> 
+			<th>연락처</th> 
+			<th>SNS 계정</th> 
+			<th>소개</th>
+			<th>상태</th>
+			<th>승인일</th>
 		</tr>
 		<% for(int i=1; i<=20;i++) {%>
 		<tr>
@@ -105,7 +96,7 @@
 			<td><%=i %></td> 
 			<td></td> 
 			<td></td> 
-			<td></td>
+			<td></td> 
 			<td></td> 
 			<td></td> 
 			<td></td> 
