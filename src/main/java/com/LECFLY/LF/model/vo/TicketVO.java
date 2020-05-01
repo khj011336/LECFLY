@@ -10,4 +10,68 @@ public class TicketVO {
 	int price;       //                     		이용권 가격
 	Timestamp startDay;    //  CURRENT_TIMESTAMP  	이용권 시작일
 	Timestamp endDay;      //  CURRENT_TIMESTAMP  	이용권 유효날자
+	
+	public TicketVO() {
+	}
+	
+	public TicketVO(int id, int mbId, int name, int category, int price, Timestamp startDay, Timestamp endDay) {
+		super();
+		this.id = id;
+		this.mbId = mbId;
+		this.name = name;
+		this.category = category;
+		this.price = price;
+		this.startDay = startDay;
+		this.endDay = endDay;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getMbId() {
+		return mbId;
+	}
+	public void setMbId(int mbId) {
+		this.mbId = mbId;
+	}
+	public int getName() {
+		return name;
+	}
+	public void setName(int name) {
+		this.name = name;
+	}
+	public int getCategory() {
+		return category;
+	}
+	public void setCategory(int category) {
+		this.category = category;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public Timestamp getStartDay() {
+		return startDay;
+	}
+	public void setStartDay(Timestamp startDay) {
+		this.startDay = startDay;
+	}
+	public Timestamp getEndDay() {
+		return endDay;
+	}
+	public void setEndDay(Timestamp endDay) {
+		this.endDay = endDay;
+	}
+	
+	@Override
+	public String toString() {
+		return "TicketVO [id=" + id + ", mbId=" + mbId + ", name=" + name + ", category=" + category + ", price="
+				+ price + ", startDay=" + startDay + ", endDay=" + endDay + "]";
+	}
+	
 }
