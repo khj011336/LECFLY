@@ -1,14 +1,15 @@
 package com.LECFLY.LF.model.vo;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MemberVO {
 	
-	public static final int GENDER_MAIL = 3; // 남성
 	public static final int GENDER_FEMAIL = 1; // 여성
 	public static final int GENDER_ADMIN = 2; // 관리자 
+	public static final int GENDER_MAIL = 3; // 남성
 	public static final int AGREE_RECEIVE_CHECK_NO = 0; // 선택X
 	public static final int AGREE_RECEIVE_CHECK_1 = 1; // 1번항목 체크
 	public static final int AGREE_RECEIVE_CHECK_2 = 2; // 2번항목 체크
@@ -104,7 +105,26 @@ public class MemberVO {
 		this.receiverName = null;
 	}
 	
+	//세션상에 저장할 VO (패스워드만 세션에 놓지 않음)
+	public MemberVO(int id, String pic, String name, String nicname, Timestamp birthday, int gender, String email,
+			String phNumber, Timestamp joinedAt, int agreeReceive, int useTicket, int checkCreator,
+			int loginCount, Timestamp loginedAt, String baiscAddress, String detailAddress, int postalCode,
+			String addressName, String receiverName) {
+		this(id, pic, name, nicname, birthday, gender, email, null, phNumber, joinedAt, 
+				agreeReceive, useTicket, checkCreator, loginCount, loginedAt, baiscAddress, detailAddress, 
+				postalCode, addressName, receiverName);
+	}
 	
+	// 회원가입시 받을 모든 정보들 회원가입시에만 사용
+	public MemberVO(String pic, String name, String nicname, 
+			Timestamp birthday, int gender, String email, String password, String phNumber, 
+			int agreeReceive, String baiscAddress, String detailAddress, int postalCode) {
+		this(0, pic, name, nicname, birthday, gender, email, password, phNumber, 
+				null, agreeReceive, 0, 0, 0, null, baiscAddress, detailAddress, postalCode, null, null);
+		
+	}
+	
+	//full constructor
 	public MemberVO(int id, String pic, String name, String nicname, Timestamp birthday, int gender, String email,
 			String password, String phNumber, Timestamp joinedAt, int agreeReceive, int useTicket, int checkCreator,
 			int loginCount, Timestamp loginedAt, String baiscAddress, String detailAddress, int postalCode,
