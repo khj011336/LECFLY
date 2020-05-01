@@ -144,6 +144,13 @@ public LectureVO(int id, int fid, int category, String subTitle, String title, S
 	this.createdAt = createdAt;
 	this.updatedAt = updatedAt;
 }
+@Override
+public String toString() {
+	return "LectureVO [id=" + id + ", Fid=" + Fid + ", category=" + category + ", subTitle=" + subTitle + ", title="
+			+ title + ", TitleImg=" + TitleImg + ", infoImg=" + infoImg + ", info=" + info + ", status=" + status
+			+ ", MBofLikes=" + MBofLikes + ", likeCount=" + likeCount + ", videoTrack=" + videoTrack + ", nickname="
+			+ nickname + ", imgPath=" + imgPath + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+}
 
  
 

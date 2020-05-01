@@ -1,4 +1,4 @@
-package com.LECFLY.LF.model.dao.impl.creator;
+package com.LECFLY.LF.model.dao.impl.Creator;
 
 import java.util.List;
 
