@@ -19,6 +19,7 @@ import com.LECFLY.LF.service.inf.creator.ILectureSVC;
 
 @Controller
 public class CreatorController {
+	@Autowired
 	LectureSVCImpl LecSVC;
 	ICreatorDAO CreDAO;
 	@RequestMapping(value = "home.LF", method = RequestMethod.GET )
@@ -29,15 +30,16 @@ public class CreatorController {
 	}
 	@RequestMapping(value ="creator.LF", method= RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model ,HttpServletRequest req) {
-		ses.setAttribute("id",0);
+		ses.setAttribute("id",1);
 		int status =(Integer) ses.getAttribute("id");
 		if(status == 1) {
-			model.addAttribute("lecList",LecSVC.showLectureList(1, 3, 5, 1));
+			int r = req.getAttribute("offset") == null?0:(int)req.getAttribute("offset") ;
+			model.addAttribute("lecList",LecSVC.showLectureList(2,r , 5, 1));
 			return "redirect:creator/creator_centor";
 		}else if(status== 2) {
 			
 		}else {
-			
+			return "회원로그인폼";
 		}
 		
 		

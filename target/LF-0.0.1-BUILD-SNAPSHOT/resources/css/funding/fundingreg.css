@@ -1,0 +1,399 @@
+/* 초기화 */
+
+ 
+}
+=======
+/* 초기화 */
+charset "UTF-8 "; html {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	height: 100%;
+}
+
+html {
+	overflow-y: scroll;
+}
+
+@font-face {
+	font-family: 'Cafe24Simplehae';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Simplehae.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body, p, ul, ol, li, dl, dt, dd, form, table, th, td, fieldset, input,
+	textarea, select, button, h1, h2, h3, h4, h5, h6, pre {
+	margin: 0;
+	padding: 0;
+	-webkit-text-size-adjust: none;
+	font-family: 'Cafe24Simplehae', "돋움", Dotum, Droid Sans,
+		AppleSDGothicNeo, AppleGothic, Helvetica, Sans-serif;
+}
+
+아이폰 가로모드 글자 크기 확대 방지: -webkit-text-size-adjust:none ;
+body, input, textarea, select, button {
+	color: #585858;
+	font-size: 12px;
+	font-family: 'Cafe24Simplehae';
+}
+
+header, footer, nav, aside, section, article {
+	display: block;
+}
+
+fieldset, img {
+	border: 0;
+}
+
+img {
+	-ms-interpolation-mode: bicubic !important;
+	border: 0;
+}
+
+table {
+	padding: 0;
+	border-spacing: 0px;
+	border: 0;
+	border-collapse: collapse;
+}
+
+ul, ol {
+	list-style: none;
+}
+
+a {
+	color: #585858;
+	text-decoration: none;
+}
+
+a:link {
+	color: #606060;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #ffa172;
+}
+
+.clear {
+	clear: both;
+}
+
+@font-face {
+	font-family: 'Cafe24Simplehae';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Simplehae.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	font-family: 'Cafe24Simplehae', sans-serif;
+	margin: 0px auto;
+	box-sizing: border-box;
+	color: black;
+}
+
+/* 레퍼 ( nav, content 포함) */
+#funding_wrapper {
+	width: 1200px;
+	min-height: 1200px;
+    padding: 20px;
+     
+}
+
+/* nav */
+#funding_nav {
+	width: 800px;
+	height: inherit;
+	float: left;
+	display: inline-block;
+    padding: 10px;
+}
+
+
+#funding_text {
+	background-color: darkgray;
+	float: left;
+    padding: 10px;
+    width: 770px;
+}
+
+
+/* nav의 강의소개 */
+#funding_lec {
+	text-align: center;
+	
+}
+
+textarea[name=feedback] {
+	margin: 10px 0px;
+	border-radius: 5px;
+	width: 700px;
+}
+
+input[value=입력] {
+	position: relative;
+	bottom: 42px;
+	height: 70px;
+	width: 70px;
+	display: inline-block;
+	border-radius: 5px;
+	color: white;
+	background-color: gray;
+}
+#FACimg{
+    width: 520px;
+    height: 300px;
+    position: absolute;
+    top: 50px;
+    left: 90px;
+}
+#FCFIx{
+    position: relative;
+    margin: 0px auto;
+    width: 1200px;
+    border: 1px solid black;
+    height: 300px;
+}
+#FACimg img{
+     width: 520px;
+    height: 300px;
+}
+#FCHtitle{
+    position: absolute;
+        top:80px;
+    right: 30px;
+    width: 500px;
+}
+#FCHtitle p{
+     font-weight: bolder;
+    font-size: 40px;
+      color: aliceblue;
+}
+p#Fcname{
+    margin-top: 5px;
+    font-size: 25px;
+}
+#shadowFC{
+    width: 100%;
+    height: 300px;
+    background-color: beige;
+}
+#shadowFC img{
+     width: 100%;
+    height: 300px;
+  
+}
+#funding_content {
+	width: 350px;
+	height: 600px;
+	display: inline-block;
+	position: fixed;
+	top: 20px;
+     box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+    padding: 25px;
+}
+#Fctexthd{
+    width: 100%;
+    height: 70px;
+    margin-top: 100px;
+    margin: 60px auto 0px auto;
+    width: 1200px;
+    
+}
+#Fctexthd p{
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 3;
+}
+#Fhead p{
+    font-size: 20px;
+}
+#FMidda{
+    margin-bottom: 5px;
+}
+#fcpriceh{
+    margin-top: 20px;
+    height: 120px;
+    color: rgb(62, 64, 66);
+    text-align: center;
+ background-color: rgb(248, 248, 249);
+   vertical-align: middle;
+    border-radius: 3px;
+    font-size: 20px;
+    line-height: 2;
+}
+#fcclick{
+    height: 50px;
+    margin-top: 3px;
+    border-radius: 3px;
+    font-size: 20px;
+     background-color: orange;
+    color: white;
+      text-align: center;
+    font-weight: bolder;
+    line-height: 2.5;
+        margin-top: 20px;
+   
+}
+#FIngq{
+    background-color: orange;
+    border-radius: 3px;
+}
+#FMidd p{
+ font-size: 30px;   
+    margin-right: 5px;
+}
+#probar{
+    width: 100%;
+    background-color: #ffffaa ;
+    height: 10px;
+    margin: 20px 0px;;
+}
+#probar p{
+    width: 30px;
+    background-color: orangered;
+    height: 10px;
+}
+#FMidda p{
+ font-size: 25px;   
+    display: inline-block;
+    margin-right: 5px;
+}
+#Fdate{
+     display: flex;
+}
+#funImgh{
+    width: 780px;
+    height: 500px;
+    border: 1px solid ;
+}
+#funImgh video{
+     width: 780px;
+    height: 500px;
+}
+#Fcstaus1{
+    width: 100%;
+    height: 250px;
+    border: 1px solid black;
+}
+#Fdate div{
+    box-sizing: border-box;
+    text-align: center;
+
+    color: orange;
+}
+#Ffonts{
+     height: 50px;
+    font-weight: bolder;
+    font-size: 20px;
+    line-height: 2.5;
+}
+#FCad{
+width: 100%;
+    height: 294px;
+    background-color: rgb(62, 64, 66);
+    margin-bottom: 16px;
+    padding-top: 12px;
+    border-radius: 3px;
+    padding: 130px;
+    font-size: 20px;
+    color: aliceblue;
+}
+#FCContent{
+    width: 100%;
+    margin-top: 40px;
+}
+.FCconmain p{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 30px;
+}
+#FCContent img{
+    width: 780px;
+    height: 450px;
+}
+
+.FCconmain{
+    width: 100%;
+    height: 600px;
+}
+#FCad p{
+     color: aliceblue;
+}
+
+#fcgraph{
+    display: flex;
+    width: 100%;
+    margin-top: 40px;
+}
+#fcgraph div{
+    width: 400px;
+}
+#fcgraph img{
+    width: 400px;
+    height: 300px;
+}
+ 
+
+#funding_text_contents{
+font-size: 17px
+}
+#funding_text{
+    width: 100%;
+    margin: 20px 0px;
+    text-align: center;
+    line-height: 1.4;
+}
+#Ffont{
+    height: 50px;
+    line-height: 3;
+}
+#Fbonus{
+    overflow-y: auto;
+     box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+    height: 100px;
+    margin-top: 10px;
+    padding: 5px;
+}
+#Fprice{
+    padding: 10px 0px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bolder;
+   border-bottom: 1px solid gray;
+   border-top: 1px solid gray;
+    color: dodgerblue;
+    display: flex;
+}
+#bom p{
+    margin-bottom: 6px;
+    border-bottom: 1px solid gray;
+    height: 20px;
+}
+
+  #funding_table {
+	margin: 15px;
+	width: 750px;
+	font-weight: bold;
+}
+
+.funding_table_td {
+	padding: 5px;
+}
+
+.funding_tb_num {
+	color: red;
+}
+#fundingwrap{
+    padding: 0px 20px;
+    margin-bottom: 50px;
+}
+

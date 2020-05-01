@@ -11,6 +11,7 @@ import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.service.inf.creator.ILectureSVC;
 @Service
 public class LectureSVCImpl{
+	@Autowired
 	ILectureDAO LecDAO;
 	public List<LectureVO>  showLectureList(int fid,int offset,int limit,int order) {
 		
