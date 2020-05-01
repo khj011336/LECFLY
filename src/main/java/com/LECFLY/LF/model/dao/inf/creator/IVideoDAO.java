@@ -11,6 +11,6 @@ public interface IVideoDAO {
  boolean updateVideo(int id ,int FK );
  boolean updateVideo(int id );
  boolean deleteVideo(int id );
- List<VideoVO> showVideoTrack(int fid , int CFID);
- List<VideoVO> showVideoTrack(int fid , int CFID , int offset, int limit );
+ List<VideoVO> selectVideoTrack(int fid , int CFID);
+ List<VideoVO> selectVideoTrack(int fid , int CFID , int offset, int limit );
 }

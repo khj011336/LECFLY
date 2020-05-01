@@ -1,0 +1,609 @@
+/* 전처리 */
+#mypage_wrap * {
+	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+}
+
+.mypage_a:hover {
+	border-bottom: 1px solid #FF4500;
+	color: #FF4500;
+}
+
+#mypage_wrap {
+	margin: 0px auto;
+	width: 1200px;
+}
+
+/* 상단영역 */
+#mypage_top {
+	width: 1200px;
+	height: 250px;
+	margin: 0px auto 0px auto;
+	/* background-color: grey; */
+	/*  border-bottom: 1px solid grey;
+    border-top: 1px solid grey; */
+}
+
+#mypage_pic {
+	/* border: 1px solid red; */
+	display: inline-block;
+	width: 208px;
+	height: 208px;
+	float: left;
+}
+
+#mypage_pic img {
+	border: 1px dashed grey;
+	border-radius: 100px;
+	margin: 30px;
+	float: left;
+	opacity: 0.7;
+}
+
+#mypage_pic input {
+	width: 100px;
+	height: 30px;
+	float: center;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	background-color: white;
+	color: darkgrey;
+}
+
+#mypage_mb_IF {
+	/* border: 1px solid green; */
+	display: inline-block;
+	float: left;
+	width: 208px;
+	height: 208px;
+	padding: 60px 20px 40px 20px;
+}
+
+.mypage_mb_t {
+	/* border-right: 1px solid blue; */
+	display: inline-block;
+	float: right;
+	width: 208px;
+	height: 208px;
+	padding: 70px 20px 30px 20px;
+	text-align: center;
+	cursor: pointer;
+}
+
+#mypage_mb_IF label {
+	font-size: 25px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.mypage_mb_t label {
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.mypage_mb_t span {
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.mypage_mb_t p a {
+	font-size: 12px;
+	text-align: center;
+	color: grey;
+}
+
+.mypage_mb_t p a:hover {
+	color: purple;
+}
+
+.mypage_mb_t b {
+	font-size: 18px;
+	text-align: center;
+	color: orangered;
+	font-weight: strong;
+}
+
+#mypage_mb_info {
+	border: 1px solid black;
+	display: inline;
+	width: 600px;
+	height: 250px;
+}
+
+.mypage_mb_info {
+	display: inline-block;
+	width: 180px;
+}
+
+/* 중간 영역 */
+#mypage_middle {
+	/* padding: 0 35px 0 35px; */
+	width: 1200px;
+	height: 100px;
+	background-color: light-grey;
+}
+
+#mypage_menu {
+	height: 70px;
+	width: 1050px;
+	list-style: none;
+	text-align: center;
+}
+
+#mypage_menu li {
+	display: inline-block;
+	padding: 0 15px 0 15px;
+}
+
+.mypage_tabs {
+	width: 1200px;
+	height: 50px;
+	text-align: center;
+	/* margin-top:10px; */
+}
+
+.mypage_tabs #tabs-mom {
+	width: 1200px;
+	height: 50px;
+	background-color: grey;
+	padding-top: 15px;
+	padding-bottom: auto;
+}
+
+.mypage_tabs #tabs-mom>ul li a { /* 상위 탭 메뉴 */
+	font-size: 20px;
+	display: inline;
+	float: left;
+	margin-left: 20px;
+	color: white;
+}
+
+.mypage_tabs #tabs-mom>ul li a:hover {
+	color: orange;
+	border-bottom: 1px solid orangered;
+}
+
+.mypage_tabs_li {
+	height: 40px;
+	border-bottom: 1px solid lightgrey;
+}
+
+.mypage_tabs_li>ul li a { /* 하위 탭 메뉴 */
+	font-size: 16px;
+	display: inline;
+	float: left;
+	padding-top: 10px;
+	margin-left: 20px;
+	margin-right: 10px;
+}
+
+.mypage_tabs_li>ul li a:hover {
+	color: orange;
+	border-bottom: 1px solid orangered;
+}
+
+.mypage_nav2 { /* 마이페이지 결제내역_하위 탭 메뉴 */
+	height: 40px;
+	margin-top: -20px;
+	margin-bottom: 20px;
+}
+
+.mypage_nav2>ul li a {
+	font-size: 16px;
+	display: inline;
+	float: left;
+	padding-top: 10px;
+	margin-left: 20px;
+	margin-right: 10px;
+}
+
+.mypage_nav2>ul li a:hover {
+	color: orange;
+	border-bottom: 1px solid orangered;
+}
+
+.dilivery_status {
+	width: 1080px;
+	height: 200px;
+	margin: auto;
+}
+
+#mypage_dilivery_status {
+	width: 200px;
+	font-size: 20px;
+	text-align: center;
+	display: inline-block;
+	float: center;
+	padding-bottom: 30px;
+	padding-top: 20px;
+	margin-top: -30px;
+}
+
+#mypage_dilivery_status>a {
+	font-size: 20px;
+	font-weight: bolder;
+	color: black;
+}
+
+#mypage_dilivery_status>span {
+	font-size: 30px;
+	font-weight: bolder;
+	color: orange;
+}
+
+#mypage_dilivery_status_point {
+	width: 73px;
+	height: 160px;
+	text-align: center;
+	display: inline-block;
+	float: center;
+	padding-top: 40px;
+}
+/* 하단영역 */
+#mypage_bottom {
+	min-height: 50vh;
+}
+
+#mypage_lec_ing, #mypage_lec_showen, #mypage_lec_reco {
+	display: inline-block;
+	height: 440px;
+	width: 1010px;
+	margin: 0 60px 0 60px;
+	text-align: center;
+}
+
+#mypage_lec_ing {
+	
+}
+
+#mypage_lec_showen {
+	
+}
+
+#mypage_lec_reco {
+	
+}
+
+.mypage_lec, .mypage_lec_img, .mypage_lec_des, .mypage_lec_title {
+	width: 320px; /*임시로 사이즈 지정 후에 260으로 바꿔야됨.*/;
+	margin: 0px auto;
+}
+
+.mypage_lec {
+	border: 1px solid black;
+	height: 320px;
+	/*margin: 20px;*/
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+.mypage_lec_img {
+	/*     border: 1px solid black; */
+	height: 200px;
+}
+
+.mypage_lec_title {
+	border: 1px solid black;
+	height: 50px;
+	font-size: 18px;
+	padding-top: 20px;
+}
+
+.mypage_lec_des {
+	border: 1px solid black;
+	height: 90px;
+	padding-top: 25px;
+}
+
+.mypage_top_side h3 {
+	float: left;
+	font-size: 20px;
+	margin-left: 60px;
+	margin-bottom: 30px;
+}
+
+.mypage_top_side div {
+	float: right;
+	margin-right: 60px;
+}
+
+.mypage_bottom_info {
+	width: 1200px;
+	margin: 30px 0px 0px 0px;
+	text-align: center;
+	padding-bottom: 30px;
+}
+
+.mypage_bottom_title {
+	margin-bottom: 30px;
+	text-align: justify;
+	padding-left: 20px;
+}
+
+.mypage_table table {
+	width: 100%;
+}
+
+.mypage_table { /* mypage 조각 테이블 영역 */
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	width: 90%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.mypage_table table th {
+	border-bottom: 1px solid gray;
+	padding: 20px;
+	text-align: center;
+	background-color: lightgray;
+}
+
+.mypage_table table td {
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+	padding: 20px;
+	text-align: center;
+}
+
+#mypage_table_numbering { /* mypage 조각_ 테이블_ 페이지넘버링 */
+	margin-top: 15px;
+	text-align: center;
+	font-size: 20px;
+}
+
+#mypage_table_numbering b {
+	color: orange;
+}
+/* #mypage_update_info_table{ mypage pw 수정_ 테이블
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	text-align: left;
+} */
+/* #mypage_update_info_table table{ mypage pw 수정_ 테이블
+    margin: 30px 0 30px 50px;
+	width: 800px;
+    height: 200px;
+    border-collapse: collapse;
+    text-align: left;
+}
+#mypage_update_info_table table td {
+	 text-align: left;
+	 padding-left: 60px;
+}
+
+#mypage_update_info_table >input {
+	font-size: 20px;
+} */
+/**/
+#mypage_pw_table { /* mypage pw 수정_ 테이블 */
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	text-align: left;
+}
+
+#mypage_pw_table table { /* mypage pw 수정_ 테이블 */
+	margin: 30px 0 30px 50px;
+	width: 500px;
+	height: 200px;
+	border-collapse: collapse;
+	text-align: left;
+}
+
+#mypage_pw_table table td {
+	text-align: left;
+	padding-left: 60px;
+}
+
+#mypage_pw_table>input {
+	font-size: 20px;
+}
+
+/* .mypage_bottom_contents>button { */
+/* 	width: 240px; */
+/* 	height: 60px; */
+/* 	background-color: darkgrey; */
+/* 	color: white; */
+/* 	font-size: 14px; */
+/* 	margin-top: 30px; */
+/* 	margin-left: auto; */
+/* 	margin-right: auto; */
+/* 	text-align: center; */
+/* } */
+
+/* 팝업 띄우려고 건우형꺼 처럼 a 태그로 변경 일반버튼하려면 위에꺼쓰면됩니다  */
+.mypage_bottom_contents>a {
+	width: 240px;
+	height: 60px;
+	background-color: darkgrey;
+	color: white;
+	font-size: 14px;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	padding-top: 24px;
+	display: block;
+}
+
+.mypage_pw_update_popup_content {
+	padding-top: 50px;
+}
+
+#mypage_pw_update_popup_submitbtn {
+	margin-top: 30px;
+	width: 180px;
+	height: 40px;
+	background-color: orange;
+}
+
+
+#mypage_update_info_btn {
+	display: inline-block;
+	margin-top: 20px;
+	width: 1200px;
+	float: center;
+}
+/* #mypage_update_info_btn >button { */
+/* 	width: 240px; */
+/* 	height: 60px; */
+/* 	background-color: darkgrey; */
+/* 	color: white; */
+/* 	font-size: 14px; */
+/* 	margin-top: 30px; */
+	/* margin-left: auto;
+	margin-right: 300px; */
+/* 	float: center; */
+/* 	text-align: center; */
+/* } */
+
+/*  팝업창 opean하려고 버튼에서 a 로 테스트중  */
+#mypage_update_info_btn > a {
+	width: 240px;
+	height: 60px;
+	background-color: darkgrey;
+	color: white;
+	font-size: 14px;
+	margin-top: 30px;
+	/* margin-left: auto;
+	margin-right: 300px; */
+	float: center;
+	text-align: center;
+	padding-top: 24px;
+	display: block;
+}
+
+.mypage_mb_update_popup_content {
+	padding-top: 50px;
+}
+
+#mypage_mb_update_popup_submitbtn {
+	margin-top: 30px;
+	width: 180px;
+	height: 40px;
+	background-color: orange;
+}
+
+
+.update_pw_input {
+	height: 32px;
+	width: 200px;
+}
+
+/* mypage 쿠폰 등록 CSS */
+.mypage_registerCoupon {
+	position: relative;
+	top: -20px;
+	left: 500px;
+	font-size: 12pt;
+	padding: 10px;
+	color: white;
+	background-color: orange;
+/* 	border-radius: 20px/50px; */
+	text-decoration: none;
+	cursor: pointer;
+	transition: all 0.3s ease-out;
+	background-clip: padding-box;
+	font-size: 12pt;
+}
+
+.mypage_registerCoupon:hover {
+	background: orangered;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.7);
+	transition: opacity 500ms;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.overlay:target {
+	visibility: visible;
+	opacity: 1;
+}
+
+.popup {
+	margin: 280px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	width: 400px;
+	height: 220px;
+	position: relative;
+	transition: all 5s ease-in-out;
+}
+
+.mypage_coupon_h2 {
+	margin-top: 0;
+	padding: 15px 0px;
+}
+
+.popup .close {
+	position: absolute;
+	top: 0px;
+	right: 10px;
+	transition: all 200ms;
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #333;
+}
+
+.popup .close:hover {
+	color: black;
+}
+
+.popup .mypage_coupon_content {
+	max-height: 200px;
+	overflow: auto;
+	text-align: center;
+}
+
+input[name=mypage_coupon] {
+	width: 310px;
+	height: 35px;
+	padding-left: 5px;
+	text-align: center;
+}
+
+input[name=register_coupon] {
+	height: 38px;
+	background-color: orange;
+	color: white;
+	text-align: center;
+}
+
+#mypage_coupon_p {
+	padding: 15px 0px;
+	text-align: left;
+	font-weight: bold;
+	font-size: 15px;
+	text-align: left;
+}
+
+#mypage_coupon_ul {
+	font-size: 14px;
+	color: gray;
+}
+
+@media screen and (max-width: 400px) {
+	.mypage_registerCoupon {
+		width: 400px;
+	}
+	.popup {
+		width: 400px;
+	}
+}
