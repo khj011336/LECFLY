@@ -119,6 +119,7 @@ public class MemberVO {
 	public MemberVO(String pic, String name, String nicname, 
 			Timestamp birthday, int gender, String email, String password, String phNumber, 
 			int agreeReceive, String baiscAddress, String detailAddress, int postalCode) {
+		
 		this(0, pic, name, nicname, birthday, gender, email, password, phNumber, 
 				null, agreeReceive, 0, 0, 0, null, baiscAddress, detailAddress, postalCode, null, null);
 		
