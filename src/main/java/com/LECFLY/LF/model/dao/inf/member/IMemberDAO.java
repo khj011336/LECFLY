@@ -90,7 +90,7 @@ public interface IMemberDAO {
 	// 비밀번호가 같은지 체크
 	int memberPassword(String password);
 	
-//로그인하기	
+//로그인하기
 //회원가입하기
 //이메일 찾기		
 //비밀번호 찾기
