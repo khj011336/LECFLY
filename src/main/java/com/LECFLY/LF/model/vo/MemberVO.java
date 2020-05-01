@@ -105,13 +105,22 @@ public class MemberVO {
 		this.receiverName = null;
 	}
 	
-	// 회원가입시 받을 모든 정보들
+	//세션상에 저장할 VO (패스워드만 세션에 놓지 않음)
+	public MemberVO(int id, String pic, String name, String nicname, Timestamp birthday, int gender, String email,
+			String phNumber, Timestamp joinedAt, int agreeReceive, int useTicket, int checkCreator,
+			int loginCount, Timestamp loginedAt, String baiscAddress, String detailAddress, int postalCode,
+			String addressName, String receiverName) {
+		this(id, pic, name, nicname, birthday, gender, email, null, phNumber, joinedAt, 
+				agreeReceive, useTicket, checkCreator, loginCount, loginedAt, baiscAddress, detailAddress, 
+				postalCode, addressName, receiverName);
+	}
+	
+	// 회원가입시 받을 모든 정보들 회원가입시에만 사용
 	public MemberVO(String pic, String name, String nicname, 
 			Timestamp birthday, int gender, String email, String password, String phNumber, 
 			int agreeReceive, String baiscAddress, String detailAddress, int postalCode) {
 		this(0, pic, name, nicname, birthday, gender, email, password, phNumber, 
-				new Timestamp(new Date().getTime()), agreeReceive, 0, 0, 0, null, 
-				baiscAddress, detailAddress, postalCode, null, null);
+				null, agreeReceive, 0, 0, 0, null, baiscAddress, detailAddress, postalCode, null, null);
 		
 	}
 	

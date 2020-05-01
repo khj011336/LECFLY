@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 
 @Service
-public interface ILogin {
-	@
-	IMemberDAO mbDao;
+public interface ILoginSVC {
+	
+//	IMemberDAO mbDao;
 	
 	//로그인하기						
 	//login.lf (form; get; 비회원)			로그인폼 이동		
