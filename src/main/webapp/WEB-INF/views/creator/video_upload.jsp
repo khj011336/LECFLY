@@ -3,18 +3,24 @@
     
 <script>
 $("#uplUP").change(function () {
+	var formdata =  $("#aform")[0];
+	var form = new FormData(formdata);  
 $.ajax({
 	type :"POST",
+	enctype:"multipart/form-data",
 	url : "Creator/creatorcenter.up",
-	data: "uplUP",
+	processData: false,
+    contentType: false,
+	data: form,
 	success: function () {
 		alert("성공");
-	},
+	}
 	}); 
 });
 
 
 </script>
+
 
 <div id='uplwrap'>
 

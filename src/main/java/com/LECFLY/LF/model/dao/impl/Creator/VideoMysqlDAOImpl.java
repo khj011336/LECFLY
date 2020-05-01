@@ -1,4 +1,4 @@
-package com.LECFLY.LF.model.dao.impl.Creator;
+package com.LECFLY.LF.model.dao.impl.creator;
 
 import java.util.List;
 
@@ -41,13 +41,13 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	}
 
 	@Override
-	public List<VideoVO> showVideoTrack(int fid, int CFID) {
+	public List<VideoVO> selectVideoTrack(int fid, int CFID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<VideoVO> showVideoTrack(int fid, int CFID, int offset, int limit) {
+	public List<VideoVO> selectVideoTrack(int fid, int CFID, int offset, int limit) {
 		// TODO Auto-generated method stub
 		return null;
 	}

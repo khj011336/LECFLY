@@ -16,8 +16,22 @@ private int status; 			// 클래스 상태 1 ~ 미정
 private String MBofLikes; 		// 좋아요한 멤버들 , 로 구분
 private int likeCount; 			// 좋아요 카운트
 private int videoTrack;  		// 강의 비디오개수
+private String nickname;		// 메인화면 클래스 업로드를위한 닉네임 크리에이터VO nickname과 같음
+private String imgPath;			// 메인화면 클래스 업로드를 위한 이미지패스 마찬가지로 크리에이터VO와 중복
 private Timestamp createdAt; 	// 만든시간 
 private Timestamp updatedAt;  	// 업데이트시간 
+public String getNickname() {
+	return nickname;
+}
+public void setNickname(String nickname) {
+	this.nickname = nickname;
+}
+public String getImgPath() {
+	return imgPath;
+}
+public void setImgPath(String imgPath) {
+	this.imgPath = imgPath;
+}
 public int getVideoTrack() {
 	return videoTrack;
 }
@@ -106,12 +120,12 @@ public LectureVO() {}
 
 public LectureVO( int category, String subTitle, String title, String titleImg, String infoImg,
 		String info) {
-	this(0, 0,0, subTitle, title, titleImg, infoImg, info, 2, null, 0,0 , null, null);
+	this(0, 0,0, subTitle, title, titleImg, infoImg, info, 2, null, 0,0 , null, null , null,null);
 
 }
 public LectureVO(int id, int fid, int category, String subTitle, String title, String titleImg, String infoImg,
-		String info, int status, String mBofLikes, int likeCount, int videoTrack, Timestamp createdAt,
-		Timestamp updatedAt) {
+		String info, int status, String mBofLikes, int likeCount, int videoTrack, String nickname, String imgPath,
+		Timestamp createdAt, Timestamp updatedAt) {
 	super();
 	this.id = id;
 	Fid = fid;
@@ -125,9 +139,12 @@ public LectureVO(int id, int fid, int category, String subTitle, String title, S
 	MBofLikes = mBofLikes;
 	this.likeCount = likeCount;
 	this.videoTrack = videoTrack;
+	this.nickname = nickname;
+	this.imgPath = imgPath;
 	this.createdAt = createdAt;
 	this.updatedAt = updatedAt;
 }
+
  
 
 

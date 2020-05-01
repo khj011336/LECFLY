@@ -1,4 +1,4 @@
-package mvc;
+package com.LECFLY.LF.videosrc;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-@MultipartConfig(location = "C:\\fusion11\\apache-tomcat-8.5.50\\uploadTemp"
-,maxFileSize = 1204L,fileSizeThreshold = -1,maxRequestSize = -1)
+//@MultipartConfig(location = "C:\\fusion11\\apache-tomcat-8.5.50\\uploadTemp"
+//,maxFileSize = 1204L,fileSizeThreshold = -1,maxRequestSize = -1)
 public class UploadServlet extends HttpServlet {
 
 	@Override
@@ -19,35 +19,36 @@ public class UploadServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html; charset=utf-8");
 		PrintWriter writer = resp.getWriter();
-		writer.println("<html><body>");
+		System.out.println("처리중...");
 		String contenttype = req.getContentType();
+		System.out.println(contenttype);
 		if(contenttype != null && contenttype.toLowerCase().startsWith("multipart/")) {
 			printPartInfo(req, writer);
 			
 		}else {
-			writer.println("</body></html>");
+			System.out.println("예외");
 		}
 	
 	}
 	private void printPartInfo(HttpServletRequest req , PrintWriter writer)throws IOException , ServletException {
 		Collection<Part> parts = req.getParts();
 		for( Part part :parts) {
-			writer.println("<br/> name="+part.getName());
+			System.out.println("<br/> name="+part.getName());
 			String contentType = part.getContentType();
-			writer.println("<br/> contentType =" +contentType);
+			System.out.println("<br/> contentType =" +contentType);
 			if(part.getHeader("Content-Disposition").contains("filename=")) {
 				
-				writer.println("<br/> size="+part.getSize());
+			System.out.println("<br/> size="+part.getSize());
 				String fileName = part.getSubmittedFileName();
-				writer.println("<br/> filename="+fileName);
+				System.out.println("<br/> filename="+fileName);
 				if(part.getSize() >0) {
 					part.write("C:\\fusion11\\"+fileName);
 					part.delete();
 				}else {
 					String value = req.getParameter(part.getName());
-					writer.println("<br/> value = " +value);
+					System.out.println("<br/> value = " +value);
 				}
-				writer.println("<hr/>");
+				 
 			}
 		}
 	}
