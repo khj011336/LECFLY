@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <head>
 	<meta charset="utf-8">
 	<title>LecFly 이용 약관</title>
@@ -8,8 +9,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/x-icon" href=""/>
 	
-    <link type="text/css" rel="stylesheet" href="../resource/css/create_new_member.css">
-    <link type="text/css" rel="stylesheet" href="../resource/css/main.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/member/create_new_member.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/common/main.css">
     <!-- <script type="text/javascript">
     	function goCreateNewMember() {
     		window.open('../member/create_new_member.jsp');
@@ -232,7 +233,7 @@
 			<label for="clause_agree2">개인정보 이용 약관에 동의합니다.</label>
 		</div>
 		<div id="clause_btn">
-			<a href="../member/create_new_member.jsp"><input type="button" id="agree_clause" value="회원가입 페이지로 이동"></a>
+			<a href="join_new_member.LF"><input type="button" id="agree_clause" value="회원가입 페이지로 이동"></a>
 			<!-- <a id="agree_clause" href="../member/create_new_member.jsp">회원가입 페이지로 이동</a> -->
 		</div>
     </div>

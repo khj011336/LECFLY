@@ -11,7 +11,7 @@
 		});
     </script>
 <div id="login_top">
-	<h2 id="login_title"><a href="../home.jsp" class="logo_link login_a"><img src="../resource/img/logo/LecFly_LOGO_B_C.png" ></a></h2>
+	<h2 id="login_title"><a href="home.LF" class="logo_link login_a"><img src="resources/imges/logo/LecFly_LOGO_B_C.png" ></a></h2>
 	<h3 id="login_subtitle2">아이디(e-mail) 찾기</h3>
 </div>
 <div id="login_middle2">
