@@ -30,6 +30,6 @@
 </div>
 <div id="login_bottom">
 	<div id="find_login_btn">
-		<a href="login.jsp" class="login_a">인증 메일 전송</a>
+		<a href="login.LF" class="login_a">인증 메일 전송</a>
 	</div>
 </div>
