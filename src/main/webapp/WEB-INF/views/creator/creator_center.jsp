@@ -16,16 +16,16 @@
 <body>
 	<div id="wrapper" >
 		<div id="header" class='header'>
-			<%@ include file="../common/header.jsp"%>
+			<tiles:insertAttribute name="header" />
 		</div>
-		<%@ include file="creside_nav.jsp"%>
+		<tiles:insertAttribute name="left" />
 		<%@ include file="cre_status.jsp" %>
-<!-- 		<div id="Cre_main"> -->
-			
-			<%@ include file="class_list.jsp"%>
+		<div id="Cre_main">
+    <tiles:insertAttribute name="body" />    
 		</div>
 		<div id="footer" class='footer'>
-			<%@ include file="../common/footer.jsp"%>
+		<tiles:insertAttribute name="footer" />
+		</div>
 		</div>
 </body>
 </html>
