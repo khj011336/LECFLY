@@ -3,21 +3,49 @@ package com.LECFLY.LF.model.vo;
 import java.sql.Timestamp;
 
 public class PostscriptVO {
-	int id;                      // 후기번호
-	int classId;                 // 클래스번호         	 <<fk>>
-	int mbId;                    // 작성회원번호       	 <<fk>>
-	String mbLogin;                 // 작성자 닉네임
-	String content;                 // 후기 내용
-	float rate;                    // 별점 평가
-	Timestamp writedDay;               // 작성 날자
-	int creatorIdComt;           // 댓글 작성크리에이터	<<fk>>  *후기에 대한 댓글은 업로더만 작성가능  
-	String creatorUserNameComt;     // 댓글작성자 닉네임   
-	String contentComt;             // 댓글내용            
-	Timestamp writeDayComt;            // 댓글작성일자        
+	/** 후기번호*/
+	int id;                     
+	/** 클래스번호 /FK/*/
+	int classId;                 
+	/** 작성회원번호 /FK/*/
+	int mbId;                    
+	/** 작성자 닉네임*/
+	String mbLogin;                 
+	/** 후기 내용*/
+	String content;                 
+	/** 별점 평가*/
+	float rate;                   
+	/** 작성 날자*/
+	Timestamp writedDay;              
+	/** 댓글 작성크리에이터	/FK/  *후기에 대한 댓글은 업로더만 작성가능  */
+	int creatorIdComt;        
+	/** 댓글작성자 닉네임*/
+	String creatorUserNameComt;     
+	/** 댓글내용*/
+	String contentComt;                   
+	/** 댓글작성일자   */
+	Timestamp writeDayComt;                  
 	
+	/**
+	 * 더미 
+	 */
 	public PostscriptVO() {
 	}
 	
+	/**
+	 * full constructor
+	 * @param id
+	 * @param classId
+	 * @param mbId
+	 * @param mbLogin
+	 * @param content
+	 * @param rate
+	 * @param writedDay
+	 * @param creatorIdComt
+	 * @param creatorUserNameComt
+	 * @param contentComt
+	 * @param writeDayComt
+	 */
 	public PostscriptVO(int id, int classId, int mbId, String mbLogin, String content, float rate, Timestamp writedDay,
 			int creatorIdComt, String creatorUserNameComt, String contentComt, Timestamp writeDayComt) {
 		super();

@@ -3,18 +3,40 @@ package com.LECFLY.LF.model.vo;
 import java.sql.Timestamp;
 
 public class NoticeVO {
-	int id;         	//                          공지사항 번호
-	int type;       	//                          공지 위치            0: 일반 페이지 1: 크리에이터 페이지
-	String title;      	//                          제목
-	String content;   	 //                          내용
-	String file;       	//                          첨부파일             (다수인 경우 ,등 구분용 문자 삽입)
-	Timestamp writedDay;  	//   CURRENT_TIMESTAMP      작성날짜
-	Timestamp updatedDay; 	//   CURRENT_TIMESTAMP      갱신날짜
-	int hits;		       //   0                    	조회수
+	/** 공지사항 번호 */
+	int id;
+	/** 공지 위치            0: 일반 페이지 1: 크리에이터 페이지*/
+	int type;
+	/** 제목*/
+	String title;
+	/** 내용*/
+	String content;
+	/**  첨부파일             (다수인 경우 ,등 구분용 문자 삽입)*/
+	String file;
+	/** 작성날짜 CURRENT_TIMESTAMP*/
+	Timestamp writedDay;
+	/** 갱신날짜 CURRENT_TIMESTAMP*/
+	Timestamp updatedDay; 
+	/** 조회수*/
+	int hits;	
 	
+	/**
+	 * 더미 
+	 */
 	public NoticeVO() {
 	}
 	
+	/**
+	 * full constructor 
+	 * @param id
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 * @param writedDay
+	 * @param updatedDay
+	 * @param hits
+	 */
 	public NoticeVO(int id, int type, String title, String content, String file, Timestamp writedDay,
 			Timestamp updatedDay, int hits) {
 		super();
