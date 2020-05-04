@@ -3,13 +3,50 @@ package com.LECFLY.LF.model.vo;
 import java.sql.Timestamp;
 
 public class CSFileManagerVO {
-	int id;           //                      순서번호
-	int qnaOrNotice;  //                      게시판 구분      0: qna 1: notice
-	int contentsId;   //                      글 번호          <<fk>>
-	String fileName;     //                      파일제목
-	String filePath;     //                      파일경로
-	int fileSize;    		 //                      파일크기
-	Timestamp updatedDate;  //  CURRENT_TIMESTAMP   업데이트 날짜
+	/** 순서번호*/
+	int id;
+	/** 게시판 구분      0: qna 1: notice*/
+	int qnaOrNotice; 
+	/** 글 번호 /fk/ */
+	int contentsId;
+	/** 파일제목*/
+	String fileName;
+	/** 파일경로*/
+	String filePath;
+	/** 파일크기*/
+	int fileSize; 
+	/** 업데이트 날짜	CURRENT_TIMESTAMP*/
+	Timestamp updatedDate;
+
+	/**
+	 * 더미
+	 */
+	public CSFileManagerVO() {
+		
+	}
+	
+	/**
+	 * full constructor 
+	 * @param id
+	 * @param qnaOrNotice
+	 * @param contentsId
+	 * @param fileName
+	 * @param filePath
+	 * @param fileSize
+	 * @param updatedDate
+	 */
+	public CSFileManagerVO(int id, int qnaOrNotice, int contentsId, String fileName, String filePath, int fileSize,
+			Timestamp updatedDate) {
+		super();
+		this.id = id;
+		this.qnaOrNotice = qnaOrNotice;
+		this.contentsId = contentsId;
+		this.fileName = fileName;
+		this.filePath = filePath;
+		this.fileSize = fileSize;
+		this.updatedDate = updatedDate;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -52,17 +89,8 @@ public class CSFileManagerVO {
 	public void setUpdatedDate(Timestamp updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	public CSFileManagerVO(int id, int qnaOrNotice, int contentsId, String fileName, String filePath, int fileSize,
-			Timestamp updatedDate) {
-		super();
-		this.id = id;
-		this.qnaOrNotice = qnaOrNotice;
-		this.contentsId = contentsId;
-		this.fileName = fileName;
-		this.filePath = filePath;
-		this.fileSize = fileSize;
-		this.updatedDate = updatedDate;
-	}
+	
+	
 	@Override
 	public String toString() {
 		return "CSFileManagerVO [id=" + id + ", qnaOrNotice=" + qnaOrNotice + ", contentsId=" + contentsId

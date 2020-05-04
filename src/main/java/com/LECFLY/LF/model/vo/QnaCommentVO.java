@@ -3,19 +3,42 @@ package com.LECFLY.LF.model.vo;
 import java.sql.Timestamp;
 
 public class QnaCommentVO {
-	int id;        		//                       댓글 번호
-	int mbId;      		//                       "작성자	"  "<<fk>>	_member/id 출력은 nicname"
-	String mbLogin;   	//                       작성자 닉네임
-	int qnaId;     		//                       "원글 번호	"  <<fk>>_qna/id
-	String content;   	//                       댓글 내용
-	int parentsId; 		//                       대댓글 부모 번qna_comment/id호
-	int seq;       		//  	1     		               대댓 시퀀스
-	Timestamp writedDay;  //  CURRENT_TIMESTAMP    작성날짜
-	Timestamp updatedDay; //  CURRENT_TIMESTAMP    갱신날짜
+	/** 댓글 번호 */
+	int id; 
+	/** 작성자 fk/ 	_member/id 출력은 nicname */
+	int mbId;
+	/** 작성자 닉네임 */
+	String mbLogin; 
+	/** 원글 번호 fk/ _qna/id */
+	int qnaId; 
+	/**  댓글 내용 */
+	String content; 
+	/** 대댓글 부모 번qna_comment/id호*/
+	int parentsId; 	
+	/**  대댓 시퀀스	1*/
+	int seq;    
+	/** 작성날짜 CURRENT_TIMESTAMP */
+	Timestamp writedDay; 
+	/** 갱신날짜 CURRENT_TIMESTAMP */
+	Timestamp updatedDay;
 	
+	/**
+	 * 더미
+	 */
 	public QnaCommentVO() {
 	}
 	
+	/**
+	 * @param id
+	 * @param mbId
+	 * @param mbLogin
+	 * @param qnaId
+	 * @param content
+	 * @param parentsId
+	 * @param seq
+	 * @param writedDay
+	 * @param updatedDay
+	 */
 	public QnaCommentVO(int id, int mbId, String mbLogin, int qnaId, String content, int parentsId, int seq,
 			Timestamp writedDay, Timestamp updatedDay) {
 		super();
