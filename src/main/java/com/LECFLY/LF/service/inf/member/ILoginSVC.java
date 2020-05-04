@@ -11,7 +11,7 @@ public interface ILoginSVC {
 	
 	//로그인하기
 	//log_in.lf (proc; post; 암호화; 세션; 회원)			로그인proc실행(selectOneMember(email,pw) )	
-	MemberVO loginMember(String email, String pw);
+	int loginProcess(String email, String pw);
 	//회원가입 전 약관확인
 	//agree.lf(proc; post; 비회원)약관 확인 여부 체크
 	boolean agreeClause();

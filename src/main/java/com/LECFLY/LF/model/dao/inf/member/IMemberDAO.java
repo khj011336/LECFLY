@@ -75,7 +75,7 @@ public interface IMemberDAO {
 	int memberEamil(String email);
 	
 	// 비밀번호가 같은지 체크
-	int memberPassword(String email, String password);
+	MemberVO memberPassword(String email, String password);
 	
 	// 이름과 전화번호로 이메일 찾기
 	String findEmailByPhNmuberAndName(String phNumber, String name);
