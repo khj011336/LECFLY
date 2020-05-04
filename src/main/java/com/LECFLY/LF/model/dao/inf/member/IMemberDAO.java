@@ -8,6 +8,7 @@ import java.util.Map;
 import com.LECFLY.LF.model.vo.MemberVO;
 
 public interface IMemberDAO {
+	//impl로 옮겨야됨
 	
 	int LOGIN_NOT_FOUND = -1;
 	int PASSWORD_MISMATCH = -2;
@@ -19,29 +20,24 @@ public interface IMemberDAO {
 		}
 	};
 	
-	// mb 타입넣으면 insert
+// Create
+	// insert VO
 	boolean insertNewMember(MemberVO mb);
-	
-	// 최소 조건 넣으면 insert
-	boolean insertNewMember(String name, String nicname, Timestamp 
-			birthday, int gender, String email, String password, String phNumber);
-	// 최소조건 + 이미지 추가 insert
+	// insert columns
 	boolean insertNewMember(String pic, String name, String nicname, 
-			Timestamp birthday, int gender, String email, String password, String phNumber);
+			Timestamp birthday, int gender, String email, String password, String phNumber, 
+			int agreeReceive, String basicAddress, String detailAddress, int postalCode);
 
-	// 모든 회원조회 id asc limit 10
-	List<MemberVO> selectAllMemberAscLimitTen();
-	
-	// 모든 회원조회 id desc limit 10	
-	List<MemberVO> selectAllMemberDescLimitTen();
-	
+// Read
+	// 모든 회원 올림차순 조회 id asc limit 10
+	List<MemberVO> selectAllMembersAscLimitTen();
+	// 모든 회원 내림차순 조회 id desc limit 10	
+	List<MemberVO> selectAllMembersDescLimitTen();
 	
 	// 한달동안 가입한 회원의수 asc limit 10
-	List<MemberVO> selectOneMonthInsertMemberAscLimitTen();
-	
+	List<MemberVO> selectOneMonthInsertMembersAscLimitTen();
 	// 한달동안 가입한 회원의수 desc limit 10
-	List<MemberVO> selectOneMonthInsertMemberDescLimitTen();
-	
+	List<MemberVO> selectOneMonthInsertMembersDescLimitTen();
 	
 	// id 로 회원조회
 	MemberVO selectOneMemberById(int id);
@@ -52,18 +48,13 @@ public interface IMemberDAO {
 	// 휴대전화번호로 회원조회
 	MemberVO selectOneMemberByPhNumber(String phNumber);
 	
+// Update
 	// id를통해 모든정보 update
 	boolean updateMemberById(int id, MemberVO mb);
-	// nicname를통해 모든정보 update	
-	boolean updateMemberByNicName(String nicname, MemberVO mb);
 	// email를통해 모든정보 update
 	boolean updateMemberByEmail(String email, MemberVO mb);
-	// phnumber를통해 모든정보 update
-	boolean updateMemberByPhNumber(String phNumber, MemberVO mb);
 	// id를통해 nicname 변경
 	boolean updateMemberNicnameToId(int id, String nicname);
-	// id를통해 eamil 변경
-	boolean updateMemberEmailToId(int id, String email);
 	// 이안에서 체크하는 게필요함 비밀번호를 바꾸게하려는 id에 해당하는애가 맞는지~~
 	boolean updateMemberPasswordToId(int id, String password);
 	// id를통해 항목체크를 바꿀수있다 (email 메세지 수신...)
@@ -71,15 +62,11 @@ public interface IMemberDAO {
 	// id를통해 있으면 이용권 바꿀수있다.  ==> 이용권 구매할때사용할거같음
 	boolean updateMemberUseTicketById(int id, int useTicket);
 	
-	
-	// email를통해 nicname 변경
-	boolean updateMemberNicnameToEmail(String email, String nicname);
-	// email을 통해 password 변경
-	boolean updateMemberPasswordToEmail(String email, String password);
 	// email을 통해 항목체크를 바꿀수있다 (email 메세지 수신...)
 	boolean updateMemberAgreeReceiveByEmail(String email, int agreeReceive);
 	// email을 통해 있으면 이용권 바꿀수있다.  ==> 이용권 구매할때사용할거같음
-	boolean updateMemberUseTicketById(String email, int useTicket);
+	boolean updateMemberUseTicketByEmail(String email, int useTicket);
+//	boolean updateMemberUseTicketById(String email, int useTicket);
 	
 	// 로그인할떄 필요할거같음 이메일이랑 패스워드가 맞는지. 안에 select로 찾아야되나봄
 	int doubleCheckEmailPassword(String email, String password);
@@ -90,9 +77,30 @@ public interface IMemberDAO {
 	// 비밀번호가 같은지 체크
 	int memberPassword(String password);
 	
+	// 이름과 전화번호로 이메일 찾기
+	String findEmailByPhNmuberAndName(String phNumber, String name);
+	
+	// 가입된 이메일로 임시 비밀번호 생성하기
+	boolean setNewPwByEmail(String email);
+
+	// id를 통해 회원 프로필사진 수정
+	boolean updatePicById(int id);
+	
+	// id로 크리에이터 상태 변경
+	boolean setCreatorStatusById(int id, int creatorStatus);
+	
+	// id를 검색값으로 회원의 모든 정보 수정
+	boolean updateOneMemberById(int id, MemberVO mb);
+	
+	// id를 통해 회원 정보 삭제
+	boolean deleteOneMemberById(int id);
 	
 	
 	
+	
+	
+	
+
 	
 	
 	

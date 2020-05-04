@@ -171,6 +171,14 @@ public VideoVO(int id, int fId, int cFId, String videoPath, int duration, String
 	this.likeCount = likeCount;
 	this.likeOfmember = likeOfmember;
 }
+@Override
+public String toString() {
+	return "VideoVO [id=" + id + ", fId=" + fId + ", CFId=" + CFId + ", videoPath=" + videoPath + ", duration="
+			+ duration + ", title=" + title + ", info=" + info + ", imgPath=" + imgPath + ", gifPath=" + gifPath
+			+ ", orderInfo=" + orderInfo + ", category=" + category + ", commentYorN=" + commentYorN + ", views="
+			+ views + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", likeCount="
+			+ likeCount + ", likeOfmember=" + likeOfmember + "]";
+}
 
 
 }

@@ -77,10 +77,12 @@ public String getNickname() {
 public void setNickname(String nickname) {
 	this.nickname = nickname;
 }
+
 public CreatorVO( String imgPath, String nickname, String cphone, String sNS, String info,
 		int status) {
 	this(0, 0, imgPath, null, nickname, cphone, sNS, info, 2, null);
 }
+
 public CreatorVO(int id, int fid, String imgPath, String name, String nickname, String cphone, String sNS, String info,
 		int status, Timestamp grantDate) {
 	super();
