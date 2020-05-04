@@ -3,12 +3,15 @@ package com.LECFLY.LF.model.vo;
 import java.sql.Timestamp;
 
 public class HomeFileManagerVO {
+
 	/** 순서번호*/
 	int id; 
 	/** 노출위치          (0: 메인 1:지정위치1 2:지정위치2) 0*/
 	int fileDisplayOn;
 	/** 노출순서          (0~ 6.  index3 메인노출)*/
 	int fileDisplayNum; 
+	/** 강의 아이디*/
+	String fileLectureId;
 	/** 파일 제목*/
 	String fileName; 
 	/** 파일 경로*/
@@ -18,9 +21,6 @@ public class HomeFileManagerVO {
 	/** 업데이트 날짜 CURRENT_TIMESTAMP*/
 	Timestamp updatedDate;
 
-	/**
-	 * 더미
-	 */
 	public HomeFileManagerVO() {
 		
 	}
@@ -47,6 +47,13 @@ public class HomeFileManagerVO {
 		this.updatedDate = updatedDate;
 	}
 	
+	public String getFileLectureId() {
+		return fileLectureId;
+	}
+	public void setFileLectureId(String fileLectureId) {
+		this.fileLectureId = fileLectureId;
+	}
+
 	public int getId() {
 		return id;
 	}
