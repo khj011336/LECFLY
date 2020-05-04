@@ -1,13 +1,17 @@
 package com.LECFLY.LF.service.impl.member;
 
 import org.apache.commons.net.ntp.TimeStamp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.impl.member.MemberMySqlDAOImpl;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 
+@Service
 public class loginSVCImpl implements ILoginSVC {
 	
+	@Autowired
 	MemberMySqlDAOImpl mbDao;
 	
 	@Override
@@ -16,7 +20,7 @@ public class loginSVCImpl implements ILoginSVC {
 			System.out.println("email 없음");
 			return null;
 		} else { 
-			MemberVO mb = mbDao.memberPassword(email, pw);
+//			MemberVO mb = mbDao.memberPassword(email, pw);
 			MemberVO mb = null;
 			return mb;
 		}
