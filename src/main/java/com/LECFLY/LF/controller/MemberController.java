@@ -252,21 +252,25 @@ public class MemberController {
 	
 //장바구니 목록 확인하기							
 //	mypage_shopping.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_shopping.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_shopping.LF", method=RequestMethod.GET)
 	public String memberMypageShopping() {
 		System.out.println("memberMypageShopping()...");	
 		return "redirect:mypage.LF?pn=shopping";
 	}
 	
+////////////////////////////////////////////////////
 	
-	
-	
+	// 네비 장바구니 클릭
+	@RequestMapping(value="shopping_cart.LF", method=RequestMethod.GET)
+	public String memberShoppingCart() {
+		System.out.println("memberShoppingCart()...");	
+		return "payment/shoppingCart";
+	}
 	
 	
 	
 	
 
-	
 
 	
 }
