@@ -1,4 +1,4 @@
-package LECFLY.dao.impl;
+package com.LECFLY.LF.videosrc;
 import java.io.IOException;
 
 import net.bramp.ffmpeg.FFmpeg;
