@@ -1,4 +1,4 @@
-package mvc;
+package com.LECFLY.LF.videosrc;
 
 public class nullHandler implements CommandHandler {
 	// 에러페이지 404 500 등을 보내기위한 페이지
