@@ -3,7 +3,7 @@
 <nav id="sidebar" class="sidebar-wrapper">
 	<div class="sidebar-content">
 		<div class="sidebar-brand">
-			<a href="../home.jsp">LECFLY HOME</a>
+			<a href="home.LF">LECFLY HOME</a>
 			<div id="close-sidebar">
 				<i class="fas fa-times"></i>
 			</div>
@@ -15,7 +15,7 @@
 					alt="User picture">
 			</div> -->
 			<div class="user-info">
-				<span class="user-name"> <a href="#" id="nav_admin_main"><strong>LECFLY ADMIN</strong></a></span> 
+				<span class="user-name"> <a href="admin.LF" id="nav_admin_main"><strong>LECFLY ADMIN</strong></a></span> 
 				<!-- <span class="user-role">관리자 MAIN</span> --> 
 				<span class="user-status">
 					<i class="fa fa-circle"></i> <span>Online</span>
@@ -45,20 +45,21 @@
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<li><a href="#">사이트소개</a></li>
-							<li><a href="#">사이트이용약관 <!-- <span class="badge badge-pill badge-success">Pro</span> --></a></li>
-							<li><a href="#">관리자계정관리</a></li>
+							<li><a href="admin_site.LF">사이트이용안내</a></li>
+							<li><a href="admin_banner.LF">배너관리 <!-- <span class="badge badge-pill badge-success">Pro</span> --></a></li>
+							<li><a href="admin_recommend.LF">추천강의관리 <!-- <span class="badge badge-pill badge-success">Pro</span> --></a></li>
+							<li><a href="admin_account.LF">관리자계정관리</a></li>
 						</ul>
 					</div></li>
-				<li class="sidebar-dropdown"><a href="#" id="nav_board_lecture"> <i
+				<li class="sidebar-dropdown"><a href="#"> <i
 						class="fa fa-shopping-cart"></i> <span>강의관리</span> <span
 						class="badge badge-pill badge-danger">3</span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<li><a href="#" id="nav_board_lecture">강의관리 </a></li>
-							<li><a href="#">주문내역</a></li>
-							<li><a href="#">결제설정</a></li>
+							<li><a href="admin_lecture.LF" id="nav_board_lecture">강의관리 </a></li>
+							<li><a href="admin_video.LF">영상관리</a></li>
+							<li><a href="admin_kit.LF">키트관리</a></li>
 						</ul>
 					</div></li>
 				<li class="sidebar-dropdown"><a href="#"> <i
@@ -67,40 +68,40 @@
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<li><a href="#">펀딩승인내역</a></li>
+							<li><a href="#">펀딩승인관리</a></li>
 							<li><a href="#">펀딩상품관리</a></li>
-							<li><a href="#">펀딩주문내역</a></li>
+							<li><a href="#">리워드관리</a></li>
 						</ul>
 					</div></li>
-				<li class="sidebar-dropdown"><a href="#" id="nav_board_payment"> <i
+				<li class="sidebar-dropdown"><a href="#"> <i
 						class="fa fa-shopping-cart"></i> <span>결제관리</span> <span
 						class="badge badge-pill badge-danger">63</span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<li><a href="#">결제내역관리 </a></li>
-							<li><a href="#">결제설정</a></li>
+							<li><a href="admin_payment.LF">결제내역관리 </a></li>
+							<li><a href="admin_coupon.LF">쿠폰관리</a></li>
 						</ul>
 					</div></li>
-				<li class="sidebar-dropdown"><a href="#" id="nav_board_member"> <i
+				<li class="sidebar-dropdown"><a href="#"> <i
 						class="fa fa-chart-line"></i> <span>회원관리</span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<li><a href="#">일반회원관리</a></li>
-							<li><a href="#" id="nav_board_creator">크리에이터관리</a></li>
-							<li><a href="#" id="nav_board_lecture">강의 관리</a></li>
+							<li><a href="admin_member.LF">일반회원관리</a></li>
+							<li><a href="admin_creator.LF" id="nav_board_creator">크리에이터관리</a></li>
+							<li><a href="#" id="nav_board_lecture">회원통계</a></li>
 						</ul>
 					</div></li>
-				<li class="sidebar-dropdown"><a href="#" id="nav_board_bulletin"> <i
+				<li class="sidebar-dropdown"><a href="#"> <i
 						class="fa fa-globe"></i> <span>게시판관리</span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<li><a href="#" id="nav_board_notice">공지내역</a></li>
-							<li><a href="#" id="nav_board_faq">자주묻는질문</a></li>
-							<li><a href="#" id="nav_board_qna">문의 내역</a></li>
-							<li><a href="#" id="nav_board_">댓글 내역</a></li>
+							<li><a href="admin_board_notice.LF" id="nav_board_notice">공지내역</a></li>
+							<li><a href="admin_board_faq.LF" id="nav_board_faq">자주묻는질문</a></li>
+							<li><a href="admin_board_qna.LF" id="nav_board_qna">문의 내역</a></li>
+							<li><a href="admin_board_comment.LF" id="nav_board_">댓글 내역</a></li>
 						</ul>
 					</div></li>
 				<li class="header-menu"><span>Extra</span></li>

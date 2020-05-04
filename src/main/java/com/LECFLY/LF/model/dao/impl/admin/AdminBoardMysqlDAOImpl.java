@@ -4,6 +4,6 @@ import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 
-public class IAdminLectureDAOImpl {
+public class AdminBoardMysqlDAOImpl {
 
 }
