@@ -19,7 +19,6 @@
 			<tiles:insertAttribute name="header" />
 		</div>
 		<tiles:insertAttribute name="left" />
-		<%@ include file="cre_status.jsp" %>
 		<div id="Cre_main">
     <tiles:insertAttribute name="body" />    
 		</div>
