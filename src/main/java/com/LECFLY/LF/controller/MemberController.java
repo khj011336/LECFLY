@@ -2,14 +2,18 @@ package com.LECFLY.LF.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.LECFLY.LF.service.inf.member.ILoginSVC;
+
 @Controller
 public class MemberController {
 	
+	@Autowired
+	ILoginSVC logSvc;
 	
 	// 로그인창 으로 이동했을때
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
