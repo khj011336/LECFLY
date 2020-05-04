@@ -1,12 +1,15 @@
 package com.LECFLY.LF.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
+import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 
 @Controller
@@ -14,6 +17,10 @@ public class MemberController {
 	
 	@Autowired
 	ILoginSVC logSvc;
+	@Autowired
+	IMemberDAO mbDao;
+
+	public static final int MB_LOGIN_AUTH_OK = 4;
 	
 	// 로그인창 으로 이동했을때
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
@@ -24,11 +31,13 @@ public class MemberController {
 	
 	// login.LF 에서 이메일 비밀번호 입력후 로그인 클릭시
 	@RequestMapping(value="log_in.LF", method=RequestMethod.POST)
-	public String memberLoginedHomePage() {
+	public String memberLoginedHomePage(HttpSession ses, String email, String pw) {
 		System.out.println("memberLoginedHomePage()...");
-//		if() { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
+		int r = logSvc.loginProcess(email, pw);
+		MemberVO mb = mbDao.memberPassword(email, pw);
+//		if( r == MB_LOGIN_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
 		// 여기서  서비스에서 로그인 성공 실패에 대한 처리를 하고 
-		
+			
 			return "redirect:home.LF?login=" + "로그인값";
 //		} else { //서비스 처리: 이메일과 로그인이 불일치() 
 //			return "member/login"; // 1Model 을 해서 메세지를 넣는방법  

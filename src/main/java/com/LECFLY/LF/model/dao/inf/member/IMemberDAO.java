@@ -81,7 +81,7 @@ public interface IMemberDAO {
 	String findEmailByPhNmuberAndName(String phNumber, String name);
 	
 	// 가입된 이메일로 임시 비밀번호 생성하기
-	boolean setNewPwByEmail(String email);
+	boolean setNewPwByEmail(String email, String pw);
 
 	// id를 통해 회원 프로필사진 수정
 	boolean updatePicById(int id);
@@ -95,7 +95,7 @@ public interface IMemberDAO {
 	// id를 통해 회원 정보 삭제
 	boolean deleteOneMemberById(int id);
 	
-	
+	boolean findEmailInDB(String email);
 	
 	
 	
