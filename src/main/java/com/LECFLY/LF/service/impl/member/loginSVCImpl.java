@@ -2,17 +2,24 @@ package com.LECFLY.LF.service.impl.member;
 
 import org.apache.commons.net.ntp.TimeStamp;
 
+import com.LECFLY.LF.model.dao.impl.member.MemberMySqlDAOImpl;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 
 public class loginSVCImpl implements ILoginSVC {
 	
-	
+	MemberMySqlDAOImpl mbDao;
 	
 	@Override
 	public MemberVO loginMember(String email, String pw) {
-		// TODO Auto-generated method stub
-		return null;
+		if(mbDao.memberEamil(email) != 1 ) {
+			System.out.println("email 없음");
+			return null;
+		} else { 
+			MemberVO mb = mbDao.memberPassword(email, pw);
+			MemberVO mb = null;
+			return mb;
+		}
 	}
 
 	@Override

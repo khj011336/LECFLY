@@ -4,12 +4,14 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 import com.LECFLY.LF.model.vo.MemberVO;
-import com.LECFLY.LF.service.impl.member.PwSecurityEncoding;
 
 @Repository
 public class MemberMySqlDAOImpl implements IMemberDAO {
@@ -19,7 +21,10 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	public static final String SQL_INSERT_NEW_MEMBER = 
 			"insert into members values(null,?,?,?,?,?,?,"
 			+ "hex(aes_encrypt(?,?)),?,now(),?,0,0,0,now(),?,?,?,null,null)";
+	private static final String SQL_SELECT_MEMBER_ID_BY_EMAIL = "select id from members where email=?";
+	private static final String SQL_SELECT_MEMBER_PW_CHECK = "select * from members where password = hex(aes_encrypt(?,?))"; 
 //	public static final String SQL_="";
+	
 	
 
 	@Autowired
@@ -157,15 +162,16 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 //	로그인하기(이메일 유무 체크, Read)
 	@Override
 	public int memberEamil(String email) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.jtem.queryForObject(SQL_SELECT_MEMBER_ID_BY_EMAIL, Integer.class, email);
 	}
 
 //	로그인하기(이메일과 패스워드 일치 체크, Read)
 	@Override
-	public int memberPassword(String password) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int memberPassword(String email, String password) {
+		MemberVO mb = jtem.queryForObject(SQL_SELECT_MEMBER_PW_CHECK, 
+				BeanPropertyRowMapper.newInstance(MemberVO.class), password, new PwSecurityEncoding(email).get);
+		return mb;
+//		boolean r = jtem.query();
 	}
 	
 // 이름과 전화번호로 이메일 찾기

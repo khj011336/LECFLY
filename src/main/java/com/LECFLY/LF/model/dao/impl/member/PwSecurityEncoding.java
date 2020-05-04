@@ -1,4 +1,4 @@
-package com.LECFLY.LF.service.impl.member;
+package com.LECFLY.LF.model.dao.impl.member;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,6 +22,7 @@ public class PwSecurityEncoding {
 		else
 			this.email = null;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
