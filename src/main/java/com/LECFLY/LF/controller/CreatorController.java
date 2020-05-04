@@ -60,12 +60,11 @@ public class CreatorController {
 		if(status == 1) {
 			
 			System.out.println(gs.fromJson("page",String.class));
-			int pagenation = Integer.parseInt( gs.fromJson("page",String.class));
 	
 			
 			System.out.println("arriving ajax");
-			model.addAttribute("lecList",LecSVC.showLectureList(2,pagenation, 5, 0));
-			List<LectureVO> vo = LecSVC.showLectureList(2,pagenation, 5, 0);
+			model.addAttribute("lecList",LecSVC.showLectureList(2,1, 5, 0));
+			List<LectureVO> vo = LecSVC.showLectureList(2,1, 5, 0);
 			
 			return vo;
 		}else if(status== 2) { 
