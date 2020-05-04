@@ -1,8 +1,8 @@
 package com.LECFLY.LF.service.impl.member;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 
-import org.apache.commons.net.ntp.TimeStamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +48,7 @@ public class loginSVCImpl implements ILoginSVC {
 			return MB_LOGIN_NONE;
 		} 
 		
-		// 패스워드 일치 여부 
+		// 패스워드 일치 여부 		controller단에서 아래 함수 재사용
 		MemberVO mb = this.mbDao.memberPassword(email, pw);
 		if( mb == null ) {
 			return MB_LOGIN_PW_MISMATCH;
@@ -58,28 +58,34 @@ public class loginSVCImpl implements ILoginSVC {
 	}
 
 	@Override
-	public boolean agreeClause() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean joinMember(String pic, String name, String nicname, TimeStamp birthday, int gender, String email,
-			String password, String phNumber, int agreeReceive, String baiscAddress, String detailAddress,
+	public boolean joinMember(String pic, String name, String nicname, Timestamp birthday, int gender, String email,
+			String password, String phNumber, int agreeReceive, String basicAddress, String detailAddress,
 			int postalCode) {
-		return false;
+		return mbDao.insertNewMember(pic, name, nicname, birthday, gender, email, password, 
+				phNumber, agreeReceive, basicAddress, detailAddress, postalCode);
 	}
 
 	@Override
-	public boolean findEmail(String phNumber, String name) {
-		// TODO Auto-generated method stub
-		return false;
+	public String findEmail(String phNumber, String name) {
+		
+		return mbDao.findEmailByPhNmuberAndName(phNumber, name); 
+		//return null;
 	}
 
 	@Override
 	public boolean findPw(String email) {
-		// TODO Auto-generated method stub
-		return false;
+		if( mbDao.findEmailInDB(email) ) {
+			StringBuffer tempPw;
+			char t = ' ';
+			for (int i = 0; i < 12; i++) {
+				
+			}
+			// 자바 메일발송 관련 api 실행후 임시 비밀번호 발송
+//			mbDao.setNewPwByEmail(email, newPw);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

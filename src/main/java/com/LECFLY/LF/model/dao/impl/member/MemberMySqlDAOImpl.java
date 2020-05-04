@@ -3,6 +3,7 @@ package com.LECFLY.LF.model.dao.impl.member;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.apache.commons.net.ntp.TimeStamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,7 +23,9 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 			"insert into members values(null,?,?,?,?,?,?,"
 			+ "hex(aes_encrypt(?,?)),?,now(),?,0,0,0,now(),?,?,?,null,null)";
 	private static final String SQL_SELECT_MEMBER_ID_BY_EMAIL = "select id from members where email=?";
-	private static final String SQL_SELECT_MEMBER_PW_CHECK = "select * from members where password = hex(aes_encrypt(?,?))"; 
+	private static final String SQL_SELECT_MEMBER_PW_CHECK = "select * from members where password = hex(aes_encrypt(?,?))";
+	private static final String SQL_FIND_MB_EMAIL = "select email from members where ph_number=? and name=?";
+	private static final String SQL_FIND_MB_EMAIL_IN_DB = "select * from members where email=?";
 //	public static final String SQL_="";
 	
 	
@@ -35,8 +38,6 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	
 	@Override
 	public boolean insertNewMember(MemberVO mb) {
-		PwSecurityEncoding pwCode = new PwSecurityEncoding(mb.getEmail());
-//		boolean r = this.jtem.update(SQL_INSERT_NEW_MEMBER,);
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -178,14 +179,13 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 // 이름과 전화번호로 이메일 찾기
 	@Override
 	public String findEmailByPhNmuberAndName(String phNumber, String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL, String.class, phNumber, name);
 	}
 
 // 가입된 이메일로 임시 비밀번호 생성하기
 	@Override
-	public boolean setNewPwByEmail(String email) {
-		// TODO Auto-generated method stub
+	public boolean setNewPwByEmail(String email, String pw) {
+		
 		return false;
 	}
 //	회원의 프로필 사진 수정하기 (Update)
@@ -215,6 +215,9 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 		return false;
 	}
 
-	
+	@Override
+	public boolean findEmailInDB(String email) {
+		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL_IN_DB, String.class, email) != null;
+	}
 	
 }
