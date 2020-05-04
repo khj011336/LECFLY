@@ -23,7 +23,7 @@ public class QnaVO {
 	Timestamp writedDay; 
 	/** 갱신날짜 CURRENT_TIMESTAMP */
 	Timestamp updatedDay;
-	/** 조회 수 */
+	/** 조회 수 _자동증가 */
 	int hits; 
 	/** 댓글 수 */
 	int comment; 
@@ -32,6 +32,35 @@ public class QnaVO {
 	 * 더미
 	 */
 	public QnaVO() {
+	}
+	
+	/**
+	 * 최소 구조
+	 * @param mbId
+	 * @param mbNicname
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param showPrivate
+	 */
+	public QnaVO(int mbId, String mbNicname, int type, String title, String content,
+			int showPrivate) {
+		this(0, mbId, mbNicname, type, title, content, null, showPrivate, null, null, 0, 0);
+	}
+	
+	/**
+	 * 파일이 있는 QnA인 경우
+	 * @param mbId
+	 * @param mbNicname
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 * @param showPrivate
+	 */
+	public QnaVO(int mbId, String mbNicname, int type, String title, String content, String file ,
+			int showPrivate) {
+		this(0, mbId, mbNicname, type, title, content, file , showPrivate, null, null, 0, 0);
 	}
 	
 	/**
