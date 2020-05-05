@@ -23,22 +23,31 @@ import com.LECFLY.LF.model.vo.QnaVO;
 
 @Repository
 public class QnaMysqlDAOImpl implements IQnaDAO{
+	// 조회수 증가
 	public static final String SQL_QNA_READ_INC
 		= "update qnas set hits = hits + 1 where id = ?";
+	// QnA 목록 보여주기
 	public static final String SQL_QNA_SHOWALL
 		= "select * from qnas order by created_at desc";
+	// QnA 상세조회
 	public static final String SQL_QNA_SHOWONE
 		= "select * from qnas where id = ?";
+	// QnA 등록하기
 	public static final String SQL_QNA_INSERT_VO
 		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), ?, ?)";
+	// QnA 수정하기
 	public static final String SQL_QNA_UPDATE_VO
 		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ? where id = ?";
+	// QnA 삭제하기
 	public static final String SQL_QNA_DELETE_VO
 		= "delete qnas where id = ?";
+	// QnA 페이지 조회
 	public static final String SQL_QNA_SHOWALL_PG
 		= "SELECT * FROM qnas order by created_at desc limit ?, ?";
+	// QnA 갯수 카운트
 	public static final String SQL_CHECK_QNA_NUMBERS
 	= "select count(id) as cnt from qnas";	
+	
 	//@Autowired
 	private JdbcTemplate jtem;	
 	private SimpleJdbcInsert simIn;

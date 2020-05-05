@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
 @Controller
-public class QnaController {
+public class CscenterController {
 	@Autowired
 	private IQnaSVC qaSvc;
 	
