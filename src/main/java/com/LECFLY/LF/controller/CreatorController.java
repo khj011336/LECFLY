@@ -38,11 +38,10 @@ public class CreatorController {
 		ses.setAttribute("fid",2);
 		int status =(Integer) ses.getAttribute("id");
 		int fid =(Integer)ses.getAttribute("fid");
-		MAXPAGE = LecSVC.checkOfLectureNumber(fid);
-		System.out.println(MAXPAGE);
 		if(status == 1 && page ==1) {
+			MAXPAGE = LecSVC.checkOfLectureNumber(2);
 			model.addAttribute("maxPage",MAXPAGE);
-			model.addAttribute("lecList", LecSVC.showLectureList(2,1, 0));
+			model.addAttribute("lecList", LecSVC.showLectureList(2,page, 0));
 			return "creator/cre_class_list.page";
 		}else if(status == 1 &&page >=2){
 			model.addAttribute("maxPage",MAXPAGE);
@@ -62,6 +61,11 @@ public class CreatorController {
 	public String createProfile() {
 		System.out.println("도착2");
 		return "creator/cre_profile.page";
+	}
+	@RequestMapping(value = "creator_new_lecture.LF" ,method =RequestMethod.GET)
+	public String createLecture() {
+		
+		return "creator/cre_lecture_upload.page";
 	}
 	@RequestMapping(value = "creator_comment_List.LF" ,method =RequestMethod.GET)
 	public String showCreCommentList() {

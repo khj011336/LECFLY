@@ -113,7 +113,7 @@ display: none;
 							<div class="Timg">
 								<h4><%=i+1%>강<%=(i<3?Test[i]:"none") %></h4>
 							<% 	if(i<3){%>
-								<p><%=VideoTimeCut.media_player_time(i<3?Test[i]:"")%>초</p>
+<%-- 								<p><%=VideoTimeCut.media_player_time(i<3?Test[i]:"")%>초</p> --%>
 							<%	}else{ %>
 								<p><%="none" %></p>
 								<%} %>

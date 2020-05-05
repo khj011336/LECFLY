@@ -22,7 +22,6 @@ public class LectureSVCImpl{
 	}
 	public int checkOfLectureNumber(int fid) {
 		int totalRecords = LecDAO.checkNumberOfLectures(fid);
-		System.out.println(totalRecords+"토탈 레코즈");
 		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
 }
