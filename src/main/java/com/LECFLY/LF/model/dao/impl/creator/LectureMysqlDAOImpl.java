@@ -15,8 +15,8 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	@Autowired
 	JdbcTemplate jtem;
 	final String SELECT_LECTURES_limit = "select * from lectures where fid = ? order by created_at desc  limit ?,? ";
-	final String SELECT_LECTURES = "select * from lecfly_db order by blank where fid = ?";
-	final String CHECK_NUMBER_LECTURES = "select count(*) as cp_mb from lecfly_db ";
+	final String SELECT_LECTURES = "select * from lectures order by blank where fid = ?";
+	final String CHECK_NUMBER_LECTURES = "select count(*) as cp_mb from lectures where fid =? ";
 	@Override
 	public boolean isCreator(int id) {
 		// TODO Auto-generated method stub
@@ -74,8 +74,8 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 
 	@Override
 	public int checkNumberOfLectures(int fid) {
-		// TODO Auto-generated method stub
-		return 0;
+		return  jtem.queryForObject(CHECK_NUMBER_LECTURES,Integer.class,fid);
+		
 	}
 
 }

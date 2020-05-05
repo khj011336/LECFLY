@@ -22,11 +22,11 @@
 		style="top: 163px; height: 300px; background-color: #ffffff00;">
 		<li><a href="creator.LF" class="nav_lecfly_info"><span
 				class="fas fa-home"></span>LECFLY-Creator</a></li>
-		<li><a href="#" class="nav_video_list"><span
+		<li><a href="creator_comment_List.LF" class="nav_video_list"><span
 				class="fas fa-comment-dots"></span>댓글관리</a></li>
-		<li><a href="#" class="nav_wish_list"><span
+		<li><a href="creator_CS.LF" class="nav_wish_list"><span
 				class="fas fa-bullhorn"></span>공지사항</a></li>
-		<li><a href="#" class="nav_payment"><span
+		<li><a href="creator_statistics.LF" class="nav_payment"><span
 				class="fas fa-chart-bar"></span>강의별통계</a></li>
 	
 	</ul>

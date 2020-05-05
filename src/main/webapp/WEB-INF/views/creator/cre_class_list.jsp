@@ -3,32 +3,48 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <script>
-    var page = 1;  //페이징과 같은 방식이라고 생각하면 된다. 
-    
-//     $(function(){  //페이지가 로드되면 데이터를 가져오고 page를 증가시킨다.
-//          getList(page);
-//          page++;
-//     }); 
-    $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
-        if($(window).scrollTop() >= $(document).height() - $(window).height()){
-             getList(page);
-              page++;   
-        } 
-   });
-//     if( scrollTop + windowHeight + 30 > documentHeight ){
-//         fetchList();
-//     }
+    var page = 2;  
+ 
+var isVisible = false;
+
+$(window).on('scroll',function() {
+
+    if (checkVisible($('#offset'))&&!isVisible) {
+  	  $('html,body').animate({scrollTop :$(window).scrollTop()- $('#offset').height()-30},400);
+        isVisible=true;
+        getList(page);
+        page++;
+    }
+});
+function checkVisible( box, tOf ) {
+	tOf = tOf || "object visible";
+    var viewportHeight = $(window).height(),  
+        scrolltop = $(window).scrollTop(),  
+        y = $(box).offset().top,
+        elementHeight = $(box).height();   
+    if (tOf == "object visible") return ((y < (viewportHeight + scrolltop)) && (y > (scrolltop - elementHeight)));
+}
+ function creatNewclass(){
+	 $(".CRC").css("cursor","pointer");
+	 $(".CRP").css("cursor","pointer");
+	 $(".CRC,.CRP").on("click", function () {
+		window.location.href="creator_new_profile.LF";
+	});
+	   }
    function getList(page){
+	   if(page <= ${maxPage} && ${maxPage} != 0 ){
        $.ajax({
-           type : 'post',  
-           dataType : 'json', 
+           type : 'get',  
+           dataType : 'text', 
            data : {"page" : page},
            url : 'creator.LF',
            success : function(returnData) {
-        	   alert(returnData);
-        	   alert("Dd");
-        	   $(".CRconbox").append($(".CRconbox"));
-        	   
+        	   var cutor = $("#offset").html();
+        	   $("#offset").remove();
+        		$("#CRcontent").append(returnData);
+        		$("#CRcontent").append(cutor);
+        	   page++;
+        	   isVisible = false;
             },
            error:function(e){
               if(e.status==300){
@@ -36,12 +52,15 @@
               }
           }
        }); 
+       }else{
+    	   if(page == ${maxPage}){
+    	   $(".CRconbox").append("<div>목록이없습니다</div>")
+    	   }
+       }
    }
    function selectLecture(Lcid) {
 		var form = document.createElement('form');
-
 		form.setAttribute('method', 'post');
-
 		form.setAttribute('action', 'creator_video_show.LF');
 		form.setAttribute('id', Lcid);
 		document.charset = "utf-8";
@@ -53,9 +72,8 @@
 // 			form.appendChild(hiddenField);
 // 		}
 		document.body.appendChild(form);
-
 		form.submit();
-}
+   }
     </script>
       <div id = 'CRwrap'>
        
@@ -64,37 +82,7 @@
            
             <div id="CRcontent">
                 <div id="CRhead"><span class="CRHT">온라인 클래스</span><a href=""><span id="CRHT3">기본정보수정</span></a> <a href="creator_new_profile.LF"><span id="CRHT2">+새로운 클래스</span></a></div>
-                 
-              
-              <c:forEach begin="0" end="${empty lecList ? '1': lecList.size()-1  }" varStatus="vs"  >
-                <div class = 'CRconbox'>
-                  
-                    <div class='CRP'>
-                    <c:set  var ="titleImg" value="${lecList[vs.current].titleImg}"/>
-                    <c:if test="${lecList[vs.current].titleImg eq 'sample' }">
-                   <c:set  var ="titleImg" value="resources/imges/logo/LecFly_SLOGO_W_C.png"/>
-                    
-                    </c:if>
-                    <img src= "<c:out value='${titleImg}'/>" class="CRimg" alt ="dd"></div>
-                    <div class ="CRC">
-                        <p class='CRname'><c:out value="${lecList[vs.current].title}" default="새로운클래스를 만들어보세요 "></c:out></p>
-                        <div class="CRstatus">
-                        <c:if test="${ !empty lecList }">
-                        <p class="stus1 rau">${lecList[vs.current].status}</p>
-                        <p class="stus2 rau">영상 ${lecList[vs.current].videoTrack}</p>
-                        <p class="stus3 rau"><fmt:formatDate value="${lecList[vs.current].createdAt}" pattern="yyyy-MM-dd"/>
-</p>
-                        </c:if>
-                        </div>
-                        <c:if test="${ !empty lecList }">
-                        <div class='CRsend' onclick="selectLecture(${lecList[vs.current].id})" ><p>수정하기</p></div>
-                        </c:if>
-                    </div>
-                     
-                </div>
-               </c:forEach>
-               
-               
+                <%@include file= "_cre_class.jsp" %>
             </div>
             <div id ='CRguide'>
                  <div id="CRhead2" class="CRHT"><p>LEC 가이드</p>
