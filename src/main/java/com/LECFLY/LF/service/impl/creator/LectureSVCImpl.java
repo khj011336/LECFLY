@@ -11,12 +11,17 @@ import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.service.inf.creator.ILectureSVC;
 @Service
 public class LectureSVCImpl{
+	public static final int PAGESIZE = 3;
 	@Autowired
 	ILectureDAO LecDAO;
-	public List<LectureVO>  showLectureList(int fid,int offset,int limit,int order) {
-		
-		List<LectureVO> LecVO = LecDAO.selectLectureList(fid, offset, limit, order);
+	public List<LectureVO>  showLectureList(int fid,int offset,int order) {
+		int  off = (offset-1) *PAGESIZE;
+		List<LectureVO> LecVO = LecDAO.selectLectureList(fid, off, PAGESIZE, order);
 		
 		return LecVO;
+	}
+	public int checkOfLectureNumber(int fid) {
+		int totalRecords = LecDAO.checkNumberOfLectures(fid);
+		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
 }

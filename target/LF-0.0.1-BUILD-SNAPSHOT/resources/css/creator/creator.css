@@ -284,6 +284,13 @@ margin-top: 19px;
     margin: auto;
     
 }
+#CRHT3{
+	 position: absolute;
+    right: 100px;
+    font-size: 13px;
+    cursor: pointer;
+    color: orange;
+}
 #CRHT2{
     position: absolute;
     right: 10px;

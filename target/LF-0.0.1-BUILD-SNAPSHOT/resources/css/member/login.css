@@ -6,7 +6,7 @@
 /* sub_title => login_subtitle */
 /* info => login_etc */
 /* link => login_linked */
- <link type="text/css" rel="stylesheet" href="main.css">
+ <link type="text/css" rel="stylesheet" href="resources/css/common/main.css">
 .login_a{
     text-decoration: none;
     color: black;
