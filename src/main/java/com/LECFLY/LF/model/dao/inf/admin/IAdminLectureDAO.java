@@ -16,7 +16,7 @@ public interface IAdminLectureDAO {
 	// 강의를 삭제할 수 있다.
 	boolean deleteLecture(LectureVO vo);
 	// 강의를 상세조회할 수 있다.
-	List<LectureVO> selectLecture(LectureVO vo);
+	LectureVO selectLecture(LectureVO vo);
 	// 강의를 전체조회할 수 있다.
 	List<LectureVO> selectLectureList(LectureVO vo);
 	
@@ -28,7 +28,7 @@ public interface IAdminLectureDAO {
 	// 영상을 삭제할 수 있다.
 	boolean deleteVideo(VideoVO vo);
 	// 영상을 상세조회할 수 있다.
-	List<VideoVO> selectVideo(VideoVO vo);
+	VideoVO selectVideo(VideoVO vo);
 	// 영상을 전체조회할 수 있다.
 	List<VideoVO> selectVideoList(VideoVO vo);
 	
@@ -40,7 +40,7 @@ public interface IAdminLectureDAO {
 	// 키트를 삭제할 수 있다.
 	boolean deleteKit(KitVO vo);
 	// 키트를 상세조회할 수 있다.
-	List<KitVO> selectKit(KitVO vo);
+	KitVO selectKit(KitVO vo);
 	// 키트를 전체조회할 수 있다.
 	List<KitVO> selectKitList(KitVO vo);
 	
@@ -52,7 +52,7 @@ public interface IAdminLectureDAO {
 	// 쿠폰을 삭제할 수 있다.
 	boolean deleteCoupon(CouponVO vo);
 	// 쿠폰을 상세조회할 수 있다.
-	List<CouponVO> selectCoupon(CouponVO vo);
+	CouponVO selectCoupon(CouponVO vo);
 	// 쿠폰을 전체조회할 수 있다.
 	List<CouponVO> selectCouponList(CouponVO vo);
 }

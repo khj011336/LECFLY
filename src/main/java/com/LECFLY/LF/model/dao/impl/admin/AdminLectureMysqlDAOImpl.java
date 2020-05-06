@@ -32,7 +32,7 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<LectureVO> selectLecture(LectureVO vo) {
+	public LectureVO selectLecture(LectureVO vo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -62,7 +62,7 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<VideoVO> selectVideo(VideoVO vo) {
+	public VideoVO selectVideo(VideoVO vo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -92,7 +92,7 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<KitVO> selectKit(KitVO vo) {
+	public KitVO selectKit(KitVO vo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -122,7 +122,7 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<CouponVO> selectCoupon(CouponVO vo) {
+	public CouponVO selectCoupon(CouponVO vo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

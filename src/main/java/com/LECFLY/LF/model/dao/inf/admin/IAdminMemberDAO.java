@@ -15,7 +15,7 @@ public interface IAdminMemberDAO {
 	// 일반 회원을 삭제할 수 있다.
 	boolean deleteNomalMember(MemberVO vo);
 	// 일반 회원을 상세조회할 수 있다.
-	List<MemberVO> selectNomalMember(MemberVO vo);
+	MemberVO selectNomalMember(MemberVO vo);
 	// 일반 회원을 전체조회할 수 있다.
 	List<MemberVO> selectNomalMemberList(MemberVO vo);
 	
@@ -27,7 +27,7 @@ public interface IAdminMemberDAO {
 	// 을 삭제할 수 있다.
 	boolean deleteCreatorMember(CreatorVO vo);
 	// 을 상세조회할 수 있다.
-	List<CreatorVO> selectCreatorMember(CreatorVO vo);
+	CreatorVO selectCreatorMember(CreatorVO vo);
 	// 을 전체조회할 수 있다.
 	List<CreatorVO> selectCreatorMemberList(CreatorVO vo);
 	
