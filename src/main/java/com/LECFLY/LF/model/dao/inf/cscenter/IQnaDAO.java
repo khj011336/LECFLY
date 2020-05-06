@@ -1,15 +1,14 @@
 package com.LECFLY.LF.model.dao.inf.cscenter;
 
-import java.util.Date;
 import java.util.List;
 
 import com.LECFLY.LF.model.vo.QnaVO;
 
 public interface IQnaDAO {
 	//	회원이 신규 게시글을 등록 할 수 있다 (+파일업로드..)
-	boolean insertNewQna(QnaVO at);
-	int insertNewQnaReturnKey(QnaVO at);
-	int insertNewQnaReturnKey2(QnaVO at);
+	boolean insertNewQna(QnaVO qa);
+	int insertNewQnaReturnKey(QnaVO qa);
+	int insertNewQnaReturnKey2(QnaVO qa);
 	
 	boolean insertNewQna(int mbId, String mbNicname, int type, String title, String content,
 			int showPrivate);

@@ -8,8 +8,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/x-icon" href=""/>
 	
-    <link type="text/css" rel="stylesheet" href="../resource/css/create_new_member.css">
-    <link type="text/css" rel="stylesheet" href="../resource/css/main.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/member/create_new_member.css">
+    <link type="text/css" rel="stylesheet" href=resources/css/common/main.css">
+    
 </head>
 	<div id="cnm_wrap">
     <div class="cnm_title">
@@ -20,7 +21,7 @@
     <!--각종 약관들? 이 페이지 넘어오기전에 새로운 페이지에서 처리한단.-->
     <div id="cnm_wrap2">
     	<div id="cnm_pic">
-            <img src="../resource/img/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
+            <img src="resources/imges/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
           	<input type="button" value="EDIT">
         </div>
         
@@ -129,7 +130,7 @@
 		</div>	
 	<div class="cnm_bottom">
 	    <div id="cnm_submit_btn">
-	    	<a style="color: black;" href="../ETC/login.jsp">회원가입하기</a>
+	    	<a style="color: black;" href="login.LF">회원가입하기</a>
 	    </div>
     </div>
 </div>

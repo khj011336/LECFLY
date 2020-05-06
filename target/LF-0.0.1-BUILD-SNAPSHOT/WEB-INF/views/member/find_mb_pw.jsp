@@ -11,7 +11,7 @@
 		});
     </script>
 <div id="login_top">
-	<h2 id="login_title"><a href="../home.jsp" class="logo_link login_a"><img src="../resource/img/logo/LecFly_LOGO_B_C.png" ></a></h2>
+	<h2 id="login_title"><a href="../home.jsp" class="logo_link login_a"><img src="resources/imges/logo/LecFly_LOGO_B_C.png" ></a></h2>
 	<h3 id="login_subtitle2">비밀번호 찾기</h3>
 </div>
 <div id="login_middle2">
@@ -29,6 +29,6 @@
 </div>
 <div id="login_bottom">
 	<div id="find_login_btn">
-		<a href="login.jsp" class="login_a">임시비밀번호 받기</a>
+		<a href="login.LF" class="login_a">임시비밀번호 받기</a>
 	</div>
 </div>

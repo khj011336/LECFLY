@@ -5,7 +5,9 @@
 <head>
 <%
  	response.setHeader("Cache-Control", "no-store");
+
 %>
+<%@include file ="/resources/variable/pubLinkCss.jspf" %>
 <meta charset="UTF-8">
 <title>LecFly</title> 
 <script type="text/javascript" src="common/temp.js"></script>
