@@ -27,11 +27,7 @@ public class CreatorController {
 	LectureSVCImpl LecSVC;
 	@Autowired
 	ILectureDAO LecDAO;
-	@RequestMapping(value = "home.LF", method = RequestMethod.GET )
-	public String temphome() {
-		System.out.println("도착");
-		return "home";
-	}
+
 	@RequestMapping(value ="creator.LF", method= RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model ,@RequestParam(value = "page",defaultValue = "1",required = false) int page) {
 		ses.setAttribute("id",1);
