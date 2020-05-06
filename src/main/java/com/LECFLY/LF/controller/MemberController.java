@@ -5,20 +5,26 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
+import com.LECFLY.LF.service.inf.member.IMemberSVC;
 
 @Controller
 public class MemberController {
 	
 	@Autowired
 	ILoginSVC logSvc;
+	
 	@Autowired
-	IMemberDAO mbDao;
+	IMemberDAO mbDao; // ? <= controller 에서 mbDao 말고 mbSVC 있어야됨.
+	
+	@Autowired
+	IMemberSVC mbSvc;
 
 	public static final int MB_LOGIN_AUTH_OK = 4;
 	
@@ -143,9 +149,11 @@ public class MemberController {
 //	회원의 프로필 사진 수정하기							
 //	change_pro_pic.lf(proc; post, dao, attr)			proc완료후 mypage.lf 프로필사진 업데이트된 상태로 forward
 	@RequestMapping(value="change_pro_pic.LF", method=RequestMethod.POST)
-	public String memberChangeProfilePicture() {
+	public String memberChangeProfilePicture(HttpSession ses, Model model) {
 		System.out.println("memberChangeProfilePicture()...");
-		
+		int mbId = (Integer)ses.getAttribute("mbId");
+		String filePath = "";
+		boolean b = mbSvc.updateMemberProfileImg(mbId, filePath);
 		
 		return "member/mypage";
 	}

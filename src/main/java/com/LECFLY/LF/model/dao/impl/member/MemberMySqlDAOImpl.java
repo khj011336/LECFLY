@@ -219,5 +219,14 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	public boolean findEmailInDB(String email) {
 		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL_IN_DB, String.class, email) != null;
 	}
+
+	
+	
+	// 세현 추가 마이페이지에서 회원 id, 업데이트할 사진 path 입력하면은 sql 에 업데이트 하려고함
+	@Override
+	public boolean updateMemberProfileImg(int mbId, String filePath) {
+		
+		return false;
+	}
 	
 }
