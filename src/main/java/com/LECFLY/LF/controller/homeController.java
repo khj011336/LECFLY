@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class homeController {
-	@RequestMapping(value = "home.LF", method = RequestMethod.GET )
+	@RequestMapping(value = "/home.LF", method = RequestMethod.GET )
 	public String temphome() {
 		System.out.println("도착");
-		return "home";
+		return "lecture/main.ho";
 	}
+	
 }
