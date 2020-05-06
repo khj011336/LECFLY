@@ -12,7 +12,7 @@
 				<div class="list_video_thumb nav_video_list">
 				<a href="#"> 
 
-				<img src="resource/img/goods/soap2.jpg" alt="lecfly lecture">
+				<img src="resources/imges/goods/soap2.jpg" alt="lecfly lecture">
 				<div class="video_info_progressbar_bg">
 				<div class="video_info_progressbar" style="width: 3%"></div>
 				</div>
@@ -28,7 +28,7 @@
 				<div class="list_video_thumb nav_video_list">
 				<a href="#"> 
 
-				<img src="resource/img/mypage/sample4.jpg" alt="lecfly lecture">
+				<img src="resources/imges/mypage/sample4.jpg" alt="lecfly lecture">
 				<div class="video_info_progressbar_bg">
 				<div class="video_info_progressbar" style="width: 21%"></div>
 				</div>
@@ -43,7 +43,7 @@
 				<div class="list_video_thumb nav_video_list">
 				<a href="#"> 
 
-				<img src="resource/img/mypage/sample4.jpg" alt="lecfly lecture">
+				<img src="resources/imges/mypage/sample4.jpg" alt="lecfly lecture">
 				<div class="video_info_progressbar_bg">
 				<div class="video_info_progressbar" style="width: 50%"></div>
 				</div>
@@ -58,7 +58,7 @@
 				<div class="list_video_thumb nav_video_list">
 				<a href="#"> 
 
-				<img src="resource/img/mypage/sample4.jpg" alt="lecfly lecture">
+				<img src="resources/imges/mypage/sample4.jpg" alt="lecfly lecture">
 				<div class="video_info_progressbar_bg">
 				<div class="video_info_progressbar" style="width: 80%"></div>
 				</div>
@@ -75,7 +75,7 @@
 				<div class="list_video_thumb nav_video_list">
 				<a href="#"> 
 
-				<img src="resource/img/mypage/sample4.jpg" alt="lecfly lecture">
+				<img src="resources/imges/mypage/sample4.jpg" alt="lecfly lecture">
 				<div class="video_info_progressbar_bg">
 				<div class="video_info_progressbar" style="width: 98%"></div>
 				</div>
@@ -90,7 +90,7 @@
 				<div class="list_video_thumb nav_video_list">
 				<a href="#"> 
 
-				<img src="resource/img/mypage/sample4.jpg" alt="lecfly lecture">
+				<img src="resources/imges/mypage/sample4.jpg" alt="lecfly lecture">
 				<div class="video_info_progressbar_bg">
 				<div class="video_info_progressbar" style="width: 98%"></div>
 				</div>

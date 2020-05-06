@@ -163,15 +163,26 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 //	로그인하기(이메일 유무 체크, Read)
 	@Override
 	public int memberEamil(String email) {
-		return this.jtem.queryForObject(SQL_SELECT_MEMBER_ID_BY_EMAIL, Integer.class, email);
+		try {
+			return this.jtem.queryForObject(SQL_SELECT_MEMBER_ID_BY_EMAIL, Integer.class, email);
+		} catch (Exception e) {
+			System.out.println("sql오류");
+			return 0;
+		}
 	}
 
 //	로그인하기(이메일과 패스워드 일치 체크, Read)
 	@Override
 	public MemberVO memberPassword(String email, String password) {
-		MemberVO mb = jtem.queryForObject(SQL_SELECT_MEMBER_PW_CHECK, 
-				BeanPropertyRowMapper.newInstance(MemberVO.class), password, new PwSecurityEncoding(email).getEmail());
-		return mb;
+		try {
+			MemberVO mb = jtem.queryForObject(SQL_SELECT_MEMBER_PW_CHECK, 
+					BeanPropertyRowMapper.newInstance(MemberVO.class), password, new PwSecurityEncoding(email).getEmail());
+			mb.setPassword(null);
+			return mb;
+		} catch (Exception e) {
+			System.out.println("sql오류");
+			return null;
+		}
 //		return 0;
 //		boolean r = jtem.query();
 	}

@@ -3,6 +3,14 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<title>로그인 페이지</title>
+	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage.css">
+    <link type="text/css" rel="stylesheet" href="resources/css/member/mypage_list.css">    
+    
+    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
@@ -130,13 +138,21 @@
 			});
 		});// 쿠폰내역
 	});
+	
+	function changeProPric(){
+		console.log("프로필사진 편집 버튼클릭");
+		location.href = "change_pro_pic.LF";
+	}
+	
  </script>
+ 
+</head>
 
 <div id="mypage_wrap"> 											<!-- 조각페이지 -->	
 	<div id="mypage_top"> 										<!-- 개인정보 영역 -->
 		<div id="mypage_pic">
-            <img src="resource/img/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
-          	<input type="button" value="프로필 사진 편집">
+            <img src="resources/imges/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
+          	<input type="button" value="프로필 사진 편집" onclick="changeProPic()">
         </div>
         <div id="mypage_mb_IF">
         	<br><br>
@@ -147,17 +163,17 @@
         	<a href="Creator/_classdes.jsp"><h3>크리에이터 신청하기</h3></a>
         </div>
         <div class="mypage_mb_t">
-        	<img src="resource/img/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">
+        	<img src="resources/imges/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">
 			<br><br><br>
 			<span>강의 신청 목록 <b>6</b> 개</span>
         </div>
         <div class="mypage_mb_t">
-        	<img src="resource/img/mypage/mypage_coupon.png" class="mypage_1" alt="쿠폰" width="64px" height="64px">
+        	<img src="resources/imges/mypage/mypage_coupon.png" class="mypage_1" alt="쿠폰" width="64px" height="64px">
 			<br><br><br>
 			<span>쿠폰 <b>4</b> 개</span>
         </div>
         <div class="mypage_mb_t" id="mypage_mb_t_ticket">
-        	<img src="resource/img/mypage/mypage_ticket.png" class="mypage_1" alt="이용권" width="64px" height="64px">
+        	<img src="resources/imges/mypage/mypage_ticket.png" class="mypage_1" alt="이용권" width="64px" height="64px">
 			<br><br><br>
 			<span><b>3</b> 카테고리 이용권</span>
 			<br>
@@ -288,3 +304,5 @@
 	    </div> -->
 	</div>
 </div>
+
+</html>

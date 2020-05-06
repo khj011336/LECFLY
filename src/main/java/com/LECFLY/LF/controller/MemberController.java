@@ -1,10 +1,13 @@
 package com.LECFLY.LF.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,30 +23,59 @@ public class MemberController {
 	@Autowired
 	IMemberDAO mbDao;
 
-	public static final int MB_LOGIN_AUTH_OK = 4;
+	public static final int MB_EMAIL_ERROR = 1;
+	public static final int MB_PW_ERROR = 2;
+	public static final int MB_EMAIL_NONE = 3;
+	public static final int MB_EMAIL_AUTH_OK = 4;
+	public static final int MB_EMAIL_PW_MISMATCH = 5;
+	
+	public static final HashMap<Integer, String> MB_MSG_MAP = new HashMap<Integer, String>();
+	
+	public static final String getMsg(int r) {
+		MB_MSG_MAP.put(MB_EMAIL_ERROR, "로그인 비었음");
+		MB_MSG_MAP.put(MB_PW_ERROR, "패스워드 비었음");
+		MB_MSG_MAP.put(MB_EMAIL_NONE, "가입되지 않은 회원 이메일");
+		MB_MSG_MAP.put(MB_EMAIL_AUTH_OK, "로그인 인증 성공");
+		MB_MSG_MAP.put(MB_EMAIL_PW_MISMATCH, "로그인 암호 불일치");
+		return MB_MSG_MAP.get(r);
+	}
+
 	
 	// 로그인창 으로 이동했을때
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
-	public String memberLoginPage() {
+	public String memberLoginPage(HttpSession ses, MemberVO mb) {
 		System.out.println("memberLoginPage()...");
 		return "member/login";
 	}
 	
 	// login.LF 에서 이메일 비밀번호 입력후 로그인 클릭시
-	@RequestMapping(value="log_in.LF", method=RequestMethod.POST)
-	public String memberLoginedHomePage(HttpSession ses, String email, String pw) {
+	@RequestMapping(value="login_proc.LF", method=RequestMethod.POST)
+	public String memberLoginedHomePage(HttpSession ses, Model model, String email, String pw) {
 		System.out.println("memberLoginedHomePage()...");
+		MemberVO mb = new MemberVO();
 		int r = logSvc.loginProcess(email, pw);
-		MemberVO mb = mbDao.memberPassword(email, pw);
-//		if( r == MB_LOGIN_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
+		if( r == MB_EMAIL_ERROR ) {						// 이메일 입력없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_PW_ERROR ) {					// 패스워드 입력없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_EMAIL_NONE ) {				// 가입된 회원 이메일이 없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_EMAIL_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
 		// 여기서  서비스에서 로그인 성공 실패에 대한 처리를 하고 
-			
-			return "redirect:home.LF?login=" + "로그인값";
-//		} else { //서비스 처리: 이메일과 로그인이 불일치() 
-//			return "member/login"; // 1Model 을 해서 메세지를 넣는방법  
-									/* 2 리턴값을 ModelAndView 로해서 
-										add 하여 메세지넣는방법 */
-//		}
+			mb = mbDao.memberPassword(email, pw);
+			model.addAttribute("member", mb);
+			System.out.println(mb);
+			return "home";
+		} else if( r == MB_EMAIL_PW_MISMATCH ) {		// 이메일과 비밀번호가 불일치함
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else {
+			model.addAttribute("msg", "알수없는 오류");
+			return "redirect:login.LF";
+		}
 	} 
 	
 
