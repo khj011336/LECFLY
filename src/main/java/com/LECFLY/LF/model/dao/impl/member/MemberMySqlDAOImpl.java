@@ -1,5 +1,7 @@
 package com.LECFLY.LF.model.dao.impl.member;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
@@ -16,6 +19,34 @@ import com.LECFLY.LF.model.vo.MemberVO;
 
 @Repository
 public class MemberMySqlDAOImpl implements IMemberDAO {
+	
+	class MemberImplRowMapper implements RowMapper<MemberVO> {
+
+		@Override
+		public MemberVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			MemberVO mb = new MemberVO(rs.getInt("id"), 
+					rs.getString("pic"), rs.getString("name"),
+					rs.getString("nicname"), rs.getTimestamp("birthday"),
+					rs.getInt("gender"), rs.getString("email"),
+					rs.getString("ph_number"), rs.getTimestamp("joined_at"),
+					rs.getInt("agree_receive"), rs.getInt("use_ticket"),
+					rs.getInt("check_creator"), rs.getInt("login_count"),
+					rs.getTimestamp("loginedat"), 
+					// 이부분부터는 모르겠어서 MemberVO 보고 때려맞춤 sql 콜룸명이랑 타입 맞는지확인부탁
+					rs.getString("baisc_address"), 
+					rs.getString("detail_address"), rs.getInt("postal_code"), 
+					rs.getString("address_name"), rs.getString("receiver_name"));
+			
+			if(mb != null) {
+				System.out.println("mb = " + mb);
+				return mb;
+			} else {
+				System.out.println("memberMySqlDAOImpl.. rs.get() 틀림");
+				return null;
+			}
+		}
+		
+	}
 	
 	
 	//sql 정의부
