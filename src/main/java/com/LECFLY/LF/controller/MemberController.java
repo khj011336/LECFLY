@@ -88,22 +88,20 @@ public class MemberController {
 		return "member/clause";
 	}
 	
-	// 약관동의 에서 넘어와서 회원가입 폼이 준비된 페이지
-	// //	create_new_member.lf 		이동시 약관확인 여부 체크 확인후 이동
-//	member_join.lf (proc; post; dao; 비회원)			회원가입proc 실행(createNewMember)		
+	// 약관동의 에서 넘어와서 회원가입 폼을 준비하는 페이지
+	// join_new_member.lf (form; get; 비회원)
 	@RequestMapping(value="join_new_member.LF", method=RequestMethod.GET)
 	public String memberJoinPage() {
 		System.out.println("memberJoinPage()");
-		// 서비스: 약관페이지에서 넘어올떄 약관동의버튼 모두체크 하는 것을 처리
-//		agree_receive.lf(proc; post; 비회원)			약관 확인 여부 체크		
-		
-//		if() { // 약관페이지에서 넘어올떄 약관동의버튼 모두체크시 
 			return "member/create_new_member";
-//		} else { // 약관을 모두 체크하지않았을경우
-//			return "member/clause"; // 아니면
-//			return "redirect:clause.LF?err=1" // 이런식??
-//		}
-	}		
+	}
+	// 회원가입하는 proc
+	//member_join.lf (proc; post; dao; 비회원)
+	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
+	public String join_member_proc(){
+		System.out.println("join_member_proc....");
+		return "home";
+	}
 	
 //이메일 찾기						
 	//	find_mb_login.lf (form; get; 비회원)			이메일찾기 폼 이동
