@@ -20,7 +20,39 @@ import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
 @Controller
 public class CscenterController {
-	@Autowired
-	private IQnaSVC qaSvc;
 	
+	// cscenter 홈
+	@RequestMapping(value = "/cscenter.LF", method = RequestMethod.GET)
+	public String cscenterHome() {
+		System.out.println("cscenterHome()...");	
+		return "cscenter/cs_main";
+	}
+	// QnA
+	@RequestMapping(value = "/cs_qna.LF", method = RequestMethod.GET)
+	public String cscenterQnA() {
+		System.out.println("cscenterQnA()...");	
+		return "cscenter/cs_qna";
+	}
+	// FAQ
+	@RequestMapping(value = "/cs_faq.LF", method = RequestMethod.GET)
+	public String cscenterFAQ() {
+		System.out.println("cscenterFAQ()...");
+		return "cscenter/cs_faq";
+	}
+	// NOTICE
+	@RequestMapping(value = "/cs_notice.LF", method = RequestMethod.GET)
+	public String cscenterNotice() {
+		System.out.println("cscenterNotice()...");
+		return "cscenter/cs_notice";
+	}
+	// QnA 글쓰기
+	@RequestMapping(value = "/cs_post_qna.LF", method = RequestMethod.GET)
+	public String cscenterPostQna() {
+		return "cscenter/cs_qna_post.cs";
+	}
+	// QnA 글 상세보기
+	@RequestMapping(value = "/cs_receive_qna.LF", method = RequestMethod.GET)
+	public String cscenterReceiveQna() {
+		return "cscenter/cs_qna_receive.cs";
+	}
 }
