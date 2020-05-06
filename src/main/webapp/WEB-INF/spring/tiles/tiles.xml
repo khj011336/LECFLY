@@ -45,15 +45,15 @@
     <put-attribute name="admin_nav"   value="/WEB-INF/views/admin/admin_side_nav.jsp" />
     </definition>
  
-    <definition name="*.page" extends="admin">
+    <definition name="*.ad" extends="admin">
         <put-attribute name="admin_body" value="/WEB-INF/views/{1}.jsp" />
     </definition>
  
-     <definition name="*/*.page" extends="admin">
+     <definition name="*/*.ad" extends="admin">
          <put-attribute name="admin_body" value="/WEB-INF/views/{1}/{2}.jsp" />
      </definition>
     
-    <definition name="*/*/*.page" extends="admin">
+    <definition name="*/*/*.ad" extends="admin">
         <put-attribute name="admin_body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
     </definition>
  </tiles-definitions>
