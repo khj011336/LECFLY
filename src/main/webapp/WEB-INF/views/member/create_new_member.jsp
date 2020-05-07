@@ -52,8 +52,8 @@
 	                <tr>
 			        	<th><label class="cnm_subtitle">성별</label></th>
 	                    <td>
-	                    	<input type="radio" id="cnm_mb_f" name="cnm_mb_gender" value="여"><label for="cnm_mb_f" class="gender_sub_title">여성</label>
-	   						<input type="radio" id="cnm_mb_m" name="cnm_mb_gender" value="남"><label for="cnm_mb_m" class="gender_sub_title">남성</label>
+	                    	<input type="radio" id="cnm_mb_f" name="cnm_mb_gender" value="1"><label for="cnm_mb_f" class="gender_sub_title">여성</label>
+	   						<input type="radio" id="cnm_mb_m" name="cnm_mb_gender" value="3"><label for="cnm_mb_m" class="gender_sub_title">남성</label>
 	   					</td>
 	                </tr>
 	                <tr>

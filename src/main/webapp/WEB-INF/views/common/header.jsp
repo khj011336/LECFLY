@@ -12,6 +12,7 @@
 		} else {
 			console.log("로그인된 상태");
 			alert("${member.name} 회원님은 현재 로그인 되어 있습니다.");
+// 			이후 로그아웃하겟냐고 물어봐야됨.
 		}
 	}
 </script>

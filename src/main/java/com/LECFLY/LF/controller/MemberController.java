@@ -2,6 +2,7 @@ package com.LECFLY.LF.controller;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,61 +22,30 @@ public class MemberController {
 	
 	@Autowired
 	ILoginSVC logSvc;
-	@Autowired
-	IMemberDAO mbDao;
-
-	public static final int MB_EMAIL_ERROR = 1;
-	public static final int MB_PW_ERROR = 2;
-	public static final int MB_EMAIL_NONE = 3;
-	public static final int MB_EMAIL_AUTH_OK = 4;
-	public static final int MB_EMAIL_PW_MISMATCH = 5;
-	
-	public static final HashMap<Integer, String> MB_MSG_MAP = new HashMap<Integer, String>();
-	
-	public static final String getMsg(int r) {
-		MB_MSG_MAP.put(MB_EMAIL_ERROR, "로그인 비었음");
-		MB_MSG_MAP.put(MB_PW_ERROR, "패스워드 비었음");
-		MB_MSG_MAP.put(MB_EMAIL_NONE, "가입되지 않은 회원 이메일");
-		MB_MSG_MAP.put(MB_EMAIL_AUTH_OK, "로그인 인증 성공");
-		MB_MSG_MAP.put(MB_EMAIL_PW_MISMATCH, "로그인 암호 불일치");
-		return MB_MSG_MAP.get(r);
-	}
-
-	
+//	@Autowired
+//	IMemberDAO mbDao;
+		
 	// 로그인창 으로 이동했을때
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
-	public String memberLoginPage(HttpSession ses, MemberVO mb) {
+	public String memberLoginPage() {
 		System.out.println("memberLoginPage()...");
 		return "member/login";
 	}
 	
 	// login.LF 에서 이메일 비밀번호 입력후 로그인 클릭시
 	@RequestMapping(value="login_proc.LF", method=RequestMethod.POST)
-	public String memberLoginedHomePage(HttpSession ses, Model model, String email, String pw) {
+	public String memberLoginedHomePage(Model model, String email, String pw) {
 		System.out.println("memberLoginedHomePage()...");
 		MemberVO mb = new MemberVO();
 		int r = logSvc.loginProcess(email, pw);
-		if( r == MB_EMAIL_ERROR ) {						// 이메일 입력없음
-			model.addAttribute("msg", getMsg(r));
-			return "member/login"; 
-		} else if( r == MB_PW_ERROR ) {					// 패스워드 입력없음
-			model.addAttribute("msg", getMsg(r));
-			return "member/login"; 
-		} else if( r == MB_EMAIL_NONE ) {				// 가입된 회원 이메일이 없음
-			model.addAttribute("msg", getMsg(r));
-			return "member/login"; 
-		} else if( r == MB_EMAIL_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
-		// 여기서  서비스에서 로그인 성공 실패에 대한 처리를 하고 
-			mb = mbDao.memberPassword(email, pw);
+		if( r == 4 ) {
+			mb = logSvc.login(email, pw);
 			model.addAttribute("member", mb);
 			System.out.println(mb);
 			return "home";
-		} else if( r == MB_EMAIL_PW_MISMATCH ) {		// 이메일과 비밀번호가 불일치함
-			model.addAttribute("msg", getMsg(r));
-			return "member/login"; 
 		} else {
-			model.addAttribute("msg", "알수없는 오류");
-			return "redirect:login.LF";
+			model.addAttribute("msg", logSvc.getMsg(r));
+			return "member/login";
 		}
 	} 
 	
@@ -100,19 +70,25 @@ public class MemberController {
 	//member_join.lf (proc; post; dao; 비회원)
 	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
 	public String join_member_proc(
-			String cnm_mb_name,
-			String cnm_mb_nick,
-			Timestamp cnm_mb_birth,
-			int cnm_mb_gender,	// script로 처리먼저
-			String cnm_mb_email,
-			String cnm_mb_pw,
-			String cnm_mb_ph,	// script로 처리먼저
-			int cnm_mb_adress_num,
-			String cnm_mb_adress_basic,
-			String cnm_mb_adress_detail,
-			int cnm_mb_agree	// script로 처리먼저
+			String cnm_mb_name, String cnm_mb_nick, Timestamp cnm_mb_birth,
+			int cnm_mb_gender, String cnm_mb_email, String cnm_mb_pw,
+			String cnm_mb_pw_confirm, String cnm_mb_ph1, String cnm_mb_ph2,
+			int cnm_mb_adress_num,String cnm_mb_adress_basic, String cnm_mb_adress_detail,
+			String cnm_mb_agree_news_bymail, String cnm_mb_agree_news_bysms
 			){
-		MemberVO mb = new MemberVO(null, cnm_mb_name, cnm_mb_nick, cnm_mb_birth, cnm_mb_gender, cnm_mb_email, cnm_mb_pw, cnm_mb_ph, cnm_mb_agree, cnm_mb_adress_basic, cnm_mb_adress_detail, cnm_mb_adress_num);
+		System.out.println(cnm_mb_ph1 +"/"+ cnm_mb_ph2 +"/"+ cnm_mb_agree_news_bymail +"/"+ cnm_mb_agree_news_bysms);
+		
+		String ph = "010"+cnm_mb_ph1 + cnm_mb_ph2;
+		int agreeReceive = 0;
+		if( cnm_mb_agree_news_bymail.equals("agree_email"))
+			agreeReceive = 1;
+		if( cnm_mb_agree_news_bysms.equals("agree_sms"))
+			agreeReceive += 2;
+		
+//		MemberVO mb = new MemberVO(
+//				null, cnm_mb_name, cnm_mb_nick, cnm_mb_birth, cnm_mb_gender, 
+//				cnm_mb_email, cnm_mb_pw, ph, agreeReceive, cnm_mb_adress_basic, 
+//				cnm_mb_adress_detail, cnm_mb_adress_num);
 		System.out.println("join_member_proc....");
 		return "home";
 	}
