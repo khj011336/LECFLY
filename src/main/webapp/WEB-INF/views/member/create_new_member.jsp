@@ -85,9 +85,9 @@
 			        	<th><label class="cnm_subtitle" for="cnm_mb_ph_first">휴대전화</label></th>
 	                    <td>
 	                    	<label class="cnm_ph_padding">010 - </label>
-				        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_first" name="cnm_mb_ph" placeholder="0000" maxlength="4">
+				        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_first" name="cnm_mb_ph1" placeholder="0000" maxlength="4">
 				        	<label>-</label>
-				        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_second" name="cnm_mb_ph" placeholder="0000" maxlength="4">
+				        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_second" name="cnm_mb_ph2" placeholder="0000" maxlength="4">
 				    	</td>
 	                </tr>
 	                <tr>

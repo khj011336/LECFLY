@@ -22,30 +22,31 @@ public class MemberController {
 	
 	@Autowired
 	ILoginSVC logSvc;
-//	@Autowired
-//	IMemberDAO mbDao;
 		
 	// 로그인창 으로 이동했을때
+	
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
-	public String memberLoginPage() {
+	public String memberLoginPage(Model model, String msg) {
+		model.addAttribute("msg", msg);
 		System.out.println("memberLoginPage()...");
 		return "member/login";
 	}
 	
 	// login.LF 에서 이메일 비밀번호 입력후 로그인 클릭시
 	@RequestMapping(value="login_proc.LF", method=RequestMethod.POST)
-	public String memberLoginedHomePage(Model model, String email, String pw) {
+	public String memberLoginedHomePage(HttpSession ses, Model model, String email, String pw) {
 		System.out.println("memberLoginedHomePage()...");
 		MemberVO mb = new MemberVO();
 		int r = logSvc.loginProcess(email, pw);
-		if( r == 4 ) {
+		if( r == logSvc.MB_EMAIL_AUTH_OK ) {
 			mb = logSvc.login(email, pw);
-			model.addAttribute("member", mb);
+			ses.setAttribute("member", mb);
 			System.out.println(mb);
-			return "home";
+			return "redirect:/";
 		} else {
 			model.addAttribute("msg", logSvc.getMsg(r));
-			return "member/login";
+//			return "member/login";
+			return "redirect:login.LF";
 		}
 	} 
 	
@@ -81,7 +82,7 @@ public class MemberController {
 		String ph = "010"+cnm_mb_ph1 + cnm_mb_ph2;
 		int agreeReceive = 0;
 		if( cnm_mb_agree_news_bymail.equals("agree_email"))
-			agreeReceive = 1;
+			agreeReceive += 1;
 		if( cnm_mb_agree_news_bysms.equals("agree_sms"))
 			agreeReceive += 2;
 		
