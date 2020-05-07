@@ -4,6 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+  <link href="resources/css/creator/creator.css" rel ="stylesheet" type="text/css" >
+<link href="resources/css/creator/cre_comment_mt.css" rel ="stylesheet" type="text/css" >
+<link href ="resources/css/creator/lecplay.css" rel ="stylesheet" type="text/css" >
 <title>주제</title>
 <!-- <link type="text/css" rel="stylesheet" -->
 <!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"> -->

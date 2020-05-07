@@ -5,9 +5,11 @@
 <head>
 <%
  	response.setHeader("Cache-Control", "no-store");
+
 %>
+<%@include file ="/resources/variable/pubLinkCss.jspf" %>
 <meta charset="UTF-8">
-<title>LecFly</title>
+<title>LecFly</title> 
 <script type="text/javascript" src="common/temp.js"></script>
 </head>
 <body>
@@ -18,8 +20,8 @@
 		</div>
 		<%@ include file="common/side_nav.jsp"%>
 		<div id="homemain">
-		<%@ include file="lecture/main.jsp"%>
-	</div>
+			<%@ include file="lecture/main.jsp"%>
+		</div>
 		<div id="footer" class="footer">
 			<%@ include file="common/footer.jsp"%>
 		</div>

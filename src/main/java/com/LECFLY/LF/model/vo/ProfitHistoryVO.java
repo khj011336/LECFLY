@@ -22,8 +22,14 @@ public class ProfitHistoryVO {
 	String detail;    //        				이벤트 내용
 	Timestamp day;    //  CURRENT_TIMESTAMP		이벤트 생성날자
 	
+	/**
+	 * 더미
+	 */
 	public ProfitHistoryVO() {}
 	
+	/**
+	 * @param uploaderId
+	 */
 	public ProfitHistoryVO(int uploaderId) {
 		this.id = DEF_ID;
 		this.uploaderId = uploaderId;
@@ -34,6 +40,16 @@ public class ProfitHistoryVO {
 		this.day = null;
 	}
 	
+	/**
+	 * full constructor
+	 * @param id
+	 * @param uploaderId
+	 * @param saveMoney
+	 * @param getMoney
+	 * @param category
+	 * @param detail
+	 * @param day
+	 */
 	public ProfitHistoryVO(int id, int uploaderId, int saveMoney,
 			int getMoney, int category, String detail, Timestamp day) {
 		this.id = id;

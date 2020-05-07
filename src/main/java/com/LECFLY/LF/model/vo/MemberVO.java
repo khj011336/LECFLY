@@ -50,12 +50,24 @@ public class MemberVO {
 	String addressName;		//	address_name	varchar(24)
 	String receiverName;	//	receiver_name	varchar(24)
 	
+	/**
+	 * 
+	 */
 	public MemberVO() {
 		
 	}
 	
 	
-	// 최소 회원가입할떄 필요한 최소정보들~
+	/**
+	 * 최소 회원가입할떄 필요한 최소정보들~
+	 * @param name
+	 * @param nicname
+	 * @param birthday
+	 * @param gender
+	 * @param email
+	 * @param password
+	 * @param phNumber
+	 */
 	public MemberVO(String name, String nicname, Timestamp birthday, int gender, String email,
 			String password, String phNumber) {
 		this.id = 0;
@@ -80,7 +92,17 @@ public class MemberVO {
 		this.receiverName = null;
 	}
 	
-	// 회원가입시 사진이 있을수도 있어서
+	/**
+	 * 회원가입시 사진이 있을수도 있어서
+	 * @param pic
+	 * @param name
+	 * @param nicname
+	 * @param birthday
+	 * @param gender
+	 * @param email
+	 * @param password
+	 * @param phNumber
+	 */
 	public MemberVO(String pic, String name, String nicname, 
 			Timestamp birthday, int gender, String email, String password, String phNumber) {
 		this.id = 0;
@@ -105,7 +127,28 @@ public class MemberVO {
 		this.receiverName = null;
 	}
 	
-	//세션상에 저장할 VO (패스워드만 세션에 놓지 않음)
+	/**
+	 * 세션상에 저장할 VO (패스워드만 세션에 놓지 않음)
+	 * @param id
+	 * @param pic
+	 * @param name
+	 * @param nicname
+	 * @param birthday
+	 * @param gender
+	 * @param email
+	 * @param phNumber
+	 * @param joinedAt
+	 * @param agreeReceive
+	 * @param useTicket
+	 * @param checkCreator
+	 * @param loginCount
+	 * @param loginedAt
+	 * @param baiscAddress
+	 * @param detailAddress
+	 * @param postalCode
+	 * @param addressName
+	 * @param receiverName
+	 */
 	public MemberVO(int id, String pic, String name, String nicname, Timestamp birthday, int gender, String email,
 			String phNumber, Timestamp joinedAt, int agreeReceive, int useTicket, int checkCreator,
 			int loginCount, Timestamp loginedAt, String baiscAddress, String detailAddress, int postalCode,
@@ -115,7 +158,21 @@ public class MemberVO {
 				postalCode, addressName, receiverName);
 	}
 	
-	// 회원가입시 받을 모든 정보들 회원가입시에만 사용
+	/**
+	 * 회원가입시 받을 모든 정보들 회원가입시에만 사용
+	 * @param pic
+	 * @param name
+	 * @param nicname
+	 * @param birthday
+	 * @param gender
+	 * @param email
+	 * @param password
+	 * @param phNumber
+	 * @param agreeReceive
+	 * @param baiscAddress
+	 * @param detailAddress
+	 * @param postalCode
+	 */
 	public MemberVO(String pic, String name, String nicname, 
 			Timestamp birthday, int gender, String email, String password, String phNumber, 
 			int agreeReceive, String baiscAddress, String detailAddress, int postalCode) {
@@ -125,7 +182,29 @@ public class MemberVO {
 		
 	}
 	
-	//full constructor
+	/**
+	 * full constructor 
+	 * @param id
+	 * @param pic
+	 * @param name
+	 * @param nicname
+	 * @param birthday
+	 * @param gender
+	 * @param email
+	 * @param password
+	 * @param phNumber
+	 * @param joinedAt
+	 * @param agreeReceive
+	 * @param useTicket
+	 * @param checkCreator
+	 * @param loginCount
+	 * @param loginedAt
+	 * @param baiscAddress
+	 * @param detailAddress
+	 * @param postalCode
+	 * @param addressName
+	 * @param receiverName
+	 */
 	public MemberVO(int id, String pic, String name, String nicname, Timestamp birthday, int gender, String email,
 			String password, String phNumber, Timestamp joinedAt, int agreeReceive, int useTicket, int checkCreator,
 			int loginCount, Timestamp loginedAt, String baiscAddress, String detailAddress, int postalCode,

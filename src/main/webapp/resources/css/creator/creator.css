@@ -91,10 +91,9 @@ a:hover {
 }
 
 #Crcircle{
-	width: 950px;
+	width: 800px;
 	margin: 0px auto;
-	padding-left: 870px;
-	display: none;
+	text-align: right;
 }
 .Ccirk{
     width: 90px;
@@ -283,6 +282,13 @@ margin-top: 19px;
     height: 200px;
     margin: auto;
     
+}
+#CRHT3{
+	 position: absolute;
+    right: 100px;
+    font-size: 13px;
+    cursor: pointer;
+    color: orange;
 }
 #CRHT2{
     position: absolute;
@@ -608,6 +614,7 @@ border: none;
 	height: 300px;
 	border-radius: 4px;
       box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+      visibility: hidden;
 }
 
 /* span 커버로 사용할 이미지를 추가해보세요 글 위치 */
@@ -687,7 +694,7 @@ border: none;
 /* 다음버튼 위치 잡기 */
 .cls_next_btn {
 	margin-top: 50px;
-	margin-left: 850px;
+	margin-left: 830px;
 	position: relative;
 }
 /* 클래스들 css */
@@ -753,7 +760,7 @@ border: none;
 .Crpf_next_btn{
 	margin: 30px 0px;
     position: relative;
-    left: 780px;
+    left: 760px;
     width: 40px;
     height: 30px;
 }

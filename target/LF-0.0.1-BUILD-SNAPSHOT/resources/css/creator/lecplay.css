@@ -75,7 +75,7 @@ box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 
 width: 165px;	
 }
 .Timg h4, p {
-	font-size: 15px;
+	font-size: 13px;
 }
 
 .Timg p {
@@ -134,7 +134,9 @@ width: 165px;
 	margin-top: 20px;
 	text-overflow: ellipsis;
 }
-
+#CRhead2 p{
+	font-size: 28px;
+}
 #text2 {
 	margin-top: 40px;
 }

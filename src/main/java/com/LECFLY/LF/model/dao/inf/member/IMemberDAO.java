@@ -98,6 +98,10 @@ public interface IMemberDAO {
 	boolean findEmailInDB(String email);
 	
 	
+	// 세현 추가 마이페이지에서 회원 id, 업데이트할 사진 path 입력하면은 sql 에 업데이트 하려고함
+	boolean updateMemberProfileImg(int mbId, String filePath);
+	
+	
 	
 	
 

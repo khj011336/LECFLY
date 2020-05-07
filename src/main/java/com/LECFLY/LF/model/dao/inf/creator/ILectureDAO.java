@@ -5,6 +5,7 @@ import java.util.List;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 
 public interface ILectureDAO {
+
 	List<LectureVO> selectLectureList(int Fid , boolean order);
 	List<LectureVO> selectLectureList(int Fid , int offset,  int limit);
 	List<LectureVO> selectLectureList(int Fid , int offset, int limit,int order);
