@@ -6,7 +6,7 @@ import java.util.List;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 
-public interface IQnaSVC {
+public interface INoticeSVC {
 	//회원이 신규 게시글을 등록 할 수 있다 (+파일업로드..)
 	boolean insertNewQna(QnaVO at);
 	boolean insertNewQna(int mbId, String mbNicname, int type, String title, String content, int showPrivate);

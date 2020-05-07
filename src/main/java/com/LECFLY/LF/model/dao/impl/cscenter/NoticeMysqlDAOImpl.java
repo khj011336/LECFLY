@@ -25,28 +25,28 @@ import com.LECFLY.LF.model.vo.NoticeVO;
 @Repository
 public class NoticeMysqlDAOImpl implements INoticeDAO{
 	// Notice 조회수 증가
-	public static final String SQL_NOTICE_READ_INC
+	public static String SQL_NOTICE_READ_INC
 		= "update notices set hits = hits + 1 where id = ?";
 	// Notice 목록 보여주기
-	public static final String SQL_NOTICE_SHOWALL
+	public static String SQL_NOTICE_SHOWALL
 		= "select * from notices order by created_at desc";
 	// Notice 상세조회
-	public static final String SQL_NOTICE_SHOWONE
+	public static String SQL_NOTICE_SHOWONE
 		= "select * from notices where id = ?";
 	// Notice 등록하기
-	public static final String SQL_NOTICE_INSERT_VO
+	public static String SQL_NOTICE_INSERT_VO
 		= "insert into notices values(0, ?, ?, ?, ?, now(), now(), ?)";
 	// Notice 수정하기
-	public static final String SQL_NOTICE_UPDATE_VO
-		= "update notices set type = ?, title = ?, content = ? where id = ?";
+	public static String SQL_NOTICE_UPDATE_VO
+		= "update notices set type = ?, title = ?, content = ?, updated_at = now() where id = ?";
 	// Notice 삭제하기
-	public static final String SQL_NOTICE_DELETE_VO
+	public static String SQL_NOTICE_DELETE_VO
 		= "delete notices where id = ?";
 	// Notice 페이지 조회
-	public static final String SQL_NOTICE_SHOWALL_PG
+	public static String SQL_NOTICE_SHOWALL_PG
 		= "SELECT * FROM notices order by created_at desc limit ?, ?";
 	// Notice 갯수 카운트
-	public static final String SQL_CHECK_NOTICE_NUMBERS
+	public static String SQL_CHECK_NOTICE_NUMBERS
 	= "select count(id) as cnt from notices";	
 	
 	//@Autowired
@@ -63,47 +63,82 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 		simIn.withTableName("Notices");
 		simIn.usingGeneratedKeyColumns("id");
 	}
-
+	
 	@Override
 	public boolean insertNewNotice(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return false;
+		int r = jtem.update(SQL_NOTICE_INSERT_VO,
+				nt.getMbId(), nt.getType(), nt.getTitle(), 
+				nt.getContent(), nt.getFile(), nt.getHits());
+		return r == 1; //? true: false;
 	}
 
 	@Override
 	public int insertNewNoticeReturnKey(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return 0;
+		Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("mbId", nt.getMbId());
+		paramMap.put("type", nt.getType());
+		paramMap.put("title", nt.getTitle());
+		paramMap.put("content", nt.getContent());
+		paramMap.put("file", nt.getFile());
+		paramMap.put("hits", nt.getHits());
+		
+		Number num = simIn.executeAndReturnKey(paramMap);
+		return num.intValue(); // <<PK>> id 리턴	
 	}
 
 	@Override
 	public int insertNewNoticeReturnKey2(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return 0;
+		KeyHolder kh = new GeneratedKeyHolder();
+		PreparedStatementCreator psc = new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt  = con.prepareStatement( SQL_NOTICE_INSERT_VO, new String[] {"id"});
+				pstmt.setInt(1, nt.getMbId());
+				pstmt.setInt(2, nt.getType());
+				pstmt.setString(3, nt.getTitle());
+				pstmt.setString(4, nt.getContent());
+				pstmt.setString(5, nt.getFile());
+				pstmt.setInt(6, nt.getHits());
+				return pstmt;
+			}
+		};
+		jtem.update(psc, kh);
+		Number r = kh.getKey(); // PK
+		return r.intValue();
 	}
 
 	@Override
-	public boolean insertNewNotice(int type, String title, String content, String file) {
+	public boolean insertNewNotice(int mbId, int type, String title, String content) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public NoticeVO selectOneNotice(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.queryForObject(SQL_NOTICE_SHOWONE,BeanPropertyRowMapper.newInstance(NoticeVO.class), id);
 	}
 
 	@Override
-	public boolean updateNotice(int type, String title, String content, String file) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateNotice(int id, int type, String title, String content) {
+		int r = jtem.update(SQL_NOTICE_UPDATE_VO, id, type, title, content);
+		return r == 1;
 	}
-
+	
+	@Override
+	public boolean updateNotice(NoticeVO vo) {
+		int r = jtem.update(SQL_NOTICE_UPDATE_VO, 
+				vo.getId(),
+				vo.getType(),
+				vo.getTitle(), 
+				vo.getContent());
+		return r == 1;
+	}
+	
 	@Override
 	public boolean increaseReadCount(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		int r = jtem.update(SQL_NOTICE_READ_INC, id);
+		return r == 1;
 	}
 
 	@Override
@@ -114,8 +149,8 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 
 	@Override
 	public List<NoticeVO> showAllNotices() {
-		// TODO Auto-generated method stub
-		return null;
+		// VO <==> TBL
+		return jtem.query(SQL_NOTICE_SHOWALL, BeanPropertyRowMapper.newInstance(NoticeVO.class));
 	}
 
 	@Override
@@ -126,8 +161,8 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 
 	@Override
 	public List<NoticeVO> showAllNotices(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.query(SQL_NOTICE_SHOWALL_PG, BeanPropertyRowMapper.newInstance(NoticeVO.class), offset, limit);
+
 	}
 
 	@Override
@@ -138,9 +173,8 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 
 	@Override
 	public int checkNumberOfNotices() {
-		// TODO Auto-generated method stub
-		return 0;
-	}	
+		return jtem.queryForObject(SQL_CHECK_NOTICE_NUMBERS, Integer.class);
+	}
 		
 	
 }

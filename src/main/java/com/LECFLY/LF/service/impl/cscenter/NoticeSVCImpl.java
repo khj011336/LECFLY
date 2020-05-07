@@ -11,7 +11,7 @@ import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
 @Service
-public class QnaSVCImpl implements IQnaSVC{
+public class NoticeSVCImpl implements IQnaSVC{
 	@Autowired
 	private IQnaDAO qaDao;
 	

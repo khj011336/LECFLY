@@ -24,28 +24,28 @@ import com.LECFLY.LF.model.vo.QnaVO;
 @Repository
 public class QnaMysqlDAOImpl implements IQnaDAO{
 	// 조회수 증가
-	public static final String SQL_QNA_READ_INC
+	public static String SQL_QNA_READ_INC
 		= "update qnas set hits = hits + 1 where id = ?";
 	// QnA 목록 보여주기
-	public static final String SQL_QNA_SHOWALL
+	public static String SQL_QNA_SHOWALL
 		= "select * from qnas order by created_at desc";
 	// QnA 상세조회
-	public static final String SQL_QNA_SHOWONE
+	public static String SQL_QNA_SHOWONE
 		= "select * from qnas where id = ?";
 	// QnA 등록하기
-	public static final String SQL_QNA_INSERT_VO
+	public static String SQL_QNA_INSERT_VO
 		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), ?, ?)";
 	// QnA 수정하기
-	public static final String SQL_QNA_UPDATE_VO
-		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ? where id = ?";
+	public static String SQL_QNA_UPDATE_VO
+		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_at = now() where id = ?";
 	// QnA 삭제하기
-	public static final String SQL_QNA_DELETE_VO
+	public static String SQL_QNA_DELETE_VO
 		= "delete qnas where id = ?";
 	// QnA 페이지 조회
-	public static final String SQL_QNA_SHOWALL_PG
+	public static String SQL_QNA_SHOWALL_PG
 		= "SELECT * FROM qnas order by created_at desc limit ?, ?";
 	// QnA 갯수 카운트
-	public static final String SQL_CHECK_QNA_NUMBERS
+	public static String SQL_CHECK_QNA_NUMBERS
 	= "select count(id) as cnt from qnas";	
 	
 	//@Autowired
@@ -129,10 +129,21 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 
 	@Override
 	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
-		// TODO Auto-generated method stub
-		return false;
+		int r = jtem.update(SQL_QNA_UPDATE_VO, id, type, title, content, showPrivate);
+		return r == 1;
 	}
-
+	
+	@Override
+	public boolean updateQna(QnaVO vo) {
+		int r = jtem.update(SQL_QNA_UPDATE_VO, 
+				vo.getId(),
+				vo.getType(),
+				vo.getTitle(), 
+				vo.getContent(), 
+				vo.getShowPrivate());
+		return r == 1;
+	}
+	
 	@Override
 	public boolean increaseReadCount(int id) {
 		int r = jtem.update(SQL_QNA_READ_INC, id);

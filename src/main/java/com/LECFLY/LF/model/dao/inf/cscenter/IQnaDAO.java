@@ -10,8 +10,7 @@ public interface IQnaDAO {
 	int insertNewQnaReturnKey(QnaVO qa);
 	int insertNewQnaReturnKey2(QnaVO qa);
 	
-	boolean insertNewQna(int mbId, String mbNicname, int type, String title, String content,
-			int showPrivate);
+	boolean insertNewQna(int mbId, String mbNicname, int type, String title, String content, int showPrivate);
 	
 	//게시글 상세보기 할 수 있다 (+ 조회수 증가)
 	QnaVO selectOneQna(int id);
@@ -30,9 +29,8 @@ public interface IQnaDAO {
 	List<QnaVO> showAllQnas(int offset, int limit);
 	List<QnaVO> showAllQnas(int offset, int limit, boolean order);
 	int checkNumberOfQnas();
-
 	
-	
+	boolean updateQna(QnaVO vo);
 	
 	
 }

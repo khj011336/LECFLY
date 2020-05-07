@@ -24,25 +24,25 @@ import com.LECFLY.LF.model.vo.FaqVO;
 @Repository
 public class FaqMysqlDAOImpl implements IFaqDAO{
 	// Faq 목록 보여주기
-	public static final String SQL_FAQ_SHOWALL
+	public static String SQL_FAQ_SHOWALL
 		= "select * from faqs order by created_at desc";
 	// Faq 상세조회
-	public static final String SQL_FAQ_SHOWONE
+	public static String SQL_FAQ_SHOWONE
 		= "select * from faqs where id = ?";
 	// Faq 등록하기
-	public static final String SQL_FAQ_INSERT_VO
+	public static String SQL_FAQ_INSERT_VO
 		= "insert into faqs values(0, ?, ?, ?)";
 	// Faq 수정하기
-	public static final String SQL_FAQ_UPDATE_VO
+	public static String SQL_FAQ_UPDATE_VO
 		= "update faqs set title = ?, content = ? where id = ?";
 	// Faq 삭제하기
-	public static final String SQL_FAQ_DELETE_VO
+	public static String SQL_FAQ_DELETE_VO
 		= "delete faqs where id = ?";
 	// Faq 페이지 조회
-	public static final String SQL_FAQ_SHOWALL_PG
+	public static String SQL_FAQ_SHOWALL_PG
 		= "SELECT * FROM faqs order by created_at desc limit ?, ?";
 	// Faq 갯수 카운트
-	public static final String SQL_CHECK_FAQ_NUMBERS
+	public static String SQL_CHECK_FAQ_NUMBERS
 	= "select count(id) as cnt from faqs";	
 	
 	//@Autowired

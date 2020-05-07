@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 public class NoticeVO {
 	/** 공지사항 번호 */
 	int id;
+	/** 작성자 id */
+	int mbId;
 	/** 공지 위치            0: 일반 페이지 1: 크리에이터 페이지*/
 	int type;
 	/** 제목*/
@@ -27,7 +29,6 @@ public class NoticeVO {
 	}
 	
 	/**
-	 * full constructor 
 	 * @param id
 	 * @param type
 	 * @param title
@@ -49,12 +50,43 @@ public class NoticeVO {
 		this.updatedDay = updatedDay;
 		this.hits = hits;
 	}
+	/**
+	 * full constructor 
+	 * @param id
+	 * @param mbId
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 * @param writedDay
+	 * @param updatedDay
+	 * @param hits
+	 */
+	public NoticeVO(int id, int mbId, int type, String title, String content, String file, Timestamp writedDay,
+			Timestamp updatedDay, int hits) {
+		super();
+		this.id = id;
+		this.mbId = mbId;
+		this.type = type;
+		this.title = title;
+		this.content = content;
+		this.file = file;
+		this.writedDay = writedDay;
+		this.updatedDay = updatedDay;
+		this.hits = hits;
+	}
 	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getMbId() {
+		return mbId;
+	}
+	public void setMbId(int mbId) {
+		this.mbId = mbId;
 	}
 	public int getType() {
 		return type;
@@ -101,7 +133,7 @@ public class NoticeVO {
 	
 	@Override
 	public String toString() {
-		return "NoticeVO [id=" + id + ", type=" + type + ", title=" + title + ", content=" + content + ", file=" + file
+		return "NoticeVO [id=" + id +", mbId=" + id +", type=" + type + ", title=" + title + ", content=" + content + ", file=" + file
 				+ ", writedDay=" + writedDay + ", updatedDay=" + updatedDay + ", hits=" + hits + "]";
 	}
 	
