@@ -1,5 +1,6 @@
 package com.LECFLY.LF.controller;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -98,7 +99,20 @@ public class MemberController {
 	// 회원가입하는 proc
 	//member_join.lf (proc; post; dao; 비회원)
 	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
-	public String join_member_proc(){
+	public String join_member_proc(
+			String cnm_mb_name,
+			String cnm_mb_nick,
+			Timestamp cnm_mb_birth,
+			int cnm_mb_gender,	// script로 처리먼저
+			String cnm_mb_email,
+			String cnm_mb_pw,
+			String cnm_mb_ph,	// script로 처리먼저
+			int cnm_mb_adress_num,
+			String cnm_mb_adress_basic,
+			String cnm_mb_adress_detail,
+			int cnm_mb_agree	// script로 처리먼저
+			){
+		MemberVO mb = new MemberVO(null, cnm_mb_name, cnm_mb_nick, cnm_mb_birth, cnm_mb_gender, cnm_mb_email, cnm_mb_pw, cnm_mb_ph, cnm_mb_agree, cnm_mb_adress_basic, cnm_mb_adress_detail, cnm_mb_adress_num);
 		System.out.println("join_member_proc....");
 		return "home";
 	}
