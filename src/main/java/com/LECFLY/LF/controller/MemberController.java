@@ -1,6 +1,9 @@
 package com.LECFLY.LF.controller;
 
 import java.util.List;
+import java.sql.Timestamp;
+import java.util.HashMap;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,30 +33,59 @@ public class MemberController {
 	@Autowired
 	IMypageSVC mpSvc; // 세현추가
 
-	public static final int MB_LOGIN_AUTH_OK = 4;
+	public static final int MB_EMAIL_ERROR = 1;
+	public static final int MB_PW_ERROR = 2;
+	public static final int MB_EMAIL_NONE = 3;
+	public static final int MB_EMAIL_AUTH_OK = 4;
+	public static final int MB_EMAIL_PW_MISMATCH = 5;
+	
+	public static final HashMap<Integer, String> MB_MSG_MAP = new HashMap<Integer, String>();
+	
+	public static final String getMsg(int r) {
+		MB_MSG_MAP.put(MB_EMAIL_ERROR, "로그인 비었음");
+		MB_MSG_MAP.put(MB_PW_ERROR, "패스워드 비었음");
+		MB_MSG_MAP.put(MB_EMAIL_NONE, "가입되지 않은 회원 이메일");
+		MB_MSG_MAP.put(MB_EMAIL_AUTH_OK, "로그인 인증 성공");
+		MB_MSG_MAP.put(MB_EMAIL_PW_MISMATCH, "로그인 암호 불일치");
+		return MB_MSG_MAP.get(r);
+	}
+
 	
 	// 로그인창 으로 이동했을때
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
-	public String memberLoginPage() {
+	public String memberLoginPage(HttpSession ses, MemberVO mb) {
 		System.out.println("memberLoginPage()...");
 		return "member/login";
 	}
 	
 	// login.LF 에서 이메일 비밀번호 입력후 로그인 클릭시
-	@RequestMapping(value="log_in.LF", method=RequestMethod.POST)
-	public String memberLoginedHomePage(HttpSession ses, String email, String pw) {
+	@RequestMapping(value="login_proc.LF", method=RequestMethod.POST)
+	public String memberLoginedHomePage(HttpSession ses, Model model, String email, String pw) {
 		System.out.println("memberLoginedHomePage()...");
+		MemberVO mb = new MemberVO();
 		int r = logSvc.loginProcess(email, pw);
-		MemberVO mb = mbDao.memberPassword(email, pw);
-//		if( r == MB_LOGIN_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
+		if( r == MB_EMAIL_ERROR ) {						// 이메일 입력없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_PW_ERROR ) {					// 패스워드 입력없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_EMAIL_NONE ) {				// 가입된 회원 이메일이 없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_EMAIL_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
 		// 여기서  서비스에서 로그인 성공 실패에 대한 처리를 하고 
-			
-			return "redirect:home.LF?login=" + "로그인값";
-//		} else { //서비스 처리: 이메일과 로그인이 불일치() 
-//			return "member/login"; // 1Model 을 해서 메세지를 넣는방법  
-									/* 2 리턴값을 ModelAndView 로해서 
-										add 하여 메세지넣는방법 */
-//		}
+			mb = mbDao.memberPassword(email, pw);
+			model.addAttribute("member", mb);
+			System.out.println(mb);
+			return "home";
+		} else if( r == MB_EMAIL_PW_MISMATCH ) {		// 이메일과 비밀번호가 불일치함
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else {
+			model.addAttribute("msg", "알수없는 오류");
+			return "redirect:login.LF";
+		}
 	} 
 	
 
@@ -66,22 +98,33 @@ public class MemberController {
 		return "member/clause";
 	}
 	
-	// 약관동의 에서 넘어와서 회원가입 폼이 준비된 페이지
-	// //	create_new_member.lf 		이동시 약관확인 여부 체크 확인후 이동
-//	member_join.lf (proc; post; dao; 비회원)			회원가입proc 실행(createNewMember)		
+	// 약관동의 에서 넘어와서 회원가입 폼을 준비하는 페이지
+	// join_new_member.lf (form; get; 비회원)
 	@RequestMapping(value="join_new_member.LF", method=RequestMethod.GET)
 	public String memberJoinPage() {
 		System.out.println("memberJoinPage()");
-		// 서비스: 약관페이지에서 넘어올떄 약관동의버튼 모두체크 하는 것을 처리
-//		agree_receive.lf(proc; post; 비회원)			약관 확인 여부 체크		
-		
-//		if() { // 약관페이지에서 넘어올떄 약관동의버튼 모두체크시 
 			return "member/create_new_member";
-//		} else { // 약관을 모두 체크하지않았을경우
-//			return "member/clause"; // 아니면
-//			return "redirect:clause.LF?err=1" // 이런식??
-//		}
-	}		
+	}
+	// 회원가입하는 proc
+	//member_join.lf (proc; post; dao; 비회원)
+	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
+	public String join_member_proc(
+			String cnm_mb_name,
+			String cnm_mb_nick,
+			Timestamp cnm_mb_birth,
+			int cnm_mb_gender,	// script로 처리먼저
+			String cnm_mb_email,
+			String cnm_mb_pw,
+			String cnm_mb_ph,	// script로 처리먼저
+			int cnm_mb_adress_num,
+			String cnm_mb_adress_basic,
+			String cnm_mb_adress_detail,
+			int cnm_mb_agree	// script로 처리먼저
+			){
+		MemberVO mb = new MemberVO(null, cnm_mb_name, cnm_mb_nick, cnm_mb_birth, cnm_mb_gender, cnm_mb_email, cnm_mb_pw, cnm_mb_ph, cnm_mb_agree, cnm_mb_adress_basic, cnm_mb_adress_detail, cnm_mb_adress_num);
+		System.out.println("join_member_proc....");
+		return "home";
+	}
 	
 //이메일 찾기						
 	//	find_mb_login.lf (form; get; 비회원)			이메일찾기 폼 이동
