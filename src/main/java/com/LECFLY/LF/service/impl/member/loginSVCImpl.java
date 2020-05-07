@@ -66,6 +66,11 @@ public class loginSVCImpl implements ILoginSVC {
 		return mbDao.insertNewMember(pic, name, nicname, birthday, gender, email, password, 
 				phNumber, agreeReceive, basicAddress, detailAddress, postalCode);
 	}
+	
+	@Override
+	public boolean joinMember(MemberVO mb) {
+		return mbDao.insertNewMember(mb);
+	}
 
 	@Override
 	public String findEmail(String phNumber, String name) {

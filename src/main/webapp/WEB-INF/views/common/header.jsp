@@ -10,9 +10,10 @@
 		if(mbId == null){
 			window.location.href = '${pageContext.request.contextPath}/login.LF';
 		} else {
-			console.log("로그인된 상태");
-			alert("${member.name} 회원님은 현재 로그인 되어 있습니다.");
+// 			console.log("로그인된 상태");
+// 			alert("${member.name} 회원님은 현재 로그인 되어 있습니다.");
 // 			이후 로그아웃하겟냐고 물어봐야됨.
+			window.location.href = 'logout_proc.LF';
 		}
 	}
 </script>
@@ -41,7 +42,7 @@
 			<li id= "CSCenter"><a href="#">고객섬김센터</a></li>
 			<li id= "TEST"><a href="creator.LF" >크리에이터센터</a></li>
 
-			<li id= "TEST2" style="z-index:30;"><a href="#" onclick="goLogin(${member.id})" >로그인</a></li>
+			<li id= "TEST2" style="z-index:30;"><a href="#" onclick="goLogin(${member.id})">${empty member ? '로그인':'로그아웃'}</a></li>
 
 		</ul>
 	</div>

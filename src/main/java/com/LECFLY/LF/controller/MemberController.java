@@ -2,6 +2,8 @@ package com.LECFLY.LF.controller;
 
 import java.util.List;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,10 +55,18 @@ public class MemberController {
 			System.out.println(mb);
 			return "redirect:/";
 		} else {
-			model.addAttribute("msg", logSvc.getMsg(r));
+			ses.setAttribute("msg", logSvc.getMsg(r));
 //			return "member/login";
 			return "redirect:login.LF";
 		}
+	} 
+	
+	// 로그아웃 시
+	@RequestMapping(value="logout_proc.LF", method=RequestMethod.GET)
+	public String memberLogout(HttpSession ses, Model model) {
+		System.out.println("logout_proc()...");
+		ses.invalidate();
+		return "redirect:/";
 	} 
 	
 
@@ -79,14 +90,17 @@ public class MemberController {
 	//member_join.lf (proc; post; dao; 비회원)
 	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
 	public String join_member_proc(
-			String cnm_mb_name, String cnm_mb_nick, Timestamp cnm_mb_birth,
+			String cnm_mb_name, String cnm_mb_nick, @DateTimeFormat(pattern="yyyy-MM-dd")Date cnm_mb_birth,
 			int cnm_mb_gender, String cnm_mb_email, String cnm_mb_pw,
 			String cnm_mb_pw_confirm, String cnm_mb_ph1, String cnm_mb_ph2,
 			int cnm_mb_adress_num,String cnm_mb_adress_basic, String cnm_mb_adress_detail,
 			String cnm_mb_agree_news_bymail, String cnm_mb_agree_news_bysms
 			){
-		System.out.println(cnm_mb_ph1 +"/"+ cnm_mb_ph2 +"/"+ cnm_mb_agree_news_bymail +"/"+ cnm_mb_agree_news_bysms);
-		
+		System.out.println("join_member_proc....");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		Timestamp birthday = Timestamp.valueOf(sdf.format(cnm_mb_birth));
+		System.out.println(cnm_mb_ph1 +"/"+ cnm_mb_ph2 +"/"+ cnm_mb_agree_news_bymail +"/"+ cnm_mb_agree_news_bysms +"/"
+				+ birthday);
 		String ph = "010"+cnm_mb_ph1 + cnm_mb_ph2;
 		int agreeReceive = 0;
 		if( cnm_mb_agree_news_bymail.equals("agree_email"))
@@ -95,10 +109,13 @@ public class MemberController {
 			agreeReceive += 2;
 		
 //		MemberVO mb = new MemberVO(
-//				null, cnm_mb_name, cnm_mb_nick, cnm_mb_birth, cnm_mb_gender, 
+//				null, cnm_mb_name, cnm_mb_nick, birthday, cnm_mb_gender, 
 //				cnm_mb_email, cnm_mb_pw, ph, agreeReceive, cnm_mb_adress_basic, 
 //				cnm_mb_adress_detail, cnm_mb_adress_num);
-		System.out.println("join_member_proc....");
+		if(logSvc.joinMember(null, cnm_mb_name, cnm_mb_nick, birthday, cnm_mb_gender, 
+				cnm_mb_email, cnm_mb_pw, ph, agreeReceive, cnm_mb_adress_basic, 
+				cnm_mb_adress_detail, cnm_mb_adress_num))
+			System.out.println(cnm_mb_name + "회원 생성 성공");
 		return "home";
 	}
 	

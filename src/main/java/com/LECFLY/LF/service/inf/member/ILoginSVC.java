@@ -30,6 +30,7 @@ public interface ILoginSVC {
 			String pic, String name, String nicname, Timestamp birthday, int gender, 
 			String email, String password, String phNumber, int agreeReceive, 
 			String baiscAddress, String detailAddress, int postalCode);
+	boolean joinMember(MemberVO mb);
 	//이메일 찾기
 	//find_login.lf (proc; post; dao; 비회원)			이메일찾기proc실행(findEmail(phNumber) )
 	String findEmail(String phNumber, String name);
