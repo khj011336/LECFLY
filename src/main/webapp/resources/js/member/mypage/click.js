@@ -12,12 +12,21 @@
  			});			
  		}); // 이용권 결제내역
 		
+// 		$("#tabs-mom-1").click(function() {
+// 			var url = "mypage_attending_lec.LF";
+// 			$("#mypage_bottom").load(url, function(){
+// 				console.log("대분류 수강중인강의 로딩완료");
+// 			});			
+// 		}); // 대분류 이동> 수강중인 강의
+ 		
  		$("#tabs-mom-1").click(function() {
  			var url = "mypage_attending_lec.LF";
- 			$("#mypage_bottom").load(url, function(){
+ 			$.post(url, {}, function(){
+ 				$("#mypage_bottom").html
  				console.log("대분류 수강중인강의 로딩완료");
  			});			
  		}); // 대분류 이동> 수강중인 강의
+ 		
 		$("#tabs-mom-2").click(function() {
  			var url = "mypage_comment.LF";
  			$("#mypage_bottom").load(url, function(){
@@ -25,7 +34,7 @@
  			});			
  		}); // 대분류 이동> 댓글내역
  		$("#tabs-mom-3").click(function() {
-			var url = "mypage_mb_update.jsp";
+			var url = "mypage_mb_update.LF";
  			$("#mypage_bottom").load(url, function(){
  				console.log("대분류 회원정보 수정 로딩완료");
  			});			
@@ -80,13 +89,32 @@
  			 	console.log("쿠폰내역 로딩완료");
  			});
  		});// 쿠폰내역 
- 		$("#mypage_mb_update").click(function() {
- 			var url = "mypage_mb_update.LF";
- 			$("#mypage_bottom").load(url, function(){
- 				console.log("회원정보 수정 로딩완료");
- 			});			
- 		}); // 회원정보 수정
+// 		$("#mypage_mb_update").click(function() {
+// 			var url = "mypage_mb_update.LF";
+// 			$("#mypage_bottom").load(url, function(){
+// 				console.log("회원정보 수정 로딩완료");
+// 			});			
+// 		}); // 회원정보 수정
+		$("#mypage_mb_update").click(function() {
+			$.ajax({
+				type: "POST",
+				url: "mypage_mb_update.LF",
+				cache: true,
+				datatype: "text",
+				data: "",
+				success:function(res){
+					$("#mypage_bottom").html(res);
+				},
+				error:function(request,status,error){
+					
+				}
+			}); 
+		});// 회원정보 수정
  		$("#mypage_pw_update").click(function() {
+ 			$.ajax({
+ 				type: "",
+ 				
+ 			});
  			var url = "mypage_pw_update.jsp";
  			$("#mypage_bottom").load(url, function(){
  				console.log("비밀번호 변경 로딩완료");
@@ -104,7 +132,7 @@
  			$("#mypage_bottom").load(url, function(){
  				console.log("배송지관리 로딩완료");
  			});			
- 		}); // 배송지관리
+ 		}); // 배송지관리 ???
  		$("#mypage_delivery_info").click(function() {
  			var url = "mypage_delivery_info.LF";
  			$("#mypage_bottom").load(url, function(){

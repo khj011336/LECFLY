@@ -3,22 +3,10 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<%
- 	response.setHeader("Cache-Control", "no-store");
-%>
-<meta charset="UTF-8">
-<title>MyPage</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="resources/js/member/mypage/click.js"></script>
 <link type="text/css" rel="stylesheet" href="resources/css/member/mypage.css">
 <link type="text/css" rel="stylesheet" href="resources/css/member/mypage_list.css">
-	
-</head>
-	<body>
+		
 		<div id="wrapper">
 			<div id="header" class="header" style="z-index:30;">
 				<%@ include file="../common/header.jsp"%>
@@ -186,5 +174,4 @@
 				<%@ include file="../common/footer.jsp"%>
 			</div>
 		</div>
-</body>
-</html>
+

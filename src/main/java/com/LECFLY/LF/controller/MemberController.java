@@ -184,18 +184,18 @@ public class MemberController {
 	
 //	수강중인강의
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_attending_class.LF", method=RequestMethod.POST)
-	public String memberMypageAttendingClass(HttpSession ses, 
+	@RequestMapping(value="mypage_attending_lec.LF", method=RequestMethod.POST)
+	public String memberMypageAttendingLec(HttpSession ses, 
 			@RequestParam(value="id", defaultValue ="0") int id, Model model) {
-		System.out.println("memberMypageAttendingClass()...");	
+		System.out.println("memberMypageAttendingLec()...");	
 		
-		List<VideoVO> vdList = mpSvc.showAllAttendingLec(); // 내가 수강한 비디오 목록을 리스트로 받으려함
-		if(vdList != null) {
-			return "";
-		} else {
-			return "";
-		}
-		// return "redirect:mypage.LF?pn=attending_class";
+//		List<VideoVO> vdList = mpSvc.showAllAttendingLec(); // 내가 수강한 비디오 목록을 리스트로 받으려함
+//		if(vdList != null) {
+//			return "";
+//		} else {
+//			return "";
+//		}
+		 return "member/mypage/attend_lec_manager/mypage_attending_lec";
 	}
 	
 	//회원이 찜하기한 강의 확인하기							
@@ -211,7 +211,7 @@ public class MemberController {
 	@RequestMapping(value="mypage_like.LF", method=RequestMethod.POST)
 	public String memberMypageLike() {
 		System.out.println("memberMypageLike()...");	
-		return "redirect:mypage.LF?pn=like";
+		return "member/mypage/attend_lec_manager/mypage_like";
 	}
 	
 	
@@ -239,7 +239,7 @@ public class MemberController {
 	@RequestMapping(value="mypage_comment.LF", method=RequestMethod.POST)
 	public String memberMypageComment() {
 		System.out.println("memberMypageComment()...");	
-		return "redirect:mypage.LF?pn=comment";
+		return "memeber/mypage/activity/mypage_comment";
 	}
 
 //회원이 문의한 qna내역 확인하기							문의 내역
@@ -247,22 +247,22 @@ public class MemberController {
 	@RequestMapping(value="mypage_qna.LF", method=RequestMethod.POST)
 	public String memberMypageQna() {
 		System.out.println("memberMypageQna()...");	
-		return "redirect:mypage.LF?pn=qna";
+		return "member/mypage/activity/mypage_qna";
 	}
 //펀딩신청내역 확인하기									펀딩신청내역
 //	mypage_funding.lf(proc,post,dao)		해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_funding.LF", method=RequestMethod.POST)
 	public String memberMypageFunding() {
 		System.out.println("memberMypageFunding()...");	
-		return "redirect:mypage.LF?pn=funding";
+		return "member/mypage/activity/mypage_funding";
 	}
 	
 //회원이 보유중인 쿠폰 표시							나의쿠폰
 //	mypage_coupon.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_coupon.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_coupon_info.LF", method=RequestMethod.POST)
 	public String memberMypageCoupon() {
 		System.out.println("memberMypageCoupon()...");	
-		return "redirect:mypage.LF?pn=coupon";
+		return "member/mypage/activity/coupon_info";
 	}
 
 	
@@ -270,18 +270,18 @@ public class MemberController {
 	
 // 회원이 가입시 입력한 정보 수정하기							회원정보 수정
 //	mypage_update_info.lf(proc,post,dao)		해당 조각페이지 불러오게 리턴			
-	@RequestMapping(value="mypage_update_info.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_mb_update.LF", method=RequestMethod.POST)
 	public String memberMypageUpdateInfo() {
 		System.out.println("memberMypageUpdateInfo()...");	
-		return "redirect:mypage.LF?pn=update_info";
+		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	
 //회원의 비밀번호 변경하기								비밀번호 변경
 //	mypage_update_pw.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_update_pw.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_pw_update.LF", method=RequestMethod.POST)
 	public String memberMypageUpdatePw() {
 		System.out.println("memberMypageUpdatePw()...");	
-		return "redirect:mypage.LF?pn=update_pw";
+		return "member/mypage/info_manager/mypage_pw_update";
 	}
 
 
@@ -289,10 +289,10 @@ public class MemberController {
 	
 //회원이 결제한 물품의 배송정보 표시하기							배송 관리
 //	mypage_payment.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_payment.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_payment_info.LF", method=RequestMethod.POST)
 	public String memberMypagePayment() {
 		System.out.println("memberMypagePayment()...");	
-		return "redirect:mypage.LF?pn=payment";
+		return "member/mypage/order_manager/mypage_payment_info";
 	}
 	
 //회원이 결제한 내역 확인하기							
@@ -318,10 +318,10 @@ public class MemberController {
 	
 //장바구니 목록 확인하기							
 //	mypage_shopping.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_shopping.LF", method=RequestMethod.GET)
+	@RequestMapping(value="mypage_shoppingcart.LF", method=RequestMethod.GET)
 	public String memberMypageShopping() {
 		System.out.println("memberMypageShopping()...");	
-		return "redirect:mypage.LF?pn=shopping";
+		return "member/mypage/order_manager/mypage_shoppingcart";
 	}
 	
 	// 세현 테스트 mypage.jsp 관련(load 써먹을수있나 테스트중.)..
@@ -338,7 +338,11 @@ public class MemberController {
 	}
 	
 	
-	
+	@RequestMapping(value="mypage_recive_address.LF", method=RequestMethod.GET) // ???/
+	public String memberMypageReciveAddress() {
+		System.out.println("memberMypageReciveAddress()...");	
+		return "member/mypage/order_manager/mypage_delivery_info";
+	}
 	
 	
 ////////////////////////////////////////////////////
