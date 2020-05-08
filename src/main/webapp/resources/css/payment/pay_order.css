@@ -1,0 +1,327 @@
+#fundingPayment_wrapper {
+    width: 1200px;
+    height: 850px;
+    margin: 0px auto;
+}
+      
+#fundingPayment_main_title {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.fundingPayment_main_title {
+    color: orange;
+}
+
+.fundingPayment_subtitle {
+    font-size: 12pt;
+	float: right;
+	font-weight: bold;
+}
+
+.fundingPayment_order_sheet {
+	color: black;
+}
+
+.fundingPayment_basket, .fundingPayment_order_finish {
+	color: gray;
+}
+
+#fundingPayment_content {
+	padding: 20px 0px; 
+    width: 700px;
+    min-height: 600px;
+    margin-bottom: 20px;
+    float: left;
+    
+}
+
+#fundingPayment_title, #deliveryPlaceInfo_title, #orderfundingInfo_title, #paymentInfo_title {
+    margin: 0 20px;
+    padding: 25px 0 9px;
+    border-bottom: 2px solid #666;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ordererInfo_box, .deliveryPlaceInfo_box, .paymentInfo_box{
+    font-size: 15px;
+    line-height: 22px;
+    padding: 0 20px;
+}
+
+.paymentInfo_box {
+	margin: 15px 0px;
+}
+
+.ordererInfo_table, .deliveryPlaceInfo_table, .paymentInfo_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.ordererInfo_table_th, .deliveryPlaceInfo_table_th, .ordererInfo_table_th {
+    font-size: 15px
+    padding: 14px 0 16px 16px;
+    line-height: 20px;
+    text-align: center;
+    font-weight: normal;
+    background: #f6f6f6;
+    border-bottom: 1px solid #e6e6e6;
+    width:30%;
+}
+
+.paymentInfo_table_th {
+    font-size: 15px
+    line-height: 20px;
+    text-align: left;
+    font-weight: normal;
+}
+
+.paymentInfo_sum_th {
+    font-size: 15px
+    line-height: 20px;
+    text-align: left;
+    font-weight: normal;
+    padding: 5px 0px;
+}
+
+.paymentInfo_sum_th_last {
+    font-size: 15px;
+    line-height: 20px;
+    text-align: left;
+    font-weight: bold;
+    width: 10%;
+    background: #D3D3D3;
+    padding: 15px 0px;
+}
+
+.deliveryPlaceInfo_table_th_nbsp {
+    font-size: 15px
+    padding: 14px 0 16px 16px;
+    line-height: 20px;
+    text-align: left;
+    font-weight: normal;
+    background: #f6f6f6;
+    width:30%;
+}
+
+.ordererInfo_table_td, .deliveryPlaceInfo_table_td {
+    font-size:10px;
+    line-height: 20px;
+    color: #333;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.paymentInfo_table_td {
+	font-size:10px;
+    line-height: 20px;
+    color: #333;
+}
+
+.paymentInfo_sum_td {
+    font-size: 15px
+    line-height: 20px;
+    color: black;
+    text-align: right;
+}
+
+.paymentInfo_sum {
+    font-size: 15px;
+    line-height: 20px;
+    color: black;
+    text-align: right;
+    background: #D3D3D3;
+    width:30%;
+    padding: 15px 0px;
+    font-weight: bold;
+
+}
+
+.deliveryPlaceInfo_table_td_nbsp {
+    font-size: 15px
+    line-height: 20px;
+    color: #333;
+}
+
+input[name=fundingPayment_name], input[name=fundingPayment_email],
+input[name=deliveryPlace_name], input[name=receiver_name],
+input[name=deliveryPlaceInfo_tel], input[name=deliveryPlaceInfo_tel_add],
+input[id=fundingPayment_address],input[id=fundingPayment_detailAddress],
+input[id=fundingPayment_extraAddress],input[name=delivery_required]{
+    width: 100%;
+    height: 30px;
+    margin: 5px 5px 5px 0px;
+}
+
+input[name=fundingPayment_tel],input[id=fundingPayment_postcode], input[name=paymentPoint]  {
+    width: 99%;
+    height: 30px;
+    margin: 5px 5px 5px 0px;
+}
+
+button[name=phoneIdentity_button], input[name=fundingPayment_postcode_button] {
+	border: 1px solid black;
+    width: 100%;
+    height: 30px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    margin: 5px 5px 5px 0px;
+}
+
+button[name=paymentApply] {
+    border: 1px solid black;
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    margin: 5px 5px 5px 0px;
+}
+
+.orderfundingInfo_set {
+    overflow: hidden;
+    margin:0 20px;
+}
+
+.orderfunding_a {
+    color: #333;
+    font-size: 15px
+    text-decoration: none;
+}
+
+.orderfunding_img {
+    float: left;
+    margin: 20px 0;
+}
+
+.orderfunding_imgInfo {
+    float:left;
+    width:68%;
+    margin:0 0 0 15px;
+    padding: 17px 0 15px;
+}
+
+.orderfunding_cnt {
+    color: #999;
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: bold;
+}
+
+.orderfunding_price {
+    color: #333;
+    font-size: 15px;
+    font-weight:bold;
+}
+
+.orderfunding_won {
+    font-style:normal;
+    font-size:12px;
+    padding:0 0 0 2px;
+}
+
+.paymentInfo_table_td_point, .fundingPayment_desc {
+    font-size: 14px;
+}
+.fundingPayment_desc {
+	padding: 15px;
+}
+
+.point_color {
+    color: orange;
+}
+
+.fundingPayment_confirm_order {
+    display: inline-block;
+    border: 1px solid orange;
+    list-style-type: none;
+    color: white;
+    background-color: orange;
+    text-decoration: none;
+    padding: 15px;
+}
+
+#fundingPayment_sidebar {
+    position: fixed;
+    right: 250px;
+    width: 450px;
+    margin-bottom: 20px;
+    float: right;
+    margin-top: 20px;
+    
+}
+      
+#fundingPayment_order_button {
+    text-align: center;
+    clear: both;
+    padding: 20px;
+}
+
+@media ( max-width: 1200px ) {
+	
+    #fundingPayment_wrapper {
+    margin: 0px auto;
+    width: auto;
+    }
+    
+    #fundingPayment_content {
+    width: auto;
+    float: none;
+    }
+
+    #fundingPayment_sidebar {
+    display: block;
+    position: static;    
+    width: 381px;
+    min-height: 300px;
+    padding: 20px;
+    margin-bottom: 20px;
+    float: none;
+    border: 1px solid #bcbcbc;
+}
+    #fundingPayment_order_button {
+        margin: 40px 0 0;
+        clear: both;
+    }
+    
+}
+
+input[name=new_deliveryPlaceInfo_check], input[name=default_deliveryInfo_save] {
+	position: relative;
+	top: 4px;
+}
+
+@media ( max-width: 750px ) {
+    #fundingPayment_wrapper {
+    margin: 0px auto;
+    width: auto;
+    }
+    
+    #fundingPayment_content {
+    width: auto;
+    float: none;
+    }
+
+    #fundingPayment_sidebar {
+    display: block;
+    position: static;    
+    width: 400px;
+    min-height: 300px;
+    padding: 20px;
+    margin-bottom: 20px;
+    float: none;
+    border: 1px solid #bcbcbc;
+	}
+    #fundingPayment_order_button {
+        margin: 40px 0 0;
+        width: auto;
+        clear: both;
+    }
+    
+	#footer {
+		display: none;
+	}
+
+}

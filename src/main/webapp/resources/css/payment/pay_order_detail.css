@@ -1,0 +1,151 @@
+@charset "UTF-8";
+/* mypage 주문상세조회 CSS */
+.orderDetail {
+  font-size: 10pt;
+  padding: 10px;
+  color: white;
+  background-color: orange;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  background-clip: padding-box;
+}
+.orderDetail:hover {
+  background: orangered;
+}
+
+.orderDetail_overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.orderDetail_overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.orderDetail_popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 786px;
+  height: 550px;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.orderDetail_popup .orderDetail_title {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid black;
+}
+.orderDetail_popup .close {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.orderDetail_popup .close:hover {
+  color: black;
+}
+.orderDetail_popup .orderDetail_content {
+  font-size: 12px;
+  width: 100%;
+  overflow: auto;
+  clear: both;
+}
+
+.orderDetail_center, .orderDetail_left, .orderDetail_right  {
+   border-collapse: collapse;
+   width: 100%;
+   margin-bottom: 20px;
+}
+
+.orderDetail_center_th {
+    margin: 0px auto;
+    font-size: 12px;
+    text-align: center;
+    line-height: 20px;
+    font-weight: normal;
+    background: #f6f6f6;
+    width: 120px;
+}
+
+.orderDetail_left_th, .orderDetail_right_th {
+    margin: 0px auto;
+    padding: 0px 0px 0px 5px;
+    font-size:12px;
+    text-align: left;
+    line-height: 20px;
+    font-weight: normal;
+    background: #f6f6f6;
+    border-bottom: 1px solid #e6e6e6;
+    width: 120px;
+}
+
+.orderDetail_center_td {
+    font-size:12px;
+    line-height: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.orderDetail_left_td, .orderDetail_right_td {
+    font-size:12px;
+    line-height: 20px;
+    color: #333;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 0px 0px 0px 10px;
+}
+
+.orderDetail_center {
+    width: 100%;
+    border: 1px solid #999;
+    border-spacing: 0;
+    float: left;
+    
+}
+
+.orderDetail_left {
+    table-layout: fixed;
+    width: 100%;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    border-spacing: 0;
+    float: left;
+    width: 368px;
+    height: 200px;
+}
+
+.orderDetail_right {
+    position: relative;
+    left: -1px;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    border-collapse: collapse;
+    float: right;
+    width: 50%;
+    height: 254px;
+    
+}
+
+@media screen and (max-width: 400px){
+  .orderDetail{
+    width: 400px;
+  }
+  .orderDetail_popup{
+    width: 400px;
+  }
+}

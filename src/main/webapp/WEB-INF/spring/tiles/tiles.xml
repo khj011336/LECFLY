@@ -77,5 +77,21 @@
     </definition>
     
  <!-- 결제 메뉴 표시 -->
- 	<definition name=""></definition>
+ 	<definition name="payment" template="/WEB-INF/view/payment/lecfly_payment.jsp">
+ 		<put-attribute name="payment_header" value="/WEB-INF/view/common/header.jsp" />
+ 		<put-attribute name="payment_left" value="/WEB-INF/view/common/side_nav.jsp" />
+ 		<put-attribute name="payment_footer" value="/WEB-INF/view/common/footer.jsp" />
+ 	</definition>
+ 	
+ 	<definition name="*.pay" extends="payment">
+        <put-attribute name="payment_body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.pay" extends="payment">
+         <put-attribute name="payment_body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.pay" extends="payment">
+        <put-attribute name="payment_body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
  </tiles-definitions>

@@ -357,11 +357,11 @@ public class MemberController {
 	
 //장바구니 목록 확인하기							
 //	mypage_shopping.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_shoppingcart.LF", method=RequestMethod.GET)
-	public String memberMypageShopping() {
-		System.out.println("memberMypageShopping()...");	
-		return "member/mypage/order_manager/mypage_shoppingcart";
-	}
+//	@RequestMapping(value="mypage_shoppingcart.LF", method=RequestMethod.GET)
+//	public String memberMypageShopping() {
+//		System.out.println("memberMypageShopping()...");	
+//		return "member/mypage/order_manager/mypage_shoppingcart";
+//	}
 	
 	// 세현 테스트 mypage.jsp 관련(load 써먹을수있나 테스트중.)..
 	@RequestMapping(value="mypage_list.LF", method=RequestMethod.GET)

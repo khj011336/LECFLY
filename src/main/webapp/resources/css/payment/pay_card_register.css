@@ -2,7 +2,7 @@
 #creditcard_register_wrapper {
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+/*     background-color: #f9f9f9; */
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -14,7 +14,7 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    min-height: 100vh;
+/*     min-height: 100vh; */
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     font-family: 'Raleway';
@@ -354,4 +354,14 @@
 .creditcard.flipped {
     -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
+}
+
+.fundingPayment_confirm_order {
+    display: inline-block;
+    border: 1px solid orange;
+    list-style-type: none;
+    color: white;
+    background-color: orange;
+    text-decoration: none;
+    padding: 15px;
 }
