@@ -28,7 +28,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "update qnas set hits = hits + 1 where id = ?";
 	// QnA 목록 보여주기
 	public static String SQL_QNA_SHOWALL
-		= "select * from qnas order by created_at desc";
+		= "select * from qnas order by created_day desc";
 	// QnA 상세조회
 	public static String SQL_QNA_SHOWONE
 		= "select * from qnas where id = ?";
@@ -37,13 +37,13 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), ?, ?)";
 	// QnA 수정하기
 	public static String SQL_QNA_UPDATE_VO
-		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_at = now() where id = ?";
+		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_day = now() where id = ?";
 	// QnA 삭제하기
 	public static String SQL_QNA_DELETE_VO
 		= "delete qnas where id = ?";
 	// QnA 페이지 조회
 	public static String SQL_QNA_SHOWALL_PG
-		= "SELECT * FROM qnas order by created_at desc limit ?, ?";
+		= "SELECT * FROM qnas order by created_day desc limit ?, ?";
 	// QnA 갯수 카운트
 	public static String SQL_CHECK_QNA_NUMBERS
 	= "select count(id) as cnt from qnas";	

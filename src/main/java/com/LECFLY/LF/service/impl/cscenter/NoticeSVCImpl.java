@@ -6,54 +6,52 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
-import com.LECFLY.LF.model.vo.QnaVO;
-import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
+import com.LECFLY.LF.model.dao.inf.cscenter.INoticeDAO;
+import com.LECFLY.LF.model.vo.NoticeVO;
+import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
 
 @Service
-public class NoticeSVCImpl implements IQnaSVC{
+public class NoticeSVCImpl implements INoticeSVC{
 	@Autowired
-	private IQnaDAO qaDao;
+	private INoticeDAO ntDao;
 	
 	@Override
-	public boolean insertNewQna(QnaVO qa) {
+	public boolean insertNewNotice(NoticeVO nt) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean insertNewQna(int mbId, String mbNicname, int type, String title, String content, int showPrivate) {
+	public boolean insertNewNotice(int mbId, int type, String title, String content) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean insertNewQna(int mbId, String mbNicname, int type, String title, String content, String file,
-			int showPrivate) {
-		QnaVO qa = new QnaVO(mbId, mbNicname, type, title, content, file, showPrivate);
-		return qaDao.insertNewQna(qa);
+	public boolean insertNewNotice(int mbId, int type, String title, String content, String file) {
+		NoticeVO nt = new NoticeVO(mbId, type, title, content, file);
+		return ntDao.insertNewNotice(nt);
 	}
 
 	@Override
-	public int insertNewQnaReturnKey(int mbId, String mbNicname, int type, String title, String content, String file,
-			int showPrivate) {
-		QnaVO qa = new QnaVO(mbId, mbNicname, type, title, content, file, showPrivate);
-		return qaDao.insertNewQnaReturnKey(qa);
+	public int insertNewNoticeReturnKey(int mbId, int type, String title, String content, String file) {
+		NoticeVO nt = new NoticeVO(mbId, type, title, content, file);
+		return ntDao.insertNewNoticeReturnKey(nt);
 	}
 
 	@Override
-	public QnaVO selectOneQna(int id) {
-		QnaVO qa = qaDao.selectOneQna(id);
-		if( qa != null ) {
-			if(qaDao.increaseReadCount(id))
-				return qa;
+	public NoticeVO selectOneNotice(int id) {
+		NoticeVO nt = ntDao.selectOneNotice(id);
+		if( nt != null ) {
+			if(ntDao.increaseReadCount(id))
+				return nt;
 		}
-		return qa;
+		return nt;
 	}
 
 	@Override
-	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
-		return qaDao.updateQna(id, type, title, content, showPrivate);
+	public boolean updateNotice(int id, int type, String title, String content) {
+		return ntDao.updateNotice(id, type, title, content);
 	}
 	
 	
@@ -64,39 +62,39 @@ public class NoticeSVCImpl implements IQnaSVC{
 	}
 
 	@Override
-	public boolean deleteQna(int id) {
+	public boolean deleteNotice(int id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List<QnaVO> showAllQnas() {
-		return qaDao.showAllQnas();
+	public List<NoticeVO> showAllNotices() {
+		return ntDao.showAllNotices();
 	}
 
 	@Override
-	public List<QnaVO> showAllQnas(boolean order) {
+	public List<NoticeVO> showAllNotices(boolean order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<QnaVO> showAllQnas(int pn) {
+	public List<NoticeVO> showAllNotices(int pn) {
 		int offset = (pn-1) * PAGE_SIZE;
-		List<QnaVO>qaList = qaDao.showAllQnas(offset, PAGE_SIZE);
-		System.out.println("qasvc: pn "+ pn +  " qna = " + qaList.size());
-		return qaList;
+		List<NoticeVO>ntList = ntDao.showAllNotices(offset, PAGE_SIZE);
+		System.out.println("ntsvc: pn "+ pn +  " notice = " + ntList.size());
+		return ntList;
 	}
 
 	@Override
 	public int checkMaxPageNumber() {
-		int totalRecords = qaDao.checkNumberOfQnas();
+		int totalRecords = ntDao.checkNumberOfNotices();
 		int maxPg = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 		return maxPg;
 	}
 
 	@Override
-	public boolean updateQna(QnaVO qa) {
+	public boolean updateNotice(NoticeVO nt) {
 		// TODO Auto-generated method stub
 		return false;
 	}

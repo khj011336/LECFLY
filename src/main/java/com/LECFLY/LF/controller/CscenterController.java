@@ -229,7 +229,7 @@ public class CscenterController {
 		System.out.println("총 볼륨(MB): "+ rMap.get("totalMB") +"MB");
 		
 		// public img src... 
-		int ntRtkey = this.ntSvc.insertNewNoticeReturnKey(mbId, mbNicname, type, title, content,filePath, showPrivate );
+		int ntRtkey = this.ntSvc.insertNewNoticeReturnKey(mbId, type, title, content,filePath );
 		// 상세보기 => atId?
 		if( ntRtkey > 0 ) {
 			System.out.println("게시글 등록 성공: " + ntRtkey);
@@ -295,7 +295,7 @@ public class CscenterController {
 	@RequestMapping(value = "/cs_update_notice.LF", method = RequestMethod.POST)
 	public String noticeUpdateProc(HttpSession ses, @ModelAttribute(value = "notice") NoticeVO nt) { // vo를 command객체로 사용하자.
 		System.out.println("notice update: "+ nt);
-		boolean b = qaSvc.updateNotice(nt);
+		boolean b = ntSvc.updateNotice(nt);
 		if( b ) {
 			return "redirect:cs_notice.LF?id="+nt.getId();
 		} else {
@@ -318,7 +318,7 @@ public class CscenterController {
 			return new ModelAndView(
 				"redirect:cs_notice.LF?pn=1");
 		}
-		List<NoticeVO> ntList = ntSvc.showAllNotice(pageNumber);
+		List<NoticeVO> ntList = ntSvc.showAllNotices(pageNumber);
 		ModelAndView mav = new ModelAndView("cscenter/cs_notice");
 		if( ntList != null ) {
 			mav.addObject("atSize", ntList.size());

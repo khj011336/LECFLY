@@ -27,9 +27,29 @@ public class NoticeVO {
 	 */
 	public NoticeVO() {
 	}
-	
 	/**
-	 * @param id
+	 * @param mbId
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 */
+	public NoticeVO(int mbId, int type, String title, String content, String file) {
+		this(0, mbId, type, title, content, file, null, null, 0);
+	}
+	/**
+	 * @param mbId
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 * @param hits
+	 */
+	public NoticeVO(int mbId, int type, String title, String content, String file, int hits) {
+		this(0, mbId, type, title, content, file, null, null, hits);
+	}
+	/**
+	 * @param mbId
 	 * @param type
 	 * @param title
 	 * @param content
@@ -38,17 +58,9 @@ public class NoticeVO {
 	 * @param updatedDay
 	 * @param hits
 	 */
-	public NoticeVO(int id, int type, String title, String content, String file, Timestamp writedDay,
+	public NoticeVO(int mbId, int type, String title, String content, String file, Timestamp writedDay,
 			Timestamp updatedDay, int hits) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.title = title;
-		this.content = content;
-		this.file = file;
-		this.writedDay = writedDay;
-		this.updatedDay = updatedDay;
-		this.hits = hits;
+		this(0, mbId, type, title, content, file, writedDay, updatedDay, hits);
 	}
 	/**
 	 * full constructor 

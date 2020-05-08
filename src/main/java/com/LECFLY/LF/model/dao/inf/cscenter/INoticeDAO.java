@@ -3,7 +3,6 @@ package com.LECFLY.LF.model.dao.inf.cscenter;
 import java.util.List;
 
 import com.LECFLY.LF.model.vo.NoticeVO;
-import com.LECFLY.LF.model.vo.QnaVO;
 
 public interface INoticeDAO {
 	// 관리자가 신규 게시글을 등록 할 수 있다 (+파일업로드..)

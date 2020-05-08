@@ -17,7 +17,7 @@ public interface IQnaSVC {
 	//게시글 상세보기 할 수 있다
 	QnaVO selectOneQna(int id);
 		
-	//- 회원이 자신의 게시글을 편집 갱신 할 수 있다
+	//회원이 자신의 게시글을 편집 갱신 할 수 있다
 	boolean updateQna(int id, int type, String title, String content, int showPrivate);
 	boolean updateQna(QnaVO qa);
 	boolean increaseReadCount(int id); // rc++
