@@ -40,4 +40,20 @@
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
     </definition>        
     
+<!-- 어드민 메뉴 표시 -->    
+    <definition name="admin" template="/WEB-INF/views/admin/admin_home.jsp">
+    <put-attribute name="admin_nav"   value="/WEB-INF/views/admin/admin_side_nav.jsp" />
+    </definition>
+ 
+    <definition name="*.ad" extends="admin">
+        <put-attribute name="admin_body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.ad" extends="admin">
+         <put-attribute name="admin_body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.ad" extends="admin">
+        <put-attribute name="admin_body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
  </tiles-definitions>

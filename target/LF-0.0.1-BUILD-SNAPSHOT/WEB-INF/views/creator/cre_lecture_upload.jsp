@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-	<link type="text/css" rel="stylesheet" href="ttt.css">
+	<%@include file="cre_status.jsp" %>
 	<div id="cls_wrap">
       	<div id="cls_content">
        		<div id="cls_head"><span class="creator_h1">클래스기본정보</span></div>
