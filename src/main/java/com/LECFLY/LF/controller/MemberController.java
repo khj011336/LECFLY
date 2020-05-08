@@ -1,49 +1,91 @@
 package com.LECFLY.LF.controller;
 
+import java.util.List;
+import java.sql.Timestamp;
+import java.util.HashMap;
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
+import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
 @Controller
 public class MemberController {
 	
 	@Autowired
 	ILoginSVC logSvc;
+	
 	@Autowired
-	IMemberDAO mbDao;
+	IMemberDAO mbDao; // ? <= controller 에서 mbDao 말고 mbSVC 있어야됨.
+	
+	@Autowired
+	IMypageSVC mpSvc; // 세현추가
 
-	public static final int MB_LOGIN_AUTH_OK = 4;
+	public static final int MB_EMAIL_ERROR = 1;
+	public static final int MB_PW_ERROR = 2;
+	public static final int MB_EMAIL_NONE = 3;
+	public static final int MB_EMAIL_AUTH_OK = 4;
+	public static final int MB_EMAIL_PW_MISMATCH = 5;
+	
+	public static final HashMap<Integer, String> MB_MSG_MAP = new HashMap<Integer, String>();
+	
+	public static final String getMsg(int r) {
+		MB_MSG_MAP.put(MB_EMAIL_ERROR, "로그인 비었음");
+		MB_MSG_MAP.put(MB_PW_ERROR, "패스워드 비었음");
+		MB_MSG_MAP.put(MB_EMAIL_NONE, "가입되지 않은 회원 이메일");
+		MB_MSG_MAP.put(MB_EMAIL_AUTH_OK, "로그인 인증 성공");
+		MB_MSG_MAP.put(MB_EMAIL_PW_MISMATCH, "로그인 암호 불일치");
+		return MB_MSG_MAP.get(r);
+	}
+
 	
 	// 로그인창 으로 이동했을때
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
-	public String memberLoginPage() {
+	public String memberLoginPage(HttpSession ses, MemberVO mb) {
 		System.out.println("memberLoginPage()...");
 		return "member/login";
 	}
 	
 	// login.LF 에서 이메일 비밀번호 입력후 로그인 클릭시
-	@RequestMapping(value="log_in.LF", method=RequestMethod.POST)
-	public String memberLoginedHomePage(HttpSession ses, String email, String pw) {
+	@RequestMapping(value="login_proc.LF", method=RequestMethod.POST)
+	public String memberLoginedHomePage(HttpSession ses, Model model, String email, String pw) {
 		System.out.println("memberLoginedHomePage()...");
+		MemberVO mb = new MemberVO();
 		int r = logSvc.loginProcess(email, pw);
-		MemberVO mb = mbDao.memberPassword(email, pw);
-//		if( r == MB_LOGIN_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
+		if( r == MB_EMAIL_ERROR ) {						// 이메일 입력없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_PW_ERROR ) {					// 패스워드 입력없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_EMAIL_NONE ) {				// 가입된 회원 이메일이 없음
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else if( r == MB_EMAIL_AUTH_OK ) { //서비스 처리: 이메일과 로그인이 일치(로그인이 성공했을때)
 		// 여기서  서비스에서 로그인 성공 실패에 대한 처리를 하고 
-			
-			return "redirect:home.LF?login=" + "로그인값";
-//		} else { //서비스 처리: 이메일과 로그인이 불일치() 
-//			return "member/login"; // 1Model 을 해서 메세지를 넣는방법  
-									/* 2 리턴값을 ModelAndView 로해서 
-										add 하여 메세지넣는방법 */
-//		}
+			mb = mbDao.memberPassword(email, pw);
+			model.addAttribute("member", mb);
+			System.out.println(mb);
+			return "home";
+		} else if( r == MB_EMAIL_PW_MISMATCH ) {		// 이메일과 비밀번호가 불일치함
+			model.addAttribute("msg", getMsg(r));
+			return "member/login"; 
+		} else {
+			model.addAttribute("msg", "알수없는 오류");
+			return "redirect:login.LF";
+		}
 	} 
 	
 
@@ -56,22 +98,33 @@ public class MemberController {
 		return "member/clause";
 	}
 	
-	// 약관동의 에서 넘어와서 회원가입 폼이 준비된 페이지
-	// //	create_new_member.lf 		이동시 약관확인 여부 체크 확인후 이동
-//	member_join.lf (proc; post; dao; 비회원)			회원가입proc 실행(createNewMember)		
+	// 약관동의 에서 넘어와서 회원가입 폼을 준비하는 페이지
+	// join_new_member.lf (form; get; 비회원)
 	@RequestMapping(value="join_new_member.LF", method=RequestMethod.GET)
 	public String memberJoinPage() {
 		System.out.println("memberJoinPage()");
-		// 서비스: 약관페이지에서 넘어올떄 약관동의버튼 모두체크 하는 것을 처리
-//		agree_receive.lf(proc; post; 비회원)			약관 확인 여부 체크		
-		
-//		if() { // 약관페이지에서 넘어올떄 약관동의버튼 모두체크시 
 			return "member/create_new_member";
-//		} else { // 약관을 모두 체크하지않았을경우
-//			return "member/clause"; // 아니면
-//			return "redirect:clause.LF?err=1" // 이런식??
-//		}
-	}		
+	}
+	// 회원가입하는 proc
+	//member_join.lf (proc; post; dao; 비회원)
+	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
+	public String join_member_proc(
+			String cnm_mb_name,
+			String cnm_mb_nick,
+			Timestamp cnm_mb_birth,
+			int cnm_mb_gender,	// script로 처리먼저
+			String cnm_mb_email,
+			String cnm_mb_pw,
+			String cnm_mb_ph,	// script로 처리먼저
+			int cnm_mb_adress_num,
+			String cnm_mb_adress_basic,
+			String cnm_mb_adress_detail,
+			int cnm_mb_agree	// script로 처리먼저
+			){
+		MemberVO mb = new MemberVO(null, cnm_mb_name, cnm_mb_nick, cnm_mb_birth, cnm_mb_gender, cnm_mb_email, cnm_mb_pw, cnm_mb_ph, cnm_mb_agree, cnm_mb_adress_basic, cnm_mb_adress_detail, cnm_mb_adress_num);
+		System.out.println("join_member_proc....");
+		return "home";
+	}
 	
 //이메일 찾기						
 	//	find_mb_login.lf (form; get; 비회원)			이메일찾기 폼 이동
@@ -132,22 +185,30 @@ public class MemberController {
 	//회원이 수강중인 강의 갯수 확인하기
 	//회원이 해당 강의 중 보던 영상 표시하기"	
 	// 마이페이지 이동
-	@RequestMapping(value="mypage.LF", method=RequestMethod.GET) // post 하면 405 에러뜸
+	@RequestMapping(value="mypage.LF", method=RequestMethod.GET)
 	public String memberMyPage() {
 		System.out.println("memberMyPage()");
 		
 		return "member/mypage";
 	}	
 	
-	
 //	회원의 프로필 사진 수정하기							
 //	change_pro_pic.lf(proc; post, dao, attr)			proc완료후 mypage.lf 프로필사진 업데이트된 상태로 forward
 	@RequestMapping(value="change_pro_pic.LF", method=RequestMethod.POST)
-	public String memberChangeProfilePicture() {
+	public String memberChangeProfilePicture(HttpSession ses, 
+			@RequestParam(value="id", defaultValue ="0") int id, // 바꾸려고하는 id
+			@RequestParam(value="pic", defaultValue ="") String filePath,  
+			Model model) {
 		System.out.println("memberChangeProfilePicture()...");
-		
-		
-		return "member/mypage";
+		// 교수님말: 회원 비밀번호 한번더 인증하는 작업이 필요하다고함 (회원의 개인정보를 바꾸기 때문에)		
+		int loginedId = (Integer)ses.getAttribute("mbId");
+		boolean b = mpSvc.updateMemberProfileImg(loginedId, id, filePath);
+		if( b ) {
+			
+		} else {
+			
+		}
+		return "member/mypage/mypage"; // forward
 	}
 	
 //크리에이터 신청하기							
@@ -162,12 +223,46 @@ public class MemberController {
 	
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
+	
+//	수강중인강의
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_attending_class.LF", method=RequestMethod.POST)
-	public String memberMypageAttendingClass() {
-		System.out.println("memberMypageAttendingClass()...");	
-		return "redirect:mypage.LF?pn=attending_class";
+	@RequestMapping(value="mypage_attending_lec.LF", method=RequestMethod.POST)
+	public String memberMypageAttendingLec(HttpSession ses, 
+			@RequestParam(value="id", defaultValue ="0") int id, Model model) {
+		System.out.println("memberMypageAttendingLec()...");	
+		
+//		List<VideoVO> vdList = mpSvc.showAllAttendingLec(); // 내가 수강한 비디오 목록을 리스트로 받으려함
+//		if(vdList != null) {
+//			return "";
+//		} else {
+//			return "";
+//		}
+		 return "member/mypage/attend_lec_manager/mypage_attending_lec";
 	}
+	
+	//회원이 찜하기한 강의 확인하기							
+//	mypage_will_attend.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
+	@RequestMapping(value="mypage_will_attend.LF", method=RequestMethod.POST)
+	public String memberMypageWillAttend() {
+		System.out.println("memberMypageWillAttend()...");	
+		return "member/mypage/attend_lec_manager/mypage_will_attend";
+	}
+
+	//회원이 좋아요한 강의 확인하기							
+	//	mypage_like.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
+	@RequestMapping(value="mypage_like.LF", method=RequestMethod.POST)
+	public String memberMypageLike() {
+		System.out.println("memberMypageLike()...");	
+		return "member/mypage/attend_lec_manager/mypage_like";
+	}
+	
+	
+	
+	@RequestMapping(value="mypage_no_list.LF", method=RequestMethod.POST)
+	public String memberMypageNOList() {
+		System.out.println("memberMypageNOList()...");	
+		return "member/mypage/attend_lec_manager/mypage_no_list";
+	}	
 	
 //회원이 보던 영상 표시하기							
 //	mypage_attending_video.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
@@ -177,84 +272,71 @@ public class MemberController {
 		return "redirect:mypage.LF?pn=attending_video";
 	}
 	
-//회원이 좋아요한 강의 확인하기							
-//	mypage_like.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_like.LF", method=RequestMethod.POST)
-	public String memberMypageLike() {
-		System.out.println("memberMypageLike()...");	
-		return "redirect:mypage.LF?pn=like";
-	}
+
 	
-//회원이 찜하기한 강의 확인하기							
-//	mypage_will_attend.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_will_attend.LF", method=RequestMethod.POST)
-	public String memberMypageWillAttend() {
-		System.out.println("memberMypageWillAttend()...");	
-		return "redirect:mypage.LF?pn=will_attend";
-	}
-	
-	
+////////활동내역
+		
 //회원이 작성한 댓글내역 확인하기							활동 내역
 //	mypage_comment.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_comment.LF", method=RequestMethod.POST)
 	public String memberMypageComment() {
 		System.out.println("memberMypageComment()...");	
-		return "redirect:mypage.LF?pn=comment";
+		return "memeber/mypage/activity/mypage_comment";
 	}
 
-//회원이 문의한 qna내역 확인하기							
+//회원이 문의한 qna내역 확인하기							문의 내역
 //	mypage_qna.lf(proc,post,dao)				해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_qna.LF", method=RequestMethod.POST)
 	public String memberMypageQna() {
 		System.out.println("memberMypageQna()...");	
-		return "redirect:mypage.LF?pn=qna";
+		return "member/mypage/activity/mypage_qna";
 	}
-//펀딩신청내역 확인하기							
+//펀딩신청내역 확인하기									펀딩신청내역
 //	mypage_funding.lf(proc,post,dao)		해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_funding.LF", method=RequestMethod.POST)
 	public String memberMypageFunding() {
 		System.out.println("memberMypageFunding()...");	
-		return "redirect:mypage.LF?pn=funding";
+		return "member/mypage/activity/mypage_funding";
 	}
 	
-//회원이 보유중인 쿠폰 표시							
+//회원이 보유중인 쿠폰 표시							나의쿠폰
 //	mypage_coupon.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_coupon.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_coupon_info.LF", method=RequestMethod.POST)
 	public String memberMypageCoupon() {
 		System.out.println("memberMypageCoupon()...");	
-		return "redirect:mypage.LF?pn=coupon";
+		return "member/mypage/activity/coupon_info";
 	}
-//회원이 이용중인 이용권 표시							
-//	mypage_ticket.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_ticket.LF", method=RequestMethod.POST)
-	public String memberMypageTicket() {
-		System.out.println("memberMypageTicket()...");	
-		return "redirect:mypage.LF?pn=ticket";
-	}
-//회원이 가입시 입력한 정보 수정하기							정보 관리
+
+	
+//// 정보관리	
+	
+// 회원이 가입시 입력한 정보 수정하기							회원정보 수정
 //	mypage_update_info.lf(proc,post,dao)		해당 조각페이지 불러오게 리턴			
-	@RequestMapping(value="mypage_update_info.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_mb_update.LF", method=RequestMethod.POST)
 	public String memberMypageUpdateInfo() {
 		System.out.println("memberMypageUpdateInfo()...");	
-		return "redirect:mypage.LF?pn=update_info";
+		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	
-//회원의 비밀번호 변경하기							
+//회원의 비밀번호 변경하기								비밀번호 변경
 //	mypage_update_pw.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_update_pw.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_pw_update.LF", method=RequestMethod.POST)
 	public String memberMypageUpdatePw() {
 		System.out.println("memberMypageUpdatePw()...");	
-		return "redirect:mypage.LF?pn=update_pw";
+		return "member/mypage/info_manager/mypage_pw_update";
 	}
-	
+
+
+//////	 주문 / 배송관리
 	
 //회원이 결제한 물품의 배송정보 표시하기							배송 관리
 //	mypage_payment.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_payment.LF", method=RequestMethod.POST)
+	@RequestMapping(value="mypage_payment_info.LF", method=RequestMethod.POST)
 	public String memberMypagePayment() {
 		System.out.println("memberMypagePayment()...");	
-		return "redirect:mypage.LF?pn=payment";
+		return "member/mypage/order_manager/mypage_payment_info";
 	}
+	
 //회원이 결제한 내역 확인하기							
 //	mypage_payment_history.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_payment_history.LF", method=RequestMethod.POST)
@@ -263,13 +345,47 @@ public class MemberController {
 		return "redirect:mypage.LF?pn=payment_history";
 	}
 	
+	
+	
+//회원이 이용중인 이용권 표시							
+//	mypage_ticket.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
+	@RequestMapping(value="mypage_ticket.LF", method=RequestMethod.POST)
+	public String memberMypageTicket() {
+		System.out.println("memberMypageTicket()...");	
+		return "redirect:mypage.LF?pn=ticket";
+	}
+
+	
+
+	
 //장바구니 목록 확인하기							
 //	mypage_shopping.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_shopping.LF", method=RequestMethod.GET)
+	@RequestMapping(value="mypage_shoppingcart.LF", method=RequestMethod.GET)
 	public String memberMypageShopping() {
 		System.out.println("memberMypageShopping()...");	
-		return "redirect:mypage.LF?pn=shopping";
+		return "member/mypage/order_manager/mypage_shoppingcart";
 	}
+	
+	// 세현 테스트 mypage.jsp 관련(load 써먹을수있나 테스트중.)..
+	@RequestMapping(value="mypage_list.LF", method=RequestMethod.GET)
+	public String memberMypageList() {
+		System.out.println("memberMypageList()...");	
+		return "member/mypage/info_manager/mypage_mb_update";
+	}
+	
+	@RequestMapping(value="mypage_delivery_info.LF", method=RequestMethod.GET)
+	public String memberMypageDeliveryInfo() {
+		System.out.println("memberMypageDeliveryInfo()...");	
+		return "member/mypage/order_manager/mypage_delivery_info";
+	}
+	
+	
+	@RequestMapping(value="mypage_recive_address.LF", method=RequestMethod.GET) // ???/
+	public String memberMypageReciveAddress() {
+		System.out.println("memberMypageReciveAddress()...");	
+		return "member/mypage/order_manager/mypage_delivery_info";
+	}
+	
 	
 ////////////////////////////////////////////////////
 	

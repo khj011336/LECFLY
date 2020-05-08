@@ -1,5 +1,7 @@
 package com.LECFLY.LF.model.dao.impl.member;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
@@ -16,6 +19,34 @@ import com.LECFLY.LF.model.vo.MemberVO;
 
 @Repository
 public class MemberMySqlDAOImpl implements IMemberDAO {
+	
+	class MemberImplRowMapper implements RowMapper<MemberVO> {
+
+		@Override
+		public MemberVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			MemberVO mb = new MemberVO(rs.getInt("id"), 
+					rs.getString("pic"), rs.getString("name"),
+					rs.getString("nicname"), rs.getTimestamp("birthday"),
+					rs.getInt("gender"), rs.getString("email"),
+					rs.getString("ph_number"), rs.getTimestamp("joined_at"),
+					rs.getInt("agree_receive"), rs.getInt("use_ticket"),
+					rs.getInt("check_creator"), rs.getInt("login_count"),
+					rs.getTimestamp("loginedat"), 
+					// 이부분부터는 모르겠어서 MemberVO 보고 때려맞춤 sql 콜룸명이랑 타입 맞는지확인부탁
+					rs.getString("baisc_address"), 
+					rs.getString("detail_address"), rs.getInt("postal_code"), 
+					rs.getString("address_name"), rs.getString("receiver_name"));
+			
+			if(mb != null) {
+				System.out.println("mb = " + mb);
+				return mb;
+			} else {
+				System.out.println("memberMySqlDAOImpl.. rs.get() 틀림");
+				return null;
+			}
+		}
+		
+	}
 	
 	
 	//sql 정의부
@@ -163,15 +194,26 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 //	로그인하기(이메일 유무 체크, Read)
 	@Override
 	public int memberEamil(String email) {
-		return this.jtem.queryForObject(SQL_SELECT_MEMBER_ID_BY_EMAIL, Integer.class, email);
+		try {
+			return this.jtem.queryForObject(SQL_SELECT_MEMBER_ID_BY_EMAIL, Integer.class, email);
+		} catch (Exception e) {
+			System.out.println("sql오류");
+			return 0;
+		}
 	}
 
 //	로그인하기(이메일과 패스워드 일치 체크, Read)
 	@Override
 	public MemberVO memberPassword(String email, String password) {
-		MemberVO mb = jtem.queryForObject(SQL_SELECT_MEMBER_PW_CHECK, 
-				BeanPropertyRowMapper.newInstance(MemberVO.class), password, new PwSecurityEncoding(email).getEmail());
-		return mb;
+		try {
+			MemberVO mb = jtem.queryForObject(SQL_SELECT_MEMBER_PW_CHECK, 
+					BeanPropertyRowMapper.newInstance(MemberVO.class), password, new PwSecurityEncoding(email).getEmail());
+			mb.setPassword(null);
+			return mb;
+		} catch (Exception e) {
+			System.out.println("sql오류");
+			return null;
+		}
 //		return 0;
 //		boolean r = jtem.query();
 	}
@@ -218,6 +260,15 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	@Override
 	public boolean findEmailInDB(String email) {
 		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL_IN_DB, String.class, email) != null;
+	}
+
+	
+	
+	// 세현 추가 마이페이지에서 회원 id, 업데이트할 사진 path 입력하면은 sql 에 업데이트 하려고함
+	@Override
+	public boolean updateMemberProfileImg(int mbId, String filePath) {
+		
+		return false;
 	}
 	
 }

@@ -18,7 +18,6 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 	
 	//@Autowired
 	private JdbcTemplate jtem;	
-	private SimpleJdbcInsert simIn;
 	
 	// QnA Part
 	

@@ -17,7 +17,6 @@ public class AdminPaymentMysqlDAOImpl implements IAdminPaymentDAO{
 
 	//@Autowired
 	private JdbcTemplate jtem;	
-	private SimpleJdbcInsert simIn;
 	
 	// 결제내역 Part
 	// 결제내역 목록 보여주기

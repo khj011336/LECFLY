@@ -14,7 +14,7 @@ public interface IAdminSiteDAO {
 	// 배너 이미지를 삭제할 수 있다.
 	boolean deleteBanner(HomeFileManagerVO vo);
 	// 배너 이미지를 상세조회할 수 있다.
-	List<HomeFileManagerVO> selectBanner(HomeFileManagerVO vo);
+	HomeFileManagerVO selectBanner(HomeFileManagerVO vo);
 	// 배너 이미지를 전체조회할 수 있다.
 	List<HomeFileManagerVO> selectBannerList(HomeFileManagerVO vo);
 	
@@ -26,7 +26,7 @@ public interface IAdminSiteDAO {
 	// 추천 강의를 삭제할 수 있다.
 	boolean deleteRecommendLecture(LectureVO vo);
 	// 추천 강의를 상세조회할 수 있다.
-	List<LectureVO> selectRecommendLecture(LectureVO vo);
+	LectureVO selectRecommendLecture(LectureVO vo);
 	// 추천 강의를 전체조회할 수 있다.
 	List<LectureVO> selectRecommendLectureList(LectureVO vo);
 	
@@ -38,7 +38,7 @@ public interface IAdminSiteDAO {
 	// 일반 강의를 삭제할 수 있다.
 	boolean deleteNomalLecture(LectureVO vo);
 	// 일반 강의를 상세조회할 수 있다.
-	List<LectureVO> selectNomalLecture(LectureVO vo);
+	LectureVO selectNomalLecture(LectureVO vo);
 	// 일반 강의를 전체조회할 수 있다.
 	List<LectureVO> selectNomalLectureList(LectureVO vo);
 		

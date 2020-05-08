@@ -1,11 +1,29 @@
 package com.LECFLY.LF.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.LECFLY.LF.model.vo.HomeFileManagerVO;
+import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.service.inf.admin.IAdminFileSVC;
+import com.LECFLY.LF.service.inf.admin.IAdminSiteSVC;
 
 @Controller
 public class AdminController {
+	@Autowired
+	private IAdminSiteSVC adSiteSvc;
+	
+	@Autowired
+	private IAdminFileSVC adFileSvc;
 	
 	// 관리자 홈
 	@RequestMapping(value = "/admin.LF", method = RequestMethod.GET)
@@ -21,6 +39,48 @@ public class AdminController {
 	@RequestMapping(value = "/admin_banner.LF")
 	public String adminBanner() {
 		return "admin/admin_banner.ad";
+	}
+	// 관리자 배너삭제
+	@RequestMapping(value = "/admin_delete_banner.LF")
+	public String adminDeleteBanner(HomeFileManagerVO vo,@RequestParam("deleteId") String[] ids) {
+		for (String id : ids) {
+			vo.setId(Integer.parseInt(id));
+			boolean r = adSiteSvc.deleteBanner(vo);
+			if(r) {
+				System.out.println("삭제성공");
+			} else {
+				System.out.println("삭제실패");
+			}
+		}	
+		return "redirect:admin_banner.LF";
+	}
+	// 관리자 배너목록 출력
+	@RequestMapping(value = "/admin_banner_list.LF", method = RequestMethod.GET)
+	public String adminBannerListAll(HomeFileManagerVO vo, Model model) {
+		model.addAttribute("bannerList", adSiteSvc.selectBannerList(vo));
+		return "admin/admin_banner.ad";
+	}
+	// 관리자 배너 등록
+	@RequestMapping(value = "/admin_insert_banner.LF", method = RequestMethod.POST)
+	public String adminInsertBanner(HomeFileManagerVO vo,@RequestParam("bannerFile") MultipartFile upfile, HttpSession ses) throws IOException {
+		System.out.println("adminInsertBanner()");
+		
+		String realPath = ses.getServletContext().getRealPath(IAdminFileSVC.DEF_ADMIN_UPLOAD_DEST + "/");
+		String filePath = adFileSvc.insertUploadFile(upfile, realPath);
+		
+		vo.setFileName(upfile.getOriginalFilename());
+		vo.setFilePath(filePath);
+		vo.setFileSize(upfile.getSize());
+		
+		System.out.println(vo.toString());
+		boolean r = adSiteSvc.insertBanner(vo);
+		if(r) {
+			System.out.println("업로드성공");
+			return "redirect:admin_banner_list.LF";
+		} else {
+			System.out.println("업로드실패");
+			return "redirect:admin_banner.LF";
+		}
 	}
 	// 관리자 추천강의 관리
 	@RequestMapping(value = "/admin_recommend.LF")
@@ -62,6 +122,12 @@ public class AdminController {
 	public String adminMember() {
 		return "admin/admin_member.ad";
 	}
+	// 관리자 회원리스트 출력
+	@RequestMapping(value = "/admin_member_list.LF", method = RequestMethod.GET)
+	public String adminMemberList(MemberVO vo, Model model) {
+		return "admin/admin_member.ad";
+	}
+	
 	// 관리자 크리에이터관리
 	@RequestMapping(value = "/admin_creator.LF")
 	public String adminCreator() {

@@ -23,36 +23,30 @@ public class loginSVCImpl implements ILoginSVC {
 	public static final int MB_LOGIN_AUTH_OK = 4;
 	public static final int MB_LOGIN_PW_MISMATCH = 5;
 	
-	public static final HashMap<Integer, String> MB_MSG_MAP = new HashMap<Integer, String>();
-	
-	public static final String getMsg(int r) {
-		MB_MSG_MAP.put(MB_LOGIN_PARAM_ERROR, "로그인 파람 에러");
-		MB_MSG_MAP.put(MB_PW_PARAM_ERROR, "패스워드 파람 에러");
-		MB_MSG_MAP.put(MB_LOGIN_NONE, "가입되지 않은 회원 계정");
-		MB_MSG_MAP.put(MB_LOGIN_AUTH_OK, "로그인 인증 성공");
-		MB_MSG_MAP.put(MB_LOGIN_PW_MISMATCH, "로그인 암호 불일치");
-		return MB_MSG_MAP.get(r);
-	}
-	
-	
 	@Override
 	public int loginProcess(String email, String pw) {
 		if( email == null || email.isEmpty() ) {
+			System.out.println("1"+MB_LOGIN_PARAM_ERROR);
 			return MB_LOGIN_PARAM_ERROR;
 		}
 		if( pw == null || pw.isEmpty() ) {
+			System.out.println("2"+MB_PW_PARAM_ERROR);
 			return MB_PW_PARAM_ERROR;
 		}
 		// 가입된 회원여부
-		if( mbDao.memberEamil(email) != 1 ) {
+		int r = mbDao.memberEamil(email);
+		if( r == 0 ) {
+			System.out.println("3"+MB_LOGIN_NONE);
 			return MB_LOGIN_NONE;
 		} 
 		
 		// 패스워드 일치 여부 		controller단에서 아래 함수 재사용
 		MemberVO mb = this.mbDao.memberPassword(email, pw);
 		if( mb == null ) {
+			System.out.println("4"+MB_LOGIN_PW_MISMATCH);
 			return MB_LOGIN_PW_MISMATCH;
 		} else {
+			System.out.println("확인");
 			return MB_LOGIN_AUTH_OK;
 		}
 	}

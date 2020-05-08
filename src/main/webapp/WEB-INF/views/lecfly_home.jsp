@@ -1,30 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <html>
-<head>
 <%
  	response.setHeader("Cache-Control", "no-store");
 
 %>
+<head>
 <%@include file ="/resources/variable/pubLinkCss.jspf" %>
-<meta charset="UTF-8">
-<title>LecFly</title> 
-<script type="text/javascript" src="common/temp.js"></script>
+
+<title>LecFly</title>
 </head>
 <body>
-	<input type="hidden" name="id" readonly="readonly" value="${member.id}">
 	<div id="wrapper">
 		<div id="header" class="header" style="z-index:30;">
-			<%@ include file="common/header.jsp"%>
+			<tiles:insertAttribute name="home_header" />
 		</div>
-		<%@ include file="common/side_nav.jsp"%>
+			<tiles:insertAttribute name="home_left" />
 		<div id="homemain">
-			<%@ include file="lecture/main.jsp"%>
+			<tiles:insertAttribute name="home_body" />
 		</div>
 		<div id="footer" class="footer">
-			<%@ include file="common/footer.jsp"%>
+			<tiles:insertAttribute name="home_footer" />
 		</div>
 	</div>
+
 </body>
 </html>
+
+
+
+

@@ -17,7 +17,7 @@ public class HomeFileManagerVO {
 	/** 파일 경로*/
 	String filePath; 
 	/** 파일크기*/
-	int fileSize; 
+	long fileSize; 
 	/** 업데이트 날짜 CURRENT_TIMESTAMP*/
 	Timestamp updatedDate;
 
@@ -84,10 +84,10 @@ public class HomeFileManagerVO {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-	public int getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
-	public void setFileSize(int fileSize) {
+	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 	}
 	public Timestamp getUpdatedDate() {
@@ -96,13 +96,15 @@ public class HomeFileManagerVO {
 	public void setUpdatedDate(Timestamp updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "HomeFileManagerVO [id=" + id + ", fileDisplayOn=" + fileDisplayOn + ", fileDisplayNum=" + fileDisplayNum
-				+ ", fileName=" + fileName + ", filePath=" + filePath + ", fileSize=" + fileSize + ", updatedDate="
-				+ updatedDate + "]";
+				+ ", fileLectureId=" + fileLectureId + ", fileName=" + fileName + ", filePath=" + filePath
+				+ ", fileSize=" + fileSize + ", updatedDate=" + updatedDate + "]";
 	}
+	
+	
 	
 	
 }
