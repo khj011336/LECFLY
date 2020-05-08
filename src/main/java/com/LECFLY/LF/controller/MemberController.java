@@ -182,13 +182,12 @@ public class MemberController {
 	//회원이 수강중인 강의 갯수 확인하기
 	//회원이 해당 강의 중 보던 영상 표시하기"	
 	// 마이페이지 이동
-	@RequestMapping(value="mypage.LF", method=RequestMethod.GET) // post 하면 405 에러뜸
+	@RequestMapping(value="mypage.LF", method=RequestMethod.GET)
 	public String memberMyPage() {
 		System.out.println("memberMyPage()");
 		
 		return "member/mypage";
 	}	
-	
 	
 //	회원의 프로필 사진 수정하기							
 //	change_pro_pic.lf(proc; post, dao, attr)			proc완료후 mypage.lf 프로필사진 업데이트된 상태로 forward
