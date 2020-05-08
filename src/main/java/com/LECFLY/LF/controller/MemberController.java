@@ -97,11 +97,14 @@ public class MemberController {
 			String cnm_mb_agree_news_bymail, String cnm_mb_agree_news_bysms
 			){
 		System.out.println("join_member_proc....");
+		// birthday 인자값 timestamp로 변환
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		Timestamp birthday = Timestamp.valueOf(sdf.format(cnm_mb_birth));
 		System.out.println(cnm_mb_ph1 +"/"+ cnm_mb_ph2 +"/"+ cnm_mb_agree_news_bymail +"/"+ cnm_mb_agree_news_bysms +"/"
 				+ birthday);
+		// ph 인자값 결합
 		String ph = "010"+cnm_mb_ph1 + cnm_mb_ph2;
+		// agreeReceive 값 결합 및 변환
 		int agreeReceive = 0;
 		if( cnm_mb_agree_news_bymail.equals("agree_email"))
 			agreeReceive += 1;
@@ -112,6 +115,7 @@ public class MemberController {
 //				null, cnm_mb_name, cnm_mb_nick, birthday, cnm_mb_gender, 
 //				cnm_mb_email, cnm_mb_pw, ph, agreeReceive, cnm_mb_adress_basic, 
 //				cnm_mb_adress_detail, cnm_mb_adress_num);
+		
 		if(logSvc.joinMember(null, cnm_mb_name, cnm_mb_nick, birthday, cnm_mb_gender, 
 				cnm_mb_email, cnm_mb_pw, ph, agreeReceive, cnm_mb_adress_basic, 
 				cnm_mb_adress_detail, cnm_mb_adress_num))

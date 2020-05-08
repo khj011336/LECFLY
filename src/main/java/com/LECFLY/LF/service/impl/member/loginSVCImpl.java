@@ -63,6 +63,13 @@ public class loginSVCImpl implements ILoginSVC {
 	public boolean joinMember(String pic, String name, String nicname, Timestamp birthday, int gender, String email,
 			String password, String phNumber, int agreeReceive, String basicAddress, String detailAddress,
 			int postalCode) {
+		if ( name != null && nicname != null && birthday != null && gender < 0 && gender < 4 && email != null && 
+				password != null && phNumber != null && agreeReceive < -1 && agreeReceive > 4) {
+			
+		} else {
+
+		}
+		
 		return mbDao.insertNewMember(pic, name, nicname, birthday, gender, email, password, 
 				phNumber, agreeReceive, basicAddress, detailAddress, postalCode);
 	}
