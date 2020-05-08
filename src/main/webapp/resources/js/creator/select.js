@@ -1,23 +1,20 @@
-
- 
-	
-
   
-function select(){
+function selectList(boxid,maxPage,appendid,method,url){
 	  var page = 2;  
 	  var isVisible = false;
-   this.sc = function(){ $(window).on('scroll',function() {
+   this.List = function(){ $(window).on('scroll',function() {
 
-    if (checkVisible($("#offset"))&&!isVisible) {
-    	if( page<= 3 ){
-  	  $('html,body').animate({scrollTop :($(window).scrollTop()+170) - $('#offset').height()},400);
+    if (checkVisible($(boxid))&&!isVisible) {
+    	if( page<= maxPage ){
+  	  $('html,body').animate({scrollTop :($(window).scrollTop()+170) - $(boxid).height()},400);
    		 }   
-    	if(page == 3){
-    	   $("#offset").append("<h4>목록이없습니다</h4>")
+    	if(page == maxPage+1){
+    	   $(boxid).append("<h4>목록이없습니다</h4>")
     	   }
         isVisible=true;
         getList(page);
         page++;
+        console.log(page);
     }
 });
    }
@@ -28,31 +25,25 @@ function checkVisible( box, tOf ) {
         y = $(box).offset().top,
         elementHeight = $(box).height();   
     
-    if (tOf == "object visible") return ((y < (viewportHeight + scrolltop)) && (y > (scrolltop - elementHeight)));
+    if (tOf == "object visible") return ((y < (viewportHeight + scrolltop-80)) && (y > (scrolltop - elementHeight)));
 }
- function creatNewclass(){
-	 $(".CRC").css("cursor","pointer");
-	 $(".CRP").css("cursor","pointer");
-	 $(".CRC,.CRP").on("click", function () {
-		window.location.href="creator_new_profile.LF";
-	});
-	   }
+ 
    function getList(page){
 	   
-	   if(page <= 3 && 3 != 0 ){ 
+	   if(page <= maxPage && maxPage != 0 ){ 
 		  
-		   $("#offset").append("<img id='offimg' src='resources/imges/creator/loading.gif'>");
+		   $(boxid).append("<img id='offimg' src='resources/imges/creator/loading.gif'>");
 		   $.ajax({
-           type : 'get',  
+           type : method,  
            dataType : 'text', 
            data : {"page" : page},
-           url : 'creator.LF',
+           url : url,
            success : function(returnData) {
-        	   $("#offset").remove();
-        	   var cutor = $("#offset").html();
-        	   $("#offset").remove();
-        		$("#CRcontent").append(returnData);
-        		$("#CRcontent").append(cutor);
+        	   $(boxid).remove();
+        	   var cutor = $(boxid).html();
+        	   $(boxid).remove();
+        		$(appendid).append(returnData);
+        		$(appendid).append(cutor);
         	   page++;
         	   isVisible = false;
         	
@@ -65,20 +56,27 @@ function checkVisible( box, tOf ) {
        }); 
        } 
    }
-   function selectLecture(Lcid) {
-		var form = document.createElement('form');
-		form.setAttribute('method', 'post');
-		form.setAttribute('action', 'creator_video_show.LF');
-		form.setAttribute('id', Lcid);
-		document.charset = "utf-8";
-// 		for ( var key in params) {
-// 			var hiddenField = document.createElement('input');
-// 			hiddenField.setAttribute('type', 'hidden');
-// 			hiddenField.setAttribute('name', key);
-// 			hiddenField.setAttribute('value', params[key]);
-// 			form.appendChild(hiddenField);
-// 		}
-		document.body.appendChild(form);
-		form.submit();
-   }
 }
+function selectLecture(Lcid) {
+	var form = document.createElement('form');
+	form.setAttribute('method', 'post');
+	form.setAttribute('action', 'creator_video_show.LF');
+	form.setAttribute('id', Lcid);
+	document.charset = "utf-8";
+//		for ( var key in params) {
+//			var hiddenField = document.createElement('input');
+//			hiddenField.setAttribute('type', 'hidden');
+//			hiddenField.setAttribute('name', key);
+//			hiddenField.setAttribute('value', params[key]);
+//			form.appendChild(hiddenField);
+//		}
+	document.body.appendChild(form);
+	form.submit();
+}
+function creatNewclass(){
+	 $(".CRC").css("cursor","pointer");
+	 $(".CRP").css("cursor","pointer");
+	 $(".CRC,.CRP").on("click", function () {
+		window.location.href="creator_new_profile.LF";
+	});
+	   }

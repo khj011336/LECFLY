@@ -13,6 +13,24 @@
 		var ROOTCP = '<%= application.getContextPath()%>';
     </script>
 <<<<<<< HEAD
+</head>
+	<div id="emtpy_space"></div>
+	<div id="login_wrap">
+	    <script>
+			var ROOTCP = '<%= application.getContextPath()%>';
+			$(document).ready(function() {
+				$("#find_id2").click(function() {
+					var url = ROOTCP+'/ETC/find_mb_login.jsp';
+					$("#login_wrap").load(url, function(){
+					});			
+				}); // #find_id
+			});
+	    </script>
+	<div id="login_top">
+		<h2 id="login_title"><a href="../home.jsp" class="logo_link login_a"><img src="resources/imges/logo/LecFly_LOGO_B_C.png" ></a></h2>
+		<h3 id="login_subtitle2">비밀번호 찾기</h3>
+=======
+<<<<<<< HEAD
 <div id="login_top">
 	<h2 id="login_title"><a href="../home.jsp" class="logo_link login_a"><img src="resources/imges/logo/LecFly_LOGO_B_C.png" ></a></h2>
 	<h3 id="login_subtitle2">비밀번호 찾기</h3>
@@ -39,6 +57,7 @@
 		<h2 id="login_title"><a href="../home.jsp" class="logo_link login_a"><img src="resources/imges/logo/LecFly_LOGO_B_C.png" ></a></h2>
 		<h3 id="login_subtitle2">비밀번호 찾기</h3>
 >>>>>>> origin/gimin
+>>>>>>> branch 'master' of https://github.com/khj011336/LECFLY.git
 	</div>
 	<div id="login_middle2">
 		<div id="login_description">
@@ -54,6 +73,12 @@
 		</div>
 	</div>
 <<<<<<< HEAD
+	<div id="login_bottom">
+		<div id="find_login_btn">
+			<a href="login.LF" class="login_a">임시비밀번호 받기</a>
+		</div>
+=======
+<<<<<<< HEAD
 </div>
 <div id="login_bottom">
 	<div id="find_login_btn">
@@ -64,6 +89,7 @@
 			<a href="login.LF" class="login_a">임시비밀번호 받기</a>
 		</div>
 >>>>>>> origin/gimin
+>>>>>>> branch 'master' of https://github.com/khj011336/LECFLY.git
 	</div>
 	</div>
 </html>
