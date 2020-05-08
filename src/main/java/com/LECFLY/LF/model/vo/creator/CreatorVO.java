@@ -28,10 +28,10 @@ public int getFid() {
 public void setFid(int fid) {
 	fId = fid;
 }
-public String getImg() {
+public String getImgPath() {
 	return imgPath;
 }
-public void setImg(String img) {
+public void setImgPath(String img) {
 	this.imgPath = img;
 }
 public String getName() {

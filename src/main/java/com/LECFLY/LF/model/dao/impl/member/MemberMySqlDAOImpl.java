@@ -51,8 +51,10 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	
 	//sql 정의부
 	public static final String SQL_INSERT_NEW_MEMBER = 
-			"insert into members values(null,?,?,?,?,?,?,"
-			+ "hex(aes_encrypt(?,?)),?,now(),?,0,0,0,now(),?,?,?,null,null)";
+			"insert into members values(null,?,?,?,?,?,?,hex(aes_encrypt(?,?)), " 
+					+"?,now(),?,0,0,0,now(),?,?,?,null,null)";
+//			"insert into members values(null,?,?,?,?,?,?,"
+//			+ "hex(aes_encrypt(?,?)),?,now(),?,0,0,0,now(),?,?,?,null,null)";
 	private static final String SQL_SELECT_MEMBER_ID_BY_EMAIL = "select id from members where email=?";
 	private static final String SQL_SELECT_MEMBER_PW_CHECK = "select * from members where password = hex(aes_encrypt(?,?))";
 	private static final String SQL_FIND_MB_EMAIL = "select email from members where ph_number=? and name=?";
@@ -80,8 +82,8 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 			int postalCode) {
 		PwSecurityEncoding pwCode = new PwSecurityEncoding(email);
 		boolean r = this.jtem.update(SQL_INSERT_NEW_MEMBER, 
-				pic, name, nicname, birthday, gender, email, password, phNumber, agreeReceive, basicAddress,
-				detailAddress, postalCode) == 1;
+				pic, name, nicname, birthday, gender, email, password, pwCode.getEmail(), phNumber,
+				agreeReceive, basicAddress, detailAddress, postalCode) == 1;
 		return r;
 	}	
 
@@ -194,15 +196,26 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 //	로그인하기(이메일 유무 체크, Read)
 	@Override
 	public int memberEamil(String email) {
-		return this.jtem.queryForObject(SQL_SELECT_MEMBER_ID_BY_EMAIL, Integer.class, email);
+		try {
+			return this.jtem.queryForObject(SQL_SELECT_MEMBER_ID_BY_EMAIL, Integer.class, email);
+		} catch (Exception e) {
+			System.out.println("sql오류");
+			return 0;
+		}
 	}
 
 //	로그인하기(이메일과 패스워드 일치 체크, Read)
 	@Override
 	public MemberVO memberPassword(String email, String password) {
-		MemberVO mb = jtem.queryForObject(SQL_SELECT_MEMBER_PW_CHECK, 
-				BeanPropertyRowMapper.newInstance(MemberVO.class), password, new PwSecurityEncoding(email).getEmail());
-		return mb;
+		try {
+			MemberVO mb = jtem.queryForObject(SQL_SELECT_MEMBER_PW_CHECK, 
+					BeanPropertyRowMapper.newInstance(MemberVO.class), password, new PwSecurityEncoding(email).getEmail());
+			mb.setPassword(null);
+			return mb;
+		} catch (Exception e) {
+			System.out.println("sql오류");
+			return null;
+		}
 //		return 0;
 //		boolean r = jtem.query();
 	}
