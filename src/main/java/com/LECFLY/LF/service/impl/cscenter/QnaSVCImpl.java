@@ -1,19 +1,27 @@
 package com.LECFLY.LF.service.impl.cscenter;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
+import com.LECFLY.LF.model.vo.QnaCommentVO;
+import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
+
 
 @Service
 public class QnaSVCImpl implements IQnaSVC{
 	@Autowired
 	private IQnaDAO qaDao;
+	@Autowired
+	private IQnaCommentDAO qcDao;
 	
 	@Override
 	public boolean insertNewQna(QnaVO qa) {
@@ -50,7 +58,22 @@ public class QnaSVCImpl implements IQnaSVC{
 		}
 		return qa;
 	}
-
+	
+	@Override
+	public Map<String,Object> selectOneQnaWithComments(int id) {
+		QnaVO qa = qaDao.selectOneQna(id);
+		if( qa != null ) {
+			List<QnaCommentVO> qcList = qcDao.qnaCommentListForQna(qa.getId());			
+			if( !qaDao.increaseReadCount(id) )
+				System.out.println("조회수 증가 실패! "+id);
+			HashMap<String, Object> rMap = new HashMap<String, Object>();
+			rMap.put("qa", qa);
+			rMap.put("qcList", qcList);
+			return rMap;
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
 		return qaDao.updateQna(id, type, title, content, showPrivate);
@@ -87,7 +110,15 @@ public class QnaSVCImpl implements IQnaSVC{
 		System.out.println("qasvc: pn "+ pn +  " qna = " + qaList.size());
 		return qaList;
 	}
-
+	
+	@Override
+	public List<Map<String, Object>> showAllQnasForMap(int pn) {
+		int offset = (pn-1) * PAGE_SIZE;
+		List<Map<String, Object>> qaMapList = qaDao.showAllQnasForMap(offset, PAGE_SIZE);
+		System.out.println("qasvc: pn "+ pn +  " qnas for Map = " + qaMapList.size());
+		return qaMapList;
+	}
+	
 	@Override
 	public int checkMaxPageNumber() {
 		int totalRecords = qaDao.checkNumberOfQnas();
@@ -100,5 +131,13 @@ public class QnaSVCImpl implements IQnaSVC{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public List<QnaRowVO> showAllQnasForRow(int pn) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	
 }

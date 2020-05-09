@@ -1,12 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<link href='css/lecplay.css' rel='stylesheet' type='text/css'>
+<%
+ 	response.setHeader("Cache-Control", "no-store");
+%>
+
+
 <meta charset="UTF-8">
-<title>게시판 글쓰기</title>
- <!-- <link type="text/css" rel="stylesheet" href="../resource/css/CSCenter.css">     -->
+<title>CSCENTER/PostQnA</title>
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 </head>
 <body>
 	<div class="CSsection">

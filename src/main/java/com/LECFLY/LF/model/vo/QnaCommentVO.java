@@ -29,6 +29,27 @@ public class QnaCommentVO {
 	}
 	
 	/**
+	 * @param mbId
+	 * @param mbLogin
+	 * @param qnaId
+	 * @param content
+	 */
+	public QnaCommentVO(int mbId, String mbLogin, int qnaId, String content) {
+		this(0,mbId, mbLogin, qnaId, content, 0, 0 ,null, null);
+	}
+	
+	/**
+	 * @param mbId
+	 * @param mbLogin
+	 * @param qnaId
+	 * @param content
+	 * @param parentsId
+	 * @param seq
+	 */
+	public QnaCommentVO(int mbId, String mbLogin, int qnaId, String content, int parentsId, int seq) {
+		this(0,mbId, mbLogin, qnaId, content, parentsId, seq,null, null);
+	}
+	/**
 	 * @param id
 	 * @param mbId
 	 * @param mbLogin

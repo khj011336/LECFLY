@@ -2,9 +2,10 @@
     pageEncoding="UTF-8"%>
 <div id="receiveBoard_wrapper">
         <div id="receiveBoard_content">
+            
             <div class="receiveBoard_content_title">
                 <span class=""></span>
-                쿠폰적용은 어떤식으로 하는게 좋을까요?
+             	   쿠폰적용은 어떤식으로 하는게 좋을까요?
                 <span class="divider">|</span>
                 <span class="receiveBoard_category">
                 <a href="#">쿠폰</a></span>
@@ -14,6 +15,7 @@
                 </span>
                 </span>
             </div>
+            
         <div id="writeInfo">
         <div id="readHead">
             <div class="readLeft">

@@ -1,61 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%-- <script>
-	
-	var ROOTCP = '<%= application.getContextPath()%>';
-	
-	$(document).ready(function() {
-		$("#faq_0").click(function() {
-			var url = ROOTCP+'/CSCenter/Lecfly_CS_2_0.jsp';
-			$("#faq_main").load(url, function(){
-				console.log("faq_0 전체 로딩");
-			});			
-		}); // 전체
-		
-		$("#faq_1").click(function() {
-			var url = ROOTCP+'/CSCenter/Lecfly_CS_2_1.jsp';
-			$("#faq_main").load(url, function(){
-				console.log("faq_1 이용안내 로딩");
-			});			
-		}); // 이용안내
-		
-		$("#faq_2").click(function() {
-			var url = ROOTCP+'/CSCenter/Lecfly_CS_2_2.jsp';
-			$("#faq_main").load(url, function(){
-				console.log("faq_2 강의수강 로딩");
-			});			
-		}); // 강의수강
-		
-		$("#faq_3").click(function() {
-			var url = ROOTCP+'/CSCenter/Lecfly_CS_2_3.jsp';
-			$("#faq_main").load(url, function(){
-				console.log("faq_3 준비물 키트 로딩");
-			});			
-		}); // 준비물 키트
-		
-		$("#faq_4").click(function() {
-			var url = ROOTCP+'/CSCenter/Lecfly_CS_2_4.jsp';
-			$("#faq_main").load(url, function(){
-				console.log("faq_4 결제/환불 로딩");
-			});			
-		}); // 결제/환불
-		
-		$("#faq_5").click(function() {
-			var url = ROOTCP+'/CSCenter/Lecfly_CS_2_5.jsp';
-			$("#faq_main").load(url, function(){
-				console.log("faq_5 크리에이터 로딩");
-			});			
-		}); // 크리에이터
-		
-		$("#faq_6").click(function() {
-			var url = ROOTCP+'/CSCenter/Lecfly_CS_2_6.jsp';
-			$("#faq_main").load(url, function(){
-				console.log("faq_6 기타 로딩");
-			});			
-		}); // 기타
-		
-	});	
-	</script> --%>
+<!DOCTYPE html>
+<html>
+<head>
+<%
+ 	response.setHeader("Cache-Control", "no-store");
+%>
+<meta charset="UTF-8">
+<title>CSCENTER/QNA</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script type="text/javascript">
+	function selectQna(atId) { window.location.href		
+			= '${pageContext.request.contextPath}'
+			+ '/Qna_receive.LF?id='+ Id;
+	}	
+</script>
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
+
+</head>
+<body>
+<div class="CSsection">
+	<div id="CSsec_title"><h2>고객섬김센터</h2></div>
+    <div id="CSsec_subtitle">
+       <ul>
+           <li><h4><a href="cs_qna.LF" id= "CS1">QnA</a></h4></li>
+           <li><h4><a href="cs_faq.LF" id= "CS2">자주묻는 질문</a></h4></li>
+           <li><h4><a href="cs_notice.LF" id= "CS3">공지사항</a></h4></li>
+       </ul>
+    </div>
+    <div id="CS_page">
 	<div id="faq">
        	<div id="faq_p">
            	<h4>자주묻는 질문</h4>
@@ -95,3 +71,7 @@
 			    </div>
            </div>	
        </div>
+</div>
+</div>
+</body>
+</html>

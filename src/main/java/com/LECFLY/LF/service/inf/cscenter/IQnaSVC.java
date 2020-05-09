@@ -2,7 +2,9 @@ package com.LECFLY.LF.service.inf.cscenter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 
@@ -16,7 +18,7 @@ public interface IQnaSVC {
 		
 	//게시글 상세보기 할 수 있다
 	QnaVO selectOneQna(int id);
-		
+	Map<String, Object> selectOneQnaWithComments(int id);
 	//회원이 자신의 게시글을 편집 갱신 할 수 있다
 	boolean updateQna(int id, int type, String title, String content, int showPrivate);
 	boolean updateQna(QnaVO qa);
@@ -28,6 +30,9 @@ public interface IQnaSVC {
 		
 	//게시글 리스트를 조회할 수 있다. (페이지네이션, 정렬, 태그)
 	List<QnaVO> showAllQnas();
+	List<QnaRowVO> showAllQnasForRow(int pn);
+	List<Map<String, Object>> showAllQnasForMap(int pn);
+	
 	List<QnaVO> showAllQnas(boolean order);
 	public static final int PAGE_SIZE = 10; // psf public static final 생략
 	List<QnaVO> showAllQnas(int pn);

@@ -13,5 +13,16 @@ public class homeController {
 		System.out.println("도착");
 		return "lecture/main.ho";
 	}
-	
+	// LecFly 이용안내
+	@RequestMapping(value = "lecfly_guide.LF", method = RequestMethod.GET)
+	public String lecflyGuide() {
+		System.out.println("lecflyGuide()...");	
+		return "payment/ticket_guide/lecfly_guide.ho";
+	}	
+	// LecFly TICKET
+	@RequestMapping(value = "lecfly_ticket.LF", method = RequestMethod.GET)
+	public String lecflyTicket() {
+		System.out.println("lecflyTicket()...");	
+		return "payment/ticket_guide/lecfly_ticket.ho";
+	}
 }

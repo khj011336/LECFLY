@@ -18,60 +18,70 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.LECFLY.LF.model.vo.NoticeVO;
+import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.ICscenterFileSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
+import com.LECFLY.LF.service.inf.cscenter.IQnaCommentSVC;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
+
+
 @Controller
-@RequestMapping("/cscenter")
+//@RequestMapping("/cscenter")
 public class CscenterController {
 	@Autowired
 	private IQnaSVC qaSvc;
 	
 //	@Autowired
 //	private IFaqSVC fqSvc;
-//	
+	
 	@Autowired
 	private INoticeSVC ntSvc;
 	
 	@Autowired
 	private ICscenterFileSVC csSvc; 
 	
-//	// cscenter 홈
-//	@RequestMapping(value = "/cscenter.LF", method = RequestMethod.GET)
-//	public String cscenterHome() {
-//		System.out.println("cscenterHome()...");	
-//		return "cscenter/cs_main";
-//	}
+	@Autowired
+	private IQnaCommentSVC qcSvc;
+	
+//	@Autowired
+//	private IMemberSVC mbSvc;
+	
+	// cscenter 홈
+	@RequestMapping(value = "cscenter.LF", method = RequestMethod.GET)
+	public String cscenterHome() {
+		System.out.println("cscenterHome()...");	
+		return "cscenter/cs_qna.ho";
+	}
 //	// QnA
 //	@RequestMapping(value = "/cs_qna.LF", method = RequestMethod.GET)
 //	public String cscenterQnA() {
 //		System.out.println("cscenterQnA()...");	
 //		return "cscenter/cs_qna";
 //	}
-//	// FAQ
-//	@RequestMapping(value = "/cs_faq.LF", method = RequestMethod.GET)
-//	public String cscenterFAQ() {
-//		System.out.println("cscenterFAQ()...");
-//		return "cscenter/cs_faq";
-//	}
+	// FAQ
+	@RequestMapping(value = "/cs_faq.LF", method = RequestMethod.GET)
+	public String cscenterFAQ() {
+		System.out.println("cscenterFAQ()...");
+		return "cscenter/cs_faq.ho";
+	}
 //	// NOTICE
 //	@RequestMapping(value = "/cs_notice.LF", method = RequestMethod.GET)
 //	public String cscenterNotice() {
 //		System.out.println("cscenterNotice()...");
-//		return "cscenter/cs_notice";
+//		return "cscenter/cs_notice.ho";
 //	}
 	
 	
 	// 회원이 QnA 글쓰기 + 파일
-	@RequestMapping(value = "/cs_post_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "cs_post_qna.LF", method = RequestMethod.GET)
 	public String cscenterPostQna() {
 		System.out.println("cscenterPostQna()...");
-		return "cscenter/cs_qna_post.cs";
+		return "cscenter/cs_qna_post.ho";
 	}
 	
-	@RequestMapping(value = "/cs_add_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "cs_add_qna.LF", method = RequestMethod.GET)
 	public String cscenterAddQna(int mbId, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
 		System.out.println("cscenterAddQna()...");
 		System.out.println("multipart size: " + file.size());
@@ -89,10 +99,10 @@ public class CscenterController {
 		// 상세보기 => atId?
 		if( qaRtkey > 0 ) {
 			System.out.println("게시글 등록 성공: " + qaRtkey);
-			return "redirect:cs_receive_qna.LF?id="+ qaRtkey;
+			return "redirect:cs_receive_qna.ho?id="+ qaRtkey;
 		} else {
 			System.out.println("게시글 등록 실패: " + title);
-			return "cscenter/cs_qna_post.cs"; //
+			return "cscenter/cs_qna_post.ho"; //
 		}
 	}
 	
@@ -120,9 +130,9 @@ public class CscenterController {
 				fpsCount = 0;
 			}
 			model.addAttribute("fpsCount", fpsCount);
-			return "cscenter/cs_qna_receive";
+			return "cscenter/cs_qna_receive.ho";
 		} else {model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
-			return "redirect:cs_qna.LF";
+			return "redirect:cs_qna.ho";
 		}
 	}
 	// QnA 글 수정하기
@@ -130,7 +140,7 @@ public class CscenterController {
 	public String cscenterEditQna(HttpSession ses, Model model, 
 			@RequestParam(value = "qaId", defaultValue = "0") int id){
 		if(id == 0 ) {
-			return "redirect:cs_qna.LF";
+			return "redirect:cs_qna.ho";
 		}
 		QnaVO qa = qaSvc.selectOneQna(id);
 		if( qa != null ) {
@@ -138,14 +148,14 @@ public class CscenterController {
 			int writerId = qa.getMbId();
 			if( writerId == (int)ses.getAttribute("mbId")) {
 				model.addAttribute("qna", qa);
-				return "cscenter/cs_qna_edit.cs";
+				return "cscenter/cs_qna_edit.ho";
 			} else {
 				model.addAttribute("msg", "게시글 편집폼 준비 실패: 작성자 아님");
-				return "redirect:redirect:cs_qna.LF?id=" +id; 
+				return "redirect:redirect:cs_qna.ho?id=" +id; 
 			}
 		} else {
 			model.addAttribute("msg", "게시글 편집폼 준비 실패: 게시글 없음");
-			return "redirect:cs_qna.LF?id=" +id; 
+			return "redirect:cs_qna.ho?id=" +id; 
 		}
 	}	
 	@RequestMapping(value = "/cs_update_qna.LF", method = RequestMethod.POST)
@@ -153,9 +163,9 @@ public class CscenterController {
 		System.out.println("qna update: "+ qa);
 		boolean b = qaSvc.updateQna(qa);
 		if( b ) {
-			return "redirect:cs_qna.LF?id="+qa.getId();
+			return "redirect:cs_qna.ho?id="+qa.getId();
 		} else {
-			return "cscenter/cs_qna_edit";
+			return "cscenter/cs_qna_edit.ho";
 		}
 	}
 	// QnA 글 삭제하기
@@ -172,10 +182,10 @@ public class CscenterController {
 		if( pageNumber > qamaxPG || pageNumber <= 0 ) {
 			System.out.println("잘못된 페이지 번호: " + pageNumber);
 			return new ModelAndView(
-				"redirect:cs_qna.LF?pn=1");
+				"redirect:cs_qna.ho?pn=1");
 		}
 		List<QnaVO> qaList = qaSvc.showAllQnas(pageNumber);
-		ModelAndView mav = new ModelAndView("cscenter/cs_qna");
+		ModelAndView mav = new ModelAndView("cscenter/cs_qna.ho");
 		if( qaList != null ) {
 			mav.addObject("atSize", qaList.size());
 			mav.addObject("qna", qaList);
@@ -187,7 +197,31 @@ public class CscenterController {
 		}
 		return mav;
 	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//QNA COMMENT
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	//- 댓글 리스트가 게시글 상세보기에 연동 표시될 수 있다.
+	//	answer_list.my
+	@RequestMapping(value = "/cs_qna_receive.LF", method = RequestMethod.GET)
+	public String commentListProc(
+			@RequestParam(value="qnaId") int qnaId, Model model) {
+		List<QnaCommentVO> qcList = qcSvc.commentListForQna(qnaId);		
+		if( qcList != null ) {
+			model.addAttribute("qnaId", qnaId);
+			model.addAttribute("qcSize", qcList.size());
+			model.addAttribute("qnaComments", qcList );
+			return "qna/receive.ho";
+		} else {
+			return "redirect:/cs_qna_receive.ho?id="+ qnaId;
+		}
+	}
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//NOTICE
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	// 관리자가 Notice 글쓰기
 //	@RequestMapping(value = "/cs_post_noice.LF", method = RequestMethod.GET)
 //	public String cscenterPostNotice() {
@@ -212,7 +246,7 @@ public class CscenterController {
 	@RequestMapping(value = "/cs_post_notice.LF", method = RequestMethod.GET)
 	public String cscenterPostNotice() {
 		System.out.println("cscenterPostNotice()...");
-		return "cscenter/cs_notice_post.cs";
+		return "cscenter/cs_notice_post.ho";
 	}
 	
 	@RequestMapping(value = "/cs_add_notice.LF", method = RequestMethod.GET)
@@ -233,10 +267,10 @@ public class CscenterController {
 		// 상세보기 => atId?
 		if( ntRtkey > 0 ) {
 			System.out.println("게시글 등록 성공: " + ntRtkey);
-			return "redirect:cs_receive_notice.LF?id="+ ntRtkey;
+			return "redirect:cs_receive_notice.ho?id="+ ntRtkey;
 		} else {
 			System.out.println("게시글 등록 실패: " + title);
-			return "cscenter/cs_notice_post.cs"; //
+			return "cscenter/cs_notice_post.ho"; //
 		}
 	}
 	
@@ -264,9 +298,9 @@ public class CscenterController {
 				fpsCount = 0;
 			}
 			model.addAttribute("fpsCount", fpsCount);
-			return "cscenter/cs_notice_receive";
+			return "cscenter/cs_notice_receive.ho";
 		} else {model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
-			return "redirect:cs_notice.LF";
+			return "redirect:cs_notice.ho";
 		}
 	}
 	// Notice 글 수정하기
@@ -274,7 +308,7 @@ public class CscenterController {
 	public String cscenterEditNotice(HttpSession ses, Model model, 
 			@RequestParam(value = "ntId", defaultValue = "0") int id){
 		if(id == 0 ) {
-			return "redirect:cs_notice.LF";
+			return "redirect:cs_notice.ho";
 		}
 		NoticeVO nt = ntSvc.selectOneNotice(id);
 		if( nt != null ) {
@@ -282,14 +316,14 @@ public class CscenterController {
 			int writerId = nt.getMbId();
 			if( writerId == (int)ses.getAttribute("mbId")) {
 				model.addAttribute("notice", nt);
-				return "cscenter/cs_notice_edit.cs";
+				return "cscenter/cs_notice_edit.ho";
 			} else {
 				model.addAttribute("msg", "게시글 편집폼 준비 실패: 작성자 아님");
-				return "redirect:redirect:cs_notice.LF?id=" +id; 
+				return "redirect:redirect:cs_notice.ho?id=" +id; 
 			}
 		} else {
 			model.addAttribute("msg", "게시글 편집폼 준비 실패: 게시글 없음");
-			return "redirect:cs_notice.LF?id=" +id; 
+			return "redirect:cs_notice.ho?id=" +id; 
 		}
 	}	
 	@RequestMapping(value = "/cs_update_notice.LF", method = RequestMethod.POST)
@@ -297,18 +331,18 @@ public class CscenterController {
 		System.out.println("notice update: "+ nt);
 		boolean b = ntSvc.updateNotice(nt);
 		if( b ) {
-			return "redirect:cs_notice.LF?id="+nt.getId();
+			return "redirect:cs_notice.ho?id="+nt.getId();
 		} else {
-			return "cscenter/cs_notice_edit";
+			return "cscenter/cs_notice_edit.ho";
 		}
 	}
-	// QnA 글 삭제하기
+	// Notice 글 삭제하기
 	@RequestMapping(value = "/cs_delete_notice.LF", method = RequestMethod.GET)
 	public String cscenterDeleteNotice() {
 		return null;
 	}
 	
-	// QnA 리스트 조회하기 (페이지네이션, 정렬)
+	//Notice 리스트 조회하기 (페이지네이션, 정렬)
 	@RequestMapping(value = "cs_notice.LF",method = RequestMethod.GET)
 	public ModelAndView cscenterNotice( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
 		System.out.println("cscenterNotice(PN)..");
@@ -319,7 +353,7 @@ public class CscenterController {
 				"redirect:cs_notice.LF?pn=1");
 		}
 		List<NoticeVO> ntList = ntSvc.showAllNotices(pageNumber);
-		ModelAndView mav = new ModelAndView("cscenter/cs_notice");
+		ModelAndView mav = new ModelAndView("cscenter/cs_notice.ho");
 		if( ntList != null ) {
 			mav.addObject("atSize", ntList.size());
 			mav.addObject("qna", ntList);

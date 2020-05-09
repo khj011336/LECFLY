@@ -1,7 +1,10 @@
 package com.LECFLY.LF.model.dao.inf.cscenter;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 public interface IQnaDAO {
@@ -27,7 +30,11 @@ public interface IQnaDAO {
 	List<QnaVO> showAllQnas();
 	List<QnaVO> showAllQnas(boolean order);	
 	List<QnaVO> showAllQnas(int offset, int limit);
+	List<QnaRowVO> showAllQnasForRow(int offset, int limit);
+	List<Map<String, Object>> showAllQnasForMap(int offset, int limit);
+	
 	List<QnaVO> showAllQnas(int offset, int limit, boolean order);
+	List<QnaVO> showAllQnas(int offset, int limit, boolean order, Date startDate, Date endDate);
 	int checkNumberOfQnas();
 	
 	boolean updateQna(QnaVO vo);

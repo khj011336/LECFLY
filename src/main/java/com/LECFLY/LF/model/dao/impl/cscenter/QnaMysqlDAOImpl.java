@@ -19,6 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
+import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 @Repository
@@ -36,7 +37,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 	public static String SQL_QNA_INSERT_VO
 		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), ?, ?)";
 	// QnA 수정하기
-	public static String SQL_QNA_UPDATE_VO
+	public static String SQL_QNA_UPDATE
 		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_day = now() where id = ?";
 	// QnA 삭제하기
 	public static String SQL_QNA_DELETE_VO
@@ -44,6 +45,16 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 	// QnA 페이지 조회
 	public static String SQL_QNA_SHOWALL_PG
 		= "SELECT * FROM qnas order by created_day desc limit ?, ?";
+	// QnA 페이지 조회
+		public static String SQL_QNA_SHOWALL_PG_JOIN
+		= "select A.id vId, A.title vTitle,"
+				+ " A.read_count vRc,"
+				+ "	(select name from members C "
+				+ "where A.member_id = C.id) vUser, "
+				+ "A.created_at vDay, (select count(*) "
+				+ "from qnaComments B where B.qna_id = A.id) "
+				+ "vQcCnt from qnas A order by "
+				+ "A.created_at desc limit ?, ?";
 	// QnA 갯수 카운트
 	public static String SQL_CHECK_QNA_NUMBERS
 	= "select count(id) as cnt from qnas";	
@@ -92,6 +103,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 
 	@Override
 	public int insertNewQnaReturnKey2(QnaVO qa) {
+		System.out.println("psc/keyholder...");
 		KeyHolder kh = new GeneratedKeyHolder();
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 
@@ -129,13 +141,13 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 
 	@Override
 	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
-		int r = jtem.update(SQL_QNA_UPDATE_VO, id, type, title, content, showPrivate);
+		int r = jtem.update(SQL_QNA_UPDATE, id, type, title, content, showPrivate);
 		return r == 1;
 	}
 	
 	@Override
 	public boolean updateQna(QnaVO vo) {
-		int r = jtem.update(SQL_QNA_UPDATE_VO, 
+		int r = jtem.update(SQL_QNA_UPDATE, 
 				vo.getId(),
 				vo.getType(),
 				vo.getTitle(), 
@@ -173,16 +185,34 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		return jtem.query(SQL_QNA_SHOWALL_PG, BeanPropertyRowMapper.newInstance(QnaVO.class), offset, limit);
 
 	}
-
+	
+	@Override
+	public List<QnaRowVO> showAllQnasForRow(int offset, int limit) {
+		return jtem.query(SQL_QNA_SHOWALL_PG_JOIN, BeanPropertyRowMapper.newInstance(QnaRowVO.class), offset, limit);
+	}
+	
+	@Override
+	public List<Map<String, Object>> showAllQnasForMap(int offset, int limit) {
+		return jtem.queryForList(SQL_QNA_SHOWALL_PG_JOIN, offset, limit);
+	}
+	
 	@Override
 	public List<QnaVO> showAllQnas(int offset, int limit, boolean order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public List<QnaVO> showAllQnas(int offset, int limit, boolean order, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public int checkNumberOfQnas() {
 		return jtem.queryForObject(SQL_CHECK_QNA_NUMBERS, Integer.class);
 	}
+
+
 	
 }

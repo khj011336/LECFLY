@@ -1,5 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<%
+ 	response.setHeader("Cache-Control", "no-store");
+%>
+<meta charset="UTF-8">
+<title>CSCENTER/QNA</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script type="text/javascript">
+	function selectQna(atId) { window.location.href		
+			= '${pageContext.request.contextPath}'
+			+ '/Qna_receive.LF?id='+ Id;
+	}	
+</script>
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
+
+</head>
+<body>
+<div class="CSsection">
+	<div id="CSsec_title"><h2>고객섬김센터</h2></div>
+    <div id="CSsec_subtitle">
+       <ul>
+           <li><h4><a href="cs_qna.LF" id= "CS1">QnA</a></h4></li>
+           <li><h4><a href="cs_faq.LF" id= "CS2">자주묻는 질문</a></h4></li>
+           <li><h4><a href="cs_notice.LF" id= "CS3">공지사항</a></h4></li>
+       </ul>
+    </div>
+    <div id="CS_page">
 	<div class="notice">
                 <div id="notice_p">
                 	<h4>공지사항</h4>
@@ -68,3 +100,7 @@
                     <div id="notice_numbering">&lt;&nbsp;<b>1</b> 2 3 4 5 6 7 8 9 10&nbsp;&gt;</div>
                 </div>
             </div>
+</div>
+</div>
+</body>
+</html>

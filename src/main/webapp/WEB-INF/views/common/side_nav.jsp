@@ -3,7 +3,7 @@
 <ul class="side-menu">
 	<!-- <li><a href="#">&nbsp;</a></li>
 	<li><a href="#"><span class="fa fa-code"></span>LECFLY</a></li> -->
-	<li><a href="#" class="nav_lecfly_info"><span class="fas fa-bars"></span>LECFLY</a></li>
+	<li><a href="lecfly_guide.LF" class="nav_lecfly_info"><span class="fas fa-bars"></span>LECFLY</a></li>
 	<li><a href="#" class="nav_video_list"><span class="fas fa-play-circle"></span>강의목록</a></li>
 	<li><a href="funding_list.LF" class="nav_funding"><span class="fas fa-funnel-dollar"></span>펀딩목록</a></li>
 	<!-- <li><a href="#" class="nav_wish_list"><span class="fas fa-heartbeat"></span>관심클래스</a></li> -->
