@@ -16,30 +16,6 @@ public class NoticeSVCImpl implements INoticeSVC{
 	private INoticeDAO ntDao;
 	
 	@Override
-	public boolean insertNewNotice(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean insertNewNotice(int mbId, int type, String title, String content) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean insertNewNotice(int mbId, int type, String title, String content, String file) {
-		NoticeVO nt = new NoticeVO(mbId, type, title, content, file);
-		return ntDao.insertNewNotice(nt);
-	}
-
-	@Override
-	public int insertNewNoticeReturnKey(int mbId, int type, String title, String content, String file) {
-		NoticeVO nt = new NoticeVO(mbId, type, title, content, file);
-		return ntDao.insertNewNoticeReturnKey(nt);
-	}
-
-	@Override
 	public NoticeVO selectOneNotice(int id) {
 		NoticeVO nt = ntDao.selectOneNotice(id);
 		if( nt != null ) {
@@ -49,11 +25,6 @@ public class NoticeSVCImpl implements INoticeSVC{
 		return nt;
 	}
 
-	@Override
-	public boolean updateNotice(int id, int type, String title, String content) {
-		return ntDao.updateNotice(id, type, title, content);
-	}
-	
 	
 	@Override
 	public boolean increaseReadCount(int id) {
@@ -61,11 +32,6 @@ public class NoticeSVCImpl implements INoticeSVC{
 		return false;
 	}
 
-	@Override
-	public boolean deleteNotice(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public List<NoticeVO> showAllNotices() {
@@ -93,10 +59,5 @@ public class NoticeSVCImpl implements INoticeSVC{
 		return maxPg;
 	}
 
-	@Override
-	public boolean updateNotice(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 }

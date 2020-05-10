@@ -278,30 +278,30 @@ public class CscenterController {
 		return "cscenter/cs_notice_post.ho";
 	}
 	
-	@RequestMapping(value = "/cs_add_notice.LF", method = RequestMethod.GET)
-	public String cscenterAddNotice(int mbId, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
-		System.out.println("cscenterAddNotice()...");
-		System.out.println("multipart size: " + file.size());
-		String realPath = ses.getServletContext().getRealPath(ICscenterFileSVC.DEF_UPLOAD_DEST)+"/";
-		
-		//다중 처리
-		Map<String, Object> rMap = csSvc.writeUploadedMultipleFiles(file, realPath, (String)ses.getAttribute("mbLoginName"));
-		String filePath = (String)rMap.get("muliFPs");
-		
-		System.out.println("총 파일 수: " + rMap.get("fileCnt"));
-		System.out.println("총 볼륨(MB): "+ rMap.get("totalMB") +"MB");
-		
-		// public img src... 
-		int ntRtkey = this.ntSvc.insertNewNoticeReturnKey(mbId, type, title, content,filePath );
-		// 상세보기 => atId?
-		if( ntRtkey > 0 ) {
-			System.out.println("게시글 등록 성공: " + ntRtkey);
-			return "redirect:cs_receive_notice.ho?id="+ ntRtkey;
-		} else {
-			System.out.println("게시글 등록 실패: " + title);
-			return "cscenter/cs_notice_post.ho"; //
-		}
-	}
+//	@RequestMapping(value = "/cs_add_notice.LF", method = RequestMethod.GET)
+//	public String cscenterAddNotice(int mbId, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
+//		System.out.println("cscenterAddNotice()...");
+//		System.out.println("multipart size: " + file.size());
+//		String realPath = ses.getServletContext().getRealPath(ICscenterFileSVC.DEF_UPLOAD_DEST)+"/";
+//		
+//		//다중 처리
+//		Map<String, Object> rMap = csSvc.writeUploadedMultipleFiles(file, realPath, (String)ses.getAttribute("mbLoginName"));
+//		String filePath = (String)rMap.get("muliFPs");
+//		
+//		System.out.println("총 파일 수: " + rMap.get("fileCnt"));
+//		System.out.println("총 볼륨(MB): "+ rMap.get("totalMB") +"MB");
+//		
+//		// public img src... 
+//		int ntRtkey = this.ntSvc.insertNewNoticeReturnKey(mbId, type, title, content,filePath );
+//		// 상세보기 => atId?
+//		if( ntRtkey > 0 ) {
+//			System.out.println("게시글 등록 성공: " + ntRtkey);
+//			return "redirect:cs_receive_notice.ho?id="+ ntRtkey;
+//		} else {
+//			System.out.println("게시글 등록 실패: " + title);
+//			return "cscenter/cs_notice_post.ho"; //
+//		}
+//	}
 	
 	// Notice 글 상세보기
 	@RequestMapping(value = "/cs_receive_notice.LF", method = RequestMethod.GET)
@@ -355,21 +355,21 @@ public class CscenterController {
 			return "redirect:cs_notice.ho?id=" +id; 
 		}
 	}	
-	@RequestMapping(value = "/cs_update_notice.LF", method = RequestMethod.POST)
-	public String noticeUpdateProc(HttpSession ses, @ModelAttribute(value = "notice") NoticeVO nt) { // vo를 command객체로 사용하자.
-		System.out.println("notice update: "+ nt);
-		boolean b = ntSvc.updateNotice(nt);
-		if( b ) {
-			return "redirect:cs_notice.ho?id="+nt.getId();
-		} else {
-			return "cscenter/cs_notice_edit.ho";
-		}
-	}
-	// Notice 글 삭제하기
-	@RequestMapping(value = "/cs_delete_notice.LF", method = RequestMethod.GET)
-	public String cscenterDeleteNotice() {
-		return null;
-	}
+//	@RequestMapping(value = "/cs_update_notice.LF", method = RequestMethod.POST)
+//	public String noticeUpdateProc(HttpSession ses, @ModelAttribute(value = "notice") NoticeVO nt) { // vo를 command객체로 사용하자.
+//		System.out.println("notice update: "+ nt);
+//		boolean b = ntSvc.updateNotice(nt);
+//		if( b ) {
+//			return "redirect:cs_notice.ho?id="+nt.getId();
+//		} else {
+//			return "cscenter/cs_notice_edit.ho";
+//		}
+//	}
+//	// Notice 글 삭제하기
+//	@RequestMapping(value = "/cs_delete_notice.LF", method = RequestMethod.GET)
+//	public String cscenterDeleteNotice() {
+//		return null;
+//	}
 	
 	//Notice 리스트 조회하기 (페이지네이션, 정렬)
 	@RequestMapping(value = "cs_notice.LF",method = RequestMethod.GET)
