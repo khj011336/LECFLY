@@ -11,9 +11,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script type="text/javascript">
-	function selectQna(atId) { window.location.href		
+	function selectQna(qaId) { window.location.href		
 			= '${pageContext.request.contextPath}'
-			+ '/Qna_receive.LF?id='+ Id;
+			+ '/qna_receive.LF?id='+ Id;
 	}	
 </script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">

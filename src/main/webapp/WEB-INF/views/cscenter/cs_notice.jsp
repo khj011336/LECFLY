@@ -7,16 +7,16 @@
  	response.setHeader("Cache-Control", "no-store");
 %>
 <meta charset="UTF-8">
-<title>CSCENTER/QNA</title>
+<title>CSCENTER/NOTICE</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<script type="text/javascript">
-	function selectQna(atId) { window.location.href		
+<!-- <script type="text/javascript">
+	function selectNotice(ntId) { window.location.href		
 			= '${pageContext.request.contextPath}'
-			+ '/Qna_receive.LF?id='+ Id;
+			+ '/Notice_receive.LF?id='+ Id;
 	}	
-</script>
+</script> -->
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 

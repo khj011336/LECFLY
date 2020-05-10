@@ -21,7 +21,7 @@
             </div>
             
             <div class="lecflyticket">
-            	<div id="lecflyis_logo"><br><br><h2><img src="resource/img/logo/LecFly_LOGO_B_C.png" ></h2></div>
+            	<div id="lecflyis_logo"><br><br><h2><img src="resources/imges/logo/LecFly_LOGO_B_C.png" ></h2></div>
                 <div><br><br></div>
                 <div id="lecflyticket_maintitle"><h1>회원권 안내</h1></div>
                 <div id="lecflyticket_noticebox">

@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.LECFLY.LF.model.vo.FaqVO;
 import com.LECFLY.LF.model.vo.NoticeVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.ICscenterFileSVC;
+import com.LECFLY.LF.service.inf.cscenter.IFaqSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
 import com.LECFLY.LF.service.inf.cscenter.IQnaCommentSVC;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
@@ -33,8 +35,8 @@ public class CscenterController {
 	@Autowired
 	private IQnaSVC qaSvc;
 	
-//	@Autowired
-//	private IFaqSVC fqSvc;
+	@Autowired
+	private IFaqSVC fqSvc;
 	
 	@Autowired
 	private INoticeSVC ntSvc;
@@ -60,12 +62,12 @@ public class CscenterController {
 //		System.out.println("cscenterQnA()...");	
 //		return "cscenter/cs_qna";
 //	}
-	// FAQ
-	@RequestMapping(value = "/cs_faq.LF", method = RequestMethod.GET)
-	public String cscenterFAQ() {
-		System.out.println("cscenterFAQ()...");
-		return "cscenter/cs_faq.ho";
-	}
+//	// FAQ
+//	@RequestMapping(value = "/cs_faq.LF", method = RequestMethod.GET)
+//	public String cscenterFAQ() {
+//		System.out.println("cscenterFAQ()...");
+//		return "cscenter/cs_faq.ho";
+//	}
 //	// NOTICE
 //	@RequestMapping(value = "/cs_notice.LF", method = RequestMethod.GET)
 //	public String cscenterNotice() {
@@ -107,7 +109,7 @@ public class CscenterController {
 	}
 	
 	// QnA 글 상세보기
-	@RequestMapping(value = "/cs_receive_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/qna_receive.LF", method = RequestMethod.GET)
 	public String cscenterReceiveQna(HttpSession ses, int id, Model model) {
 		QnaVO qa = this.qaSvc.selectOneQna(id);
 		if( qa != null ) {
@@ -187,7 +189,7 @@ public class CscenterController {
 		List<QnaVO> qaList = qaSvc.showAllQnas(pageNumber);
 		ModelAndView mav = new ModelAndView("cscenter/cs_qna.ho");
 		if( qaList != null ) {
-			mav.addObject("atSize", qaList.size());
+			mav.addObject("qaSize", qaList.size());
 			mav.addObject("qna", qaList);
 			mav.addObject("maxPn", qamaxPG);
 			mav.addObject("pn", pageNumber); // 활성페이지 
@@ -216,6 +218,33 @@ public class CscenterController {
 			return "redirect:/cs_qna_receive.ho?id="+ qnaId;
 		}
 	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FAQ
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// FAQ 리스트 조회하기 (페이지네이션, 정렬)
+	@RequestMapping(value = "cs_faq.LF", method = RequestMethod.GET)
+	public ModelAndView cscenterFaq( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+		System.out.println("cscenterFaq(PN)..");
+		int fqmaxPG = fqSvc.checkMaxPageNumber();
+		if( pageNumber > fqmaxPG || pageNumber <= 0 ) {
+			System.out.println("잘못된 페이지 번호: " + pageNumber);
+			return new ModelAndView("redirect:cs_faq.ho?pn=1");
+		}
+		List<FaqVO> fqList = fqSvc.showAllFaqs(pageNumber);
+		ModelAndView mav = new ModelAndView("cscenter/cs_faq.ho");
+		if( fqList != null ) {
+			mav.addObject("fqSize", fqList.size());
+			mav.addObject("faq", fqList);
+			mav.addObject("maxPn", fqmaxPG);
+			mav.addObject("pn", pageNumber); // 활성페이지 
+				System.out.println("게시글리스트 조회 성공: " + fqList.size());
+		} else {
+			mav.addObject("msg", "게시글리스트 조회 실패!");
+		}
+		return mav;
+	}
+
 	
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
