@@ -37,9 +37,9 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 	}
 
 	@Override
-	public List<HomeFileManagerVO> selectBannerList(HomeFileManagerVO vo) {
+	public List<HomeFileManagerVO> selectBannerList() {
 		System.out.println("svc selectList 시작");
-		return adDAO.selectBannerList(vo);
+		return adDAO.selectBannerList();
 	}
 
 	@Override
@@ -66,9 +66,8 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 	}
 
 	@Override
-	public List<LectureVO> selectRecommendLectureList(LectureVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<LectureVO> selectRecommendLectureList(List<Integer> reIds) {
+		return adDAO.selectRecommendLectureList(reIds);
 	}
 
 	@Override
@@ -96,9 +95,29 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 	}
 
 	@Override
-	public List<LectureVO> selectNomalLectureList(LectureVO vo) {
+	public List<LectureVO> selectNomalLectureList() {
+		return adDAO.selectNomalLectureList();
+	}
+
+	@Override
+	public List<Integer> getRecommendIds() {
+		return adDAO.getRecommendIds();
+	}
+
+	@Override
+	public boolean likeBtnClick(int status, int memberId, int lectureId) {
 		// TODO Auto-generated method stub
-		return null;
+		return adDAO.likeBtnClick(status, memberId, lectureId);
+	}
+
+	@Override
+	public List<LectureVO> selectLectureListForCategory(int category) {
+		return adDAO.selectLectureListForCategory(category);
+	}
+
+	@Override
+	public List<LectureVO> selectLectureListForKeyword(String keyword) {
+		return adDAO.selectLectureListForKeyword(keyword);
 	}
 
 }

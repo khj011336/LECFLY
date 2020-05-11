@@ -18,42 +18,42 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 	
 	// SQL 명령어
 	/** 전체 회원목록 조회 */
-	public static final String SQL_ADMIN_MEMBER_SELECT_ALL = 
+	public static String SQL_ADMIN_MEMBER_SELECT_ALL = 
 			"SELECT * FROM MEMBERS WHERE CHECK_CREATOR = 0";
 	/** 회원 상세 조회 */
-	public static final String SQL_ADMIN_MEMBER_SELECT_ONE = 
+	public static String SQL_ADMIN_MEMBER_SELECT_ONE = 
 			"SELECT * FROM MEMBERS WHERE ID = ?";
 	/** 회원 크리에이터 승인 */
-	public static final String SQL_ADMIN_MEMBER_UPDATE = 
+	public static String SQL_ADMIN_MEMBER_UPDATE = 
 			"UPDATE MEMBERS SET CHECK_CREATOR = ? WHERE ID = ?";
 	/** 회원 등록 */
-	public static final String SQL_ADMIN_MEMBER_INSERT = 
+	public static String SQL_ADMIN_MEMBER_INSERT = 
 			"INSERT INTO MEMBERS VALUES()";
 	/** 회원 삭제 */
-	public static final String SQL_ADMIN_MEMBER_DELETE = 
-			"DELETE MEMBERS WHERE ID = ?";
+	public static String SQL_ADMIN_MEMBER_DELETE = 
+			"DELETE FROM MEMBERS WHERE ID = ?";
 	/** 전체 멤버 중 크리에이터 목록 조회 */
-	public static final String SQL_ADMIN_MB_CREATOR_SELECT_ALL = 
+	public static String SQL_ADMIN_MB_CREATOR_SELECT_ALL = 
 			"SELECT * FROM MEMBERS WHERE CHECK_CREATOR = 3";
 	/** 전체 멤버 중 크리에이터 신청 상태 조회 */
-	public static final String SQL_ADMIN_REGI_CREATOR_SELECT_ = 
+	public static String SQL_ADMIN_REGI_CREATOR_SELECT_ = 
 			"SELECT * FROM MEMBERS WHERE CHECK_CREATOR = ?";
 	
 	/** 멤버 중 크리에이터 목록 상세 조회 */
-	public static final String SQL_ADMIN_MB_CREATOR_SELECT_ONE = 
+	public static String SQL_ADMIN_MB_CREATOR_SELECT_ONE = 
 			"SELECT * FROM MEMBERS WHERE CHECK_CREATOR = 3 AND ID = ?";
 	/** 크리에이터 전체목록 조회 */
-	public static final String SQL_ADMIN_CREATOR_SELECT_ALL = 
+	public static String SQL_ADMIN_CREATOR_SELECT_ALL = 
 			"SELECT * FROM MEMBERS WHERE ID = ?";
 	/** 크리에이터 목록 업데이트 */
-	public static final String SQL_ADMIN_CREATOR_UPDATE = 
+	public static String SQL_ADMIN_CREATOR_UPDATE = 
 			"UPDATE CREATOR SET WHERE ID = ?";
 	/** 크리에이터 등록 */
-	public static final String SQL_ADMIN_CREATOR_INSERT = 
+	public static String SQL_ADMIN_CREATOR_INSERT = 
 			"INSERT INTO CREATOR VALUES()";
 	/** 크리에이터 삭제 */
-	public static final String SQL_ADMIN_CREATOR_DELETE = 
-			"DELETE CREATOR WHERE ID = ?";
+	public static String SQL_ADMIN_CREATOR_DELETE = 
+			"DELETE FROM CREATOR WHERE ID = ?";
 
 //	public static final String SQL_ADMIN_MEMBER_SELECT_SHOW = 
 //		"select * from member where 1=1";

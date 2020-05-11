@@ -1,18 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<script>
-	var sw = $('input[name=search]').val();
-	if (sw != null && sw != '') {
-		$('.search_word').text("'"+sw+"'");		
-	} else {
-		$('.search_word').text();		
-	}
-</script>
 	
 <div class="search_wrapper">
+
 	<div class="search_top">
-		<h2 class="search_title"><span class="search_word"></span>'${param.keyword }' 검색 결과</h2>
-		<span class="search_result_count">48</span>
+		<h2 class="search_title"><span class="search_word"></span>'${categoryMap[param.category] }' 검색 결과</h2>
+		<span class="search_result_count">총 ${cateSize}건</span>
 		<ul class="sort">
 			<li><select onchange="if(this.value) location.href=(this.value);">
 					<option>카테고리선택</option>
@@ -33,7 +26,7 @@
 		</ul>
 	</div>
 	
-		<div class="main_video_wrapper">
+	<div class="main_video_wrapper">
 		<c:forEach items="${searchList}" var="lec" varStatus="vs">
 			<c:if test="${vs.count % 4 == 1 }">
 			<div class="main_video_block_row"> <!-- 한 행에 전시할 강의 시작점마다 : 4개마다 --> 
