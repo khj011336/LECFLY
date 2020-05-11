@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 public class NoticeVO {
 	/** 공지사항 번호 */
 	int id;
+	/** 작성자 id */
+	int mbId;
 	/** 공지 위치            0: 일반 페이지 1: 크리에이터 페이지*/
 	int type;
 	/** 제목*/
@@ -25,10 +27,29 @@ public class NoticeVO {
 	 */
 	public NoticeVO() {
 	}
-	
 	/**
-	 * full constructor 
-	 * @param id
+	 * @param mbId
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 */
+	public NoticeVO(int mbId, int type, String title, String content, String file) {
+		this(0, mbId, type, title, content, file, null, null, 0);
+	}
+	/**
+	 * @param mbId
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 * @param hits
+	 */
+	public NoticeVO(int mbId, int type, String title, String content, String file, int hits) {
+		this(0, mbId, type, title, content, file, null, null, hits);
+	}
+	/**
+	 * @param mbId
 	 * @param type
 	 * @param title
 	 * @param content
@@ -37,10 +58,27 @@ public class NoticeVO {
 	 * @param updatedDay
 	 * @param hits
 	 */
-	public NoticeVO(int id, int type, String title, String content, String file, Timestamp writedDay,
+	public NoticeVO(int mbId, int type, String title, String content, String file, Timestamp writedDay,
+			Timestamp updatedDay, int hits) {
+		this(0, mbId, type, title, content, file, writedDay, updatedDay, hits);
+	}
+	/**
+	 * full constructor 
+	 * @param id
+	 * @param mbId
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param file
+	 * @param writedDay
+	 * @param updatedDay
+	 * @param hits
+	 */
+	public NoticeVO(int id, int mbId, int type, String title, String content, String file, Timestamp writedDay,
 			Timestamp updatedDay, int hits) {
 		super();
 		this.id = id;
+		this.mbId = mbId;
 		this.type = type;
 		this.title = title;
 		this.content = content;
@@ -55,6 +93,12 @@ public class NoticeVO {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getMbId() {
+		return mbId;
+	}
+	public void setMbId(int mbId) {
+		this.mbId = mbId;
 	}
 	public int getType() {
 		return type;
@@ -101,7 +145,7 @@ public class NoticeVO {
 	
 	@Override
 	public String toString() {
-		return "NoticeVO [id=" + id + ", type=" + type + ", title=" + title + ", content=" + content + ", file=" + file
+		return "NoticeVO [id=" + id +", mbId=" + id +", type=" + type + ", title=" + title + ", content=" + content + ", file=" + file
 				+ ", writedDay=" + writedDay + ", updatedDay=" + updatedDay + ", hits=" + hits + "]";
 	}
 	

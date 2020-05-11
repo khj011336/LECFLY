@@ -5,11 +5,10 @@
 <%
  	response.setHeader("Cache-Control", "no-store");
 %>
-<meta charset="UTF-8">
-<title>CSCENTER/PostQnA</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+
+<meta charset="UTF-8">
+<title>CSCENTER/EDITQnA</title>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 </head>
@@ -19,7 +18,7 @@
 		<div class="post_board">
             <div id="post_title">
             <br><br><br><br>
-               <h4>QnA게시판 문의하기</h4>
+               <h4>QnA게시판 문의 편집하기</h4>
             </div>
             <br><br>
 	 		<form>
@@ -153,7 +152,7 @@
 						<br>
 						<br>
 						<!-- <input type="submit" class="btn_post" value="문의글 작성하기"> -->
-						<a href="#" title="문의글 등록" class="btn_post">문의글 작성하기</a>
+						<a href="#" title="문의글 수정" class="btn_post">문의글 수정하기</a>
 					</th>
 	            </tr>
 	       </table>

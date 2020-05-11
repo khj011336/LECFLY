@@ -6,17 +6,17 @@ import com.LECFLY.LF.model.vo.FaqVO;
 
 
 public interface IFaqDAO {
-	// 관리자가 신규 게시글을 등록 할 수 있다 (+파일업로드..)
-	boolean insertNewFaq(FaqVO fq);
-	int insertNewFaqReturnKey(FaqVO fq);
-	int insertNewFaqReturnKey2(FaqVO fq);
-	boolean insertNewFaq(int type, String title, String content);
-	
-	// 관리자가 게시글을 편집 갱신 할 수 있다
-	boolean updateFaq(int type, String title, String content);
-	
-	// 관리자가 게시글을 삭제 할 수 있다
-	boolean deleteFaq(int id);
+//	// 관리자가 신규 게시글을 등록 할 수 있다 (+파일업로드..)
+//	boolean insertNewFaq(FaqVO fq);
+//	int insertNewFaqReturnKey(FaqVO fq);
+//	int insertNewFaqReturnKey2(FaqVO fq);
+//	boolean insertNewFaq(int type, String title, String content);
+//	
+//	// 관리자가 게시글을 편집 갱신 할 수 있다
+//	boolean updateFaq(int type, String title, String content);
+//	
+//	// 관리자가 게시글을 삭제 할 수 있다
+//	boolean deleteFaq(int id);
 	
 	//게시글을 조회할 수 있다. (페이지네이션, 정렬)
 	List<FaqVO> showAllFaqs();
@@ -24,5 +24,11 @@ public interface IFaqDAO {
 	List<FaqVO> showAllFaqs(int offset, int limit);
 	List<FaqVO> showAllFaqs(int offset, int limit, boolean order);
 	int checkNumberOfFaqs();
-
+	
+	//게시글을 type별로 조회할 수 있다. (페이지네이션, 정렬)
+	List<FaqVO> showAllFaqsForType(int type);
+	List<FaqVO> showAllFaqsForType(int type, boolean order);	
+	List<FaqVO> showAllFaqsForType(int type, int offset, int limit);
+	List<FaqVO> showAllFaqsForType(int type, int offset, int limit, boolean order);
+	int checkNumberOfFaqsForType();
 }

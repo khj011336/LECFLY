@@ -21,7 +21,7 @@
             
             <div class="receiveBoard_content_title">
                 <span class=""></span>
-             	   쿠폰적용은 어떤식으로 하는게 좋을까요?
+             	   회원 공지사항입니다.
                 <span class="divider">|</span>
                 <span class="receiveBoard_category">
                 <a href="#">쿠폰</a></span>

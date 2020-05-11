@@ -16,7 +16,14 @@ public class FaqVO {
 	public FaqVO() {
 		
 	}
-	
+	/**
+	 * @param type
+	 * @param title
+	 * @param content
+	 */
+	public FaqVO(int type, String title, String content) {
+		this(0, type, title, content);
+	}
 	/**
 	 * full constructor 
 	 * @param id
