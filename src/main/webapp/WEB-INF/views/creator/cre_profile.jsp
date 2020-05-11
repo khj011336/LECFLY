@@ -8,9 +8,9 @@
     });
     	  $("#aas").change(function(e){
     	 
-    	    alert($('input[type=file]')[0].files[0].name); //파일이름
-    	       alert($("#aas")[0].files[0].type); // 파일 타임
-    	       alert($("#aas")[0].files[0].size); // 파일 크기
+//     	    alert($('input[type=file]')[0].files[0].name); //파일이름
+//     	       alert($("#aas")[0].files[0].type); // 파일 타임
+//     	       alert($("#aas")[0].files[0].size); // 파일 크기
     	 //  $('input[type=file]')[0].files[0].name;
     	 //  $("#imgUpload")[0].files[0].type;
     	 //  $("#imgUpload")[0].files[0].size;
@@ -28,9 +28,9 @@
 	<div id="Crpf_wrap">
         <div id='Crpf_content'>
         	<div id="Crpf_head"><span class="creator_h1">크리에이터 소개</span></div>
-        	<form  method="post" enctype="multipart/form-data" id="aform" name="creProfile">
+        	<form  method="post"  id="aform" class='pubf'  enctype="multipart/form-data" action="creator_new_profile_proc.LF">
         	<input type="hidden" name="id" value="${creator.id }">
-        	
+        	<input type="hidden" name="imgPath" id="tempImg" value="${creator.imgPath }">
         	<input type="hidden" name="fid" value="${creator.fid }">
         	<div class="Crpf_form">
 	            <div class="Crpf_text1"><span class="creator_h2">프로필 사진</span></div>
@@ -38,7 +38,7 @@
 		      
 		            <div><img src ="${creator.imgPath}"  class="Crpf_imgbox1"></div>
 		            
-		            <div class="Crpf_find creator_h4"><input type='file' id="aas" value="${creator.imgPath }" name="imgPath" ></div>
+		            <div class="Crpf_find creator_h4"><input type='file' id="aas" accept="image/gif, image/jpeg, image/png"  name="imgPathM" ></div>
 	            </div>
 	           
 	            <div class="Crpf_text1"><label for="Crpf_name" class="creator_h3">닉네임</label></div>
@@ -48,14 +48,14 @@
 	            <!-- 크리에이터 연락처 인데 주소 넣는건지(address)or 폰번호 넣는건지 모르겠음(PH)-->
 	            <div class="Crpf_text1"><label for="Crpf_creator_ph" class="creator_h3">연락처</label></div>
 	            
-	            <div><input type="text" id="cCrpf_ph"  value="${creator.cphone}"
+	            <div><input type="text" id="cCrpf_ph"  value="${creator.cellPhone }"
 	            
-	            	name="Cphone" class="Crpf_bar1" placeholder="내용을 입력해주세요"></div>
+	            	name="cellPhone" class="Crpf_bar1" placeholder="내용을 입력해주세요"></div>
 	            	
 	            
 	            <!-- 크리에이터 sns 계정 -->
 	            <div class="Crpf_text1"><label for="Crpf_sns" class="creator_h3">SNS계정</label></div>
-	            <div><input type="text" id="Crpf_sns" value="${creator.SNS }"
+	            <div><input type="text" id="Crpf_sns" value="${creator.SNS  }"
 	            	name="SNS" class="Crpf_bar1" placeholder="내용을 입력해주세요"></div>
 	            
 	            <div class="Crpf_text1"><label for="Crpf_des" class="Crpf_h3">크리에이터 소개</label></div>

@@ -27,7 +27,16 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.LECFLY.LF" />
-	
+
+<!-- MultiPart Resolver -->
+<!-- 	upload -->
+	<beans:bean id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="defaultEncoding" 
+					value="UTF-8" />
+					<beans:property name="maxUploadSize" 
+					value="20971520" />
+	</beans:bean>
 	<!-- Tiles -->
     <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
         <beans:property name="definitions">
@@ -40,13 +49,9 @@
         <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
         <beans:property name="order" value="1" />
     </beans:bean>    
-    
-	<!-- MultiPart Resolver -->
-	<beans:bean id="multipartResolver" 
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="defaultEncoding" value="UTF-8" />
-		<beans:property name="maxUploadSize" value="20971520" />			
-	</beans:bean>
-	<!-- 20MB = 20 * 1024 * 1024 =  -->
+     
+	
+	 
+ 
 	
 </beans:beans>

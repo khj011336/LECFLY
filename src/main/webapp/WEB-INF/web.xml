@@ -28,8 +28,15 @@
   </jsp-property-group>
   </jsp-config>
   
-   
-  
+<!--   <filter> -->
+<!--   <filter-name>MultipartFilter</filter-name> -->
+<!--   <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class> -->
+<!-- </filter> -->
+<!-- <filter-mapping> -->
+<!--   <filter-name>MultipartFilter</filter-name> -->
+<!--   <url-pattern>/*</url-pattern> -->
+<!-- </filter-mapping> -->
+ 
   <!-- 공통변수 처리 설정 jspf -->
   
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
