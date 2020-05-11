@@ -29,7 +29,7 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 		= "update notices set hits = hits + 1 where id = ?";
 	// Notice 목록(고객센터게시판) 보여주기
 	public static String SQL_NOTICE_SHOWALL
-		= "select * from notices where type like '0' order by created_day desc";
+		= "select * from notices where type like '0' order by id desc";
 	// Notice 상세조회
 	public static String SQL_NOTICE_SHOWONE
 		= "select * from notices where id = ?";
@@ -44,7 +44,7 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 //		= "delete notices where id = ?";
 	// Notice 페이지 조회
 	public static String SQL_NOTICE_SHOWALL_PG
-		= "SELECT * FROM notices order by created_day desc limit ?, ?";
+		= "SELECT * FROM notices order by id desc limit ?, ?";
 	// Notice 갯수 카운트
 	public static String SQL_CHECK_NOTICE_NUMBERS
 	= "select count(id) as cnt from notices";	

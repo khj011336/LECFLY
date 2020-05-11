@@ -10,12 +10,6 @@
 <title>CSCENTER/FAQ</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<script type="text/javascript">
-	function selectFaq(fqId) { window.location.href		
-			= '${pageContext.request.contextPath}'
-			+ '/faq_receive.LF?id='+ Id;
-	}	
 </script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">

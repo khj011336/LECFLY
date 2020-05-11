@@ -392,14 +392,13 @@ public class CscenterController {
 		int ntmaxPG = ntSvc.checkMaxPageNumber();
 		if( pageNumber > ntmaxPG || pageNumber <= 0 ) {
 			System.out.println("잘못된 페이지 번호: " + pageNumber);
-			return new ModelAndView(
-				"redirect:cs_notice.LF?pn=1");
+//			return new ModelAndView("redirect:cs_notice.LF?pn=1");
 		}
 		List<NoticeVO> ntList = ntSvc.showAllNotices(pageNumber);
 		ModelAndView mav = new ModelAndView("cscenter/cs_notice.ho");
 		if( ntList != null ) {
-			mav.addObject("atSize", ntList.size());
-			mav.addObject("qna", ntList);
+			mav.addObject("ntSize", ntList.size());
+			mav.addObject("notice", ntList);
 			mav.addObject("maxPn", ntmaxPG);
 			mav.addObject("pn", pageNumber); // 활성페이지 
 				System.out.println("게시글리스트 조회 성공: " + ntList.size());
