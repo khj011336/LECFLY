@@ -9,7 +9,12 @@ import com.LECFLY.LF.model.vo.MemberVO;
 
 @Service
 public interface ILoginSVC {
-
+	
+	
+//	name nicname birthday
+//	gender < 0 && gender < 4
+//	email password phNumber
+//	agreeReceive < -1 && agreeReceive > 4
 	public static final int MB_EMAIL_ERROR = 1;
 	public static final int MB_PW_ERROR = 2;
 	public static final int MB_EMAIL_NONE = 3;
@@ -31,6 +36,8 @@ public interface ILoginSVC {
 			String email, String password, String phNumber, int agreeReceive, 
 			String baiscAddress, String detailAddress, int postalCode);
 	boolean joinMember(MemberVO mb);
+	boolean check_dup_nick(String nickname);
+	boolean check_dup_email(String email);
 	//이메일 찾기
 	//find_login.lf (proc; post; dao; 비회원)			이메일찾기proc실행(findEmail(phNumber) )
 	String findEmail(String phNumber, String name);

@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,39 +91,193 @@ public class MemberController {
 	// 회원가입하는 proc
 	//member_join.lf (proc; post; dao; 비회원)
 	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
-	public String join_member_proc(
-			String cnm_mb_name, String cnm_mb_nick, @DateTimeFormat(pattern="yyyy-MM-dd")Date cnm_mb_birth,
-			int cnm_mb_gender, String cnm_mb_email, String cnm_mb_pw,
-			String cnm_mb_pw_confirm, String cnm_mb_ph1, String cnm_mb_ph2,
-			int cnm_mb_adress_num,String cnm_mb_adress_basic, String cnm_mb_adress_detail,
-			String cnm_mb_agree_news_bymail, String cnm_mb_agree_news_bysms
+	public String join_member_proc( HttpSession ses, Model model, String cnm_upload_pic,
+			String name, String nickname, @DateTimeFormat(pattern="yyyy-MM-dd")Date birthday,
+			String gender, String email, String password,
+			String pw_confirm, String phNumber, String phNumber2,
+			String postalcode, String basic_address, String detail_address,
+			String agree_receive_email, String agree_receive_sms
+//			String cnm_upLoad_pic,
+//			String cnm_mb_name, String cnm_mb_nick, @DateTimeFormat(pattern="yyyy-MM-dd")Date cnm_mb_birth,
+//			String cnm_mb_gender, String cnm_mb_email, String cnm_mb_pw,
+//			String cnm_mb_pw_confirm, String cnm_mb_ph1, String cnm_mb_ph2,
+//			String postalcode, String cnm_mb_adress_basic, String cnm_mb_adress_detail,
+//			String cnm_mb_agree_news_bymail, String cnm_mb_agree_news_bysms
 			){
+		// 인자 테스트
 		System.out.println("join_member_proc....");
-		// birthday 인자값 timestamp로 변환
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		Timestamp birthday = Timestamp.valueOf(sdf.format(cnm_mb_birth));
-		System.out.println(cnm_mb_ph1 +"/"+ cnm_mb_ph2 +"/"+ cnm_mb_agree_news_bymail +"/"+ cnm_mb_agree_news_bysms +"/"
+		System.out.println(phNumber +"/"+ phNumber2 +"/"+ agree_receive_email +"/"+ agree_receive_sms +"/"
 				+ birthday);
-		// ph 인자값 결합
-		String ph = "010"+cnm_mb_ph1 + cnm_mb_ph2;
-		// agreeReceive 값 결합 및 변환
-		int agreeReceive = 0;
-		if( cnm_mb_agree_news_bymail.equals("agree_email"))
-			agreeReceive += 1;
-		if( cnm_mb_agree_news_bysms.equals("agree_sms"))
-			agreeReceive += 2;
+		if( !name.isEmpty() && name != null ) {
+			System.out.println("이름 있음");
+			model.addAttribute("name", name);
+		}
+		if( !nickname.isEmpty() && nickname!=null  ) {
+			System.out.println("닉네임 있음");
+			model.addAttribute("nickname", nickname);
+			if(logSvc.check_dup_nick(nickname))
+				model.addAttribute("nick_msg", "중복된 닉네임입니다.");
+			else
+				model.addAttribute("nick_msg", "사용가능한 닉네임입니다.");
+		}
+		if( birthday!=null ) {
+			System.out.println("생년월일");
+			model.addAttribute("birthday", birthday);
+		}
+		if( !gender.isEmpty()&&gender!=null ) {
+			System.out.println("성별있음");
+			model.addAttribute("gender", gender);
+		}
+		if( !email.isEmpty()&&email!=null ) {
+			System.out.println("이메일 있음");
+			model.addAttribute("email", email);
+			if(logSvc.check_dup_email(email))
+				model.addAttribute("email_msg", "가입된 이메일입니다.");
+			else
+				model.addAttribute("email_msg", "사용가능한 이메일입니다.");
+		}
+		if( !password.isEmpty()&&password!=null ) {
+			System.out.println("비밀번호 있음");
+			model.addAttribute("password", password);
+		}
+		if( !pw_confirm.isEmpty()&&pw_confirm!=null ) {
+			System.out.println("비밀번호 확인 있음");
+			model.addAttribute("pw_confirm", pw_confirm);
+		}
+		if( !phNumber.isEmpty()&&phNumber!=null ) {
+			System.out.println("전화번호 앞자리 있음");
+			model.addAttribute("phNumber", phNumber);
+		}
+		if( !phNumber2.isEmpty()&& phNumber2!=null ) {
+			System.out.println("전화번호 뒷자리 있음");
+			model.addAttribute("phNumber2", phNumber2);
+		}
+		
+		if(!name.isEmpty()&&name!=null && !nickname.isEmpty()&&nickname!=null && birthday!=null && 
+				!gender.isEmpty()&&gender!=null && !email.isEmpty()&&email!=null && 
+				!password.isEmpty()&&password!=null && !pw_confirm.isEmpty()&&pw_confirm!=null && 
+				!phNumber.isEmpty()&&phNumber!=null && !phNumber2.isEmpty()&& phNumber2!=null) {
+			System.out.println("필수 인자값 모두 입력됨!");
+			// birthday 인자값 timestamp로 변환
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			Timestamp birth = Timestamp.valueOf(sdf.format(birthday));
+			// gender 변환
+			int gen = 0;
+			int code = 0;
+			try {
+				gen = Integer.parseInt(gender);
+				code = Integer.parseInt(postalcode);
+			} catch (NullPointerException e) {
+				System.out.println(e);
+			}
+			// ph 인자값 결합
+			String ph = "010"+ phNumber + phNumber2;
+			// agreeReceive 값 결합 및 변환
+			int agreeReceive = 0;
+			if( agree_receive_email.equals("agree_email"))
+				agreeReceive += 1;
+			if( agree_receive_sms.equals("agree_sms"))
+				agreeReceive += 2;
+			
+			if(logSvc.joinMember(cnm_upload_pic, name, nickname, birth, gen, 
+					email, password, ph, agreeReceive, basic_address, 
+					detail_address, code)) {
+				System.out.println(name + "회원 생성 성공");
+			} else {
+				System.out.println(name + "회원성공 실패");
+			}
+			
+			return "home";
+			
+		}
+		return "member/create_new_member";
+//		model.addAttribute("pic", cnm_upload_pic);
+//		model.addAttribute("name", name); 
+//		model.addAttribute("birthday", birthday);
+//		model.addAttribute("gender", gender);
+//		model.addAttribute("email", email);
+//		model.addAttribute("pw", password);
+//		model.addAttribute("pw_confirm", pw_confirm); 
+//		model.addAttribute("ph1", phNumber);
+//		model.addAttribute("ph2", phNumber2);
+//		model.addAttribute("postal_code", postalcode);
+//		model.addAttribute("basic_adress", basic_address);
+//		model.addAttribute("detail_adress", detail_address);
+//		model.addAttribute("agree_mail", agree_receive_email); 
+//		model.addAttribute("agree_sms", agree_receive_sms);
+		
+		
 		
 //		MemberVO mb = new MemberVO(
 //				null, cnm_mb_name, cnm_mb_nick, birthday, cnm_mb_gender, 
 //				cnm_mb_email, cnm_mb_pw, ph, agreeReceive, cnm_mb_adress_basic, 
 //				cnm_mb_adress_detail, cnm_mb_adress_num);
 		
-		if(logSvc.joinMember(null, cnm_mb_name, cnm_mb_nick, birthday, cnm_mb_gender, 
-				cnm_mb_email, cnm_mb_pw, ph, agreeReceive, cnm_mb_adress_basic, 
-				cnm_mb_adress_detail, cnm_mb_adress_num))
-			System.out.println(cnm_mb_name + "회원 생성 성공");
-		return "home";
+		// 만약 null 예외가 있으면 프론트엔드(즉 JS)에서 처리 후 넘어오게함. 대신 그곳에서 강제로 뚫고 들어왔을때 대비해서 만든 예외처리
+		// UQ가 걸린 3개 항목 nickname/email/ph_number를 검색해서 사용가능한지 확인하는 서비스 단을 구성해야됨.
 	}
+	// 닉네임 중복체크
+	@RequestMapping(value="dup_nic_check_proc.LF", method=RequestMethod.GET)
+	public String test_proc(HttpSession ses, Model model,
+			@RequestParam(value = "nickname")String nickname
+			) {
+		System.out.println("들어옴"+nickname);
+		model.addAttribute("nickname", nickname);
+//		ses.setAttribute("nickname", nickname);
+		if(logSvc.check_dup_nick(nickname))
+//			ses.setAttribute("nick_msg", "중복된 닉네임입니다.");
+			model.addAttribute("nick_msg", "중복된 닉네임입니다.");
+		else
+//			ses.setAttribute("nick_msg", "사용가능한 닉네임입니다.");
+			model.addAttribute("nick_msg", "사용가능한 닉네임입니다.");
+		return "redirect:join_new_member.LF";
+//		return "member/create_new_member";
+	}
+	//test_proc.LF
+//	@RequestMapping(value="test_proc.LF", method=RequestMethod.POST)
+//	public String test_proc(HttpSession ses, Model model, String cnm_upload_pic,
+//			String name, String nickname, @DateTimeFormat(pattern="yyyy-MM-dd")Date birthday,
+//			String gender, String email, String password,
+//			String pw_confirm, String phNumber, String phNumber2,
+//			String postalcode, String basic_address, String detail_address,
+//			String agree_receive_email, String agree_receive_sms
+//	@RequestMapping(value="check_dup_nic.LF", method=RequestMethod.POST)
+//	public String test_proc(HttpSession ses, Model model 
+//			@ModelAttribute(value = "pic")String cnm_upload_pic, 
+//			@ModelAttribute(value = "name")String name, 
+//			@ModelAttribute(value = "nickname")String nickname, 
+//			@ModelAttribute(value = "birthday")String birthday,
+//			@ModelAttribute(value = "gender")String gender, 
+//			@ModelAttribute(value = "email")String email, 
+//			@ModelAttribute(value = "pw")String password,
+//			@ModelAttribute(value = "pw_confirm")String pw_confirm, 
+//			@ModelAttribute(value = "ph1")String phNumber, 
+//			@ModelAttribute(value = "ph2")String phNumber2,
+//			@ModelAttribute(value = "postalcode")String postalcode,
+//			@ModelAttribute(value = "basic_adress")String basic_address,
+//			@ModelAttribute(value = "detail_adress")String detail_address,
+//			@ModelAttribute(value = "agree_mail")String agree_receive_email, 
+//			@ModelAttribute(value = "agree_sms")String agree_receive_sms
+//			){
+//		System.out.println("test");
+//		System.out.println(nickname + "test");
+//		model.addAttribute("pic", cnm_upload_pic);
+//		model.addAttribute("name", name); 
+//		model.addAttribute("nickname", nickname);
+//		model.addAttribute("birthday", birthday);
+//		model.addAttribute("gender", gender);
+//		model.addAttribute("email", email);
+//		model.addAttribute("pw", password);
+//		model.addAttribute("pw_confirm", pw_confirm); 
+//		model.addAttribute("ph1", phNumber);
+//		model.addAttribute("ph2", phNumber2);
+//		model.addAttribute("postal_code", postalcode);
+//		model.addAttribute("basic_adress", basic_address);
+//		model.addAttribute("detail_adress", detail_address);
+//		model.addAttribute("agree_mail", agree_receive_email); 
+//		model.addAttribute("agree_sms", agree_receive_sms);
+//		return "redirect:join_new_member.LF";
+//	}
 	
 //이메일 찾기						
 	//	find_mb_login.lf (form; get; 비회원)			이메일찾기 폼 이동
