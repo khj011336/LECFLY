@@ -50,8 +50,8 @@
 	    </div>
 	    <div id="qna_table">
 		     
-		     <h2> 문의 내역 전체 게시글 리스트: ${pn}페이지 - 
-			<c:out value="${atSize}" default="0"/>개 </h2>
+		     <h2> 문의 내역 (test용 전체 게시글 리스트: ${pn}페이지 -
+				<c:out value="${qaSize}" default="0"/>개) </h2>
 		     <c:if test="${!empty qaSize}">
 		     
 		     <table>
@@ -63,50 +63,44 @@
                     <th>등록일</th>
                     <th>조회수</th>
                  </tr>
-                 <c:forEach var="qamap" items="${qna}" varStatus="vs">
-                 <tr id="tr_qa_${qamap.vId}" onclick="selectQna('${qamap.vId}')"> 
-                 	<td><c:out value="${qamap.vId}" default="0"/> </td>
+                 <c:forEach var="qa" items="${qna}" varStatus="vs">
+                 <tr id="tr_qa_${qa.id}" onclick="selectQna('${qa.id}')"> 
+                 	<td><c:out value="${qa.id}" default="0"/> </td>
                  	<td>
-						<c:out value="${qamap.vTitle}" default="제목없음"/>
-							<span class="as_cnt">
-								<small style="color: red">
-								 (${qamap.vAsCnt}) 
-								</small>
-							</span>
+						<c:out value="${qa.title}" default="제목없음"/>
+						<span class="qc_cnt">
+							<small style="color: red">
+							 (${cntQnaComments[vs.index]}) 
+							</small>
+						</span>
 					</td>
-					<td><c:out value="${qamap.vType}" default="선택안함"/></td>
-					<td><c:out value="${qamap.vUser}" default="멤버없음"/></td>
-	               	<td><fmt:formatDate value="${qamap.vDay}" pattern="yyyy.MM.dd" /> </td>
-					<td><c:out value="${qamap.vRc}" default="0"/></td>
-					<td>
-						<c:forEach var="e" items="${qamap}">
-							<c:if test="${e.key eq 'vUser'}"> 
-								key ${e.key} => value ${e.value} <br>
-							</c:if> 
-						</c:forEach>
-					</td>
-					</tr>
-					</c:forEach>	
-               </table>
-               </c:if>
+					<td><c:out value="${qa.type}" default="선택안함"/></td>
+					<td><c:out value="${qa.mbId}" default="멤버없음"/></td>
+	               	<td><fmt:formatDate value="${qa.writedDay}" pattern="yyyy.MM.dd" /> </td>
+					<td><c:out value="${qa.hits}" default="0"/></td>
+				</tr>
+				</c:forEach>	
+              </table>
+              </c:if>
+              
                <div id="qna_numbering">
 	               	<c:if test="${pn > 1}">
-						<a href="${pageContext.request.contextPath}/qna_list.LF?pn=${pn-1}">[PREV]</a>
+						<a href="${pageContext.request.contextPath}/cs_qna.LF?pn=${pn-1}">[PREV]</a>
 					</c:if>
 					 &nbsp; &nbsp;
 					<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
 						<c:if test='${vs.current eq pn}'>
-							<b style='color: orangered'>${vs.current}</b>
+							<b style='color: orangered'> ${vs.current}</b>
 						</c:if>	
 						<c:if test='${vs.current ne pn}'>
-							<a href="${pageContext.request.contextPath}/qna_list.LF?pn=${vs.current}">${vs.current}</a>
+							<a href="${pageContext.request.contextPath}/cs_qna.LF?pn=${vs.current}"> ${vs.current}</a>
 						</c:if>
 						 &nbsp;
-						 ${vs.current eq maxPn ? '': '|'}
+						 ${vs.current eq maxPn ? '': '|&nbsp;'}
 					</c:forEach>
 					 &nbsp; &nbsp;
 					<c:if test="${pn < maxPn}">
-						<a href="${pageContext.request.contextPath}/qna_list.LF?pn=${pn+1}">[NEXT]</a>
+						<a href="${pageContext.request.contextPath}/cs_qna.LF?pn=${pn+1}">[NEXT]</a>
 					</c:if>
                
                </div>

@@ -28,14 +28,14 @@ public class QnaCommentMysqlDAOImpl implements IQnaCommentDAO{
 	private JdbcTemplate jtem;
 	
 	public static String SQL_INSERT_COMMENT 
-		= "insert into qna_comments values(null,?,0,?,?,now(),now())";
+		= "insert into qna_comment values(null,?,0,?,?,now(),now())";
 	public static String SQL_SELECT_ALL_COMMENTS 
-		= "select * from qna_comments order by created_at desc";
+		= "select * from qna_comment order by created_at desc";
 	// 컴패션 2차정렬? 
 	public static String SQL_SELECT_ALL_COMMENTS_QNA 
-		= "select * from qna_comments where qna_id = ? order by created_at desc";
+		= "select * from qna_comment where qna_id = ? order by created_at desc";
 	public static String SQL_COUNT_COMMENTS_QNA	
-		= "select count(*) from qna_comments where qna_id = ?";
+		= "select count(*) from qna_comment where qna_id = ?";
 	@Override
 	public boolean qnaCommentAdd(QnaCommentVO qc) {
 		int r = jtem.update(SQL_INSERT_COMMENT, qc.getContent(),

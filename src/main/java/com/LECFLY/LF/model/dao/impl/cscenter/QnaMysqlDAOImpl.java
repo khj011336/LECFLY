@@ -29,7 +29,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "update qnas set hits = hits + 1 where id = ?";
 	// QnA 목록 보여주기
 	public static String SQL_QNA_SHOWALL
-		= "select * from qnas order by writed_day desc";
+		= "select * from qnas order by id desc";
 	// QnA 상세조회
 	public static String SQL_QNA_SHOWONE
 		= "select * from qnas where id = ?";

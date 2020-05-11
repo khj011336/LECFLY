@@ -2,6 +2,7 @@ package com.LECFLY.LF.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -187,18 +188,30 @@ public class CscenterController {
 				"redirect:cs_qna.ho?pn=1");
 		}
 		List<QnaVO> qaList = qaSvc.showAllQnas(pageNumber);
+		for (QnaVO qnaVO : qaList) {
+			System.out.println(qnaVO);
+		}
 		ModelAndView mav = new ModelAndView("cscenter/cs_qna.ho");
 		if( qaList != null ) {
 			mav.addObject("qaSize", qaList.size());
 			mav.addObject("qna", qaList);
 			mav.addObject("maxPn", qamaxPG);
 			mav.addObject("pn", pageNumber); // 활성페이지 
-				System.out.println("게시글리스트 조회 성공: " + qaList.size());
+			
+			// 댓글의 개수 리스트/배열
+			List<Integer> cntComments = new ArrayList<Integer>();
+			for (int i = 0; i < qaList.size(); i++) {
+				int cntQC = qcSvc.checkNumberOfCommentsForQna(qaList.get(i).getId());
+				cntComments.add(cntQC);
+			}
+			mav.addObject("cntComments", cntComments);
+			System.out.println("게시글리스트 조회 성공: " + qaList.size());
 		} else {
 			mav.addObject("msg", "게시글리스트 조회 실패!");
 		}
 		return mav;
 	}
+	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//QNA COMMENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
