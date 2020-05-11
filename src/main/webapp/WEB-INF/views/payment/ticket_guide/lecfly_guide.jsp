@@ -36,32 +36,31 @@
                 <div id="lecflyis_title2"><h1><span style="background-color: orange;">
                     Lecfly는 여러분의 취미를 이렇게 디자인합니다.</span></h1></div>
                 <div id="lecflyis_box">
-                    <span style="color: orangered;">
+                    <span style="color: grey;">
                     <i class="fas fa-money-check-alt fa-5x"></i>
                     </span><br><br><br>
-                    <h4><span style="background-color: lightgray">합리적인 가격의 온라인 클래스</span></h4><br>
-                    온라인으로 즐기는 취미생활,<br>오프라인 클래스보다 합리적인<br>가격에 만나보세요.
+                    <h4><span style="background-color: lightgray">합리적인 가격의 온라인 클래스</span></h4><br><br><br>
+                   	 온라인으로 즐기는 취미생활,<br>오프라인 클래스보다 합리적인<br>가격에 만나보세요.
                 </div>
                 <div id="lecflyis_box">
-                    <span style="color: orangered;">
-    <!--                <i class="fas fa-photo-video"></i>-->
+                    <span style="color: grey;">
                     <i class="fas fa-file-video fa-5x"></i>
                     </span><br><br><br>
-                    <h4><span style="background-color: lightgray">고퀄리티 클래스 영상</span></h4><br>
-                    누구나 따라하기 쉬운 과정 설명과<br>전문 작가들의 노하우가<br>가득 담겨있어요.
+                    <h4><span style="background-color: lightgray">고퀄리티 클래스 영상</span></h4><br><br><br>
+                    	누구나 따라하기 쉬운 과정 설명과<br>전문 작가들의 노하우가<br>가득 담겨있어요.
                 </div>
                 <div id="lecflyis_box">
-                    <span style="color: orangered;">
+                    <span style="color: grey;">
                     <i class="fas fa-box-open fa-5x"></i>
                     </span><br><br><br>
-                    <h4><span style="background-color: lightgray">집으로 배송되는 준비물</span></h4><br>
-                    클래스에 필요한 준비물은<br>최저가로 준비하여<br>집 앞까지 배송해드려요.
+                    <h4><span style="background-color: lightgray">집으로 배송되는 준비물</span></h4><br><br><br>
+                   	 클래스에 필요한 준비물은<br>최저가로 준비하여<br>집 앞까지 배송해드려요.
                 </div>
                 
             
 	            <div id="lecflyis_title3">
 	                <h1>홈페이지로 이동해 새로운 취미를 찾아보세요!</h1>
-	                <div id="lecflyis_gohome"> <h2><a href="#" id="home_mainpage">바로가기&nbsp;&gt;</a></h2></div>
+	                <div id="lecflyis_gohome"> <h2><a href="home.LF" id="home_mainpage">바로가기&nbsp;&gt;</a></h2></div>
             	</div>
             </div>
     </div>

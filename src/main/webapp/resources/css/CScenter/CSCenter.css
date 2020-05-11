@@ -42,7 +42,7 @@
     text-decoration: none;
 }
 #CSsec_subtitle ul li a:hover{
-    color: orangered;
+    color: purple;
 }
 /* #CSsec_subtitle ul {
 	border-bottom: 2px groove darkgrey;
@@ -353,7 +353,7 @@
 	font-size: 24px;
 	margin: -50px auto 50px auto;
 	color: grey;
-	background: url(../../imges/logo/LecFly_LOGO_B_W.png) center no-repeat;
+	background: url(../img/logo/LecFly_LOGO_B_W.png) center no-repeat;
 	opacity: 0.7;
 	padding-top: 180px;
 }
@@ -409,19 +409,19 @@
 }
 #lecflyis_maintitle { /* 홈페이지_이용안내_메인타이틀 */
     margin-top: 30px;
-    color: white;
+    color: BLACK;
 }
 #lecflyis_maintxt >p { /* 홈페이지_이용안내_메인타이틀 */
     
 }
 #lecflyis_maintxt { /* 홈페이지_이용안내_메인텍스트*/
     margin-top: 30px;
-    color: white;
+    color: BLACK;
 }
 #lecflyis_title2 { /* 홈페이지_이용안내_타이틀 2*/
     margin-top: 60px;
 /*    background-color: purple;*/
-    color: white;
+    color: BLACK;
     margin-left: auto;
     margin-right: auto;
 }
@@ -434,7 +434,7 @@
     margin-left: 67.5px;
     margin-top: 45px;
 /*    padding-left: 10px;*/
-    padding-top: 30px;
+    padding-top: 60px;
     text-align: center;
     border: 1px solid lightgrey;
 }
@@ -451,13 +451,13 @@
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 10px;
+    padding-top: 18px;
     vertical-align: middle;
     background-color: black;
     color: white;
 }
 #lecflyis_gohome a {
-    color: white;
+	color: white;
     text-decoration: none;
 }
 
@@ -478,17 +478,51 @@
 }
 #lecflyticket_noticebox {  /* 홈페이지_회원권_공지박스 */
     width: 795px;
-    height: 90px;
+    height: 280px;
     margin-left: 67.5px;
-    padding-top: 20px;
+    padding-top: 40px;
     background-color: lightgrey;/* rgba(255,255,255,0.7); */
     text-align: center;
+    font-weight: bold;
+    font-size: 16px;
 }
 #lecflyticket_maintitle { /* 홈페이지_회원권_메인타이틀 */
     margin-top: 10px;
     margin-bottom: 30px;
-    color: white;
+    color: BLACK;
 }
+.ticket_category { /* 메인_카테고리 */
+	margin-bottom: 80px;
+	text-align: center;
+}
+
+.ticket_category_block img { /* 메인_카테고리블럭아이콘 */
+	margin-bottom: 30px;
+	margin-top: 15px;
+}
+.ticket_category_block span {/* 메인_카테고리블럭아이콘명 */
+	padding-top: 30px;
+	color: black;
+}
+.ticket_category_block { /* 메인_카테고리블럭 */
+	display: inline-block;
+	text-align: center;
+	margin: 40px 2px 0px 2px;
+	padding: 0px 0px 0px 0px;
+	cursor: pointer;
+	width: 100px;
+	height: 100px;
+	border-radius: 50px;
+}
+
+.ticket_category_block:hover {
+	background-color: white;
+}
+
+
+
+
+
 #lecflyticket_box { /* 홈페이지_회원권_회원권종류 박스 */
     background-color: rgba(255,255,255,0.7);
     width: 220px;
@@ -517,6 +551,68 @@
 }
 
 
+/* ```````````````````````````````````````````````````````````````````````````````````회원권/결제 팝업*/
+
+.lecflyticket_overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.lecflyticket_overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.lecflyticket_popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 800px;
+  height: 600px;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.lecflyticket_popup .lecflyticket_title {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid black;
+}
+.lecflyticket_popup .close {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.lecflyticket_popup .close:hover {
+  color: black;
+}
+.lecflyticket_popup .lecflyticket_content {
+  font-size: 12px;
+  width: 100%;
+  overflow: auto;
+  clear: both;
+}
+
+@media screen and (max-width: 400px){
+  .lecflyticket{
+    width: 400px;
+  }
+  .lecflyticket_popup{
+    width: 400px;
+  }
+}
 
 
 

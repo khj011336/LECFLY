@@ -28,7 +28,7 @@ public class QnaCommentMysqlDAOImpl implements IQnaCommentDAO{
 	private JdbcTemplate jtem;
 	
 	public static String SQL_INSERT_COMMENT 
-		= "insert into qna_comment values(null,?,0,?,?,now(),now())";
+		= "insert into qna_comment values(0,?,?,?,?,?,?,now(),now())";
 	public static String SQL_SELECT_ALL_COMMENTS 
 		= "select * from qna_comment order by created_at desc";
 	// 컴패션 2차정렬? 

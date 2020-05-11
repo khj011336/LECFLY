@@ -44,7 +44,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "delete qnas where id = ?";
 	// QnA 페이지 조회
 	public static String SQL_QNA_SHOWALL_PG
-		= "SELECT * FROM qnas order by writed_day desc limit ?, ?";
+		= "SELECT * FROM qnas order by id desc limit ?, ?";
 	// QnA 페이지 조회
 		public static String SQL_QNA_SHOWALL_PG_JOIN
 		= "select A.id vId, A.title vTitle,"
@@ -54,7 +54,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 				+ "A.created_at vDay, (select count(*) "
 				+ "from qnaComments B where B.qna_id = A.id) "
 				+ "vQcCnt from qnas A order by "
-				+ "A.created_at desc limit ?, ?";
+				+ "A.id desc limit ?, ?";
 	// QnA 갯수 카운트
 	public static String SQL_CHECK_QNA_NUMBERS
 	= "select count(id) as cnt from qnas";	

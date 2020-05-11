@@ -51,12 +51,13 @@ public class CscenterController {
 //	@Autowired
 //	private IMemberSVC mbSvc;
 	
-	// cscenter 홈
-	@RequestMapping(value = "cscenter.LF", method = RequestMethod.GET)
-	public String cscenterHome() {
-		System.out.println("cscenterHome()...");	
-		return "cscenter/cs_qna.ho";
-	}
+//	// cscenter 홈
+//	@RequestMapping(value = "cscenter.LF", method = RequestMethod.GET)
+//	public String cscenterHome() {
+//		System.out.println("cscenterHome()...");	
+//		return "cscenter/cs_qna.ho";
+//	}
+	
 //	// QnA
 //	@RequestMapping(value = "/cs_qna.LF", method = RequestMethod.GET)
 //	public String cscenterQnA() {
@@ -78,20 +79,20 @@ public class CscenterController {
 	
 	
 	// 회원이 QnA 글쓰기 + 파일
-	@RequestMapping(value = "cs_post_qna.LF", method = RequestMethod.GET)
-	public String cscenterPostQna() {
-		System.out.println("cscenterPostQna()...");
+	@RequestMapping(value = "cs_post_new_qna.LF", method = RequestMethod.GET)
+	public String cscenterPostNewQna() {
+		System.out.println("cscenterPostNewQna()...");
 		return "cscenter/cs_qna_post.ho";
 	}
 	
-	@RequestMapping(value = "cs_add_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "cs_post_qna.LF", method = RequestMethod.GET)
 	public String cscenterAddQna(int mbId, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
 		System.out.println("cscenterAddQna()...");
 		System.out.println("multipart size: " + file.size());
 		String realPath = ses.getServletContext().getRealPath(ICscenterFileSVC.DEF_UPLOAD_DEST)+"/";
 		
 		//다중 처리
-		Map<String, Object> rMap = csSvc.writeUploadedMultipleFiles(file, realPath, (String)ses.getAttribute("mbLoginName"));
+		Map<String, Object> rMap = csSvc.writeUploadedMultipleFiles(file, realPath, (String)ses.getAttribute("mbId"));
 		String filePath = (String)rMap.get("muliFPs");
 		
 		System.out.println("총 파일 수: " + rMap.get("fileCnt"));

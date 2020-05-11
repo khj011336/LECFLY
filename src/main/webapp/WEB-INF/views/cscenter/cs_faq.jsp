@@ -27,7 +27,7 @@
     <div id="CSsec_subtitle">
        <ul>
            <li><h4><a href="cs_qna.LF" id= "CS1">QnA</a></h4></li>
-           <li><h4><a href="cs_faq.LF" id= "CS2">자주묻는 질문</a></h4></li>
+           <li><h4><a href="cs_faq.LF" style="background-color: orange" id= "CS2">자주묻는 질문</a></h4></li>
            <li><h4><a href="cs_notice.LF" id= "CS3">공지사항</a></h4></li>
        </ul>
     </div>
@@ -51,23 +51,44 @@
            </div>
            <div id="faq_main">
            		<div id="faq_table">
+           		<h3>(test용 전체 게시글 리스트: ${pn}페이지-
+           			<c:out value="${fqSize}" default="0"/>개)</h3>
+           			<c:if test="${!empty fqSize}">
 			    	<ul>
-			    		<%for(int i =0 ; i<10 ; i++){ %>
+			    		<c:forEach var="fq" items="${faq}" varStatus="vs">
 			    		<li>
 			    			<div id ="faq_acodian">
-			      		<div id="faq_aco_type">&#91;전체&#93;</div>
-			      		<div id="faq_aco_title">회원정보수정은 어디서 하나요?</div>
+			      		<div id="faq_aco_type">&#91;<c:out value="${fq.type}" default="type없음"/>&#93;</div>
+			      		<div id="faq_aco_title"><c:out value="${fq.title}" default="title없음"/></div>
 			             	<div id="faq_aco_txt">
-			             		홈페이지에 로그인 후 [마이페이지]를 클릭해주세요<br>
-			             		[정보관리]를 클릭해 회원정보와 비밀번호를 수정할 수 있습니다.<br>
-			             		수정 불가능한 부분을 개명 등의 이유로 수정을 원하시는 경우 고객센터로 요청해주시면 처리해드리겠습니다.
+			             		<c:out value="${fq.content}" default="type없음"/>
 			             	</div>
 			          	</div>
 			    		</li>
-			    		<%} %>
+			    		</c:forEach>
 			    	</ul>
-			    	
-			        <div id="faq_numbering">&lt;&nbsp;<b>1</b> 2 3 4 5 6 7 8 9 10&nbsp;&gt;</div>
+			    	</c:if>
+			        <div id="faq_numbering">
+			        	<c:if test="${pn > 1}">
+						<a href="${pageContext.request.contextPath}/cs_faq.LF?pn=${pn-1}">[PREV]</a>
+					</c:if>
+					 &nbsp; &nbsp;
+					<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
+						<c:if test='${vs.current eq pn}'>
+							<b style='color: orangered'> ${vs.current}</b>
+						</c:if>	
+						<c:if test='${vs.current ne pn}'>
+							<a href="${pageContext.request.contextPath}/cs_faq.LF?pn=${vs.current}"> ${vs.current}</a>
+						</c:if>
+						 &nbsp;
+						 ${vs.current eq maxPn ? '': '|&nbsp;'}
+					</c:forEach>
+					 &nbsp; &nbsp;
+					<c:if test="${pn < maxPn}">
+						<a href="${pageContext.request.contextPath}/cs_faq.LF?pn=${pn+1}">[NEXT]</a>
+					</c:if>
+               
+			        </div>
 			    </div>
            </div>	
        </div>

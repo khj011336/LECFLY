@@ -28,7 +28,7 @@
        <ul>
            <li><h4><a href="cs_qna.LF" id= "CS1">QnA</a></h4></li>
            <li><h4><a href="cs_faq.LF" id= "CS2">자주묻는 질문</a></h4></li>
-           <li><h4><a href="cs_notice.LF" id= "CS3">공지사항</a></h4></li>
+           <li><h4><a href="cs_notice.LF" style="background-color: orange" id= "CS3">공지사항</a></h4></li>
        </ul>
     </div>
     <div id="CS_page">
