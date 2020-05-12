@@ -11,7 +11,7 @@ public class HomeFileManagerVO {
 	/** 노출순서          (0~ 6.  index3 메인노출)*/
 	int fileDisplayNum; 
 	/** 강의 아이디*/
-	String fileLectureId;
+	int fileLectureId;
 	/** 파일 제목*/
 	String fileName; 
 	/** 파일 경로*/
@@ -35,22 +35,24 @@ public class HomeFileManagerVO {
 	 * @param fileSize
 	 * @param updatedDate
 	 */
-	public HomeFileManagerVO(int id, int fileDisplayOn, int fileDisplayNum, String fileName, String filePath,
-			int fileSize, Timestamp updatedDate) {
+	
+	public HomeFileManagerVO(int id, int fileDisplayOn, int fileDisplayNum, int fileLectureId, String fileName,
+			String filePath, long fileSize, Timestamp updatedDate) {
 		super();
 		this.id = id;
 		this.fileDisplayOn = fileDisplayOn;
 		this.fileDisplayNum = fileDisplayNum;
+		this.fileLectureId = fileLectureId;
 		this.fileName = fileName;
 		this.filePath = filePath;
 		this.fileSize = fileSize;
 		this.updatedDate = updatedDate;
 	}
 	
-	public String getFileLectureId() {
+	public int getFileLectureId() {
 		return fileLectureId;
 	}
-	public void setFileLectureId(String fileLectureId) {
+	public void setFileLectureId(int fileLectureId) {
 		this.fileLectureId = fileLectureId;
 	}
 

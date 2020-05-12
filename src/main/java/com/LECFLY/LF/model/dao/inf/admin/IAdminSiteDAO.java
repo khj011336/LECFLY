@@ -16,7 +16,7 @@ public interface IAdminSiteDAO {
 	// 배너 이미지를 상세조회할 수 있다.
 	HomeFileManagerVO selectBanner(HomeFileManagerVO vo);
 	// 배너 이미지를 전체조회할 수 있다.
-	List<HomeFileManagerVO> selectBannerList(HomeFileManagerVO vo);
+	List<HomeFileManagerVO> selectBannerList();
 	
 	// 추천 강의 전시 관리
 	// 추천 강의를 등록할 수 있다.
@@ -28,7 +28,7 @@ public interface IAdminSiteDAO {
 	// 추천 강의를 상세조회할 수 있다.
 	LectureVO selectRecommendLecture(LectureVO vo);
 	// 추천 강의를 전체조회할 수 있다.
-	List<LectureVO> selectRecommendLectureList(LectureVO vo);
+	List<LectureVO> selectRecommendLectureList(List<Integer> reIds);
 	
 	// 일반 강의 전시 관리
 	// 일반 강의를 등록할 수 있다.
@@ -40,6 +40,14 @@ public interface IAdminSiteDAO {
 	// 일반 강의를 상세조회할 수 있다.
 	LectureVO selectNomalLecture(LectureVO vo);
 	// 일반 강의를 전체조회할 수 있다.
-	List<LectureVO> selectNomalLectureList(LectureVO vo);
-		
+	List<LectureVO> selectNomalLectureList();
+	// 추천강의 id들을 조회할 수 있다.
+	List<Integer> getRecommendIds();
+	
+	// 메인_강의에 좋아요를 할 수 있다.
+	boolean likeBtnClick(int status, int memberId, int lectureId);
+	// 카테고리별 강의를 전체조회할 수 있다.
+	List<LectureVO> selectLectureListForCategory(int category);
+	// 키워드로 강의를 검색할 수 있다. 
+	List<LectureVO> selectLectureListForKeyword(String keyword);	
 }

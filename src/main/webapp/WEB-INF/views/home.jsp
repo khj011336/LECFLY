@@ -13,7 +13,6 @@
 <script type="text/javascript" src="common/temp.js"></script>
 </head>
 <body>
-	<input type="hidden" name="id" value="${member.id}">
 	<div id="wrapper">
 		<div id="header" class="header" style="z-index:30;">
 			<%@ include file="common/header.jsp"%>
