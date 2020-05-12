@@ -96,7 +96,7 @@ public class FileSVCImpl {
 		}
 		return null;
 	}
-	public String getPath(String username , int IorV) {
+	public static String getPath(String username , int IorV) {
 		Path relativePaht = Paths.get("LECFILE");
 		String path = relativePaht.toAbsolutePath().toString();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");

@@ -22,6 +22,7 @@ import com.LECFLY.LF.model.dao.impl.creator.LectureMysqlDAOImpl;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
+import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.impl.creator.LectureSVCImpl;
 
 @Controller
@@ -54,6 +55,7 @@ public class CreatorController {
 		ses.setAttribute("id", 1);
 		ses.setAttribute("fid", 2);
 		ses.setAttribute("membertest", "hongil");
+		ses.setAttribute("crPath",FileSVCImpl.getPath((String)ses.getAttribute("membertest"), 1 ));
 		int status = (Integer) ses.getAttribute("id");
 		int fid = (Integer) ses.getAttribute("fid");
 		if (status == 1 && page == 1) {
