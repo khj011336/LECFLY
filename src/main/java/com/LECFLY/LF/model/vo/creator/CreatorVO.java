@@ -2,6 +2,8 @@ package com.LECFLY.LF.model.vo.creator;
 
 import java.sql.Timestamp;
 
+import org.springframework.web.multipart.MultipartFile;
+
 
 public class CreatorVO {
 
@@ -10,12 +12,12 @@ private int fId; 			 //Fk
 private String imgPath; 	 // 이미지 파일경로 파일네이밍 규정에 따름 UQ
 private String name; 		 // 크리에이터 이름
 private String nickname;     // 크리에이터 닉네임 UQ
-private String Cphone;		 // 크리에이터 셀폰
+private String cellPhone;		 // 크리에이터 셀폰
 private String SNS; 		 // 크리에이터 SNS 연동아이디
 private String info;		 // 크리에이터소개
 private int status;			 // 크리에이터 상태 
 private Timestamp grantDate; // 승인날자
-
+private MultipartFile imgPathM;
 public int getId() {
 	return id;
 }
@@ -40,11 +42,11 @@ public String getName() {
 public void setName(String name) {
 	this.name = name;
 }
-public String getCphone() {
-	return Cphone;
+public String getCellPhone() {
+	return cellPhone;
 }
-public void setCphone(String cphone) {
-	Cphone = cphone;
+public void setCellPhone(String cphone) {
+	cellPhone = cphone;
 }
 public String getSNS() {
 	return SNS;
@@ -91,7 +93,7 @@ public CreatorVO(int id, int fid, String imgPath, String name, String nickname, 
 	this.imgPath = imgPath;
 	this.name = name;
 	this.nickname = nickname;
-	Cphone = cphone;
+	cellPhone = cphone;
 	SNS = sNS;
 	this.info = info;
 	this.status = status;
@@ -100,9 +102,15 @@ public CreatorVO(int id, int fid, String imgPath, String name, String nickname, 
 
 @Override
 public String toString() {
-	return "CreatorVO [id=" + id + ", Fid=" + fId + ", img=" + imgPath + ", name=" + name + ", nickname=" + nickname
-			+ ", Cphone=" + Cphone + ", SNS=" + SNS + ", info=" + info + ", status=" + status + ", grantDate="
-			+ grantDate + "]";
+	return "id=" + id + ", Fid=" + fId + ", img=" + imgPath + ", name=" + name + ", nickname=" + nickname
+			+ ", cellPhone=" + cellPhone + ", SNS=" + SNS + ", info=" + info + ", status=" + status + ", grantDate="
+			+ grantDate;
+}
+public MultipartFile getImgPathM() {
+	return imgPathM;
+}
+public void setImgPathM(MultipartFile imgPathM) {
+	this.imgPathM = imgPathM;
 }
 
 }
