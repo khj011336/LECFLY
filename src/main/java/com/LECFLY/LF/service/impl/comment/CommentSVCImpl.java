@@ -139,15 +139,15 @@ public class CommentSVCImpl implements ICommentSVC {
 	}
 
 	@Override
-	public boolean updateOneComment(CommentVO ct) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateOneComment(int id, String content) {
+		System.out.println("svc: updateOneComment");
+		return ctDao.updateOneComment(id, content);
 	}
-
+	
 	@Override
-	public boolean updateOneComment(CommentVO ct, String content) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateOneComment(CommentVO ct) {
+		System.out.println("svc: updateOneComment");
+		return updateOneComment(ct.getId(), ct.getComment());
 	}
 
 	@Override
@@ -164,6 +164,7 @@ public class CommentSVCImpl implements ICommentSVC {
 	
 	@Override
 	public boolean increaseOrderNumComments(List<CommentVO> ctList, int order) {
+		System.out.println("svc: increaseOrderNumComments");
 		int target = ctList.size() - order;
 		for (int i = 0; i < target; i++) {
 			if(!increaseOrderNumComment(ctList.get(i))) {
@@ -177,6 +178,7 @@ public class CommentSVCImpl implements ICommentSVC {
 	
 	@Override
 	public boolean increaseOrderNumComment(CommentVO ct) {
+		System.out.println("svc: increaseOrderNumComment");
 		return ctDao.increaseOrderNumComment(ct);
 	}
 }

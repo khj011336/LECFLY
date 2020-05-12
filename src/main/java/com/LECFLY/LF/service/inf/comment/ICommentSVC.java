@@ -7,9 +7,25 @@ import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.vo.CommentVO;
 
+/*
+ 	**********필독: 대댓글의 모체(부모)를 삭제하면 안됨! 삭제지 대댓글처리문제 미정되어 구현x한 상태!!*************
+	댓글 등록 시: addComment(int mbId, int tableCate, int atId, String comment, String mbNic, int targetCtId);
+		ㄴ해당 댓글 등록 시 성공/실패값을 리턴함(1~4)
+	해당 게시글의 전체 댓글들 조회 시: List<CommentVO> selectCommentsForOrderNumAsc(int cate, int atId);
+		ㄴ해당 게시글의 댓글들을 순서대로 리스트에 입력됨.
+	해당 댓글 수정 시: boolean updateOneComment(int id, String content);
+				 boolean updateOneComment(CommentVO ct);
+		ㄴ해당 댓글을 수정 후 성공/실패를 리턴함.
+	해당 댓글 삭제 시: boolean deleteOneComment(int id);
+		ㄴ성공/실패를 boolean으로 리턴함
+		
+	아직 검색/통계를 위한 service는 미구현상태임
+*	***********************************************
+*/
 @Service
 public interface ICommentSVC {
 	
+	// 댓글 등록 시 성공/실패값들
 	final int ADD_COMMENT_SUCCES = 1;	// 성공
 	final int ADD_COMMENT_FAIL = 2;		// 댓글 추가 실패(DB오류)
 	final int NONE_FIND_ATID = 3;		// 해당 글 없음
@@ -19,7 +35,7 @@ public interface ICommentSVC {
 	int addComment(int mbId, int tableCate, int atId, String comment, String mbNic, int targetCtId);
 		// 기본 생성(일반적으로 사용해야됨
 	
-	boolean addComment(CommentVO ct);			// 절대 생성 사용x
+	boolean addComment(CommentVO ct);			// 절대 생성 /사용x
 	
 	
 	// 모든 댓글 조회
@@ -35,7 +51,7 @@ public interface ICommentSVC {
 	List<CommentVO> selectCommentsByMbId(int mbId);			//작성자별 조회
 		// 작성된 스키마로 분류 조회	(통계에 사용)
 	List<CommentVO> selectCommentsByScheme(int cate);		//작성된 글 종류에 따른 조회
-
+		// 해당 테이블의 해당 댓글의 댓글들 모두 조회(오름차순/내림차순)
 	List<CommentVO> selectCommentsForOrderNumAsc(int cate, int atId);		//해당글의 댓글을 order올림차순으로 정렬하여 댓글을 받는다.
 	List<CommentVO> selectCommentsForOrderNumDesc(int cate, int atId);	//해당글의 댓글을 order내림차순으로 정렬하여 댓글을 받는다.
 
@@ -47,8 +63,8 @@ public interface ICommentSVC {
 	
 	
 	// 댓글 수정
+	boolean updateOneComment(int id, String content);
 	boolean updateOneComment(CommentVO ct);
-	boolean updateOneComment(CommentVO ct, String content);
 	
 	// 댓글 삭제
 	boolean deleteOneComment(int id);

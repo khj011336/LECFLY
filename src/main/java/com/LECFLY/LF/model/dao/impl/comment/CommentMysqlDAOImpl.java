@@ -20,6 +20,7 @@ public class CommentMysqlDAOImpl implements ICommentDAO {
 			"SELECT * FROM comments where table_cate=? AND at_id=? ORDER BY order_num DESC";
 	public static final String SQL_INCREASE_ORDER_NUM = 
 			"UPDATE comments SET order_num = ? WHERE id = ?"; 
+	public static final String SQL_UPDATE_COMMENT = "update comments set comment=? where id=?";
 	
 	@Autowired
 	private JdbcTemplate jtem;
@@ -99,15 +100,10 @@ public class CommentMysqlDAOImpl implements ICommentDAO {
 	}
 
 	@Override
-	public boolean updateOneComment(CommentVO ct) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean updateOneComment(CommentVO ct, String content) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateOneComment(int id, String content) {
+		System.out.println("jdbc: updateOneComment");
+		int r = jtem.update(SQL_UPDATE_COMMENT, id, content);
+		return r==1;
 	}
 
 	@Override

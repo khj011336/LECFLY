@@ -33,8 +33,7 @@ public interface ICommentDAO {
 	List<CommentVO> searchCommentsByContent(String key);	// 댓글에 들어가는 내용 검색
 	
 	// 댓글 수정
-	boolean updateOneComment(CommentVO ct);
-	boolean updateOneComment(CommentVO ct, String content);
+	boolean updateOneComment(int id, String content);
 	
 	// 댓글 삭제
 	boolean deleteOneComment(int id);
