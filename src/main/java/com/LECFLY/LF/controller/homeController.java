@@ -100,5 +100,20 @@ public class homeController {
 		System.out.println("lecflyTicket()...MJ");	
 		return "payment/ticket_guide/lecfly_ticket.ho";
 	}
+	// 카테고리 티켓용 설정 // 출력:${categoryMap[number]}
+	@ModelAttribute("categoryMapTicket")
+	public Map<String, String> searchcategoryMapForTicket() {
+		Map<String, String> categoryMapTicket = new HashMap<>();
+		categoryMapTicket.put("1", "미술");  
+		categoryMapTicket.put("2", "음악"); 
+		categoryMapTicket.put("3", "요리"); 
+		categoryMapTicket.put("4", "라이프스타일");
+		categoryMapTicket.put("5", "운동"); 
+		categoryMapTicket.put("6", "커리어"); 
+		categoryMapTicket.put("7", "여행"); 
+		
+		return categoryMapTicket;
+	}
+			
 
 }

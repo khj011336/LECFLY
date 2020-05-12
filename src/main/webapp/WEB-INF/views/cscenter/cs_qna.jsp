@@ -50,8 +50,7 @@
 	    </div>
 	    <div id="qna_table">
 		     
-		     <h2> 문의 내역 (test용 전체 게시글 리스트: ${pn}페이지 -
-				<c:out value="${qaSize}" default="0"/>개) </h2>
+		     <h2> 문의 내역</h2>
 		     <c:if test="${!empty qaSize}">
 		     
 		     <table>
@@ -74,8 +73,8 @@
 							</small>
 						</span>
 					</td>
-					<td><c:out value="${qa.type}" default="선택안함"/></td>
-					<td><c:out value="${qa.mbId}" default="멤버없음"/></td>
+					<td><c:out value="${qa.stype}" default="선택안함"/></td>
+					<td><c:out value="${qa.mbNicname}" default="멤버없음"/></td>
 	               	<td><fmt:formatDate value="${qa.writedDay}" pattern="yyyy.MM.dd" /> </td>
 					<td><c:out value="${qa.hits}" default="0"/></td>
 				</tr>

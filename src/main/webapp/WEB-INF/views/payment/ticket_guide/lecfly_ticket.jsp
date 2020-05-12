@@ -28,7 +28,22 @@
                 	Lecfly는 카테고리별 회원권으로 이용가능합니다.<br>
                 	한개의 회원권으로 카테고리 내 모든 강의를 수강가능합니다.<br><br>
                 	카테고리 종류 : 음악, 운동, 요리, 미술, 라이프스타일, 커리어, 여행
-            <div class="ticket_category">
+             
+            
+            <div class="ticket_category"> 
+            <c:forEach items="${categoryMapTicket }" var="tc" varStatus="vs">
+            	<div class="ticket_category_block">
+            	<a href="${pageContext.request.contextPath}/search_category.LF?category=${tc.key}" onfocus>
+            	<div id="category_icon">
+            		<img src="resources/imges/category/카테고리_${tc.value}.png" class="category_1" alt="${ctc.value}">
+				</div>
+            		<span><c:out value="${tc.value}"/></span>
+           		</a>
+			</div>
+            </c:forEach>
+			</div>
+					
+            <!-- <div class="ticket_category">
 				<div class="ticket_category_block">
 					<a href="home.LF">
 					<div id="category_icon">
@@ -85,7 +100,7 @@
 						<span>여행</span>
 					</a>
 				</div>
-			</div>
+			</div> -->
 			</div>
                 <div id="lecflyticket_box">
                     <span style="color: gray;">

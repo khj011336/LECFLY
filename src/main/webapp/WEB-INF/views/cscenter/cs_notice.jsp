@@ -40,21 +40,21 @@
                 </div>
                 
                 <div id="notice_table">
-                <h2> 문의 내역 (test용 전체 게시글 리스트: ${pn}페이지 -
-				<c:out value="${ntSize}" default="0"/>개) </h2>
-		     	<c:if test="${!empty ntSize}">
+             	<c:if test="${!empty ntSize}">
 		     	
                     <table>
                         <tr>
                             <th>NO</th>
                             <th>제목</th>
                             <th>등록일</th>
+                            <th>조회수</th>
                         </tr>
                         <c:forEach var="nt" items="${notice}" varStatus="vs">
                         <tr id="tr_nt_${nt.id}" onclick="selectNotice('${nt.id}')">
                             <td><c:out value="${nt.id}" default="0"/></td>
-                            <td><c:out value="${qa.title}" default="제목없음"/></td>
+                            <td><c:out value="${nt.title}" default="제목없음"/></td>
                             <td><fmt:formatDate value="${nt.writedDay}" pattern="yyyy.MM.dd" /></td>
+                            <td><c:out value="${nt.hits}" default="0"/></td>
                         </tr>
                         </c:forEach>
                      </table>

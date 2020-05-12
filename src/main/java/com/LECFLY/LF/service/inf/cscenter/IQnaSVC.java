@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 
@@ -30,7 +29,6 @@ public interface IQnaSVC {
 		
 	//게시글 리스트를 조회할 수 있다. (페이지네이션, 정렬, 태그)
 	List<QnaVO> showAllQnas();
-	List<QnaRowVO> showAllQnasForRow(int pn);
 	List<Map<String, Object>> showAllQnasForMap(int pn);
 	
 	List<QnaVO> showAllQnas(boolean order);

@@ -44,10 +44,10 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 //		= "delete notices where id = ?";
 	// Notice 페이지 조회
 	public static String SQL_NOTICE_SHOWALL_PG
-		= "SELECT * FROM notices order by id desc limit ?, ?";
+		= "SELECT * FROM notices where type like '0' order by id desc limit ?, ?";
 	// Notice 갯수 카운트
 	public static String SQL_CHECK_NOTICE_NUMBERS
-	= "select count(id) as cnt from notices";	
+	= "select count(*) from notices where type like concat('%',0,'%')";	
 	
 	//@Autowired
 	private JdbcTemplate jtem;	

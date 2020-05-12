@@ -55,16 +55,16 @@
 	height: 100px;
 	text-align: center;
 	font-size: 24px;
-	margin: 40px auto 50px auto;
+	margin: 40px auto 20px auto;
 	color: grey;
 	background: url(../../imges/logo/LecFly_LOGO_B_W.png) center no-repeat;
 	opacity: 0.7;
-	padding-top: 90px;
+	padding-top: 180px;
 }
 #qna_noticebox {
 	background-color: lightgray;
 	width: 840px;
-	margin-top: 60px;
+	margin-top: -20px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 30px 30px 30px 30px;
@@ -217,11 +217,11 @@
 	height: 100px;
 	text-align: center;
 	font-size: 24px;
-	margin: 40px auto 50px auto;
+	margin: 40px auto 20px auto;
 	color: grey;
 	background: url(../../imges/logo/LecFly_LOGO_B_W.png) center no-repeat;
 	opacity: 0.7;
-	padding-top: 90px;
+	padding-top: 180px;
 }
 #faq_nav { /* 자주묻는질문 _ 보드 네비게이션 ( 전체, 이용안내, 회원정보, 결제/환불, 기타 ) */
     margin: 20px auto 15px 50px;
@@ -249,7 +249,7 @@
 }
 #faq_table { /* 자주묻는질문 _ 테이블 영역*/
     width: 900px;
-    margin-top: 100px;
+    margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -310,11 +310,11 @@
 	height: 100px;
 	text-align: center;
 	font-size: 24px;
-	margin: 40px auto 50px auto;
+	margin: 40px auto 20px auto;
 	color: grey;
 	background: url(../../imges/logo/LecFly_LOGO_B_W.png) center no-repeat;
 	opacity: 0.7;
-	padding-top: 90px;
+	padding-top: 180px;
 }
 /* #notice_p >h4, #notice_p >p {
 	box-sizing: border-box;
@@ -323,7 +323,7 @@
 #notice_table table{ /* 공지사항_ 테이블*/
     margin-left: auto;
     margin-right: auto;
-    margin-top: 100px;
+    margin-top: 30px;
     margin-bottom: 15px;
     width: 900px;
     height: 500px;

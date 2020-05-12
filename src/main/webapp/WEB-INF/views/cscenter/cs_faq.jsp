@@ -45,14 +45,13 @@
            </div>
            <div id="faq_main">
            		<div id="faq_table">
-           		<h3>(test용 전체 게시글 리스트: ${pn}페이지-
-           			<c:out value="${fqSize}" default="0"/>개)</h3>
+           		
            			<c:if test="${!empty fqSize}">
 			    	<ul>
 			    		<c:forEach var="fq" items="${faq}" varStatus="vs">
 			    		<li>
 			    			<div id ="faq_acodian">
-			      		<div id="faq_aco_type">&#91;<c:out value="${fq.type}" default="type없음"/>&#93;</div>
+			      		<div id="faq_aco_type">&#91;<c:out value="${fq.stype}" default="type없음"/>&#93;</div>
 			      		<div id="faq_aco_title"><c:out value="${fq.title}" default="title없음"/></div>
 			             	<div id="faq_aco_txt">
 			             		<c:out value="${fq.content}" default="type없음"/>
