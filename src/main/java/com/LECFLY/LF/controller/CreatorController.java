@@ -1,7 +1,5 @@
 package com.LECFLY.LF.controller;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.ViewResolver;
 
 import com.LECFLY.LF.model.dao.impl.creator.CreatorMysqlDAOImpl;
 import com.LECFLY.LF.model.dao.impl.creator.LectureMysqlDAOImpl;
@@ -40,6 +36,7 @@ public class CreatorController {
 	LectureMysqlDAOImpl LecDAO;
 	@Autowired
 	CreatorMysqlDAOImpl CreDAO;
+	 
 
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
@@ -73,15 +70,13 @@ public class CreatorController {
 			return "회원로그인폼";
 		}
 	}
-
-	@RequestMapping(value = "creator_new_profile.LF", method = RequestMethod.GET)
-	public String createProfile(Model model, HttpSession ses) {
+	@RequestMapping(value = "creator_new_profile.LF" ,method =RequestMethod.GET)
+	public String createProfile(Model model , HttpSession ses) {
 		model.addAttribute("p", 1);
 		System.out.println("도착 뉴프로필");
-//		세션 자동 저장단 
 		return "creator/cre_profile.page";
 	}
-
+	 
 	@RequestMapping(value = "creator_new_profile_proc.LF", method = RequestMethod.POST)
 	public String createProfile(Model model, @ModelAttribute(value = "creator") CreatorVO cr, HttpSession ses,
 			SessionStatus sesStatus) {
@@ -165,6 +160,7 @@ public class CreatorController {
 
 		return "creator/cre_play_list.page";
 	}
+	
 
 	@RequestMapping(value = "creator_new_lecture2.LF", method = RequestMethod.GET)
 	public String createLecture(Model model, HttpSession ses) {
