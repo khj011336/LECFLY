@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 
 @Repository
