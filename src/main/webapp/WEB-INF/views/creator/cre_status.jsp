@@ -124,10 +124,12 @@ function setImageFromFile(input, expression, tempses) {
     				   
     			  }else if(!nodename && !finallwrite &&  !ex){
     				  if(pagenation == 1){
-    					  <%session.setAttribute("unloadA", "1");%>
+    					  $("#unload").val("y");
+    					  formdata = new FormData($('.pubf')[0]);
     				  navigator.sendBeacon("creator_new_profile_proc.LF", formdata);
     				  }else if(pagenation ==2){
-    					  <%session.setAttribute("unloadB", "1");%>
+    					  $("#unloadb").val("y");
+    					   formdata = new FormData($('.pubf')[0]);
     					  navigator.sendBeacon("creator_new_lecture_proc.LF", formdata);  
     				  }
     			  }

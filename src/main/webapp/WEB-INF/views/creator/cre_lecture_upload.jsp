@@ -10,6 +10,7 @@
        		<div id="cls_head"><span class="creator_h1">클래스기본정보</span></div>
        		<div id="cls_part1">
        			<div id="cls_form">
+       			<input type="hidden" name="unloadA" value="." id = "unloadb">
        			<input type= "hidden" name = "id"value ="${Lecture.id}">
        			<input type= "hidden" name = "fid"value ="${Lecture.fid}">
        			<input type= "hidden" name= "titleImg" value ="${Lecture.titleImg}" id ="temp1">

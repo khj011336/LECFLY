@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tiles.autotag.core.runtime.annotation.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,7 +80,7 @@ public class CreatorController {
 	 
 	@RequestMapping(value = "creator_new_profile_proc.LF", method = RequestMethod.POST)
 	public String createProfile(Model model, @ModelAttribute(value = "creator") CreatorVO cr, HttpSession ses,
-			SessionStatus sesStatus) {
+			SessionStatus sesStatus , @RequestParam(value = "unloadA" ,required=false) String unload) {
 //		세션 자동 저장단
 		int countNull = 0;
 		model.addAttribute("p", 1);
@@ -87,15 +88,12 @@ public class CreatorController {
 		LectureVO LecVO = (LectureVO) ses.getAttribute("Lecture");
 		System.out.println("크리에이터 프로세스");
 		CreSVC.fileProcessforCreator(cr, ses, model);
-		//TODO
-		System.out.println(ses.getAttribute("unloadA")+"언로드");
-		if ( ses.getAttribute("unloadA").equals( "1")) {
-			ses.setAttribute("unloadA","0");
+		if (unload.equals("y") ) {
+			System.out.println("언로드진입");
 			String nullcheck = LecVO.toString();
 			String sep[] = nullcheck.split("=");
 			for (int i = 0; i < 8; i++) {
 				String value = sep[i].split(",")[0].trim();
-				
 				if ( !value.equals("0") &&!value.equals("null") &&!value.equals("category")) {
 					if(!value.isEmpty()) {
 						System.out.println(value);
