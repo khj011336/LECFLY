@@ -7,7 +7,7 @@ public class CommentVO {
 	int mbId;		// 작성회원 id
 	int tableCate;	// 해당 댓글이 소속되는 스키마	// 0:클래스 1:비디오 2:qna
 	int atId;		// 해당 댓글을 소유한 글id		//
-	int order;		// 댓글의 순서				//
+	int orderNum;		// 댓글의 순서				//
 	int depth;		// 댓글의 깊이				//
 	String comment;	// 댓글 내용
 	String mbNic;	// 작성회원 닉네임
@@ -15,18 +15,23 @@ public class CommentVO {
 	
 	
 	public CommentVO() {}
+	
 	//필수 입력값
-	public CommentVO(int mbId, int tableCate, int atId, int order, int depth, String comment, String mbNic) {
-		this(0, mbId, tableCate, atId, order, depth, comment, mbNic, null);
+	public CommentVO(int mbId, int tableCate, int atId, String comment, String mbNic) {
+		this(mbId, tableCate, atId, 0, 0, comment, mbNic);
 	}
-	public CommentVO(int id, int mbId, int tableCate, int atId, int order, int depth, String comment, String mbNic,
+	//sql제외 생성
+	public CommentVO(int mbId, int tableCate, int atId, int orderNum, int depth, String comment, String mbNic) {
+		this(0, mbId, tableCate, atId, orderNum, depth, comment, mbNic, null);
+	}
+	public CommentVO(int id, int mbId, int tableCate, int atId, int orderNum, int depth, String comment, String mbNic,
 			Timestamp createdAt) {
 		super();
 		this.id = id;
 		this.mbId = mbId;
 		this.tableCate = tableCate;
 		this.atId = atId;
-		this.order = order;
+		this.orderNum = orderNum;
 		this.depth = depth;
 		this.comment = comment;
 		this.mbNic = mbNic;
@@ -56,11 +61,11 @@ public class CommentVO {
 	public void setAtId(int atId) {
 		this.atId = atId;
 	}
-	public int getOrder() {
-		return order;
+	public int getOrderNum() {
+		return orderNum;
 	}
-	public void setOrder(int order) {
-		this.order = order;
+	public void setOrderNum(int orderNum) {
+		this.orderNum = orderNum;
 	}
 	public int getDepth() {
 		return depth;
@@ -90,8 +95,8 @@ public class CommentVO {
 	
 	@Override
 	public String toString() {
-		return "CommentVO [id=" + id + ", mbId=" + mbId + ", tableCate=" + tableCate + ", atId=" + atId + ", order="
-				+ order + ", depth=" + depth + ", comment=" + comment + ", mbNic=" + mbNic + ", createdAt=" + createdAt
+		return "CommentVO [id=" + id + ", mbId=" + mbId + ", tableCate=" + tableCate + ", atId=" + atId + ", orderNum="
+				+ orderNum + ", depth=" + depth + ", comment=" + comment + ", mbNic=" + mbNic + ", createdAt=" + createdAt
 				+ "]";
 	}
 	

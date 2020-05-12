@@ -41,7 +41,7 @@ public class MemberVO {
 	Timestamp joinedAt;    //  joined_at		timestamp      	   default CURRENT_TIMESTAMP                    
 	int agreeReceive;      //  agree_receive	tinyint            default 0	 (0:선택x 1:1번항목체크 2:2번항목체크 3:모두체크) 
 	int useTicket;         //  use_ticket		tinyint            default 0     (0:이용권없음 1:전체권 2:3개권 3:1개권 ...)
-	int checkCreator;      //  check_creator	tinyint            default 0     (0:일반회원 1:신청중인회원 2:거절된 회원 3:크리에티어권한받은 회원)
+	int checkCreator;      //  check_creator	tinyint            default 0     (0:일반회원 1:신청중인회원 2:거절된 회원 3:크리에이터권한받은 회원)
 	int loginCount;        //  login_count		int                                
 	Timestamp loginedAt;   //  logined_at		timestamp                          
 	String baiscAddress;	//	basic_address	varchar(256)
