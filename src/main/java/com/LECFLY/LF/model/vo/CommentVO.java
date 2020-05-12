@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class CommentVO {
 	int id; 		// id
 	int mbId;		// 작성회원 id
-	int tableCate;	// 해당 댓글이 소속되는 스키마	// 묶여서 판단
+	int tableCate;	// 해당 댓글이 소속되는 스키마	// 0:클래스 1:비디오 2:qna
 	int atId;		// 해당 댓글을 소유한 글id		//
 	int order;		// 댓글의 순서				//
 	int depth;		// 댓글의 깊이				//
@@ -32,7 +32,68 @@ public class CommentVO {
 		this.mbNic = mbNic;
 		this.createdAt = createdAt;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getMbId() {
+		return mbId;
+	}
+	public void setMbId(int mbId) {
+		this.mbId = mbId;
+	}
+	public int getTableCate() {
+		return tableCate;
+	}
+	public void setTableCate(int tableCate) {
+		this.tableCate = tableCate;
+	}
+	public int getAtId() {
+		return atId;
+	}
+	public void setAtId(int atId) {
+		this.atId = atId;
+	}
+	public int getOrder() {
+		return order;
+	}
+	public void setOrder(int order) {
+		this.order = order;
+	}
+	public int getDepth() {
+		return depth;
+	}
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getMbNic() {
+		return mbNic;
+	}
+	public void setMbNic(String mbNic) {
+		this.mbNic = mbNic;
+	}
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
 	
+	
+	@Override
+	public String toString() {
+		return "CommentVO [id=" + id + ", mbId=" + mbId + ", tableCate=" + tableCate + ", atId=" + atId + ", order="
+				+ order + ", depth=" + depth + ", comment=" + comment + ", mbNic=" + mbNic + ", createdAt=" + createdAt
+				+ "]";
+	}
 	
 }
 
