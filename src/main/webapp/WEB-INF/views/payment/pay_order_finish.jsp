@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<body>
 <div id="paymentFinished_wrapper">
 	<div id="paymentFinished_content">
 		<div class="paymentFinished_title_box">
@@ -13,18 +14,15 @@
 		<div class="finished_background">
 			<div class="finished_backgroundInfo">
 				<div class="finished_backgroundInfo2">
-					<a href="javascript:void(0);" onclick="mainpage();" target="_self">
-						<img class="finished_img"
-						src="resource/img/logo/LecFly_LOGO_B_C.png"
-						alt="LecFly">
-						
+					<a href="javascript:void(0);" onclick="paymentMainpage();" target="_self">
+						<img class="finished_img" src="resources/imges/logo/LecFly_LOGO_B_C.png" alt="LecFly">
 					</a>
 				</div>
 				<div class="finished_font">
 					주문이 정상적으로 <strong style="color: orange">완료</strong>되었습니다.
 				</div>
 				<a class="finished_orderdelivery"
-					href="javascript:void(0);" onclick="mypageDelivery();"target="_self"> 주문배송조회 </a>
+					href="#popup2" target="_self" onclick="selectOrderDetail();">주문배송조회</a>
 			</div>
 		</div>
 		<div id="orderInfo_title">주문 정보</div>
@@ -57,7 +55,7 @@
 				<a class="deliveryGoods_a" target="_self"
 					href="javascript:void(0);" onclick="fundingItem();">
 					<strong>운동</strong><br>다이어트 패키지
-					&lt홈트의 재정의&gt 다이어트 패키지
+					&lt;홈트의 재정의&gt; 다이어트 패키지
 				</a>
 				<div class="deliveryGoods_cnt">구매수량 : 1 개</div>
 				<div>
@@ -108,7 +106,7 @@
 			<table class="deliveryInfo_table">
 				<tbody>
 					<tr>
-						<th th colspan="1" rowspan="1" scope="row"
+						<th colspan="1" rowspan="1" scope="row"
 							class="deliveryInfo_table_th">받는분</th>
 						<td class="deliveryInfo_table_td">김건우</td>
 					</tr>
@@ -169,41 +167,14 @@
 				가기</button>
 		</div>
 	</div>
-	</div>
+</div>
 </div>
 <script>
-	// 주문 상세페이지로 이동
-	$(document).on("click",'.paymentFinished_orderPage', function() {
-		$("#homemain").load("payment/paymentDetail.jsp");
-	});
-	// 홈페이지로 이동
-	$(document).on("click",'.paymentFinished_goHomePage', function() {
-		$("#homemain").load("ETC/main.jsp");
-	});
-	
-	// a href로 _self로 이동.
-	
-	// 홈페이지로 이동
-	function mainpage() {
-		$("#homemain").load("ETC/main.jsp");
-	}
-	// /member/mypage.jsp
-	// 마이페이지 주문/배송 페이지로 이동
-	function mypageDelivery() {
-<%-- 		$('#homemain').load('<%=request.getContextPath()%>/member/mypage/order_manager/mypage_delivery_info.jsp'); --%>
-$('#homemain').load('<%=request.getContextPath()%>/member/mypage.jsp?dlv=on');
-	}
-	
-	// 펀딩 아이템으로 이동
-	function fundingItem() {
-		$('#homemain').load('<%=request.getContextPath()%>/Funding/fundingRegister.jsp');
-	}
-	
-	function fundingItem2() {
-		$('#homemain').load('<%=request.getContextPath()%>/goods/lectureRegister.jsp');
-	}
-	
-	function fundingItem2() {
-		$('#homemain').load('<%=request.getContextPath()%>/goods/lectureRegister.jsp');
-	}
+	function paymentMainpage() {
+		window.location.href ="${pageContext.request.contextPath}/home.LF";
+		}
+	function selectOrderDetail() {
+		window.location.href ="${pageContext.request.contextPath}/pay_order_detail.LF";
+		}
 </script>
+</body>
