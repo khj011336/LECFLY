@@ -11,12 +11,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 	function selectNotice(ntId) { window.location.href		
 			= '${pageContext.request.contextPath}'
-			+ '/Notice_receive.LF?id='+ Id;
+			+ '/cs_receive_notice.LF?id='+ ntId;
 	}	
-</script> -->
+</script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 
@@ -43,14 +43,14 @@
              	<c:if test="${!empty ntSize}">
 		     	
                     <table>
-                        <tr>
+                        <tr style="height:46px">
                             <th>NO</th>
                             <th>제목</th>
                             <th>등록일</th>
                             <th>조회수</th>
                         </tr>
                         <c:forEach var="nt" items="${notice}" varStatus="vs">
-                        <tr id="tr_nt_${nt.id}" onclick="selectNotice('${nt.id}')">
+                        <tr id="tr_nt_${nt.id}" onclick="selectNotice('${nt.id}')" style="height:46px">
                             <td><c:out value="${nt.id}" default="0"/></td>
                             <td><c:out value="${nt.title}" default="제목없음"/></td>
                             <td><fmt:formatDate value="${nt.writedDay}" pattern="yyyy.MM.dd" /></td>

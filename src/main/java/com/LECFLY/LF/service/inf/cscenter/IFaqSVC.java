@@ -16,6 +16,8 @@ public interface IFaqSVC {
 	List<FaqVO> showAllFaqs(int pn);
 	int checkMaxPageNumber(); // 현재 최대 페이지 번호
 	
+	List<FaqVO> showFaqsForType(int type);
+	List<FaqVO> showFaqsForType(int type, boolean order);
 	List<FaqVO> showFaqsForType(int type, int pn);
-	List<FaqVO> showFaqsForType(int type, int pn, boolean order);
+	int checkMaxPageNumberForType(int type);
 }

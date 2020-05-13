@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
@@ -132,12 +131,7 @@ public class QnaSVCImpl implements IQnaSVC{
 		return false;
 	}
 
-	@Override
-	public List<QnaRowVO> showAllQnasForRow(int pn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	
 	
 }

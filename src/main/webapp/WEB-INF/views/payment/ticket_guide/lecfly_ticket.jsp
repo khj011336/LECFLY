@@ -42,66 +42,11 @@
 			</div>
             </c:forEach>
 			</div>
-					
-            <!-- <div class="ticket_category">
-				<div class="ticket_category_block">
-					<a href="home.LF">
-					<div id="category_icon">
-						<img src="resources/imges/category/카테고리_미술.png" class="category_1" alt="미술">
-					</div>
-						<span>미술</span>
-					</a>
-				</div>
-				<div class="ticket_category_block">
-					<a href="#" onfocus>
-					<div id="category_icon">
-						<img src="resources/imges/category/카테고리_음악.png" class="category_1" alt="음악">
-					</div>
-						<span>음악</span>
-					</a>
-				</div>
-				<div class="ticket_category_block">
-					<a href="#" onfocus>
-					<div id="category_icon">
-						<img src="resources/imges/category/카테고리_요리.png" class="category_1" alt="요리">
-					</div>
-						<span>요리</span>
-					</a>
-				</div>
-				<div class="ticket_category_block">
-					<a href="#" onfocus>
-					<div id="category_icon">
-						<img src="resources/imges/category/카테고리_라이프스타일.png" class="category_1" alt="라이프스타일">
-					</div>
-						<span>라이프스타일</span>
-					</a>
-				</div>
-				<div class="ticket_category_block">
-					<a href="#" onfocus>
-					<div id="category_icon">
-						<img src="resources/imges/category/카테고리_운동.png" class="category_1" alt="운동">
-					</div>
-						<span>운동</span>
-					</a>
-				</div>
-				<div class="ticket_category_block">
-					<a href="#" onfocus>
-					<div id="category_icon">
-						<img src="resources/imges/category/카테고리_커리어.png" class="category_1" alt="커리어">
-					</div>
-						<span>커리어</span>
-					</a>
-				</div>
-				<div class="ticket_category_block">
-					<a href="#" onfocus>
-					<div id="category_icon">
-						<img src="resources/imges/category/카테고리_여행.png" class="category_1" alt="여행">
-					</div>
-						<span>여행</span>
-					</a>
-				</div>
-			</div> -->
+			
 			</div>
+		
+			
+			
                 <div id="lecflyticket_box">
                     <span style="color: gray;">
                     <i class="fas fa-crown fa-5x"></i>
@@ -109,16 +54,9 @@
                     <h3><span style="background-color: lightgray">1 카테고리 회원권</span></h3><br>
                     <h4><span>12,900원 / 월</span></h4><br>
                     7개의 카테고리 중<br>한가지를 선택하여<br>해당 카테고리에 한해<br>무제한으로 이용 가능합니다.<br>
-                    <div id="lecflyticket_gopay"><h4><a class="lecflyticket" href="#popup3">바로가기&nbsp;&gt;</a></h4>
-						<div id="popup3" class="lecflyticket_overlay">
-							<div class="lecflyticket_popup">
-								<a class="close" href="#">x</a>
-								<div class="lecflyticket_content">
-								</div>
-							</div>
-						</div>
+                    <div id="lecflyticket_gopay"><h4><a class="lecflyticket" href="#">바로가기&nbsp;&gt;</a></h4></div>
                 </div>
-                </div>
+                
                 <div id="lecflyticket_box">
                     <span style="color: gray;">
                     <i class="fas fa-list-ol fa-5x"></i>
@@ -128,6 +66,7 @@
                     7개의 카테고리 중<br>세가지를 선택하여<br>해당 카테고리에 한해<br>무제한으로 이용 가능합니다.
                     <div id="lecflyticket_gopay"><h4><a href="#" class="nav_mypage">바로가기&nbsp;&gt;</a></h4></div>
                 </div>
+                
                 <div id="lecflyticket_box">
                     <span style="color: gray;">
                     <i class="fas fa-infinity fa-5x"></i>

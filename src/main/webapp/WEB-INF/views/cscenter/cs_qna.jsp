@@ -13,7 +13,7 @@
 <script type="text/javascript">
 	function selectQna(qaId) { window.location.href		
 			= '${pageContext.request.contextPath}'
-			+ '/qna_receive.LF?id='+ Id;
+			+ '/qna_receive.LF?id='+ qaId;
 	}	
 </script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
@@ -45,7 +45,7 @@
          		<br>비회원께서는 회원가입을 해주시거나 우측 하단 실시간문의를 이용해주시면 감사하겠습니다.
          		<br>*실시간문의는 운영시간내에만 이용가능합니다.
          		<br><br>감사합니다:)
-         		<a href="cs_post_qna.LF"><button class="edit_qna">QnA 작성하기</button></a>
+         		<a href="cs_post_new_qna.LF"><button class="edit_qna">QnA 작성하기</button></a>
 			</p>
 	    </div>
 	    <div id="qna_table">
@@ -54,7 +54,7 @@
 		     <c:if test="${!empty qaSize}">
 		     
 		     <table>
-		     	<tr>
+		     	<tr style="height:46px">
 		        	<th>NO</th>
                     <th>제목</th>
                     <th>구분</th>
@@ -63,7 +63,7 @@
                     <th>조회수</th>
                  </tr>
                  <c:forEach var="qa" items="${qna}" varStatus="vs">
-                 <tr id="tr_qa_${qa.id}" onclick="selectQna('${qa.id}')"> 
+                 <tr id="tr_qa_${qa.id}" onclick="selectQna('${qa.id}')" style="height:46px"> 
                  	<td><c:out value="${qa.id}" default="0"/> </td>
                  	<td>
 						<c:out value="${qa.title}" default="제목없음"/>

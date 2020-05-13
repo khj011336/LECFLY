@@ -100,7 +100,8 @@ public class homeController {
 		System.out.println("lecflyTicket()...MJ");	
 		return "payment/ticket_guide/lecfly_ticket.ho";
 	}
-	// 카테고리 티켓용 설정 // 출력:${categoryMap[number]}
+	
+	// 카테고리 티켓용 설정 // 출력:${categoryMapTicket[number]}
 	@ModelAttribute("categoryMapTicket")
 	public Map<String, String> searchcategoryMapForTicket() {
 		Map<String, String> categoryMapTicket = new HashMap<>();

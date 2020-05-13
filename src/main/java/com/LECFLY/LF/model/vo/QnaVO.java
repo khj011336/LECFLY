@@ -12,6 +12,9 @@ public class QnaVO {
 	public static final String QNA_TYPE_4 = "펀딩";
 	public static final String QNA_TYPE_5 = "기타";
 	
+	public static final String QNA_PRIVATE_0 = "전체공개";
+	public static final String QNA_PRIVATE_1 = "비공개";
+	
 	/** qna 번호 */
 	int id; 
 	/** 작성자 번호       "fk	_member/id 출력은 nicname" */
@@ -30,6 +33,8 @@ public class QnaVO {
 	String file; 
 	/** 공개 여부	0: 공개 1: 비공개 0 */
 	int showPrivate;
+	/** 공개 여부 */
+	String sshowPrivate;
 	/** 작성날짜 CURRENT_TIMESTAMP */
 	Timestamp writedDay; 
 	/** 갱신날짜 CURRENT_TIMESTAMP */
@@ -175,6 +180,20 @@ public class QnaVO {
 	}
 	public void setShowPrivate(int showPrivate) {
 		this.showPrivate = showPrivate;
+	}
+	public String getSshowPrivate() {
+		switch (showPrivate) {
+		case 0:
+			return QNA_PRIVATE_0;
+		case 1:
+			return QNA_PRIVATE_1;
+		default:
+			break;
+		}
+		return sshowPrivate;
+	}
+	public void setSshowPrivate(String sshowPrivate) {
+		this.sshowPrivate = sshowPrivate;
 	}
 	public Timestamp getWritedDay() {
 		return writedDay;

@@ -31,6 +31,8 @@ import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
 
 
+
+
 @Controller
 //@RequestMapping("/cscenter")
 public class CscenterController {
@@ -48,6 +50,8 @@ public class CscenterController {
 	
 	@Autowired
 	private IQnaCommentSVC qcSvc;
+	
+
 	
 //	@Autowired
 //	private IMemberSVC mbSvc;
@@ -135,8 +139,20 @@ public class CscenterController {
 				fpsCount = 0;
 			}
 			model.addAttribute("fpsCount", fpsCount);
+			
+			//댓글 리스트
+			List<QnaCommentVO> qcList = qcSvc.commentListForQna(qa.getId());
+			if(qcList != null ) {
+				System.out.println("댓글 상세조회 성공 " + qcList);
+				model.addAttribute("qcSize", qcList.size());
+				model.addAttribute("qnaComment", qcList);
+			}else {
+				System.out.println("댓글 상세조회 실패 " + qcList);
+				model.addAttribute("msg", "댓글리스트 조회 실패");
+			}
 			return "cscenter/cs_qna_receive.ho";
-		} else {model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
+		} else {
+			model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
 			return "redirect:cs_qna.ho";
 		}
 	}
@@ -190,9 +206,6 @@ public class CscenterController {
 				"redirect:cs_qna.ho?pn=1");
 		}
 		List<QnaVO> qaList = qaSvc.showAllQnas(pageNumber);
-		for (QnaVO qnaVO : qaList) {
-			System.out.println(qnaVO);
-		}
 		ModelAndView mav = new ModelAndView("cscenter/cs_qna.ho");
 		if( qaList != null ) {
 			mav.addObject("qaSize", qaList.size());
@@ -260,8 +273,140 @@ public class CscenterController {
 		}
 		return mav;
 	}
-
 	
+	// FAQ type1 리스트 조회하기 (페이지네이션, 정렬)
+		@RequestMapping(value = "cs_faq_1.LF", method = RequestMethod.GET)
+		public ModelAndView cscenterFaqForType1( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+			System.out.println("cscenterFaqForType(PN)..");
+			int fqmaxPG = fqSvc.checkMaxPageNumberForType(1);
+			if( pageNumber > fqmaxPG || pageNumber <= 0 ) {
+				System.out.println("잘못된 페이지 번호: " + pageNumber);
+				return new ModelAndView("redirect:cs_faq_1.ho?pn=1");
+			}
+			List<FaqVO> fqList = fqSvc.showFaqsForType(1, pageNumber);
+			ModelAndView mav = new ModelAndView("cscenter/cs_faq_1.ho");
+			if( fqList != null ) {
+				mav.addObject("fqSize", fqList.size());
+				mav.addObject("faq1", fqList);
+				mav.addObject("maxPn", fqmaxPG);
+				mav.addObject("pn", pageNumber); // 활성페이지 
+					System.out.println("type 1 게시글리스트 조회 성공: " + fqList.size());
+			} else {
+				mav.addObject("msg", "type 1 게시글리스트 조회 실패!");
+			}
+			return mav;
+		}
+	// FAQ type2 리스트 조회하기 (페이지네이션, 정렬)
+		@RequestMapping(value = "cs_faq_2.LF", method = RequestMethod.GET)
+		public ModelAndView cscenterFaqForType2( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+			System.out.println("cscenterFaqForType(PN)..");
+			int fqmaxPG = fqSvc.checkMaxPageNumberForType(2);
+			if( pageNumber > fqmaxPG || pageNumber <= 0 ) {
+				System.out.println("잘못된 페이지 번호: " + pageNumber);
+				return new ModelAndView("redirect:cs_faq_2.ho?pn=1");
+			}
+			List<FaqVO> fqList = fqSvc.showFaqsForType(2, pageNumber);
+			ModelAndView mav = new ModelAndView("cscenter/cs_faq_2.ho");
+			if( fqList != null ) {
+				mav.addObject("fqSize", fqList.size());
+				mav.addObject("faq2", fqList);
+				mav.addObject("maxPn", fqmaxPG);
+				mav.addObject("pn", pageNumber); // 활성페이지 
+					System.out.println("type 2 게시글리스트 조회 성공: " + fqList.size());
+			} else {
+				mav.addObject("msg", "type 2 게시글리스트 조회 실패!");
+			}
+			return mav;
+		}	
+	// FAQ type3 리스트 조회하기 (페이지네이션, 정렬)
+		@RequestMapping(value = "cs_faq_3.LF", method = RequestMethod.GET)
+		public ModelAndView cscenterFaqForType3( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+			System.out.println("cscenterFaqForType(PN)..");
+			int fqmaxPG = fqSvc.checkMaxPageNumberForType(3);
+			if( pageNumber > fqmaxPG || pageNumber <= 0 ) {
+				System.out.println("잘못된 페이지 번호: " + pageNumber);
+				return new ModelAndView("redirect:cs_faq_3.ho?pn=1");
+			}
+			List<FaqVO> fqList = fqSvc.showFaqsForType(3, pageNumber);
+			ModelAndView mav = new ModelAndView("cscenter/cs_faq_3.ho");
+			if( fqList != null ) {
+				mav.addObject("fqSize", fqList.size());
+				mav.addObject("faq3", fqList);
+				mav.addObject("maxPn", fqmaxPG);
+				mav.addObject("pn", pageNumber); // 활성페이지 
+					System.out.println("type 3 게시글리스트 조회 성공: " + fqList.size());
+			} else {
+				mav.addObject("msg", "type 3 게시글리스트 조회 실패!");
+			}
+			return mav;
+		}	
+		// FAQ type4 리스트 조회하기 (페이지네이션, 정렬)
+		@RequestMapping(value = "cs_faq_4.LF", method = RequestMethod.GET)
+		public ModelAndView cscenterFaqForType4( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+			System.out.println("cscenterFaqForType(PN)..");
+			int fqmaxPG = fqSvc.checkMaxPageNumberForType(4);
+			if( pageNumber > fqmaxPG || pageNumber <= 0 ) {
+				System.out.println("잘못된 페이지 번호: " + pageNumber);
+				return new ModelAndView("redirect:cs_faq_4.ho?pn=1");
+			}
+			List<FaqVO> fqList = fqSvc.showFaqsForType(4, pageNumber);
+			ModelAndView mav = new ModelAndView("cscenter/cs_faq_4.ho");
+			if( fqList != null ) {
+				mav.addObject("fqSize", fqList.size());
+				mav.addObject("faq4", fqList);
+				mav.addObject("maxPn", fqmaxPG);
+				mav.addObject("pn", pageNumber); // 활성페이지 
+					System.out.println("type 4 게시글리스트 조회 성공: " + fqList.size());
+			} else {
+				mav.addObject("msg", "type 4 게시글리스트 조회 실패!");
+			}
+			return mav;
+		}	
+
+		// FAQ type5 리스트 조회하기 (페이지네이션, 정렬)
+		@RequestMapping(value = "cs_faq_5.LF", method = RequestMethod.GET)
+		public ModelAndView cscenterFaqForType5( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+			System.out.println("cscenterFaqForType(PN)..");
+			int fqmaxPG = fqSvc.checkMaxPageNumberForType(5);
+			if( pageNumber > fqmaxPG || pageNumber <= 0 ) {
+				System.out.println("잘못된 페이지 번호: " + pageNumber);
+				return new ModelAndView("redirect:cs_faq_5.ho?pn=1");
+			}
+			List<FaqVO> fqList = fqSvc.showFaqsForType(5, pageNumber);
+			ModelAndView mav = new ModelAndView("cscenter/cs_faq_5.ho");
+			if( fqList != null ) {
+				mav.addObject("fqSize", fqList.size());
+				mav.addObject("faq5", fqList);
+				mav.addObject("maxPn", fqmaxPG);
+				mav.addObject("pn", pageNumber); // 활성페이지 
+					System.out.println("type 5 게시글리스트 조회 성공: " + fqList.size());
+			} else {
+				mav.addObject("msg", "type 5 게시글리스트 조회 실패!");
+			}
+			return mav;
+		}	
+		// FAQ type5 리스트 조회하기 (페이지네이션, 정렬)
+		@RequestMapping(value = "cs_faq_6.LF", method = RequestMethod.GET)
+		public ModelAndView cscenterFaqForType6( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+			System.out.println("cscenterFaqForType(PN)..");
+			int fqmaxPG = fqSvc.checkMaxPageNumberForType(6);
+			if( pageNumber > fqmaxPG || pageNumber <= 0 ) {
+				System.out.println("잘못된 페이지 번호: " + pageNumber);
+				return new ModelAndView("redirect:cs_faq_6.ho?pn=1");
+			}
+			List<FaqVO> fqList = fqSvc.showFaqsForType(6, pageNumber);
+			ModelAndView mav = new ModelAndView("cscenter/cs_faq_6.ho");
+			if( fqList != null ) {
+				mav.addObject("fqSize", fqList.size());
+				mav.addObject("faq6", fqList);
+				mav.addObject("maxPn", fqmaxPG);
+				mav.addObject("pn", pageNumber); // 활성페이지 
+					System.out.println("type 6 게시글리스트 조회 성공: " + fqList.size());
+			} else {
+				mav.addObject("msg", "type 6 게시글리스트 조회 실패!");
+			}
+			return mav;
+		}			
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//NOTICE
@@ -318,7 +463,6 @@ public class CscenterController {
 //			return "cscenter/cs_notice_post.ho"; //
 //		}
 //	}
-	
 	// Notice 글 상세보기
 	@RequestMapping(value = "/cs_receive_notice.LF", method = RequestMethod.GET)
 	public String cscenterReceiveNotice(HttpSession ses, int id, Model model) {
@@ -348,6 +492,7 @@ public class CscenterController {
 			return "redirect:cs_notice.ho";
 		}
 	}
+	
 	// Notice 글 수정하기
 	@RequestMapping(value = "/cs_edit_notice.LF", method = RequestMethod.GET)
 	public String cscenterEditNotice(HttpSession ses, Model model, 
@@ -409,5 +554,8 @@ public class CscenterController {
 		}
 		return mav;
 	}
+	
+	
+	
 	
 }

@@ -3,12 +3,17 @@ package com.LECFLY.LF.model.vo;
 import java.sql.Timestamp;
 
 public class NoticeVO {
+	public static final String NOTICE_TYPE_0 = "일반 공지사항";
+	public static final String NOTICE_TYPE_1 = "크리에이터 공지사항";
+	
 	/** 공지사항 번호 */
 	int id;
 	/** 작성자 id */
 	int mbId;
 	/** 공지 위치            0: 일반 페이지 1: 크리에이터 페이지*/
 	int type;
+	/** 공지위치 */
+	String stype;
 	/** 제목*/
 	String title;
 	/** 내용*/
@@ -105,6 +110,20 @@ public class NoticeVO {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getStype() {
+		switch (type) {
+		case 0:
+			return NOTICE_TYPE_0;
+		case 1:
+			return NOTICE_TYPE_1;
+		default:
+			break;
+		}
+		return stype;
+	}
+	public void setStype(String stype) {
+		this.stype = stype;
 	}
 	public String getTitle() {
 		return title;
