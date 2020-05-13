@@ -28,7 +28,8 @@ public interface ILectureDAO {
 	boolean insertNewLecture(LectureVO Lvo);
 	boolean insertNewLecture(int category, String subTitle, String title, String titleImg, String infoImg,
 			String info );
-	
+ boolean insertNewLecture(int fid , int category , String subTitle, String title , String titleImg, String infoImg , String infoImgb,
+			String info , String nickname , String imgpath ) ;
 	boolean updateLecture();
 	boolean updateLectureStatus(int id);
 	boolean deleteLecture();
