@@ -25,8 +25,7 @@ public class CommentSVCImpl implements ICommentSVC {
 //		List<CommentVO> searchCommentsByContent(String key);	// 댓글에 들어가는 내용 검색
 	
 	@Override
-	public int addComment(
-			int mbId, int tableCate, int atId, String comment, String mbNic, int targetCtId) {
+	public int addComment(int mbId, int tableCate, int atId, String comment, String mbNic, int targetCtId) {
 		System.out.println("svc:addComment(대댓글 판별 및 order 부여)");
 		CommentVO targetCt;
 		CommentVO ct;
@@ -34,11 +33,14 @@ public class CommentSVCImpl implements ICommentSVC {
 		int depth;
 		// 댓글다는 해당 게시글들 판별
 		List<CommentVO> ctList = selectCommentsForOrderNumDesc(tableCate, atId);
+		for (CommentVO cts : ctList) {
+			System.out.println(cts.getId() + "/" + cts.getComment());
+		}
 		if(targetCtId == 0) {
 			if(ctList == null)
 				orderNum = 0;
 			else
-				orderNum = ctList.get(0).getOrderNum();
+				orderNum = ctList.get(0).getOrderNum()+1;
 			depth = 0;
 			ct = new CommentVO(mbId, tableCate, atId, orderNum, depth, comment, mbNic);
 			if(addComment(ct))
@@ -50,8 +52,14 @@ public class CommentSVCImpl implements ICommentSVC {
 			if(targetCt == null)
 				return NONE_FIND_ATID;
 			else {
-				orderNum = targetCt.getOrderNum()+1;
 				depth = targetCt.getDepth()+1;
+				orderNum = targetCt.getOrderNum()+1;
+				int checkOrder = selectOneCommentByOrder(ctList, orderNum, depth);
+				if( checkOrder != 0)
+					orderNum += checkOrder; 
+				
+				// 같은 깊이depth의 대댓글이 이미 있을경우 orderNum=targetCt.getOrderNum()+2해야됨
+				
 				ct = new CommentVO(mbId, tableCate, atId, orderNum, depth, comment, mbNic);
 				if(addComment(ct)) {
 					if(increaseOrderNumComments(ctList, orderNum))
@@ -168,10 +176,10 @@ public class CommentSVCImpl implements ICommentSVC {
 		int target = ctList.size() - order;
 		for (int i = 0; i < target; i++) {
 			if(!increaseOrderNumComment(ctList.get(i))) {
-				System.out.println(ctList.get(i).getId() + "번 회원 order증가 실패");
+				System.out.println(ctList.get(i).getId() + "번 댓글 order증가 실패");
 				return false;
 			}
-			System.out.println(ctList.get(i).getId() + "번 회원 order증가 성공");
+			System.out.println(ctList.get(i).getId() + "번 댓글 order증가 성공");
 		}
 		return true;
 	}
@@ -180,5 +188,16 @@ public class CommentSVCImpl implements ICommentSVC {
 	public boolean increaseOrderNumComment(CommentVO ct) {
 		System.out.println("svc: increaseOrderNumComment");
 		return ctDao.increaseOrderNumComment(ct);
+	}
+	
+	@Override
+	public int selectOneCommentByOrder(List<CommentVO> ctList, int orderNum, int depth) {
+		int inc = 0;
+		for (int i = ctList.size(); i > 0; i--) {
+			if(ctList.get(i-1).getOrderNum() == orderNum+inc && ctList.get(i-1).getDepth() == depth)
+				inc++;
+		}
+		System.out.println(inc+"' order증가");
+		return inc;
 	}
 }

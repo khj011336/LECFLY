@@ -10,12 +10,13 @@
 		if(mbId == null){
 			window.location.href = '${pageContext.request.contextPath}/login.LF';
 		} else {
-// 			console.log("로그인된 상태");
-// 			alert("${member.name} 회원님은 현재 로그인 되어 있습니다.");
-// 			이후 로그아웃하겟냐고 물어봐야됨.
 			window.location.href = 'logout_proc.LF';
 		}
 	}
+	function test() {
+		window.location.href = 'test.LF';
+	}
+	
 </script>
 
 <div class="lecfly_header_info_wrapper">
@@ -23,6 +24,8 @@
 	<span class="info_color">LECFLY</span> 이용안내 </a></div>
 </div>
 <div class="header_wrapper" style="z-index:30;">
+<!-- 삭제필수 -->
+<input type="button" value="test" onclick="test()">
 
 	
 	<div class="header_column_logo">

@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
 import com.LECFLY.LF.model.vo.CommentVO;
 
+@Repository
 public class CommentMysqlDAOImpl implements ICommentDAO {
 	
 	public static final String SQL_ADD_COMMNET = "insert into comments value(null,?,?,?,?,?,?,?,now());";
@@ -29,7 +31,7 @@ public class CommentMysqlDAOImpl implements ICommentDAO {
 	public boolean addComment(CommentVO ct) {
 		System.out.println("jdbc: addComment");
 		int r = jtem.update(SQL_ADD_COMMNET, ct.getMbId(), ct.getTableCate(), ct.getAtId(), ct.getOrderNum(),
-				ct.getDepth(), ct.getComment(), ct.getCreatedAt());
+				ct.getDepth(), ct.getComment(), ct.getMbNic());
 		return r == 1;
 	}
 
@@ -102,7 +104,7 @@ public class CommentMysqlDAOImpl implements ICommentDAO {
 	@Override
 	public boolean updateOneComment(int id, String content) {
 		System.out.println("jdbc: updateOneComment");
-		int r = jtem.update(SQL_UPDATE_COMMENT, id, content);
+		int r = jtem.update(SQL_UPDATE_COMMENT, content, id);
 		return r==1;
 	}
 
@@ -121,7 +123,7 @@ public class CommentMysqlDAOImpl implements ICommentDAO {
 	@Override
 	public boolean increaseOrderNumComment(CommentVO ct) {
 		System.out.println("jdbc: increaseOrderNumComment");
-		int r = jtem.update(SQL_INCREASE_ORDER_NUM, ct.getId(), ct.getOrderNum()+1);
+		int r = jtem.update(SQL_INCREASE_ORDER_NUM, ct.getOrderNum()+1, ct.getId());
 		return r==1;
 	}
 
