@@ -1,6 +1,7 @@
 package com.LECFLY.LF.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.LECFLY.LF.model.vo.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.service.inf.admin.IAdminFileSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminSiteSVC;
 
@@ -57,7 +59,7 @@ public class AdminController {
 	// 관리자 배너목록 출력
 	@RequestMapping(value = "/admin_banner_list.LF", method = RequestMethod.GET)
 	public String adminBannerListAll(HomeFileManagerVO vo, Model model) {
-		model.addAttribute("bannerList", adSiteSvc.selectBannerList(vo));
+		model.addAttribute("bannerList", adSiteSvc.selectBannerList());
 		return "admin/admin_banner.ad";
 	}
 	// 관리자 배너 등록
@@ -87,6 +89,19 @@ public class AdminController {
 	public String adminRecommend() {
 		return "admin/admin_recommend.ad";
 	}
+	// 홈의 모든 목록 조회(배너, 추천강의, 일반강의)
+	@RequestMapping(value = "/home_show_all.LF")
+	public String homeShowAll(HttpSession ses, Model model) {
+		List<HomeFileManagerVO> bannerList = adSiteSvc.selectBannerList();
+		List<Integer> reIds = adSiteSvc.getRecommendIds();
+		List<LectureVO> recoList =  adSiteSvc.selectRecommendLectureList(reIds);
+		List<LectureVO> nomalList =  adSiteSvc.selectNomalLectureList();
+		model.addAttribute("bannerList", bannerList);
+		model.addAttribute("recoList", recoList);
+		model.addAttribute("nomalList", nomalList);
+		return "redirect/home.LF";
+	}
+	
 	// 관리자 계정관리
 	@RequestMapping(value = "/admin_account.LF")
 	public String adminAccount() {

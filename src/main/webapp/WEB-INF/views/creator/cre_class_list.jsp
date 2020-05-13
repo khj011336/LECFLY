@@ -4,7 +4,7 @@
 	pageEncoding="UTF-8"%>
 	<script src = "resources/js/creator/select.js"></script>
 <script>
-var lt = new selectList("#offset",${maxPage},"#CRcontent","get",'creator.LF');
+var lt = new selectList("#offset", ${maxPage} ,"#CRcontent","get",'creator.LF');
 lt.List();
 </script>
 <div id='CRwrap'>

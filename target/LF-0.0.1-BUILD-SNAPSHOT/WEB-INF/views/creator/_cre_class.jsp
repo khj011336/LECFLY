@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<c:forEach begin="0" end="${empty lecList ? '0': lecList.size()-1  }"
+
+<c:forEach begin="0" end="${empty lecList ? '2': lecList.size()-1  }"
 	varStatus="vs">
 	<div class='CRconbox'
 		onmouseover="${empty lecList ?'creatNewclass()' :''}">
@@ -15,7 +16,7 @@
 		<div class="CRC">
 			<p class='CRname'>
 				<c:out value="${lecList[vs.current].title}"
-					default="새로운클래스를 만들어보세요 "></c:out> 
+					default="새로운클래스를 만들어보세요 "></c:out>
 			</p>
 			<div class="CRstatus">
 				<c:if test="${ !empty lecList }">
@@ -37,4 +38,4 @@
 
 	</div>
 </c:forEach>
-<div id='offset' ></div>
+<div id='offset' style="margin: 50px; width: 15px;"></div>

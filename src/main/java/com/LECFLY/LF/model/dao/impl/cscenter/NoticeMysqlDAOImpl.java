@@ -25,28 +25,28 @@ import com.LECFLY.LF.model.vo.NoticeVO;
 @Repository
 public class NoticeMysqlDAOImpl implements INoticeDAO{
 	// Notice 조회수 증가
-	public static final String SQL_NOTICE_READ_INC
+	public static String SQL_NOTICE_READ_INC
 		= "update notices set hits = hits + 1 where id = ?";
-	// Notice 목록 보여주기
-	public static final String SQL_NOTICE_SHOWALL
-		= "select * from notices order by created_at desc";
+	// Notice 목록(고객센터게시판) 보여주기
+	public static String SQL_NOTICE_SHOWALL
+		= "select * from notices where type like '0' order by created_day desc";
 	// Notice 상세조회
-	public static final String SQL_NOTICE_SHOWONE
+	public static String SQL_NOTICE_SHOWONE
 		= "select * from notices where id = ?";
-	// Notice 등록하기
-	public static final String SQL_NOTICE_INSERT_VO
-		= "insert into notices values(0, ?, ?, ?, ?, now(), now(), ?)";
-	// Notice 수정하기
-	public static final String SQL_NOTICE_UPDATE_VO
-		= "update notices set type = ?, title = ?, content = ? where id = ?";
-	// Notice 삭제하기
-	public static final String SQL_NOTICE_DELETE_VO
-		= "delete notices where id = ?";
+//	// Notice 등록하기
+//	public static String SQL_NOTICE_INSERT_VO
+//		= "insert into notices values(0, ?, ?, ?, ?, now(), now(), ?)";
+//	// Notice 수정하기
+//	public static String SQL_NOTICE_UPDATE_VO
+//		= "update notices set type = ?, title = ?, content = ?, updated_day = now() where id = ?";
+//	// Notice 삭제하기
+//	public static String SQL_NOTICE_DELETE_VO
+//		= "delete notices where id = ?";
 	// Notice 페이지 조회
-	public static final String SQL_NOTICE_SHOWALL_PG
-		= "SELECT * FROM notices order by created_at desc limit ?, ?";
+	public static String SQL_NOTICE_SHOWALL_PG
+		= "SELECT * FROM notices order by created_day desc limit ?, ?";
 	// Notice 갯수 카운트
-	public static final String SQL_CHECK_NOTICE_NUMBERS
+	public static String SQL_CHECK_NOTICE_NUMBERS
 	= "select count(id) as cnt from notices";	
 	
 	//@Autowired
@@ -63,59 +63,22 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 		simIn.withTableName("Notices");
 		simIn.usingGeneratedKeyColumns("id");
 	}
-
-	@Override
-	public boolean insertNewNotice(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int insertNewNoticeReturnKey(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertNewNoticeReturnKey2(NoticeVO nt) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean insertNewNotice(int type, String title, String content, String file) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	@Override
 	public NoticeVO selectOneNotice(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.queryForObject(SQL_NOTICE_SHOWONE,BeanPropertyRowMapper.newInstance(NoticeVO.class), id);
 	}
-
-	@Override
-	public boolean updateNotice(int type, String title, String content, String file) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+		
 	@Override
 	public boolean increaseReadCount(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean deleteNotice(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		int r = jtem.update(SQL_NOTICE_READ_INC, id);
+		return r == 1;
 	}
 
 	@Override
 	public List<NoticeVO> showAllNotices() {
-		// TODO Auto-generated method stub
-		return null;
+		// VO <==> TBL
+		return jtem.query(SQL_NOTICE_SHOWALL, BeanPropertyRowMapper.newInstance(NoticeVO.class));
 	}
 
 	@Override
@@ -126,8 +89,8 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 
 	@Override
 	public List<NoticeVO> showAllNotices(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.query(SQL_NOTICE_SHOWALL_PG, BeanPropertyRowMapper.newInstance(NoticeVO.class), offset, limit);
+
 	}
 
 	@Override
@@ -138,9 +101,8 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 
 	@Override
 	public int checkNumberOfNotices() {
-		// TODO Auto-generated method stub
-		return 0;
-	}	
-		
+		return jtem.queryForObject(SQL_CHECK_NOTICE_NUMBERS, Integer.class);
+	}
+
 	
 }

@@ -1,10 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<%
+ 	response.setHeader("Cache-Control", "no-store");
+%>
+<meta charset="UTF-8">
+<title>CSCENTER/NOTICE</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
+<link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
+
+</head>
+<body>
 <div id="receiveBoard_wrapper">
         <div id="receiveBoard_content">
+            
             <div class="receiveBoard_content_title">
                 <span class=""></span>
-                쿠폰적용은 어떤식으로 하는게 좋을까요?
+             	   쿠폰적용은 어떤식으로 하는게 좋을까요?
                 <span class="divider">|</span>
                 <span class="receiveBoard_category">
                 <a href="#">쿠폰</a></span>
@@ -14,6 +31,7 @@
                 </span>
                 </span>
             </div>
+            
         <div id="writeInfo">
         <div id="readHead">
             <div class="readLeft">
@@ -80,3 +98,5 @@
         </div>
     </div>
 </div>
+</body>
+</html>

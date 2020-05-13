@@ -6,7 +6,7 @@
 /* sub_title => login_subtitle */
 /* info => login_etc */
 /* link => login_linked */
-/*  <link type="text/css" rel="stylesheet" href="resources/css/common/main.css"> */
+ <link type="text/css" rel="stylesheet" href="resources/css/common/main.css">
 .login_a{
     text-decoration: none;
     color: black;
@@ -47,12 +47,12 @@
 
 #login_middle{
 	width: 280px;
-    margin: 45px auto 15px auto;
+    margin: 45px auto 45px auto;
 }
-/* #login_middle2{ */
-/* 	width: 280px; */
-/*     margin: 25px auto 15px auto; */
-/* } */
+#login_middle2{
+	width: 280px;
+    margin: 25px auto 15px auto;
+}
 #login_email, #login_pw{
     font-size: 14px;
     margin: 5px;
@@ -120,14 +120,6 @@
 	color: blue;
 	text-align: left;
 	margin: 10px 0px 10px 0px;
-}
-
-#login_msg{
-	margin: 0px auto;
-	padding: 0px;
-	color: red;
-	width: 100px;
-	height: 12px;
 }
 
 #login_bottom{

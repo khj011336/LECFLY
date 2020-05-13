@@ -20,30 +20,22 @@ import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.IFaqDAO;
 import com.LECFLY.LF.model.vo.FaqVO;
+import com.LECFLY.LF.model.vo.QnaVO;
 
 @Repository
 public class FaqMysqlDAOImpl implements IFaqDAO{
 	// Faq 목록 보여주기
-	public static final String SQL_FAQ_SHOWALL
-		= "select * from faqs order by created_at desc";
-	// Faq 상세조회
-	public static final String SQL_FAQ_SHOWONE
-		= "select * from faqs where id = ?";
-	// Faq 등록하기
-	public static final String SQL_FAQ_INSERT_VO
-		= "insert into faqs values(0, ?, ?, ?)";
-	// Faq 수정하기
-	public static final String SQL_FAQ_UPDATE_VO
-		= "update faqs set title = ?, content = ? where id = ?";
-	// Faq 삭제하기
-	public static final String SQL_FAQ_DELETE_VO
-		= "delete faqs where id = ?";
+	public static String SQL_FAQ_SHOWALL
+		= "select * from faqs order by id desc";
 	// Faq 페이지 조회
-	public static final String SQL_FAQ_SHOWALL_PG
-		= "SELECT * FROM faqs order by created_at desc limit ?, ?";
+	public static String SQL_FAQ_SHOWALL_PG
+		= "SELECT * FROM faqs order by id desc limit ?, ?";
 	// Faq 갯수 카운트
-	public static final String SQL_CHECK_FAQ_NUMBERS
-	= "select count(id) as cnt from faqs";	
+	public static String SQL_CHECK_FAQ_NUMBERS
+		= "select count(id) as cnt from faqs";	
+	// Faq type별 보여주기
+	public static final String SQL_SEARCH_TYPE 
+		= "SELECT * FROM faqs where type like concat('%',?,'%') ";
 	
 	//@Autowired
 	private JdbcTemplate jtem;	
@@ -60,46 +52,12 @@ public class FaqMysqlDAOImpl implements IFaqDAO{
 		simIn.usingGeneratedKeyColumns("id");
 	}
 
-	@Override
-	public boolean insertNewFaq(FaqVO fq) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int insertNewFaqReturnKey(FaqVO fq) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertNewFaqReturnKey2(FaqVO fq) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean insertNewFaq(int type, String title, String content) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean updateFaq(int type, String title, String content) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean deleteFaq(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public List<FaqVO> showAllFaqs() {
-		// TODO Auto-generated method stub
-		return null;
+		// VO <==> TBL
+		return jtem.query(SQL_FAQ_SHOWALL, BeanPropertyRowMapper.newInstance(FaqVO.class));
+
 	}
 
 	@Override
@@ -110,8 +68,8 @@ public class FaqMysqlDAOImpl implements IFaqDAO{
 
 	@Override
 	public List<FaqVO> showAllFaqs(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.query(SQL_FAQ_SHOWALL_PG, BeanPropertyRowMapper.newInstance(FaqVO.class), offset, limit);
+
 	}
 
 	@Override
@@ -122,6 +80,35 @@ public class FaqMysqlDAOImpl implements IFaqDAO{
 
 	@Override
 	public int checkNumberOfFaqs() {
+		return jtem.queryForObject(SQL_CHECK_FAQ_NUMBERS, Integer.class);
+	}
+
+	@Override
+	public List<FaqVO> showAllFaqsForType(int type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FaqVO> showAllFaqsForType(int type, boolean order) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FaqVO> showAllFaqsForType(int type, int offset, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FaqVO> showAllFaqsForType(int type, int offset, int limit, boolean order) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int checkNumberOfFaqsForType() {
 		// TODO Auto-generated method stub
 		return 0;
 	}	
