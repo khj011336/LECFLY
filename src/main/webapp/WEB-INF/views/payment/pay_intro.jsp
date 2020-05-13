@@ -1,5 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<script type="text/javascript">
+	// 별점 추가
+	$('#register_review a').click(function() {
+		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
+		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+		return false;
+	});
+
+	// 장바구니로 이동
+	$(document).on("click", '#register_soap_title', function() {
+		$("#homemain").load("payment/shoppingCart.jsp");
+	});
+	// 결제페이지로 이동
+	$(document).on("click", '#register_lec_apply', function() {
+		$("#homemain").load("payment/fundingPayment.jsp");
+	});
+</script>
+<body>
 <div id="register_wrapper">
 	<div id="register_nav">
 		<video class="register_video" controls>
@@ -153,20 +171,4 @@
 	<p id="register_warning">'라이프스타일' 회원권 보유시 신청가능합니다.</p>
 	<br> <span id="register_lec_apply">강의 신청하기</span>
 </div>
-<script>
-	// 별점 추가
-	$('#register_review a').click(function() {
-		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
-		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-		return false;
-	});
-
-	// 장바구니로 이동
-	$(document).on("click", '#register_soap_title', function() {
-		$("#homemain").load("payment/shoppingCart.jsp");
-	});
-	// 결제페이지로 이동
-	$(document).on("click", '#register_lec_apply', function() {
-		$("#homemain").load("payment/fundingPayment.jsp");
-	});
-</script>
+</body>

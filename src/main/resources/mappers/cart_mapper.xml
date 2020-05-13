@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ICartDAO">
+	<!-- 리절트 맵 정의 -->
+	<resultMap type="cartVO" id="cartResultMap">
+		<id property="id" column="id"/>
+		<id property="membersId" column="members_id"/>
+		<id property="goodsId" column="goods_id"/>
+		<id property="count" column="count"/>
+		<id property="createdAt" column="created_at"/>
+	</resultMap>
+	
+	<insert id="SQL_INSERT_CART" parameterType="cartVO">
+		<![CDATA[
+			insert into cart values(null, #{member_id}, #{goods_id}, #{count}, now())
+		]]>
+	</insert>
+	
+	<insert id="SQL_INSERT_CARTVO" parameterType="cartVO">
+		<![CDATA[
+			insert into cart(memberId, goodsId, count) values(#{member_id}, #{goods_id}, #{count})
+		]]>
+	</insert>
+	
+	<select id="SQL_CART_DUPCHECK" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(id) from cart where goodsId = #{goods_id}
+		]]>
+	</select>
+	
+	<select id="SQL_SELECT_ALL_CART" resultType="cartVO">
+		<![CDATA[
+			select * from cart order by created_at desc
+		]]>
+	</select>
+	
+	<select id="SQL_SELECT_CART_ID" parameterType="int" resultType="cartVO">
+		<![CDATA[
+			select * from cart where id = #{id}
+		]]>
+	</select>
+	
+	<update id="">
+		<![CDATA[
+			update cart set count = ?
+		]]>
+	</update>
+	
+</mapper>
