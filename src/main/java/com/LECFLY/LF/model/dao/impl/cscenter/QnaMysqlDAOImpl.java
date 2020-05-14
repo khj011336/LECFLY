@@ -34,7 +34,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "select * from qnas where id = ?";
 	// QnA 등록하기
 	public static String SQL_QNA_INSERT_VO
-		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), ?, ?)";
+		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), 0, 0)";
 	// QnA 수정하기
 	public static String SQL_QNA_UPDATE
 		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_day = now() where id = ?";
@@ -80,9 +80,9 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 				qa.getContent(), qa.getFile(), qa.getShowPrivate(), qa.getHits(), qa.getComment() );
 		return r == 1; //? true: false;
 	}
-
+	
 	@Override
-	public int insertNewQnaReturnKey(QnaVO qa) {
+	public int insertNewQnaReturnKey2(QnaVO qa) {
 		Map<String,Object> paramMap = new HashMap<>();
 		paramMap.put("mbId", qa.getMbId());
 		paramMap.put("mbNicname", qa.getMbNicname());
@@ -101,7 +101,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 	}
 
 	@Override
-	public int insertNewQnaReturnKey2(QnaVO qa) {
+	public int insertNewQnaReturnKey(QnaVO qa) {
 		System.out.println("psc/keyholder...");
 		KeyHolder kh = new GeneratedKeyHolder();
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -110,15 +110,14 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement pstmt  = con.prepareStatement( SQL_QNA_INSERT_VO, new String[] {"id"});
 				pstmt.setInt(1, qa.getMbId());
-				pstmt.setInt(2, qa.getMbId());
-				pstmt.setString(3, qa.getMbNicname());
-				pstmt.setInt(4, qa.getType());
-				pstmt.setString(5, qa.getTitle());
-				pstmt.setString(6, qa.getContent());
-				pstmt.setString(7, qa.getFile());
-				pstmt.setInt(8, qa.getShowPrivate());
-				pstmt.setInt(9, qa.getHits());
-				pstmt.setInt(10, qa.getComment());
+				pstmt.setString(2, qa.getMbNicname());
+				pstmt.setInt(3, qa.getType());
+				pstmt.setString(4, qa.getTitle());
+				pstmt.setString(5, qa.getContent());
+				pstmt.setString(6, qa.getFile());
+				pstmt.setInt(7, qa.getShowPrivate());
+//				pstmt.setInt(9, qa.getHits());
+//				pstmt.setInt(10, qa.getComment());
 				return pstmt;
 			}
 		};

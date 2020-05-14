@@ -24,12 +24,12 @@
 	            <tr>
 	                <th>문의 종류</th>
 	                <td class="radio_qna_type">
-	                	<input type="radio" id="0" name="a" ><label for="0">회원관련</label> &nbsp;
-		                <input type="radio" id="1" name="a" ><label for="1">결제/배송관련</label> &nbsp;
-		                <input type="radio" id="2" name="a"><label for="2">이용권</label> &nbsp;
-		                <input type="radio" id="3" name="a" ><label for="3">강의</label> &nbsp;
-		                <input type="radio" id="4"name="a" ><label for="4">펀딩</label> &nbsp;
-		                <input type="radio" id="5"name="a" ><label for="5">기타</label> &nbsp;
+	                	<input type="radio" id="0" name="type" value=0><label for="0">회원관련</label> &nbsp;
+		                <input type="radio" id="1" name="type" value=1><label for="1">결제/배송관련</label> &nbsp;
+		                <input type="radio" id="2" name="type" value=2><label for="2">이용권</label> &nbsp;
+		                <input type="radio" id="3" name="type" value=3><label for="3">강의</label> &nbsp;
+		                <input type="radio" id="4" name="type" value=4><label for="4">펀딩</label> &nbsp;
+		                <input type="radio" id="5" name="type" value=5><label for="5">기타</label> &nbsp;
 	                </td>
 	            </tr>
 	            <tr>
@@ -43,7 +43,7 @@
 	            	<th>이름</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_name" placeholder="이름" value="${mbId}" readonly>
+		            		<input type="text" class="input input_qna_name"  name="mbId" placeholder="${mbId}" value="123" readonly>
 		            	</div>
 	            	</td>
 	            </tr>
@@ -51,7 +51,7 @@
 	            	<th>닉네임</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_id" placeholder="닉네임" value="${mbnicname}" readonly>
+		            		<input type="text" class="input input_qna_id" name="mbNicname" placeholder="${mbnicname}" value="홍길동" readonly>
 		            	</div>
 	            	</td>
 	            </tr>
@@ -59,7 +59,7 @@
 	            	<th>휴대폰</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_phone" placeholder="휴대폰" value="${mbphNumber}" readonly>
+		            		<input type="text" class="input input_qna_phone" placeholder="${mbphNumber}" value="${mbphNumber}" readonly>
 		            	</div>
 	            	</td>
 	            </tr>
@@ -67,7 +67,7 @@
 	            	<th>이메일</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_email" placeholder="이메일" value="${mbemail}" readonly>
+		            		<input type="text" class="input input_qna_email" placeholder="${mbemail}" value="${mbemail}" readonly>
 		            	</div>
 		            </td>
 	            </tr>
@@ -84,7 +84,7 @@
 	            	<th>제목</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_title" placeholder="제목을 입력해주세요">
+		            		<input type="text" class="input input_qna_title" name="title" placeholder="제목을 입력해주세요">
 		            	</div>
 		            </td>
 	            </tr>
@@ -92,7 +92,7 @@
 	            	<th>내용</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<textarea  class="input input_qna_txtarea" placeholder="내용을 입력해주세요" cols="97px" rows="30px" style="resize: none;"></textarea>
+		            		<textarea  class="input input_qna_txtarea" placeholder="내용을 입력해주세요" name="content" cols="97px" rows="30px" style="resize: none;"></textarea>
 		            	</div>
 		            </td>
 	            </tr>
@@ -104,7 +104,7 @@
 	                <th>파일첨부</th>
 	                <td>
 		                <div class="post_add_thumb_wrap">
-		                	<input type="file" id="add_thumb" multiple="multiple" accept="image/*">
+		                	<input type="file" id="add_thumb" multiple="multiple" name="File" accept="image/*">
 		                </div>
 	                </td>
 	            </tr>
@@ -123,7 +123,8 @@
 	            <tr>
 					<th colspan="2">
 						<br>
-						<input id = "post_private" name = "post_private" type="checkbox" value="post_private">
+						<!-- <input type="hidden" name="showPrivate" value="0" /> -->
+						<input id = "post_private" name = "showPrivate" type="checkbox" value="1">
 	                    <label for= "post_private">비공개로 게시하시겠습니까?</label>
 					</th>
 	            </tr>

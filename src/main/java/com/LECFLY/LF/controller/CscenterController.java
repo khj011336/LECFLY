@@ -84,13 +84,13 @@ public class CscenterController {
 	
 	
 	// 회원이 QnA 글쓰기 + 파일
-	@RequestMapping(value = "cs_post_new_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "cs_post_new_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterPostNewQna() {
 		System.out.println("cscenterPostNewQna()...");
 		return "cscenter/cs_qna_post.ho";
 	}
 	
-	@RequestMapping(value = "cs_post_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "cs_post_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterAddQna(int mbId, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
 		System.out.println("cscenterAddQna()...");
 		System.out.println("multipart size: " + file.size());
@@ -108,7 +108,8 @@ public class CscenterController {
 		// 상세보기 => atId?
 		if( qaRtkey > 0 ) {
 			System.out.println("게시글 등록 성공: " + qaRtkey);
-			return "redirect:cs_receive_qna.ho?id="+ qaRtkey;
+			return "redirect:qna_receive.LF?id=" + qaRtkey;
+			//return "redirect:cs_receive_qna.ho?id="+ qaRtkey;
 		} else {
 			System.out.println("게시글 등록 실패: " + title);
 			return "cscenter/cs_qna_post.ho"; //
@@ -116,7 +117,7 @@ public class CscenterController {
 	}
 	
 	// QnA 글 상세보기
-	@RequestMapping(value = "/qna_receive.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/qna_receive.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterReceiveQna(HttpSession ses, int id, Model model) {
 		QnaVO qa = this.qaSvc.selectOneQna(id);
 		if( qa != null ) {
@@ -157,7 +158,7 @@ public class CscenterController {
 		}
 	}
 	// QnA 글 수정하기
-	@RequestMapping(value = "/cs_edit_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/cs_edit_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterEditQna(HttpSession ses, Model model, 
 			@RequestParam(value = "qaId", defaultValue = "0") int id){
 		if(id == 0 ) {
@@ -179,7 +180,7 @@ public class CscenterController {
 			return "redirect:cs_qna.ho?id=" +id; 
 		}
 	}	
-	@RequestMapping(value = "/cs_update_qna.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "/cs_update_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String qnaUpdateProc(HttpSession ses, @ModelAttribute(value = "qna") QnaVO qa) { // vo를 command객체로 사용하자.
 		System.out.println("qna update: "+ qa);
 		boolean b = qaSvc.updateQna(qa);
@@ -190,7 +191,7 @@ public class CscenterController {
 		}
 	}
 	// QnA 글 삭제하기
-	@RequestMapping(value = "/cs_delete_qna.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/cs_delete_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterDeleteQna() {
 		return null;
 	}
@@ -234,7 +235,7 @@ public class CscenterController {
 	
 	//- 댓글 리스트가 게시글 상세보기에 연동 표시될 수 있다.
 	//	answer_list.my
-	@RequestMapping(value = "/cs_qna_receive.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/cs_qna_receive.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String commentListProc(
 			@RequestParam(value="qnaId") int qnaId, Model model) {
 		List<QnaCommentVO> qcList = qcSvc.commentListForQna(qnaId);		
