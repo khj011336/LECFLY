@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 
 @Repository
-public class CreatorMysqlDAOImpl {
+public class CreatorMysqlDAOImpl implements ICreatorDAO {
 	 final String INSERT_NEW_CREATOR = "insert into creator values(null,?,?,?,?,?,?,?,1,now())" ;
 	 @Autowired
 	 JdbcTemplate jtem;
@@ -21,5 +22,15 @@ public class CreatorMysqlDAOImpl {
 		 int r = jtem.update(INSERT_NEW_CREATOR,fid, imgPath,name,nickname,cellphone,sns,info );
 		 return r== 1;
 	 }
+	@Override
+	public CreatorVO selectOneCreator(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public CreatorVO selectCreators() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 	

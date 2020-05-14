@@ -39,11 +39,10 @@ function checkVisible( box, tOf ) {
            data : {"page" : page},
            url : url,
            success : function(returnData) {
+        	 
         	   $(boxid).remove();
-        	   var cutor = $(boxid).html();
-        	   $(boxid).remove();
+        	   console.log(returnData)
         		$(appendid).append(returnData);
-        		$(appendid).append(cutor);
         	   page++;
         	   isVisible = false;
         	
@@ -59,7 +58,7 @@ function checkVisible( box, tOf ) {
 }
 function selectLecture(Lcid) {
 	var form = document.createElement('form');
-	form.setAttribute('method', 'post');
+	form.setAttribute('method', 'get');
 	form.setAttribute('action', 'creator_video_show.LF');
 	form.setAttribute('id', Lcid);
 	document.charset = "utf-8";

@@ -1,30 +1,34 @@
 package com.LECFLY.LF.controller;
 
+
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.tiles.autotag.core.runtime.annotation.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.LECFLY.LF.model.dao.impl.creator.CreatorMysqlDAOImpl;
-import com.LECFLY.LF.model.dao.impl.creator.LectureMysqlDAOImpl;
+import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
+import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
+import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
+import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
 import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.impl.creator.LectureSVCImpl;
+import com.LECFLY.LF.service.inf.creator.IVideoSVC;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @Controller
 @SessionAttributes({ "creator", "Lecture" })
@@ -35,11 +39,11 @@ public class CreatorController {
 	@Autowired
 	CreatorSVCImpl CreSVC;
 	@Autowired
-	LectureMysqlDAOImpl LecDAO;
+	ILectureDAO LecDAO;
 	@Autowired
-	CreatorMysqlDAOImpl CreDAO;
-	 
-
+	ICreatorDAO CreDAO;
+	@Autowired
+	IVideoSVC VdoSVC;
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -56,15 +60,16 @@ public class CreatorController {
 		ses.setAttribute("id", 1);
 		ses.setAttribute("fid", 2);
 		ses.setAttribute("membertest", "hongil");
-		ses.setAttribute("crPath",FileSVCImpl.getPath((String)ses.getAttribute("membertest"), 1 ));
-		int status = (Integer) ses.getAttribute("id");
+		ses.setAttribute("crPath", FileSVCImpl.getPath((String) ses.getAttribute("membertest"), 1));
+		int loginStatus = (Integer) ses.getAttribute("id");
 		int fid = (Integer) ses.getAttribute("fid");
-		if (status == 1 && page == 1) {
+		MAXPAGE = LecSVC.checkOfLectureNumber(2);
+		if (loginStatus == 1 && page == 1) {
 			MAXPAGE = LecSVC.checkOfLectureNumber(2);
 			model.addAttribute("maxPage", MAXPAGE);
 			model.addAttribute("lecList", LecSVC.showLectureList(2, page, 0));
 			return "creator/cre_class_list.page";
-		} else if (status == 1 && page >= 2) {
+		} else if (loginStatus == 1 && page >= 2) {
 			model.addAttribute("maxPage", MAXPAGE);
 			List<LectureVO> LecList = LecSVC.showLectureList(2, page, 0);
 			model.addAttribute("lecList", LecList);
@@ -73,49 +78,30 @@ public class CreatorController {
 			return "회원로그인폼";
 		}
 	}
-	@RequestMapping(value = "creator_new_profile.LF" ,method =RequestMethod.GET)
-	public String createProfile(Model model , HttpSession ses) {
+
+	@RequestMapping(value = "creator_new_profile.LF", method = RequestMethod.GET)
+	public String createProfile(Model model, HttpSession ses) {
 		model.addAttribute("p", 1);
 		System.out.println("도착 뉴프로필");
 		return "creator/cre_profile.page";
 	}
-	 
+
 	@RequestMapping(value = "creator_new_profile_proc.LF", method = RequestMethod.POST)
 	public String createProfile(Model model, @ModelAttribute(value = "creator") CreatorVO cr, HttpSession ses,
-			SessionStatus sesStatus , @RequestParam(value = "unloadA" ,required=false) String unload) {
+			SessionStatus sesStatus, @RequestParam(value = "unloadA", required = false) String unload) {
 //		세션 자동 저장단
-		int countNull = 0;
-		model.addAttribute("p", 1);
-		
-		LectureVO LecVO = (LectureVO) ses.getAttribute("Lecture");
 		System.out.println("크리에이터 프로세스");
-		CreSVC.fileProcessforCreator(cr, ses, model);
-		if (unload.equals("y") ) {
-			System.out.println("언로드진입");
-			String nullcheck = LecVO.toString();
-			String sep[] = nullcheck.split("=");
-			for (int i = 0; i < 8; i++) {
-				String value = sep[i].split(",")[0].trim();
-				if ( !value.equals("0") &&!value.equals("null") &&!value.equals("category")) {
-					if(!value.isEmpty()) {
-						System.out.println(value);
-					countNull++;
-					}
-				}
-			}
-			if (countNull >= 3) {
-				System.out.println(" lec file > 3");
-				int fid = (Integer)(ses.getAttribute("fid"));
-				LecDAO.insertNewLecture(fid,LecVO.getCategory(),
-						LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
-						LecVO.getInfo(), cr.getNickname(),
-						cr.getImgPath());
-				CreDAO.insertNewCreator(fid, cr.getImgPath(), cr.getName(),
-						cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo());
-				
-			}
-			sesStatus.setComplete();
+		model.addAttribute("p", 1);
+		LectureVO LecVO = (LectureVO) ses.getAttribute("Lecture");
+		//TODO
+		String memberName = (String)ses.getAttribute("membertest");
+		int memberId  =(Integer) ses.getAttribute("id") != null? (Integer) ses.getAttribute("id"): null  ;
+		if(memberName != null) {
+			cr.setId(memberId);
+			cr.setName(memberName);
 		}
+		CreSVC.fileProcessforCreator(cr, ses, model);
+		LecSVC.unloadProcess(unload, LecVO, ses, cr, sesStatus);
 		return "creator/cre_lecture_upload.page";
 	}
 
@@ -126,47 +112,64 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "creator_new_lecture_proc.LF", method = RequestMethod.POST)
-	public String createLectureproc(Model model, @ModelAttribute(value = "Lecture") LectureVO lec, HttpSession ses) {
+	public String createLectureproc(Model model, @ModelAttribute(value = "Lecture") LectureVO lec,
+			SessionStatus sesStatus, HttpSession ses,
+			@RequestParam(value = "unloadB", required = false) String unload) {
 //		세션 자동 저장단
+//TODO 회원이 크리에이터 인경우
 		System.out.println("렉쳐 프로세스");
 		model.addAttribute("p", 2);
+		CreatorVO cr = (CreatorVO) ses.getAttribute("creator");
 		LecSVC.fileProcessforLectures(lec, ses, model);
+		LecSVC.unloadProcess(unload, lec, ses, cr, sesStatus);
 		return "storeMapping";
 	}
 
-	@RequestMapping(value = "creator_set_proc.LF", method = RequestMethod.POST)
-	public String createSetProc(Model model, HttpSession ses, SessionStatus sesStatus) {
-		System.out.println("이탈 자동저장 ");
-		LectureVO LeVO = (LectureVO) ses.getAttribute("Lecture");
-
-		System.out.println(ses.getAttribute("creator"));
-		System.out.println(ses.getAttribute("Lecture"));
-		sesStatus.setComplete();
-		return "creator/cre_class_list.page";
-	}
-
 	@RequestMapping(value = "creator_rightset_proc.LF", method = RequestMethod.POST)
-	public ModelAndView createSetProc(ModelAndView model, @ModelAttribute(value = "Lecture") LectureVO lec,
-			HttpSession ses) {
-		System.out.println(ses.getAttribute("Lecture"));
-
-		model.setViewName("redirect:creator/cre_class_list.page");
-		return model;
+	public String createSetProc(Model model, @ModelAttribute(value = "Lecture") LectureVO lec,
+			HttpSession ses , SessionStatus sesStatus) {
+		//TODO 회원이 크리에이터 인경우 및 리다이렉트
+		CreatorVO cr = (CreatorVO) ses.getAttribute("creator");
+		LecSVC.storeProcess(lec, ses, cr, sesStatus, model);
+		return "return:/creator/cre_class_list";
 
 	}
-
-	@RequestMapping(value = "creator_video_show.LF", method = RequestMethod.POST)
-	public String showVideoList(Model model, HttpServletRequest req) {
-
+ 
+	@RequestMapping(value = "creator_video_show.LF" ,method = RequestMethod.GET)
+	public String showVideoList(HttpSession ses, Model model,
+			@RequestParam(value="id" , required =false) String CF ,
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+		int loginStatus = (Integer) ses.getAttribute("id");
+			MAXPAGE = VdoSVC.checkOfLectureNumber(3);
+		
+		if (loginStatus == 1 && page == 1) {
+			model.addAttribute("maxPage", MAXPAGE);
+			model.addAttribute("page", page);
+			model.addAttribute("lecList", VdoSVC.showLectureList(3,page));
+			return "creator/cre_play_list.page";
+		}  
 		return "creator/cre_play_list.page";
+		
 	}
-	
-
-	@RequestMapping(value = "creator_new_lecture2.LF", method = RequestMethod.GET)
-	public String createLecture(Model model, HttpSession ses) {
-		model.addAttribute("p", 2);
-		return "creator/cre_lecture_upload.page";
-	}
+		@RequestMapping(value = "creator_video_show_proc.LF" ,method = RequestMethod.GET)
+		@ResponseBody
+		public String showVideoList(   HttpSession ses, 
+				@RequestParam(value="id" , required =false) String CF ,
+				@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+			ObjectMapper mapper = new ObjectMapper();
+			 JsonObject js =new JsonObject();
+			 js.addProperty("page", page);
+			String jsonText = null;
+			System.out.println(page);
+			 
+			try {
+				jsonText = mapper.writeValueAsString( VdoSVC.showLectureList(3,page) );
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			return jsonText ;
+		}
+	 
 
 	@RequestMapping(value = "creator_comment_List.LF", method = RequestMethod.GET)
 	public String showCreCommentList() {
