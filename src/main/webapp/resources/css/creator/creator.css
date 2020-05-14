@@ -963,7 +963,22 @@ font-weight: bold;
 	height:30px;
 	margin-left: 860px;
 }
-
+/* 페이지버튼 */
+#paginate{
+	margin-top:15px;
+	text-align: center;
+	padding: 0px auto;
+}
+#paginate *{
+	font-size: 23px;
+	cursor: pointer;
+	width: 60px;
+}
+#paginate a{
+	padding:3px 10px;
+	box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+}
+/* 페이지버튼 */
 /* /* ------------------------------------------------- */
 #shoppingCart_wrapper a {
 	color: black;
