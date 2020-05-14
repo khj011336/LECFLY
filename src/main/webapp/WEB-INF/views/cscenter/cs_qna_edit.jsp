@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,31 +21,27 @@
                <h4>QnA게시판 문의 편집하기</h4>
             </div>
             <br><br>
-	 		<form>
+	 		<form action="${pageContext.request.contextPath}/cs_update_qna.LF" method="post">
 	        <table>
+	        	<tr>
+	            	<th>&nbsp;</th>
+	            	<td style="font-size: 12px; color: orangered;">
+	            	* 문의 종류와 첨부파일은 변경 불가능합니다. 변경을 원하실경우 삭제 후 재등록 부탁드립니다.<br><br>
+	            	</td>
+				</tr>
 	            <tr>
 	                <th>문의 종류</th>
-	                <td class="radio_qna_type">
-	                	<input type="radio" id="1" name="a" ><label for="1">회원관련</label> &nbsp;
-		                <input type="radio" id="2" name="a" ><label for="2">결제/배송관련</label> &nbsp;
-		                <input type="radio" id="3" name="a"><label for="3">이용권</label> &nbsp;
-		                <input type="radio" id="4" name="a" ><label for="4">강의</label> &nbsp;
-		                <input type="radio" id="5"name="a" ><label for="5">펀딩</label> &nbsp;
-		                <input type="radio" id="6"name="a" ><label for="6">기타</label> &nbsp;
+	                <td>
+	                	<div class="post_input_wrap">
+	                	 	<input type="text" class="input input_qna_type" placeholder="이름" value="${qna.stype}" readonly>
+	                	</div>
 	                </td>
-	            </tr>
-	            <tr>
-	            	<th>&nbsp;</th>
-	            	<td>
-	            	<input type="button" class="edit_info" value="회원정보 변경하기">
-	            	
-	            	</td>
 	            </tr>
 	            <tr>
 	            	<th>이름</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_name" placeholder="이름" value="홍길동" readonly>
+		            		<input type="text" class="input input_qna_name" placeholder="이름" value="${qna.type}" readonly>
 		            	</div>
 	            	</td>
 	            </tr>
@@ -86,7 +82,7 @@
 	            	<th>제목</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_title" placeholder="제목을 입력해주세요">
+		            		<input type="text" class="input input_qna_title" placeholder="${qna.title}" value="${qna.title}">
 		            	</div>
 		            </td>
 	            </tr>
@@ -151,8 +147,8 @@
 					<th colspan="2">
 						<br>
 						<br>
-						<!-- <input type="submit" class="btn_post" value="문의글 작성하기"> -->
-						<a href="#" title="문의글 수정" class="btn_post">문의글 수정하기</a>
+						<input type="submit" class="btn_post" value="문의글 작성하기">
+						<!-- <a href="#" title="문의글 수정" class="btn_post">문의글 수정하기</a> -->
 					</th>
 	            </tr>
 	       </table>

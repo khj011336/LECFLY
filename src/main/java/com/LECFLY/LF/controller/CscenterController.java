@@ -162,34 +162,40 @@ public class CscenterController {
 	public String cscenterEditQna(HttpSession ses, Model model, 
 			@RequestParam(value = "qaId", defaultValue = "0") int id){
 		if(id == 0 ) {
-			return "redirect:cs_qna.ho";
-		}
-		QnaVO qa = qaSvc.selectOneQna(id);
-		if( qa != null ) {
-			// 세션로그인 유저가 편집대상 게시글 작성자인가? 아니면 권한이 있거나?
-			int writerId = qa.getMbId();
-			if( writerId == (int)ses.getAttribute("mbId")) {
-				model.addAttribute("qna", qa);
-				return "cscenter/cs_qna_edit.ho";
+			System.out.println("qna update: id=0");
+			return "redirect:cs_qna.LF";
+		}else {
+			QnaVO qa = qaSvc.selectOneQna(id);
+			if( qa != null ) {
+				// 세션로그인 유저가 편집대상 게시글 작성자인가? 아니면 권한이 있거나?
+				int writerId = qa.getMbId();
+				if( writerId == (int)ses.getAttribute("mbId")) {
+					model.addAttribute("qna", qa);
+					return "cscenter/cs_qna_edit.ho?id=" +id;
+				} else {
+					model.addAttribute("msg", "게시글 편집폼 준비 실패: 작성자 아님");
+					return "redirect:redirect:cs_qna.ho?id=" +id; 
+				}
+			
 			} else {
-				model.addAttribute("msg", "게시글 편집폼 준비 실패: 작성자 아님");
-				return "redirect:redirect:cs_qna.ho?id=" +id; 
+				model.addAttribute("msg", "게시글 편집폼 준비 실패: 게시글 없음");
+				return "redirect:cs_receive_qna.ho?id=" +id; 
 			}
-		} else {
-			model.addAttribute("msg", "게시글 편집폼 준비 실패: 게시글 없음");
-			return "redirect:cs_qna.ho?id=" +id; 
 		}
+		
 	}	
+	
 	@RequestMapping(value = "/cs_update_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String qnaUpdateProc(HttpSession ses, @ModelAttribute(value = "qna") QnaVO qa) { // vo를 command객체로 사용하자.
 		System.out.println("qna update: "+ qa);
 		boolean b = qaSvc.updateQna(qa);
 		if( b ) {
-			return "redirect:cs_qna.ho?id="+qa.getId();
+			return "redirect:qna_receive.LF?id="+qa.getId();
 		} else {
 			return "cscenter/cs_qna_edit.ho";
 		}
 	}
+	
 	// QnA 글 삭제하기
 	@RequestMapping(value = "/cs_delete_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterDeleteQna() {

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +16,15 @@
 </head>
 <body>
 <div id="receiveBoard_wrapper">
+		<div id = "receiveBoard_button">
+			<div id = "button_left">
+			<span id="rbBtn">이전 글</span></div>
+			<div id = "button_right">
+			<span class="onlyForAdmin" id="rbBtn">수정</span>
+			<span class="onlyForAdmin" id="rbBtn">삭제</span>
+			<span id="rbBtn">다음 글</span>
+			</div>
+		</div>  
         <div id="receiveBoard_content">
             
             <div class="receiveBoard_content_title">

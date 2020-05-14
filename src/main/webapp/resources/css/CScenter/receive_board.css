@@ -6,7 +6,30 @@
 	width: 1200px;
 	min-height: 700px;
 }
-
+#receiveBoard_button {
+	margin: 0px auto;
+	width: 900px;
+	height: 40px;
+}
+#button_left {
+	float: left;
+}
+#button_right {
+	float: right;
+}
+#rbBtn{
+	display: inline-block;
+    width: 50px;
+	height: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-top: 5px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: buttonface;
+	border: 1px solid grey;
+	border-radius: 3px;
+}
 #receiveBoard_content {
 	margin: 0px auto;
 	padding: 50px;

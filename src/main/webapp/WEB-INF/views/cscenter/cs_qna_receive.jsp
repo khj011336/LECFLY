@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,9 +19,13 @@
 </head>
 <body>
 <div id="receiveBoard_wrapper">
+		<div id = "receiveBoard_button">
+			<div id = "button_right">
+			<a href="${pageContext.request.contextPath}/cs_edit_qna.LF?Id=${qna.id}"><span id="rbBtn">수정</span></a>
+			<span id="rbBtn">삭제</span></div>
+		</div>  
         <div id="receiveBoard_content">
-            
-            <div class="receiveBoard_content_title">
+          	<div class="receiveBoard_content_title">
                 <span class=""></span>
              	 ${qna.id}번 | ${qna.title}
                 <span class="divider">|</span>
@@ -47,13 +50,13 @@
                 <span class="receiveBoradgrade">${qna.sshowPrivate}</span>
             </div>
             <div class="titleRight">
-            <span class="file">첨부파일:
-            	<c:if test="${fpsCount gt 0}">
-					<c:forEach var="fp" items="${fps}" varStatus="vs">
-						<%@ include file="cs_file.jsp" %>						
-					</c:forEach>
-				</c:if>
-			</span>
+	            <span class="file">첨부파일:
+	            	<c:if test="${fpsCount gt 0}">
+						<c:forEach var="fp" items="${fps}" varStatus="vs">
+							<%@ include file="cs_file.jsp" %>						
+						</c:forEach>
+					</c:if>
+				</span>
             </div>
         </div>
         </div>

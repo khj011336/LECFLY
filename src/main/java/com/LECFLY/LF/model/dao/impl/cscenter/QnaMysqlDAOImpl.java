@@ -34,7 +34,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "select * from qnas where id = ?";
 	// QnA 등록하기
 	public static String SQL_QNA_INSERT_VO
-		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), 0, 0)";
+		= "insert into qnas values(0, ?, ?, ?, ?, ?, ?, ?, now(), now(), 0, 0)";
 	// QnA 수정하기
 	public static String SQL_QNA_UPDATE
 		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_day = now() where id = ?";

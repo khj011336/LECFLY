@@ -29,7 +29,7 @@
 		                <input type="radio" id="2" name="type" value=2><label for="2">이용권</label> &nbsp;
 		                <input type="radio" id="3" name="type" value=3><label for="3">강의</label> &nbsp;
 		                <input type="radio" id="4" name="type" value=4><label for="4">펀딩</label> &nbsp;
-		                <input type="radio" id="5" name="type" value=5><label for="5">기타</label> &nbsp;
+		                <input type="radio" id="5" name="type" value=5 checked="checked"><label for="5">기타</label> &nbsp;
 	                </td>
 	            </tr>
 	            <tr>
@@ -123,9 +123,9 @@
 	            <tr>
 					<th colspan="2">
 						<br>
-						<!-- <input type="hidden" name="showPrivate" value="0" /> -->
 						<input id = "post_private" name = "showPrivate" type="checkbox" value="1">
 	                    <label for= "post_private">비공개로 게시하시겠습니까?</label>
+	                    <input type="hidden" name="showPrivate" value="0">
 					</th>
 	            </tr>
 	            <tr>
