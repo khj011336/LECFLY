@@ -59,6 +59,8 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	private static final String SQL_SELECT_MEMBER_PW_CHECK = "select * from members where password = hex(aes_encrypt(?,?))";
 	private static final String SQL_FIND_MB_EMAIL = "select email from members where ph_number=? and name=?";
 	private static final String SQL_FIND_MB_EMAIL_IN_DB = "select * from members where email=?";
+	private static final String SQL_UPDATE_MEMBER_PW_BY_EMAIL = 
+			"update members set password=hex(aes_encrypt(?,?)) where email=?";
 //	public static final String SQL_="";
 	
 	
@@ -222,8 +224,8 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	
 // 이름과 전화번호로 이메일 찾기
 	@Override
-	public String findEmailByPhNmuberAndName(String phNumber, String name) {
-		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL, String.class, phNumber, name);
+	public MemberVO findEmailByPhNmuberAndName(String phNumber, String name) {
+		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL, BeanPropertyRowMapper.newInstance(MemberVO.class), phNumber, name);
 	}
 
 // 가입된 이메일로 임시 비밀번호 생성하기
@@ -260,8 +262,9 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	}
 
 	@Override
-	public boolean findEmailInDB(String email) {
-		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL_IN_DB, String.class, email) != null;
+	public MemberVO findEmailInDB(String email) {
+		System.out.println("jdbc: findEmailInDB");
+		return this.jtem.queryForObject(SQL_FIND_MB_EMAIL_IN_DB, BeanPropertyRowMapper.newInstance(MemberVO.class), email);
 	}
 
 	
@@ -273,4 +276,12 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 		return false;
 	}
 	
+	
+	@Override
+	public boolean updateMemberPasswordToEmail(String email, String password) {
+		System.out.println("jdbc: updateMemberPasswordToEmail");
+		int r = this.jtem.update(SQL_UPDATE_MEMBER_PW_BY_EMAIL, password, 
+				new PwSecurityEncoding(email).getEmail(), email);
+		return r == 1;
+	}
 }

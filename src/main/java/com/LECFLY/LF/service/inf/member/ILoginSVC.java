@@ -40,12 +40,13 @@ public interface ILoginSVC {
 	boolean check_dup_email(String email);
 	//이메일 찾기
 	//find_login.lf (proc; post; dao; 비회원)			이메일찾기proc실행(findEmail(phNumber) )
-	String findEmail(String phNumber, String name);
+	int findEmail(String phNumber, String name);
 	
 	//비밀번호 찾기
 	//find_pw.lf (proc; post; dao; 비회원)			비밀번호 재발급proc실행(createNewPWToEmail(email)
-	boolean findPw(String email);
-	//로그아웃하기						
-	//logout.lf (proc; get; 회원)			로그아웃proc실행 후 default로 이동		session의 memberVO 제거
-	boolean logout();
+	int findPw(String email, String name, String phNumber);
+	
+	// 임시비밀번호 생성
+	boolean makeTempPwIn(String email, String password);
+	String makeTemptPw();
 }

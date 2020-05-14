@@ -279,53 +279,57 @@ public class MemberController {
 //		return "redirect:join_new_member.LF";
 //	}
 	
-//이메일 찾기						
+//이메일 찾기		******일단 기능 미구현으로 남김...********				
 	//	find_mb_login.lf (form; get; 비회원)			이메일찾기 폼 이동
 	//	find_login.lf (proc; post; dao; 비회원)			이메일찾기proc실행(findEmail(phNumber) )
 	// 로그인창에서 아이디찿기 클릭시 
-	@RequestMapping(value="find_mb_login.LF", method=RequestMethod.GET)
-	public String memberFindLoginPage() {
-		System.out.println("memberFindLoginPage()...");
-		return "member/find_mb_login";
-	}
+//	@RequestMapping(value="find_mb_login.LF", method=RequestMethod.GET)
+//	public String memberFindLoginPage() {
+//		System.out.println("memberFindLoginPage()...");
+//		return "member/find_mb_login";
+//	}
 
 
 //비밀번호 찾기						
 	//	find_mb_pw.lf (form; get; 비회원)			비밀번호 재발급폼 이동
-	//	find_pw.lf (proc; post; dao; 비회원)			비밀번호 재발급proc실행(createNewPWToEmail(email)
 	// 로그인창에서 비밀번호 찾기 클릭시
 	@RequestMapping(value="find_mb_pw.LF", method=RequestMethod.GET)
 	public String memberFindPasswordPage() {
 		System.out.println("memberFindPasswordPage()...");
 		return "member/find_mb_pw";
 	}
-		
-	//로그아웃하기						
-//	logout.lf (proc; get; 회원)			로그아웃proc실행 후 default로 이동		session의 memberVO 제거
-	@RequestMapping(value="logout.LF", method=RequestMethod.GET)
-	public String memberLogoutLECFLY() {
-		System.out.println("memberLogoutLECFLY()...");
-		
-		return "redirect:home.LF";
-	}
 	
-/*
-//	로그인하기						
-//	login.lf (form; get; 비회원)			로그인폼 이동
-	@RequestMapping(value = "login.LF", method = RequestMethod.GET )
-	public String loginForm() {
-		System.out.println("로그인");
-		return "login";
+	//	find_pw_proc.lf (proc; post; dao; 비회원)			비밀번호 재발급proc실행(createNewPWToEmail(email)
+	@RequestMapping(value="find_pw_proc.LF", method=RequestMethod.POST)
+	public String memberFindPasswordProc(Model model,
+			String email, String name, String phNumber) {
+		System.out.println("memberFindPasswordProc()...");
+		if(email!=null&&!email.isEmpty()&&name!=null&&!name.isEmpty()&&phNumber!=null&&!phNumber.isEmpty()) {
+			System.out.println("모든 인자값 다 있음");
+			if(logSvc.findPw(email, name, phNumber)==1) {
+				System.out.println("회원 db에서 찾음");
+				String password = logSvc.makeTemptPw();
+				System.out.println("password: " + password);
+				if(logSvc.makeTempPwIn(email, password)) {
+					System.out.println("임시비밀번호 생성 완료");
+					return "redirect:/";
+				}
+			} else {
+				System.out.println("등록된 회원 없음...");
+				model.addAttribute("msg","가입되지 않은 회원입니다...");
+			}
+		} else if(email==null || email.isEmpty()) {
+			System.out.println("email없음");
+			model.addAttribute("msg","이메일을 입력하세요!");
+		} else if(name==null || name.isEmpty()) {
+			System.out.println("name없음");
+			model.addAttribute("msg","이름을 입력하세요!");
+		} else if(phNumber==null || phNumber.isEmpty()) {
+			System.out.println("phNumber없음");
+			model.addAttribute("msg","휴대전화번호를 입력하세요!");
+		}
+		return "redirect:find_mb_pw.LF";
 	}
-
-//log_in.lf (proc; post; 암호화; 세션; 회원)			로그인proc실행(selectOneMember(email,pw) )	
-	@RequestMapping(value = "log_in.LF", method = RequestMethod.POST)
-	public String login() {
-		
-		return "home";
-	}	
-*/	
-	
 	
 ////////////////////////////////////////   위쪽은 로그인 관련 페이지들
 	

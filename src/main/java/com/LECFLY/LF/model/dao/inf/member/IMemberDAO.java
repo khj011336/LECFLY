@@ -78,7 +78,10 @@ public interface IMemberDAO {
 	MemberVO memberPassword(String email, String password);
 	
 	// 이름과 전화번호로 이메일 찾기
-	String findEmailByPhNmuberAndName(String phNumber, String name);
+	MemberVO findEmailByPhNmuberAndName(String phNumber, String name);
+	
+	// 이메일 검색하여 Member객체 출력ㄴ
+	MemberVO findEmailInDB(String email);
 	
 	// 가입된 이메일로 임시 비밀번호 생성하기
 	boolean setNewPwByEmail(String email, String pw);
@@ -95,14 +98,12 @@ public interface IMemberDAO {
 	// id를 통해 회원 정보 삭제
 	boolean deleteOneMemberById(int id);
 	
-	boolean findEmailInDB(String email);
-	
 	
 	// 세현 추가 마이페이지에서 회원 id, 업데이트할 사진 path 입력하면은 sql 에 업데이트 하려고함
 	boolean updateMemberProfileImg(int mbId, String filePath);
 	
-	
-	
+	// 5.14 이메일을 매개로 패스워드 업데이트(비밀번호 재발급 기능에 사용함)
+	boolean updateMemberPasswordToEmail(String email, String password);
 	
 
 	

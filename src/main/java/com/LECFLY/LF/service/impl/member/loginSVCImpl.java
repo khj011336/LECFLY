@@ -93,32 +93,52 @@ public class loginSVCImpl implements ILoginSVC {
 	}
 
 	@Override
-	public String findEmail(String phNumber, String name) {
-		
-		return mbDao.findEmailByPhNmuberAndName(phNumber, name); 
-		//return null;
+	public int findEmail(String phNumber, String name) {
+		mbDao.findEmailByPhNmuberAndName(phNumber, name);
+		return 1;
 	}
 
 	@Override
-	public boolean findPw(String email) {
-		if( mbDao.findEmailInDB(email) ) {
-			StringBuffer tempPw;
-			char t = ' ';
-			for (int i = 0; i < 12; i++) {
-				
-			}
-			// 자바 메일발송 관련 api 실행후 임시 비밀번호 발송
-//			mbDao.setNewPwByEmail(email, newPw);
-			return true;
+	public int findPw(String email, String name, String phNumber) {
+		MemberVO mbEmail = mbDao.findEmailInDB(email);
+		if( mbEmail == null ) {
+			System.out.println("이메일 db에 없음");
+			return 2;
+		} else if(!mbEmail.getName().equals(name)){
+			System.out.println("이메일과 이름 불일치");
+			return 3;
+		} else if(!mbEmail.getPhNumber().equals(phNumber)) {
+			System.out.println("이메일과 전화번호 불일치");
+			return 4;
 		} else {
-			return false;
-		}
+			System.out.println("인증 성공");
+			return 1;
+		}		
 	}
-
+	
 	@Override
-	public boolean logout() {
-		// TODO Auto-generated method stub
+	public boolean makeTempPwIn(String email, String password) {
+			mbDao.updateMemberPasswordToEmail(email, password);
 		return false;
+	}
+	
+	@Override
+	public String makeTemptPw() {
+		String result = "";
+		int target = (int)(Math.random()*10 + 6);
+		for (int i = 0; i < target; i++) {
+			char c= ' ';
+			int ran = (int)(Math.random()*62);
+			if(ran<10) {
+				c = (char)(ran+48);//숫자
+			} else if(ran<36) {
+				c = (char)(ran+55);//대문자
+			} else {
+				c = (char)(ran+61);//소문자
+			}
+			result += c;
+		}
+		return result;
 	}
 
 }

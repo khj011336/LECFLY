@@ -13,9 +13,9 @@
 			window.location.href = 'logout_proc.LF';
 		}
 	}
-	function test() {
-		window.location.href = 'test.LF';
-	}
+// 	function test() {
+// 		window.location.href = 'test.LF';
+// 	}
 	
 </script>
 
@@ -25,7 +25,7 @@
 </div>
 <div class="header_wrapper" style="z-index:30;">
 <!-- 삭제필수 -->
-<input type="button" value="test" onclick="test()">
+<!-- <input type="button" value="test" onclick="test()"> -->
 
 	
 	<div class="header_column_logo">
