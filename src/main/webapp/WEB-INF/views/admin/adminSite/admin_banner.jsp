@@ -26,7 +26,8 @@
 		</tr>
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" onclick="location.href='admin_banner_list.LF'">조회하기</button>
+		<button type="button" onclick="location.href='admin_banner_list.LF'">상세조회</button>
+		<button type="button" onclick="location.href='admin_banner_list.LF'">전체조회</button>
 	</div>
 </div>
 
@@ -83,38 +84,36 @@
 		</table>
 	</form>
 </div>
-<!-- 배너 검색결과 -->
-<div id="banner_list" class="admin_table_wrap">
-	<form action="${pageContext.request.contextPath}/admin_delete_banner.LF" method="post">
-		<table>
-			<tr class="admin_table_head">
-				<th width=2%><input type="checkbox" /></th>
-				<th>번호</th>
-				<th>노출위치</th>
-				<th>노출순서</th>
-				<th>강의 ID</th>
-				<th>파일 제목</th>
-				<th>파일 경로</th>
-				<th>파일 크기</th>
-				<th>갱신일</th>
-			</tr>
-			
-		<c:forEach items="${bannerList}" var="banner">
-			<tr>
-				<td width=2%><input type="checkbox" name="deleteId" value="${banner.id }"/></td>
-				<td>${banner.id}</td>		
-				<td>${banner.fileDisplayOn}</td>		
-				<td>${banner.fileDisplayNum}</td>		
-				<td>${banner.fileLectureId}</td>		
-				<td>${banner.fileName}</td>		
-				<td>${banner.filePath}</td>		
-				<td>${banner.fileSize}</td>		
-				<td>${banner.updatedDate}</td>	
-			</tr>	
-		</c:forEach>
-			<tr>
-			<input type="submit" value="삭제">
-			</tr>
-		</table>
-	</form>
+<!-- 검색결과 -->
+<div class="admin_table_wrap">
+	<table>
+		<tr class="admin_table_head">
+			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th> 
+			<th>번호</th>
+			<th>노출위치</th>
+			<th>노출순서</th>
+			<th>강의 ID</th>
+			<th>파일 제목</th>
+			<th>파일 경로</th>
+			<th>파일 크기</th>
+			<th>갱신일</th>
+		</tr>
+		
+	<c:forEach items="${bannerList}" var="banner">
+		<tr>
+			<td><input type="checkbox" name="checked" value="${banner.id}"/></td> 
+			<td>${banner.id}</td>		
+			<td>${banner.fileDisplayOn}</td>		
+			<td>${banner.fileDisplayNum}</td>		
+			<td>${banner.fileLectureId}</td>		
+			<td>${banner.fileName}</td>		
+			<td>${banner.filePath}</td>		
+			<td>${banner.fileSize}</td>		
+			<td>${banner.updatedDate}</td>	
+		</tr>	
+	</c:forEach>
+		<tr>
+		</tr>
+	</table>
+
 </div>

@@ -87,7 +87,7 @@
 <div class="admin_table_wrap">
 	<table>
 		<tr class="admin_table_head">
-			<th width=2%><input type="checkbox"/></th> 
+			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th> 
 			<th>번호</th> 
 			<th>결제번호</th> 
 			<th>구매회원 ID</th> 
@@ -99,20 +99,20 @@
 			<th>배송상태</th>
 			<th>결제날짜</th>
 		</tr>
-		<% for(int i=1; i<=20;i++) {%>
+		<c:forEach items="${payList}" var="pay" varStatus="vs">
 		<tr>
-			<td><input type="checkbox"/></td> 
-			<td><%=i %></td> 
-			<td></td> 
-			<td></td> 
-			<td></td>
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
+			<td><input type="checkbox" name="checked" value="${pay.id}"/></td> 
+			<td>${vs.count }</td> 
+			<td>${pay.id }</td> 
+			<td>${pay.buyMbId }</td> 
+			<td>${pay.selMbId }</td>
+			<td>${pay.goodsType }</td> 
+			<td>${pay.goodsId }</td> 
+			<td>${pay.payWay }</td> 
+			<td>${pay.payHistorySum }</td> 
+			<td>${pay.deliveryStatus }</td> 
+			<td>${pay.dealDay }</td> 
 		</tr>
-		<% } %>
+		</c:forEach>
 	</table>
 </div>

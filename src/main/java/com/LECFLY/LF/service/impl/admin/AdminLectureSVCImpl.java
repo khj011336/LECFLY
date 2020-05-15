@@ -1,34 +1,24 @@
-package com.LECFLY.LF.model.dao.impl.admin;
+package com.LECFLY.LF.service.impl.admin;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminLectureDAO;
-import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.vo.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.service.inf.admin.IAdminLectureSVC;
 
-@Repository
-public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
+@Service
+public class AdminLectureSVCImpl implements IAdminLectureSVC {
 
 	@Autowired
-	private JdbcTemplate jtem;
-	
-	/** 전체 강의목록 조회 */
-	public static String SQL_ADMIN_SELECT_LECTURE_ALL = 
-			"SELECT * FROM LECTURES ORDER BY ID ASC";
-	/** 전체 강의갯수 조회 */
-	public static String SQL_SELECT_LECTURE_NUMBER = 
-			"SELECT COUNT(ID) FROM LECTURES";
-	/** 전체 강의목록 조회(페이지별) */
-	public static String SQL_SELECT_LECTURE_ALL_PG = 
-			"SELECT * FROM LECTURES ORDER BY ID DESC LIMIT ?,?";
+	private IAdminLectureDAO alDAO;
 	
 	@Override
 	public boolean insertLecture(LectureVO vo) {
@@ -56,7 +46,8 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 
 	@Override
 	public List<LectureVO> selectLectureList() {
-		return jtem.query(SQL_ADMIN_SELECT_LECTURE_ALL, BeanPropertyRowMapper.newInstance(LectureVO.class));
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -150,14 +141,21 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public int checkNumberOfLectures() {
-		return jtem.queryForObject(SQL_SELECT_LECTURE_NUMBER, Integer.class);
+	public Map<String,Integer> checkMaxPageNumber() {
+		int totalRecords = alDAO.checkNumberOfLectures();
+		int maxPg = totalRecords / AD_PAGE_SIZE + (
+				totalRecords % AD_PAGE_SIZE == 0 ? 0 : 1 );
+		HashMap<String,Integer> rMap = new HashMap<>();
+		rMap.put("totalRecords", totalRecords);
+		rMap.put("maxPg", maxPg);
+		return rMap;
 	}
 
 	@Override
-	public List<LectureVO> searchLectureForAll(int offset, int limit) {
-		return jtem.query(SQL_SELECT_LECTURE_ALL_PG, BeanPropertyRowMapper.newInstance(LectureVO.class),
-				offset, limit);
+	public List<LectureVO> selectAllLecture(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<LectureVO> lecList = alDAO.searchLectureForAll(offset, AD_PAGE_SIZE);
+		return lecList;
 	}
 
 }

@@ -1,13 +1,16 @@
-package com.LECFLY.LF.model.dao.inf.admin;
+package com.LECFLY.LF.service.inf.admin;
 
 import java.util.List;
+import java.util.Map;
 
 import com.LECFLY.LF.model.vo.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 
-public interface IAdminLectureDAO {
+public interface IAdminLectureSVC {
+	public static int AD_PAGE_SIZE = 20;
+	
 	// 강의 관리
 	// 강의를 등록할 수 있다.
 	boolean insertLecture(LectureVO vo);
@@ -55,6 +58,6 @@ public interface IAdminLectureDAO {
 	CouponVO selectCoupon(CouponVO vo);
 	// 쿠폰을 전체조회할 수 있다.
 	List<CouponVO> selectCouponList();
-	int checkNumberOfLectures();
-	List<LectureVO> searchLectureForAll(int offset, int limit);
+	Map<String,Integer> checkMaxPageNumber();
+	List<LectureVO> selectAllLecture(int pageNumber);	
 }

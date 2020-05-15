@@ -45,7 +45,7 @@
 						<p class="main_video_info_creator_name">${lec.nickname}</p>
 						<div class="main_video_like">
 							<i class="fas fa-heart fa-lg"></i>${lec.likeCount} &nbsp;
-							<i class="far fa-thumbs-up fa-lg"></i>98%
+<!-- 							<i class="far fa-thumbs-up fa-lg"></i>98% -->
 						</div>
 					</div>
 				</div>

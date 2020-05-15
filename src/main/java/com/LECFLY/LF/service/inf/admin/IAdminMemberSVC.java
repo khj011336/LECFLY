@@ -1,11 +1,14 @@
-package com.LECFLY.LF.model.dao.inf.admin;
+package com.LECFLY.LF.service.inf.admin;
 
 import java.util.List;
+import java.util.Map;
 
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 
-public interface IAdminMemberDAO {
+public interface IAdminMemberSVC {
+	public static int AD_PAGE_SIZE = 20;
+	
 	// 일반 회원 관리
 	// 일반 회원을 등록할 수 있다.
 	boolean insertNomalMember(MemberVO vo);
@@ -28,8 +31,7 @@ public interface IAdminMemberDAO {
 	// 을 상세조회할 수 있다.
 	CreatorVO selectCreatorMember(CreatorVO vo);
 	// 을 전체조회할 수 있다.
-	List<CreatorVO> selectCreatorMemberList();
-	
-	int checkNumberOfMembers();
-	List<MemberVO> searchMemberForAll(int offset, int limit);
+	List<CreatorVO> selectCreatorMemberList();	
+	Map<String,Integer> checkMaxPageNumber();
+	List<MemberVO> selectAllMember(int pageNumber);	
 }

@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<h4>강의 관리</h4>
+  
+<h4>크리에이터 관리</h4>
 
 <div class="admin_table_filter">
 	<table>
 		<caption>검색조건설정</caption>
 		<tr>
-			<th>클래스 생성 날짜 기준 검색</th>
+			<th>기간검색</th>
 			<td>
 				<span class="date_filter"><a href="#">오늘</a></span> |
 				<span class="date_filter"><a href="#">3일</a></span> |
@@ -17,17 +17,12 @@
 			</td>
 		</tr>
 		<tr>
-			<th>카테고리 선택</th>
+			<th>분류 선택</th>
 			<td>
 				<select name="">
    					<option value="">전체</option>
-  					<option value="">미술</option>
-    				<option value="">음악</option>
-    				<option value="">요리</option>
-    				<option value="">라이프스타일</option>
-    				<option value="">운동</option>
-    				<option value="">커리어</option>
-    				<option value="">여행</option>
+  					<option value="">회원</option>
+    				<option value="" selected="selected">크리에이터</option>
 				</select>
 			</td>
 		</tr>
@@ -36,10 +31,9 @@
 			<td>
 				<select name="">
    					<option value="">전체</option>
-  					<option value="">업로더 아이디</option>
-    				<option value="">업로더 닉네임</option>
-    				<option value="">강의명</option>
-    				<option value="">강의번호</option>
+    				<option value="">크리에이터번호</option>
+    				<option value="">닉네임</option>
+    				<option value="">상태</option>
 				</select>
 			<input type="text" size="40"></td>
 		</tr>
@@ -53,7 +47,8 @@
 		</tr>
 	</table>
 	<div class="admin_search_btns">
-		<button type="button">조회하기</button>
+		<button type="button" onclick="location.href='admin_banner_list.LF'">상세조회</button>
+		<button type="button" onclick="location.href='admin_banner_list.LF'">전체조회</button>
 	</div>
 </div>
 
@@ -73,10 +68,9 @@
 	</ul>	
 	<ul class="admin_search_sort">	
 		<li><a href="#">정확도순</a></li>
-		<li><a href="#">신청일순</a></li>
-		<li><a href="#">현재수강생수</a></li>
-		<li><a href="#">누적수강생수</a></li>
-		<li><a href="#">좋아요수</a></li>
+		<li><a href="#">승인일순</a></li>
+		<li><a href="#">최근방문순</a></li>
+		
 	</ul>
 </div>    
 
@@ -85,40 +79,32 @@
 <div class="admin_table_wrap">
 	<table>
 		<tr class="admin_table_head">
-			<th width=2%><input type="checkbox"/></th> 
+			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th> 
 			<th>번호</th> 
-			<th>클래스번호</th> 
-			<th>업로더 ID</th> 
-			<th>카테고리</th> 
-			<th>부주제</th> 
-			<th>타이틀</th>
-			<th>강의 설명</th> 
-			<th>승인 진행상태</th>
-			<th>수강회원 수</th>
-			<th>좋아요수</th>
-			<th>좋아요 회원목록</th>
-			<th>강의 영상 수</th>
-			<th>업데이트 날짜</th>
-			<th>클래스 생성날짜</th>
+			<th>크리에이터번호</th> 
+			<th>프로필이미지</th> 
+			<th>이름</th> 
+			<th>닉네임</th> 
+			<th>연락처</th> 
+			<th>SNS 계정</th> 
+			<th>소개</th>
+			<th>상태</th>
+			<th>승인일</th>
 		</tr>
-		<% for(int i=1; i<=20;i++) {%>
+		<c:forEach items="${crList}" var="cr" varStatus="vs">
 		<tr>
-			<td><input type="checkbox"/></td> 
-			<td><%=i %></td> 
-			<td></td> 
-			<td></td> 
-			<td></td>
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
+			<td><input type="checkbox" name="checked" value="${cr.id }"/></td> 
+			<td>${vs.count}</td> 
+			<td>${cr.id }</td> 
+			<td>${cr.imgPath }</td> 
+			<td>${cr.name }</td> 
+			<td>${cr.nickname }</td> 
+			<td>${cr.cellPhone }</td> 
+			<td>${cr.SNS }</td> 
+			<td>${cr.info }</td> 
+			<td>${cr.status }</td> 
+			<td>${cr.grantDate }</td> 
 		</tr>
-		<% } %>
+		</c:forEach>
 	</table>
 </div>
