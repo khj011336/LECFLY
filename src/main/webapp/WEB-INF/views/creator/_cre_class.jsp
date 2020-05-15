@@ -5,12 +5,12 @@
 	<div class='CRconbox'
 		onmouseover="${empty lecList ?'creatNewclass()' :''}">
 		<div class='CRP'>
-			<c:set var="titleImg" value="${lecList[vs.current].titleImg}" />
+			<c:set var="titleImg" value="${crPath}${lecList[vs.current].titleImg}" />
 			<c:if test="${empty titleImg or titleImg eq 'sample'  }">
 				<c:set var="titleImg"
 					value="resources/imges/logo/LecFly_SLOGO_W_C.png" />
 			</c:if>
-			<img src="<c:out value='${titleImg}'/>" class="CRimg" alt="이미지">
+			<img src="${titleImg}" class="CRimg" alt="이미지">
 		</div>
 		<div class="CRC">
 			<p class='CRname'>
@@ -29,7 +29,7 @@
 			</div>
 			<c:if test="${ !empty lecList }">
 				<div class='CRsend'
-					onclick="selectLecture(${lecList[vs.current].id})">
+					onclick="selectLecture(${lecList[vs.current].id},${lecList[vs.current].category})">
 					<p>수정하기</p>
 				</div>
 			</c:if>

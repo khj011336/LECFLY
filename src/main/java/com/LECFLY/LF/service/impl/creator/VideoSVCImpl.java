@@ -12,7 +12,7 @@ import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 public class VideoSVCImpl implements IVideoSVC {
 	@Autowired
 	IVideoDAO viDAO ;
-	final int PAGESIZE = 3;
+	final int PAGESIZE = 5;
 	public List<VideoVO>  showLectureList(int CFID,int offset) {
 		int  off = (offset-1) *PAGESIZE;
 	
@@ -20,8 +20,6 @@ public class VideoSVCImpl implements IVideoSVC {
 	}
 	public int checkOfLectureNumber(int CFID) {
 		int totalRecords = viDAO.checkNumberOfVideo(CFID);
-		System.out.println(totalRecords + "전체 레코드");
-		System.out.println( totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1) + "페이지수 ");
 		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
 }

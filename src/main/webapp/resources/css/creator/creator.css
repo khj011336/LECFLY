@@ -974,8 +974,9 @@ font-weight: bold;
 	cursor: pointer;
 	width: 60px;
 }
-#paginate a{
+#paginate span{
 	padding:3px 10px;
+	width:15px;
 	box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
 }
 /* 페이지버튼 */

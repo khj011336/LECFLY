@@ -78,7 +78,6 @@ public class FileSVCImpl {
 					System.out.println(file.getSize()+"파일사이즈");
 				String totalPath = path +  storeFileName;
 				totalPath =  totalPath.replaceAll("\\\\", "/");
-				System.out.println(totalPath);
 				File newFile = new File(totalPath);
 				 try {
 					 file.transferTo(newFile);
@@ -120,6 +119,7 @@ public class FileSVCImpl {
 			  if( mk.mkdirs() &&
 			  mkimg.mkdir()&&
 			  mkvideo.mkdir()) {
+				  System.out.println("초기 폴더 생성");
 				  return true;
 			  }else {
 				  return false;

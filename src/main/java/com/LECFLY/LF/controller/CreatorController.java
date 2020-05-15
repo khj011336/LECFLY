@@ -1,9 +1,13 @@
 package com.LECFLY.LF.controller;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,10 +57,15 @@ public class CreatorController {
 	public LectureVO dummyLEvo() {
 		return new LectureVO();
 	}
+	@ModelAttribute("video")
+	public VideoVO dummyVIvo() {
+		return new VideoVO();
+	}
 
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+		//TODO 멤버아이디 id fid  이름 수정 체크넘버 수정
 		ses.setAttribute("id", 1);
 		ses.setAttribute("fid", 2);
 		ses.setAttribute("membertest", "hongil");
@@ -93,7 +102,7 @@ public class CreatorController {
 		System.out.println("크리에이터 프로세스");
 		model.addAttribute("p", 1);
 		LectureVO LecVO = (LectureVO) ses.getAttribute("Lecture");
-		//TODO
+		//TODO 멤버관련 인수 수정
 		String memberName = (String)ses.getAttribute("membertest");
 		int memberId  =(Integer) ses.getAttribute("id") != null? (Integer) ses.getAttribute("id"): null  ;
 		if(memberName != null) {
@@ -122,6 +131,7 @@ public class CreatorController {
 		CreatorVO cr = (CreatorVO) ses.getAttribute("creator");
 		LecSVC.fileProcessforLectures(lec, ses, model);
 		LecSVC.unloadProcess(unload, lec, ses, cr, sesStatus);
+		
 		return "storeMapping";
 	}
 
@@ -132,19 +142,24 @@ public class CreatorController {
 		CreatorVO cr = (CreatorVO) ses.getAttribute("creator");
 		LecSVC.storeProcess(lec, ses, cr, sesStatus, model);
 		return "return:/creator/cre_class_list";
-
 	}
  
-	@RequestMapping(value = "creator_video_show.LF" ,method = RequestMethod.GET)
+	@RequestMapping(value = "creator_video_show.LF" ,method = RequestMethod.POST)
 	public String showVideoList(HttpSession ses, Model model,
-			@RequestParam(value="id" , required =false) String CF ,
-			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+			@RequestParam(value="CFID" , required =false) String CF ,
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+			@RequestParam(value="category") int category
+			) {
+		
 		int loginStatus = (Integer) ses.getAttribute("id");
 			MAXPAGE = VdoSVC.checkOfLectureNumber(3);
-		
+		System.out.println("cf ==" +CF);
 		if (loginStatus == 1 && page == 1) {
+//TODO			cfid 임시 번호 입력 연결후 때 수정
+			model.addAttribute("category",category);
+			model.addAttribute("CFId","3");
 			model.addAttribute("maxPage", MAXPAGE);
-			model.addAttribute("page", page);
+			model.addAttribute("videoPage", page);
 			model.addAttribute("lecList", VdoSVC.showLectureList(3,page));
 			return "creator/cre_play_list.page";
 		}  
@@ -153,24 +168,47 @@ public class CreatorController {
 	}
 		@RequestMapping(value = "creator_video_show_proc.LF" ,method = RequestMethod.GET)
 		@ResponseBody
-		public String showVideoList(   HttpSession ses, 
-				@RequestParam(value="id" , required =false) String CF ,
+		public Map<String, Object> showVideoListProc(    
+				@RequestParam(value="cfid" , required =false) String CF ,
 				@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-			ObjectMapper mapper = new ObjectMapper();
-			 JsonObject js =new JsonObject();
-			 js.addProperty("page", page);
-			String jsonText = null;
-			System.out.println(page);
-			 
-			try {
-				jsonText = mapper.writeValueAsString( VdoSVC.showLectureList(3,page) );
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-			return jsonText ;
+			Map<String,Object> jso = new HashMap<String, Object>();
+			 jso.put("jsonText", VdoSVC.showLectureList(3,page));
+			 jso.put("page",page);
+//			try {
+//				ObjectMapper mapper = new ObjectMapper();
+//			 JsonObject js =new JsonObject();
+//			 js.addProperty("page", page);
+//			String jsonText = null;
+//				jsonText = mapper.writeValueAsString(  );
+//				jso.put("jsonText",jsonText);
+//			} catch (JsonProcessingException e) {
+//				e.printStackTrace();
+//			}
+			return jso ;
+//			비디오 강의 업로드시 좋아요 0 으로 업데이트
 		}
 	 
-
+	@RequestMapping(value= "video_upload.LF", method = RequestMethod.GET)
+	public String videoUpload(@RequestParam(value = "CFID") int CFID, Model model, HttpSession ses) {
+		System.out.println(CFID);
+		System.out.println(CFID);
+		return "creator/cre_video_upload.page";
+	}
+	@RequestMapping(value= "video_upload_proc.LF", method = RequestMethod.POST)
+	public String videoUpload( @ModelAttribute(value = "video") VideoVO vio, Model model, HttpSession ses) {
+		
+		return "creator/cre_video_upload.page";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = "creator_comment_List.LF", method = RequestMethod.GET)
 	public String showCreCommentList() {
 		return "creator/cre_comment_list.page";
