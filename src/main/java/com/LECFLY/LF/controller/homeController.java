@@ -23,15 +23,24 @@ public class homeController {
 	private IAdminSiteSVC adSiteSvc;
 	
 	@RequestMapping(value = "/home.LF", method = RequestMethod.GET )
-	public String temphome(HttpSession ses, Model model) {
+	public String temphome(HttpSession ses, Model model, @RequestParam(value = "mbId", defaultValue = "1") int memberId) {
 		System.out.println("도착");
 		List<HomeFileManagerVO> bannerList = adSiteSvc.selectBannerList();
 		List<Integer> reIds = adSiteSvc.getRecommendIds();
 		List<LectureVO> recoList =  adSiteSvc.selectRecommendLectureList(reIds);
+		for (LectureVO reco : recoList) {
+			System.out.println(reco.getId());
+		}
 		List<LectureVO> nomalList =  adSiteSvc.selectNomalLectureList();
+		List<Integer> likeIds = adSiteSvc.getLikeLectures(memberId);
+		for (Integer i : likeIds) {
+			System.out.println(">강의:" + i);
+		}	
 		model.addAttribute("bannerList", bannerList);
 		model.addAttribute("recoList", recoList);
 		model.addAttribute("nomalList", nomalList);
+		model.addAttribute("likeList", likeIds);
+		
 		return "lecture/main.ho";
 	}
 	
@@ -51,7 +60,7 @@ public class homeController {
 			return categoryMap;
 		}
 		
-	// 강의 좋아요 기능 // 추후 비동기 처리
+	// 강의 좋아요 기능
 		@RequestMapping(value = "/like_lecture.LF", method = RequestMethod.GET)
 		public String likeBtnClick(HttpSession ses, Model model, 
 				@RequestParam(value = "status") int status,@RequestParam(value = "memberId") int memberId,@RequestParam(value = "lectureId") int lectureId) {
@@ -63,6 +72,18 @@ public class homeController {
 			}
 			return "redirect:home.LF";
 		}
+	// 강의 좋아요취소 기능 
+		@RequestMapping(value = "/unlike_lecture.LF", method = RequestMethod.GET)
+		public String unlikeBtnClick(HttpSession ses, Model model, 
+				@RequestParam(value = "status") int status,@RequestParam(value = "memberId") int memberId,@RequestParam(value = "lectureId") int lectureId) {
+			boolean r = adSiteSvc.likeBtnClick(status, memberId, lectureId);
+			if (r) {
+				model.addAttribute("", "");
+			} else {
+				model.addAttribute("", "");
+			}
+			return "redirect:home.LF";
+		}	
 		
 	// 카테고리별 검색창 이동
 		@RequestMapping(value = "/search_category.LF", method = RequestMethod.GET)

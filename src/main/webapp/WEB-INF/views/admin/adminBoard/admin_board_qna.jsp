@@ -74,32 +74,30 @@
 <div class="admin_table_wrap">
 	<table>
 		<tr class="admin_table_head">
-			<th width=2%><input type="checkbox"/></th> 
+			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th>
 			<th>번호</th> 
-			<th>게시판분류</th> 
 			<th>작성자번호</th> 
 			<th>닉네임</th> 
+			<th>문의분야</th>
 			<th>제목</th> 
-			<th>내용</th> 
 			<th>첨부파일</th> 
 			<th>작성일</th> 
-			<th>답변상태</th> 
+			<th>댓글수</th> 
 			<th>미리보기</th> 
 		</tr>
-		<% for(int i=1; i<=10;i++) {%>
+		<c:forEach items="${qnaList}" var="qna" varStatus="vs">
 		<tr>
-			<td><input type="checkbox"/></td> 
-			<td><%=i %></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td> 
-			<td></td>
-			<td></td> 
-			<td></td> 
+			<td><input type="checkbox" name="checked" value="${qna.id }"/></td> 
+			<td>${vs.count }</td> 
+			<td>${qna.id }</td> 
+			<td>${qna.mbNicname }</td> 
+			<td>${qna.stype }</td> 
+			<td>${qna.title }</td> 
+			<td>${qna.file }</td> 
+			<td>${qna.writedDay}</td>
+			<td>${qna.comment }</td> 
+			<td><button value="미리보기"></button></td>
 		</tr>
-		<% } %>
+		</c:forEach>
 	</table>
 </div>

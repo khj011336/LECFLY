@@ -64,7 +64,7 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 	// 일반강의 관련
 	/** 전체 일반 강의목록 조회_최신순 */
 	public static String SQL_ADMIN_SITE_SELECT_NOMAL_LEC_ALL = 
-			"SELECT * FROM LECTURES LIMIT 40";
+			"SELECT * FROM LECTURES ORDER BY ID DESC";
 	
 	// 검색 관련
 	/** 카테고리별 강의 검색  */
@@ -104,6 +104,9 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 	/** 좋아요 목록 테이블에서 삭제 */
 	public static String SQL_DELETE_lIKECLASS_ID = 
 			"DELETE FROM LIKE_CLASS WHERE ID = ? AND MB_ID = ? ";
+	/** 좋아요 목록 테이블 조회 */
+	public static String SQL_SELECE_LIKE_ALL = 
+			"SELECT CLASS_ID FROM LIKE_CLASS WHERE MB_ID = ?";
 	
 	
 	@Override
@@ -268,5 +271,14 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 	public List<LectureVO> selectLectureListForKeyword(String keyword) {
 		return jtem.query(SQL_ADMIN_SEARCH_ANYCOLULM, BeanPropertyRowMapper.newInstance(LectureVO.class), keyword, keyword, keyword);
 	}
+
+	@Override
+	public List<Integer> getLikeLectures(int memberId) {
+		List<Integer> idList = new ArrayList<Integer>(); 
+		idList = jtem.queryForList(SQL_SELECE_LIKE_ALL, Integer.class, memberId);
+		return idList;
+	}
+	
+	
 
 }

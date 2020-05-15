@@ -3,6 +3,7 @@ package com.LECFLY.LF.model.dao.impl.admin;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -14,9 +15,10 @@ import com.LECFLY.LF.model.vo.NoticeVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
+@Repository
 public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 	
-	//@Autowired
+	@Autowired
 	private JdbcTemplate jtem;	
 	
 	// QnA Part

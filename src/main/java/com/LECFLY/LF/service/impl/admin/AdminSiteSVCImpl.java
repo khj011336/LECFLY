@@ -120,4 +120,9 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 		return adDAO.selectLectureListForKeyword(keyword);
 	}
 
+	@Override
+	public List<Integer> getLikeLectures(int memberId) {
+		return adDAO.getLikeLectures(memberId);
+	}
+
 }

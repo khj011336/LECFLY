@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<h4>공지내역 관리</h4>
+<h4>자주묻는질문 관리</h4>
 
 <div class="admin_table_filter">
 	<table>
@@ -20,7 +20,13 @@
 			<th>분류 선택</th>
 			<td>
 				<select name="">
-   					<option value="">공지사항</option>
+   					<option value="">전체</option>
+   					<option value="">이용안내</option>
+   					<option value="">강의수강</option>
+   					<option value="">준비물 키트</option>
+   					<option value="">결제/환불</option>
+   					<option value="">크리에이터</option>
+   					<option value="">기타</option>
 				</select>
 			</td>
 		</tr>
@@ -38,8 +44,6 @@
 			<th>처리상태</th>
 			<td>
 				<lable><input name="board_con" type="radio" value="">전체보기</lable>
-				<lable><input name="board_con" type="radio" value="">답변 미완료</lable>
-				<lable><input name="board_con" type="radio" value="">답변 완료</lable>
 			</td><td></td>
 		</tr>
 	</table>
@@ -59,46 +63,38 @@
 			<span class="date_filter"><a href="#">전체선택</a></span>
 			<span class="date_filter"><a href="#">수정</a></span>
 			<span class="date_filter"><a href="#">삭제</a></span>
-			<span class="date_filter"><a href="#">답변하기</a></span>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	
 		<li><a href="#">정확도순</a></li>
-		<li><a href="#">작성일순</a></li>
-		<li><a href="#">조회수많은순</a></li>
-		<li><a href="#">답변대기순</a></li>
+		<li><a href="#">가나다순</a></li>
 		
 	</ul>
 </div>    
 
-<!-- notice -->
+
+<!-- FAQ -->
 <div class="admin_table_wrap">
 	<table>
 		<tr class="admin_table_head">
-			<th width=2%><input type="checkbox"/></th> 
+			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th>
 			<th>번호</th> 
-			<th>게시판분류</th> 
+			<th>분류</th> 
 			<th>글번호</th> 
-			<th>위치</th> 
+			<th>분야</th> 
 			<th>제목</th> 
-			<th>내용 미리보기</th> 
-			<th>작성일</th> 
-			<th>갱신일</th> 
-			<th>조회수</th> 
+			<th>내용</th> 
 			<th>미리보기</th> 
 		</tr>
 		<% for(int i=1; i<=10;i++) {%>
 		<tr>
-			<td><input type="checkbox"/></td> 
+			<td><input type="checkbox" name="checked" value=""/></td> 
 			<td><%=i %></td> 
 			<td></td> 
 			<td></td> 
 			<td></td> 
 			<td></td> 
 			<td></td>
-			<td></td> 
-			<td></td> 
-			<td></td> 
 			<td></td> 
 		</tr>
 		<% } %>
