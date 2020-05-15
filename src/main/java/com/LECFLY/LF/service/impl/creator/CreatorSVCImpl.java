@@ -23,7 +23,7 @@ public class CreatorSVCImpl {
 	 if (CrVO.getImgPathM() != null && !CrVO.getImgPathM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
 				System.out.println("진입");
-				if (CrVO.getImgPath() != null || !CrVO.getImgPath().isEmpty()) {
+				if (CrVO.getImgPath() != null && !CrVO.getImgPath().isEmpty()) {
 					new File(userpath + CrVO.getImgPath()).delete();
 					System.out.println(userpath + CrVO.getImgPath() + "가 지워졌습니다");
 				}

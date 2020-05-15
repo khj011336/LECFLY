@@ -81,24 +81,7 @@ function setImageFromFile(input, expression, tempses) {
     		return false;
     	}
   }
-//     function upload(ul, form){
-//     	console.log('aa');
-//      		 $.ajax({
-//     			 url: ul ,
-//     			 type:'POST',
-//     			 enctype:"multipart/form-data",
-//     			 data: form ,
-//     			 processData: false,
-//     			 contentType: false,
-//     			 success: function(data, jqXHR,textStatus){
-    				   
-//     			 },
-//     			 error: function(jqXHR, textStatus , errorThrown){
-    				 
-//     			 }
-//     		  });
-//      	}
- 
+
  $(window).on("unload",function(e){
     		   var ischage = sessionStorage.getItem("s1");
     		 var ischageB =  sessionStorage.getItem("s2") ;
@@ -117,7 +100,7 @@ function setImageFromFile(input, expression, tempses) {
     		   if(nodename && pagenation ==1 && ischage == "1" ){
     				  sessionStorage.setItem("s1","2");
     				  navigator.sendBeacon("creator_new_profile_proc.LF", formdata);
-    			  }else if( nodename && pagenation ==2 && ischageB == "1"){
+    			  }else if( nodename && pagenation ==2 && ischageB == "1" &&!finallwrite){
     				  sessionStorage.setItem("s2","2");
     				  navigator.sendBeacon("creator_new_lecture_proc.LF", formdata);
     			  }else if(ex){

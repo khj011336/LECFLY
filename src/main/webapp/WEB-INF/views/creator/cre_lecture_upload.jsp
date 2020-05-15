@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <script>
-    	
-    </script>
+    
 	<%@include file="cre_status.jsp" %>
 	<div id="cls_wrap">
 	<form id = "lecform" class='pubf'  method="post" enctype="multipart/form-data" action="creator_rightset_proc.LF">

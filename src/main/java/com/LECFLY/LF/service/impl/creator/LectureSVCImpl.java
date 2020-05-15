@@ -86,15 +86,15 @@ public class LectureSVCImpl{
 		 
 		if (LcVO.getTitleImgM() != null && !LcVO.getTitleImgM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
-				System.out.println("진입");
-				if (LcVO.getTitleImg()!= null || !LcVO.getTitleImg().isEmpty()) {
+				System.out.println("getTitleImgM진입");
+				if (LcVO.getTitleImg()!= null && !LcVO.getTitleImg().isEmpty()) {
 					new File(userpath + LcVO.getTitleImg()).delete();
 					System.out.println(userpath + LcVO.getTitleImg() + "가 지워졌습니다");
 				}
 				HashMap<String, String> imgfilepath = (HashMap<String, String>) 
 						fileSVC.writeFiles(Arrays.asList(LcVO.getTitleImgM()),userpath, id, username);
 				newimgPath = imgfilepath.get(LcVO.getTitleImgM().getOriginalFilename());
-				System.out.println(newimgPath +"등록완료");
+				System.out.println(newimgPath +"getTitleImgM등록완료");
 				LcVO.setTitleImg(newimgPath);
 				LcVO.setTitleImgM(null);
 				model.addAttribute(LcVO);
@@ -102,15 +102,15 @@ public class LectureSVCImpl{
 		}
 		if (LcVO.getInfoImgM() != null && !LcVO.getInfoImgM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
-				System.out.println("진입");
-				if (LcVO.getInfoImg()!= null || !LcVO.getInfoImg().isEmpty()) {
+				System.out.println("getInfoImgM진입");
+				if (LcVO.getInfoImg()!= null && !LcVO.getInfoImg().isEmpty()) {
 					new File(userpath + LcVO.getInfoImg()).delete();
 					System.out.println(userpath + LcVO.getInfoImg() + "가 지워졌습니다");
 				}
 				HashMap<String, String> imgfilepath = (HashMap<String, String>) 
 						fileSVC.writeFiles(Arrays.asList(LcVO.getInfoImgM()),userpath, id, username);
 				newimgPath = imgfilepath.get(LcVO.getInfoImgM().getOriginalFilename());
-				System.out.println(newimgPath +"등록완료");
+				System.out.println(newimgPath +"imgfilepath등록완료");
 				LcVO.setInfoImg(newimgPath);
 				LcVO.setInfoImgM(null);
 				model.addAttribute(LcVO);
@@ -118,15 +118,15 @@ public class LectureSVCImpl{
 		}
 		if (LcVO.getInfoImgbM() != null && !LcVO.getInfoImgbM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
-				System.out.println("진입");
-				if (LcVO.getInfoImgb()!= null || !LcVO.getInfoImgb().isEmpty()) {
+				System.out.println("getInfoImgbM진입");
+				if (LcVO.getInfoImgb()!= null && !LcVO.getInfoImgb().isEmpty()) {
 					new File(userpath + LcVO.getInfoImgb()).delete();
 					System.out.println(userpath + LcVO.getInfoImgb() + "가 지워졌습니다");
 				}
 				HashMap<String, String> imgfilepath = (HashMap<String, String>) 
 						fileSVC.writeFiles(Arrays.asList(LcVO.getInfoImgbM()),userpath, id, username);
 				newimgPath = imgfilepath.get(LcVO.getInfoImgbM().getOriginalFilename());
-				System.out.println(newimgPath +"등록완료");
+				System.out.println(newimgPath +"getInfoImgb등록완료");
 				LcVO.setInfoImgb(newimgPath);
 				LcVO.setInfoImgbM(null);
 				model.addAttribute(LcVO);
