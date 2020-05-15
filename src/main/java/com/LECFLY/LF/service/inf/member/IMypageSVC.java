@@ -1,5 +1,9 @@
 package com.LECFLY.LF.service.inf.member;
 
+import java.util.List;
+
+import com.LECFLY.LF.model.vo.creator.VideoVO;
+
 public interface IMypageSVC {
 							
 //마이페이지 정보 확인하기
@@ -13,9 +17,11 @@ public interface IMypageSVC {
 	
 //회원의 프로필 사진 수정하기							
 //	change_pro_pic.lf(proc; post, dao, attr)			proc완료후 mypage.lf 프로필사진 업데이트된 상태로 forward
-	
+	boolean updateMemberProfileImg(int loginedId, int id, String pic);
 //크리에이터 신청하기							
 //	크리에이터신청페이지.lf(form, post)			크리에이터 신청 폼으로 이동		
+
+	List<VideoVO> showAllAttendingLec();
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴			
