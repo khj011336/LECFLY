@@ -111,7 +111,6 @@ public class FileSVCImpl {
 		File mk = new File(path);
 		File mkimg = new File(path+"/"+"Img");
 		File mkvideo = new File(path+"/"+"video");
-		System.out.println(mk);
 		try{
 		if(mk.isDirectory()) {
 			return true;
