@@ -124,6 +124,19 @@ public class QnaSVCImpl implements IQnaSVC{
 		int maxPg = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 		return maxPg;
 	}
+	
+	@Override
+	public int checkPageNumber(int qaid) {
+		int totalRecords = qaDao.checkNumberOfQnas();
+			return ((totalRecords - qaid) / PAGE_SIZE)+1;
+//		int maxPg = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
+//		int endPgRecords = totalRecords -(totalRecords / PAGE_SIZE );
+//		if( qaid <= endPgRecords) {
+//			return maxPg;
+//		}else {
+//			return qaid / PAGE_SIZE;
+//		}
+	}
 
 	@Override
 	public boolean updateQna(QnaVO qa) {

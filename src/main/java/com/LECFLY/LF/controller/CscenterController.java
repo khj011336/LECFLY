@@ -124,6 +124,8 @@ public class CscenterController {
 	@RequestMapping(value = "/qna_receive.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterReceiveQna(HttpSession ses, int id, Model model) {
 		QnaVO qa = this.qaSvc.selectOneQna(id);
+		int pn = this.qaSvc.checkPageNumber(id);
+			System.out.println("pn은?" + pn);
 		if( qa != null ) {
 			System.out.println("게시글 상세조회 성공 " + qa);
 			model.addAttribute("qna", qa);
@@ -144,7 +146,7 @@ public class CscenterController {
 				fpsCount = 0;
 			}
 			model.addAttribute("fpsCount", fpsCount);
-			
+			model.addAttribute("pn", pn);
 			//댓글 리스트
 			List<QnaCommentVO> qcList = qcSvc.commentListForQna(qa.getId());
 			if(qcList != null ) {
@@ -189,7 +191,7 @@ public class CscenterController {
 		
 	}	
 	
-	@RequestMapping(value = "/cs_update_qna.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "/cs_update_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String qnaUpdateProc(HttpSession ses, @ModelAttribute(value = "qna") QnaVO qa) { // vo를 command객체로 사용하자.
 		System.out.println("qnaUpdateProc: "+qa);
 		boolean b = qaSvc.updateQna(qa.getId(), qa.getTitle(), qa.getContent(), qa.getShowPrivate());
@@ -206,16 +208,21 @@ public class CscenterController {
 	@RequestMapping(value = "/qna_delete.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterDeleteQna(int id, HttpSession ses) {
 		System.out.println("cscenterDeleteQna()"+ id);
-		boolean b = qaSvc.deleteQna(id);
-		if( b ) {
-			return "redirect:cs_qna.LF";
-		} else {
+		int commentCheck = this.qcSvc.checkNumberOfCommentsForQna(id);
+		if(commentCheck >= 1) {
+			System.out.println("댓글이 있어서 삭제 불가능");
 			return "cscenter/cs_qna_receive.LF";
+		}else {
+			System.out.println("댓글이 없어서 삭제가능");
+			boolean b = qaSvc.deleteQna(id);
+			if( b ) {
+				return "redirect:cs_qna.LF";
+			} else {
+				return "cscenter/cs_qna_receive.LF";
+			}
 		}
+			
 	}
-	
-	
-
 	
 	// QnA 리스트 조회하기 (페이지네이션, 정렬)
 	@RequestMapping(value = "cs_qna.LF",method = RequestMethod.GET)
@@ -225,7 +232,7 @@ public class CscenterController {
 		if( pageNumber > qamaxPG || pageNumber <= 0 ) {
 			System.out.println("잘못된 페이지 번호: " + pageNumber);
 			return new ModelAndView(
-				"redirect:cs_qna.ho?pn=1");
+				"redirect:cs_qna.LF?pn=1");
 		}
 		List<QnaVO> qaList = qaSvc.showAllQnas(pageNumber);
 		ModelAndView mav = new ModelAndView("cscenter/cs_qna.ho");

@@ -36,6 +36,7 @@ public interface IQnaSVC {
 	List<QnaVO> showAllQnas(int pn);
 	
 	int checkMaxPageNumber(); // 현재 최대 페이지 번호
+	int checkPageNumber(int qaid);
 		
 	
 }

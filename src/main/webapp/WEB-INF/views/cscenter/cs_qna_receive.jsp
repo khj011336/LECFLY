@@ -28,6 +28,13 @@
 			location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
 		}
 	}
+	function listconfirm(){
+		if(confirm("목록으로 돌아가시겠습니까?")){
+			location.replace('${pageContext.request.contextPath}'+ '/cs_qna.LF?pn=${pn}'); //yes
+		}else{
+			location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+		}
+	}
 </script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
@@ -36,8 +43,10 @@
 <body>
 <div id="receiveBoard_wrapper">
 		<div id = "receiveBoard_button">
+			<div id = "button_left">
+				<span id="rbBtn"><input type="button" value="목록" onclick="listconfirm()"></span>
+			</div>
 			<div id = "button_right">
-				<%-- <a href="${pageContext.request.contextPath}/cs_edit_qna.LF?id=${qna.id}"><span id="rbBtn">수정</span></a> --%>
 				<span id="rbBtn"><input type="button" value="수정" onclick="editconfirm()"></span>
 				<span id="rbBtn"><input type="button" value="삭제" onclick="deleteconfirm()"></span>
 			</div>
