@@ -43,7 +43,7 @@
 	            	<th>이름</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_name"  name="mbId" placeholder="${mbId}" value="123" readonly>
+		            		<input type="text" class="input input_qna_name"  name="mbId" placeholder="${mbName}" value="123" readonly>
 		            	</div>
 	            	</td>
 	            </tr>

@@ -18,7 +18,7 @@ public interface IQnaDAO {
 	QnaVO selectOneQna(int id);
 	
 	//회원이 자신의 게시글을 편집 갱신 할 수 있다
-	boolean updateQna(int id, int type, String title, String content, int showPrivate);
+	boolean updateQna(int id, String title, String content, int showPrivate);
 	boolean increaseReadCount(int id); // rc++
 	
 	//회원이 자신의 게시글을 삭제 할 수 있다
@@ -35,7 +35,7 @@ public interface IQnaDAO {
 	List<QnaVO> showAllQnas(int offset, int limit, boolean order, Date startDate, Date endDate);
 	int checkNumberOfQnas();
 	
-	boolean updateQna(QnaVO vo);
+//	boolean updateQna(QnaVO vo);
 	
 	
 }

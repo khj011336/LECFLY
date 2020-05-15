@@ -19,7 +19,7 @@ public interface IQnaSVC {
 	QnaVO selectOneQna(int id);
 	Map<String, Object> selectOneQnaWithComments(int id);
 	//회원이 자신의 게시글을 편집 갱신 할 수 있다
-	boolean updateQna(int id, int type, String title, String content, int showPrivate);
+	boolean updateQna(int id, String title, String content, int showPrivate);
 	boolean updateQna(QnaVO qa);
 	boolean increaseReadCount(int id); // rc++
 		

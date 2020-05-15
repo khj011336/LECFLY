@@ -37,10 +37,10 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "insert into qnas values(0, ?, ?, ?, ?, ?, ?, ?, now(), now(), 0, 0)";
 	// QnA 수정하기
 	public static String SQL_QNA_UPDATE
-		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_day = now() where id = ?";
+		= "update qnas set title = ?, content = ?, show_private = ?, updated_day = now() where id = ?";
 	// QnA 삭제하기
 	public static String SQL_QNA_DELETE_VO
-		= "delete qnas where id = ?";
+		= "delete from qnas where id = ?";
 	// QnA 페이지 조회
 	public static String SQL_QNA_SHOWALL_PG
 		= "SELECT * FROM qnas order by id desc limit ?, ?";
@@ -138,21 +138,20 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 	}
 
 	@Override
-	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
-		int r = jtem.update(SQL_QNA_UPDATE, id, type, title, content, showPrivate);
+	public boolean updateQna(int id, String title, String content, int showPrivate) {
+		int r = jtem.update(SQL_QNA_UPDATE, title, content, showPrivate, id);
 		return r == 1;
 	}
 	
-	@Override
-	public boolean updateQna(QnaVO vo) {
-		int r = jtem.update(SQL_QNA_UPDATE, 
-				vo.getId(),
-				vo.getType(),
-				vo.getTitle(), 
-				vo.getContent(), 
-				vo.getShowPrivate());
-		return r == 1;
-	}
+//	@Override
+//	public boolean updateQna(QnaVO vo) {
+//		int r = jtem.update(SQL_QNA_UPDATE, 
+//				vo.getId(),
+//				vo.getTitle(), 
+//				vo.getContent(), 
+//				vo.getShowPrivate());
+//		return r == 1;
+//	}
 	
 	@Override
 	public boolean increaseReadCount(int id) {
@@ -162,8 +161,8 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 
 	@Override
 	public boolean deleteQna(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		int r = jtem.update(SQL_QNA_DELETE_VO, id);
+		return r == 1;
 	}
 
 	@Override

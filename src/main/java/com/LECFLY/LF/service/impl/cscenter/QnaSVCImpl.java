@@ -74,8 +74,9 @@ public class QnaSVCImpl implements IQnaSVC{
 	}
 	
 	@Override
-	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
-		return qaDao.updateQna(id, type, title, content, showPrivate);
+	public boolean updateQna(int id, String title, String content, int showPrivate) {
+		System.out.println("svcimpl test : "+ id+title+content+showPrivate);
+		return qaDao.updateQna(id, title, content, showPrivate);
 	}
 	
 	
@@ -87,8 +88,7 @@ public class QnaSVCImpl implements IQnaSVC{
 
 	@Override
 	public boolean deleteQna(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		return qaDao.deleteQna(id);
 	}
 
 	@Override

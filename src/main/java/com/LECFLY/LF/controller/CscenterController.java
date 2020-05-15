@@ -2,11 +2,14 @@ package com.LECFLY.LF.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.LECFLY.LF.model.vo.FaqVO;
 import com.LECFLY.LF.model.vo.NoticeVO;
@@ -105,7 +109,7 @@ public class CscenterController {
 		
 		// public img src... 
 		int qaRtkey = this.qaSvc.insertNewQnaReturnKey(mbId, mbNicname, type, title, content,filePath, showPrivate );
-		// 상세보기 => atId?
+		// 상세보기
 		if( qaRtkey > 0 ) {
 			System.out.println("게시글 등록 성공: " + qaRtkey);
 			return "redirect:qna_receive.LF?id=" + qaRtkey;
@@ -159,8 +163,8 @@ public class CscenterController {
 	}
 	// QnA 글 수정하기
 	@RequestMapping(value = "/cs_edit_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterEditQna(HttpSession ses, Model model, 
-			@RequestParam(value = "qaId", defaultValue = "0") int id){
+	public String cscenterEditQna(HttpSession ses, Model model, int id){
+//			@RequestParam(value = "qaId", defaultValue = "0") int id){
 		if(id == 0 ) {
 			System.out.println("qna update: id=0");
 			return "redirect:cs_qna.LF";
@@ -168,14 +172,14 @@ public class CscenterController {
 			QnaVO qa = qaSvc.selectOneQna(id);
 			if( qa != null ) {
 				// 세션로그인 유저가 편집대상 게시글 작성자인가? 아니면 권한이 있거나?
-				int writerId = qa.getMbId();
-				if( writerId == (int)ses.getAttribute("mbId")) {
+//				int writerId = qa.getMbId();
+//				if( writerId == (int)ses.getAttribute("mbId")) {
 					model.addAttribute("qna", qa);
-					return "cscenter/cs_qna_edit.ho?id=" +id;
-				} else {
-					model.addAttribute("msg", "게시글 편집폼 준비 실패: 작성자 아님");
-					return "redirect:redirect:cs_qna.ho?id=" +id; 
-				}
+					return "cscenter/cs_qna_edit.ho";
+//				} else {
+//					model.addAttribute("msg", "게시글 편집폼 준비 실패: 작성자 아님");
+//					return "redirect:redirect:cs_qna.ho?id=" +id; 
+//				}
 			
 			} else {
 				model.addAttribute("msg", "게시글 편집폼 준비 실패: 게시글 없음");
@@ -185,22 +189,33 @@ public class CscenterController {
 		
 	}	
 	
-	@RequestMapping(value = "/cs_update_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/cs_update_qna.LF", method = RequestMethod.POST)
 	public String qnaUpdateProc(HttpSession ses, @ModelAttribute(value = "qna") QnaVO qa) { // vo를 command객체로 사용하자.
-		System.out.println("qna update: "+ qa);
-		boolean b = qaSvc.updateQna(qa);
+		System.out.println("qnaUpdateProc: "+qa);
+		boolean b = qaSvc.updateQna(qa.getId(), qa.getTitle(), qa.getContent(), qa.getShowPrivate());
 		if( b ) {
+			System.out.println("qnaUpdateProc: 1");
 			return "redirect:qna_receive.LF?id="+qa.getId();
 		} else {
-			return "cscenter/cs_qna_edit.ho";
+			System.out.println("qnaUpdateProc: 2");
+			return "cscenter/cs_qna_receive.ho";
 		}
 	}
 	
 	// QnA 글 삭제하기
-	@RequestMapping(value = "/cs_delete_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterDeleteQna() {
-		return null;
+	@RequestMapping(value = "/qna_delete.LF", method = {RequestMethod.GET, RequestMethod.POST})
+	public String cscenterDeleteQna(int id, HttpSession ses) {
+		System.out.println("cscenterDeleteQna()"+ id);
+		boolean b = qaSvc.deleteQna(id);
+		if( b ) {
+			return "redirect:cs_qna.LF";
+		} else {
+			return "cscenter/cs_qna_receive.LF";
+		}
 	}
+	
+	
+
 	
 	// QnA 리스트 조회하기 (페이지네이션, 정렬)
 	@RequestMapping(value = "cs_qna.LF",method = RequestMethod.GET)

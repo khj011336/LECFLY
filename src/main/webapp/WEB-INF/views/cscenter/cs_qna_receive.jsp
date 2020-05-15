@@ -13,6 +13,22 @@
 	function selectQna(qaId) { window.location.href = '${pageContext.request.contextPath}'+ '/qna_receive.LF?id='+ qaId;
 	}	
 </script>
+<script>
+	function deleteconfirm(){
+		if(confirm("삭제하시겠습니까?")){
+			location.replace('${pageContext.request.contextPath}'+ '/qna_delete.LF?id=${qna.id}'); //yes
+		}else{
+			location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+		}
+	}
+	function editconfirm(){
+		if(confirm("수정하시겠습니까?")){
+			location.replace('${pageContext.request.contextPath}'+ '/cs_edit_qna.LF?id=${qna.id}'); //yes
+		}else{
+			location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+		}
+	}
+</script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 
@@ -21,8 +37,10 @@
 <div id="receiveBoard_wrapper">
 		<div id = "receiveBoard_button">
 			<div id = "button_right">
-			<a href="${pageContext.request.contextPath}/cs_edit_qna.LF?Id=${qna.id}"><span id="rbBtn">수정</span></a>
-			<span id="rbBtn">삭제</span></div>
+				<%-- <a href="${pageContext.request.contextPath}/cs_edit_qna.LF?id=${qna.id}"><span id="rbBtn">수정</span></a> --%>
+				<span id="rbBtn"><input type="button" value="수정" onclick="editconfirm()"></span>
+				<span id="rbBtn"><input type="button" value="삭제" onclick="deleteconfirm()"></span>
+			</div>
 		</div>  
         <div id="receiveBoard_content">
           	<div class="receiveBoard_content_title">
