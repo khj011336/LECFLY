@@ -113,14 +113,16 @@ public class FileSVCImpl {
 		File mkvideo = new File(path+"/"+"video");
 		try{
 		if(mk.isDirectory()) {
+			System.out.println("초기 저장 폴더 이미 있음");
 			return true;
 		}else {
 			  if( mk.mkdirs() &&
 			  mkimg.mkdir()&&
 			  mkvideo.mkdir()) {
-				  System.out.println("초기 폴더 생성");
+				  System.out.println("초기 저장 폴더 생성완료");
 				  return true;
 			  }else {
+				  System.out.println("초기 저장 폴더 생성실패");
 				  return false;
 			  }
 		}
