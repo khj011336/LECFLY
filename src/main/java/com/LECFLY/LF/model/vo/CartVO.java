@@ -2,86 +2,106 @@ package com.LECFLY.LF.model.vo;
 
 import java.sql.Timestamp;
 
-public class ShopcartVO {
+public class CartVO {
 	/** 순서번호*/
-	int id;          	
-	/** 회원의 PK          /fk/*/
-	int addMbId;     	
-	/** 상품분류        	0 키트 1 펀딩*/
-	int kOrF;       	 
-	/** 키트나 펀딩의 id	/fk/ 는아니고 kOrF 에따라서 select 로 가져올예정 여기서 해당 이미지 제목 가격을 뽑음  */
-	int kOrFId;      	    
+	int id;
+	/** 회원의 PK          		/fk/*/
+	int mbId;
+	/** 상품분류        				0 이용권 1 키트*/
+	int categoryId;       	 			
+	/** 이용권과 키트의 id			이용권과 키트에 따라 select로 가져올예정 여기서 해당 이미지 제목 가격을 뽑음  */
+	int gdsId;
+	/** 이용권 또는 키트의 수량 */
+	int gdCnt;     	    		
 	/** 추가한 날짜*/
-	Timestamp addAt;	
-	/** 키트나 펀딩의 량  1*/
-	int kOrFCnt;     	    
+	Timestamp createdAt;	
 	
 	/**
-	 * 더미
+	 * 
 	 */
-	public ShopcartVO() {
+	public CartVO() {
 	}
 	
 	/**
-	 * full constructor
-	 * @param id
-	 * @param addMbId
-	 * @param kOrF
-	 * @param kOrFId
-	 * @param addAt
-	 * @param kOrFCnt
+	 * @param mbId
+	 * @param categoryId
+	 * @param gdsId
+	 * @param gdCnt
 	 */
-	public ShopcartVO(int id, int addMbId, int kOrF, int kOrFId, Timestamp addAt, int kOrFCnt) {
+	public CartVO(int mbId, int categoryId, int gdsId, int gdCnt) {
+		this(0, mbId, categoryId, gdsId, gdCnt, null);
+	}
+	
+	/**
+	 * @param id
+	 * @param mbId
+	 * @param categoryId
+	 * @param gdsId
+	 * @param gdCnt
+	 * @param createdAt
+	 */
+	public CartVO(int id, int mbId, int categoryId, int gdsId, int gdCnt, Timestamp createdAt) {
 		super();
 		this.id = id;
-		this.addMbId = addMbId;
-		this.kOrF = kOrF;
-		this.kOrFId = kOrFId;
-		this.addAt = addAt;
-		this.kOrFCnt = kOrFCnt;
+		this.mbId = mbId;
+		this.categoryId = categoryId;
+		this.gdsId = gdsId;
+		this.gdCnt = gdCnt;
+		this.createdAt = createdAt;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getAddMbId() {
-		return addMbId;
+
+	public int getMbId() {
+		return mbId;
 	}
-	public void setAddMbId(int addMbId) {
-		this.addMbId = addMbId;
+
+	public void setMbId(int mbId) {
+		this.mbId = mbId;
 	}
-	public int getkOrF() {
-		return kOrF;
+
+	public int getCategoryId() {
+		return categoryId;
 	}
-	public void setkOrF(int kOrF) {
-		this.kOrF = kOrF;
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
-	public int getkOrFId() {
-		return kOrFId;
+
+	public int getGdsId() {
+		return gdsId;
 	}
-	public void setkOrFId(int kOrFId) {
-		this.kOrFId = kOrFId;
+
+	public void setGdsId(int gdsId) {
+		this.gdsId = gdsId;
 	}
-	public Timestamp getAddAt() {
-		return addAt;
+
+	public int getGdCnt() {
+		return gdCnt;
 	}
-	public void setAddAt(Timestamp addAt) {
-		this.addAt = addAt;
+
+	public void setGdCnt(int gdCnt) {
+		this.gdCnt = gdCnt;
 	}
-	public int getkOrFCnt() {
-		return kOrFCnt;
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
 	}
-	public void setkOrFCnt(int kOrFCnt) {
-		this.kOrFCnt = kOrFCnt;
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
+
 	@Override
 	public String toString() {
-		return "ShopcartVO [id=" + id + ", addMbId=" + addMbId + ", kOrF=" + kOrF + ", kOrFId=" + kOrFId + ", addAt="
-				+ addAt + ", kOrFCnt=" + kOrFCnt + "]";
+		return "CartVO [id=" + id + ", mbId=" + mbId + ", categoryId=" + categoryId + ", gdsId=" + gdsId + ", gdCnt="
+				+ gdCnt + ", createdAt=" + createdAt + "]";
 	}
-	
 	
 }                           
