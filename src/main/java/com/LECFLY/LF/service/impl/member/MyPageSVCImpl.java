@@ -87,17 +87,17 @@ public class MyPageSVCImpl implements IMypageSVC {
 		System.out.println("MyPageSVCImpl: selectLecToStatusForMbIdStatus()");
 		if( mbId > 0 && status >= ShowClassVideoVO.STATUS_ATTENDING && 
 								status <= ShowClassVideoVO.STATUS_LIKE ) {
-//			List<ShowClassVideoVO> scvList = 
-//					scvDao.selectLecToStatusForMbId(mbId, status); 
+			List<ShowClassVideoVO> scvList = 
+					scvDao.selectLecToStatusForMbId(mbId, status); 
 			
 			// 디버그 테스트 
-			List<ShowClassVideoVO> scvList = new ArrayList<>();
-			for (int i = 0; i < 10; i++) {
-	
-				ShowClassVideoVO scv = new ShowClassVideoVO((i+1), 4, (i % 3 == 1 ? 0 : (i % 3 == 2 ? 1 : 2)), 
-						5, 12, "첫번째강의", "firstclass.jpg", 142114, 14.f, new Timestamp(120000) );
-				scvList.add(scv);
-			} 
+//			List<ShowClassVideoVO> scvList = new ArrayList<>();
+//			for (int i = 0; i < 10; i++) {
+//	
+//				ShowClassVideoVO scv = new ShowClassVideoVO((i+1), 4, (i % 3 == 1 ? 0 : (i % 3 == 2 ? 1 : 2)), 
+//						5, 12, "첫번째강의", "firstclass.jpg", 142114, 14.f, new Timestamp(120000) );
+//				scvList.add(scv);
+//			} 
 		
 			if(scvList != null) {
 				return scvList;
@@ -319,6 +319,21 @@ public class MyPageSVCImpl implements IMypageSVC {
 		MemberVO mb = mbDao.selectOneMemberById(mbId);
 		if(mb != null) {
 			return mb;
+		}
+		return null;
+	}
+
+
+	@Override	/** mypage delivery_info 배송정보 조회*/
+	public Map<String, Object> selectMyPageDeliveryInfoMap(int mbId) {
+		if(mbId > 0) {
+			
+			
+			
+			
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+			System.out.println("mbId = " + mbId);
 		}
 		return null;
 	}

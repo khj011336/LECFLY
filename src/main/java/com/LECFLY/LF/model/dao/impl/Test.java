@@ -69,7 +69,7 @@ public class Test {
 
 	// 세현추가 0515
 	public static final String SQL_CHECK_NUMBER_OF_QNA_COMMENTS_FOR_MEMBER = 
-			"select count(*) from qna_comment where id = ?";
+			"select count(*) from qna_comment where mb_id = ?";
 	// 세현추가 0515
 	public static final String SQL_SELECT_ALL_QNA_COMMENT_FOR_ID_OFFSET_LIMIT = 
 			"select * from qna_comment where mb_id = ? order by writed_day desc limit ?, ?";

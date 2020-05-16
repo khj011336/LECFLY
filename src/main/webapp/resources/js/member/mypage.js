@@ -306,14 +306,15 @@
  	
  	// 마이페이지 페이지 네이션
  	function myPagePagiNatePre(pn, url) {
+ 		console.log("pn=" + pn + ", url = " + url);
  		if( pn > 1){
- 			var rtPn = encodeURIComponent("pn=" + (pn - 1) );
+ 			var rtPn = "pn=" + (pn - 1);
 	 		$.ajax({
 				type: "POST",
 				url: url,
 	 			cache: true,
 				datatype: "text",
-				data: {"pn": rtPn},
+				data: rtPn,
 				success:function(res){
 					$("#mypage_bottom").html(res);
 				},
@@ -324,8 +325,10 @@
  	}
  	
  	function myPagePagiNateCurrunt( pn, current, url){
+ 		console.log("pn=" + pn + "/current = " + current + ", url = " + url);
  		if(current != pn){
- 			var rtPn = encodeURIComponent( "pn=" + current );
+ 			var rtPn = "pn=" + current;
+ 			console.log("pn=" + current);
 	 		$.ajax({
 				type: "POST",
 				url: url,
@@ -342,8 +345,9 @@
  	}
  	
  	function myPagePagiNateNext(pn, maxPn, url){
+ 		console.log("pn=" + pn + "/maxPn = " + maxPn + ", url = " + url);
  		if(pn < maxPn){
- 			var rtPn = encodeURIComponent( "pn=" + (pn + 1) );
+ 			var rtPn = "pn=" + (pn + 1);
  			$.ajax({
 				type: "POST",
 				url: url,

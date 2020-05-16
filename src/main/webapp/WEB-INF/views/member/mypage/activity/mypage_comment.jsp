@@ -25,19 +25,20 @@
     		
 			<div id="mypage_table_numbering">
 				<c:if test="${pn gt 1}">
-					<span onclick="myPagePagiNatePre(${pn}, 'mypage_comment.LF')">&lt;&nbsp;</span>
+					<span onclick="myPagePagiNatePre(${pn}, '${pageContext.request.contextPath}/mypage_comment.LF')">&lt;&nbsp;</span>
 				</c:if>
-				<c:forEach begin="1" end="${maxPn}" step="1" varStatus="vs">
-					<c:if test="${vs.current eq pn}">
-						<b>${vs.current}</b>
-				</c:if>
-				<c:if test="${vs.current ne pn}">
-					<span onclick="myPagePagiNateCurrunt(${pn}, ${vs.current}, 'mypage_comment.LF')">${vs.current}</span>
-				</c:if>
-            		${vs.current eq maxPn ? "" : " "}
+				<c:forEach begin="1" end="${maxPG}" step="1" varStatus="vs">
+					<c:if test="${vs.index eq pn}">
+						<b>${vs.index}</b>
+					</c:if>
+					
+					<c:if test="${vs.index ne pn}">
+						<span onclick="myPagePagiNateCurrunt(${pn}, ${vs.index}, '${pageContext.request.contextPath}/mypage_comment.LF')">${vs.index}</span>
+					</c:if>
+            		${vs.current eq maxPG ? "" : " "}
         		</c:forEach>
-				<c:if test="${pn lt maxPn}">
-					<span onclick="myPagePagiNateNext(${pn}, ${maxPn}, 'mypage_comment.LF')">&nbsp;&gt;</span>
+				<c:if test="${pn lt maxPG}">
+					<span onclick="myPagePagiNateNext(${pn}, ${maxPG}, '${pageContext.request.contextPath}/mypage_comment.LF')">&nbsp;&gt;</span>
 				</c:if>
 			</div>
 		</div>

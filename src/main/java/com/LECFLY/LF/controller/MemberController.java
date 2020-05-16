@@ -346,10 +346,10 @@ public class MemberController {
 	//회원이 수강중인 강의 갯수 확인하기
 	//회원이 해당 강의 중 보던 영상 표시하기"	
 	// 마이페이지 이동
-	@RequestMapping(value="mypage.LF", method=RequestMethod.GET) // post 하면 405 에러뜸
+	@RequestMapping(value="mypage.LF", method= {RequestMethod.GET, RequestMethod.POST})
 		public String memberMyPage(HttpSession ses, Model model) {
 			System.out.println("memberMyPage()");
-			MemberVO mb = (MemberVO)ses.getAttribute("member");			
+			MemberVO mb = (MemberVO)ses.getAttribute("member");
 			model.addAttribute("mb", mb);
 			System.out.println("mb = " + mb);
 			return "member/mypage";
@@ -502,6 +502,7 @@ public class MemberController {
 			Model model) 
 	{
 		System.out.println("memberMypageComment()...");
+		System.out.println("pn =" + pageNumber);
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		System.out.println("mb = " + mb);
@@ -650,8 +651,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="mypage_delivery_info.LF", method=RequestMethod.GET)
-	public String memberMypageDeliveryInfo() {
-		System.out.println("memberMypageDeliveryInfo()...");	
+	public String memberMypageDeliveryInfo(HttpSession ses
+			) 
+	{
+		System.out.println("memberMypageDeliveryInfo()...");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		System.out.println("mbId = " + mbId);
+		Map<String, Object> rMap = mpSvc.selectMyPageDeliveryInfoMap(mbId);
 		return "member/mypage/order_manager/mypage_delivery_info";
 	}
 	

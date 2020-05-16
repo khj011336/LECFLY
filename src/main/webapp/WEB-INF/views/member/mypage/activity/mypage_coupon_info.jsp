@@ -48,20 +48,22 @@
 			</div>
 			
 			<div id="mypage_table_numbering">
+				pn = <c:out value="${pn}"/> ,
+				maxPg = <c:out value="${maxPG}"/>  
 					<c:if test="${pn gt 1}">
-						<span onclick="myPagePagiNatePre(${pn}, 'mypage_coupon_info.LF')">&lt;&nbsp;</span>
+						<span onclick="myPagePagiNatePre(${pn}, '${pageContext.request.contextPath}/mypage_coupon_info.LF')">&lt;&nbsp;</span>
 					</c:if>
-					<c:forEach begin="1" end="${maxPn}" step="1" varStatus="vs">
-						<c:if test="${vs.current eq pn}">
-							<b>${vs.current}</b>
+					<c:forEach begin="1" end="${maxPG}" step="1" varStatus="vs">
+						<c:if test="${vs.index eq pn}">
+							<b>${vs.index}</b>
 					</c:if>
-					<c:if test="${vs.current ne pn}">
-						<span onclick="myPagePagiNateCurrunt(${pn}, ${vs.current}, 'mypage_coupon_info.LF')">${vs.current}</span>
+					<c:if test="${vs.index ne pn}">
+						<span onclick="myPagePagiNateCurrunt(${pn}, ${vs.index}, '${pageContext.request.contextPath}/mypage_coupon_info.LF')">${vs.index}</span>
 					</c:if>
-	            		${vs.current eq maxPn ? "" : " "}
+	            		${vs.index eq maxPG ? "" : " "}
 	        		</c:forEach>
-					<c:if test="${pn lt maxPn}">
-						<span onclick="myPagePagiNateNext(${pn}, ${maxPn}, 'mypage_coupon_info.LF')">&nbsp;&gt;</span>
+					<c:if test="${pn lt maxPG}">
+						<span onclick="myPagePagiNateNext(${pn}, ${maxPG}, '${pageContext.request.contextPath}/mypage_coupon_info.LF')">&nbsp;&gt;</span>
 					</c:if>
 			</div>
 		</div>

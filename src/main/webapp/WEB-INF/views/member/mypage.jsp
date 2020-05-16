@@ -11,8 +11,8 @@
 <meta charset="UTF-8">
 <title>LecFly - 마이페이지</title>
 
-	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage_list.css">
 	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage.css">
+	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage_list.css">
 	
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

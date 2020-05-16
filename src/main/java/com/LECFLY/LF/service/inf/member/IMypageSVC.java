@@ -41,7 +41,9 @@ public interface IMypageSVC {
 
 	Map<String, Object> selectAllMyCoupon(int mbId, int pn);
 
-	MemberVO selectOneMember(int mbId); 
+	MemberVO selectOneMember(int mbId);
+
+	Map<String, Object> selectMyPageDeliveryInfoMap(int mbId); 
 
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
