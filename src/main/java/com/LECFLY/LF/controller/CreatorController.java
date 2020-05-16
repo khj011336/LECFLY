@@ -1,24 +1,39 @@
 package com.LECFLY.LF.controller;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
@@ -33,7 +48,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
+@MultipartConfig(location ="C:\\fusion11\\apache-tomcat-8.5.50\\uploadTemp"
+,maxFileSize = -1,maxRequestSize = -1,fileSizeThreshold = 1024)
 @Controller
 @SessionAttributes({ "creator", "Lecture" })
 public class CreatorController {
@@ -48,6 +64,8 @@ public class CreatorController {
 	ICreatorDAO CreDAO;
 	@Autowired
 	IVideoSVC VdoSVC;
+	@Autowired
+	FileSVCImpl fileSVC;
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -174,18 +192,8 @@ public class CreatorController {
 			Map<String,Object> jso = new HashMap<String, Object>();
 			 jso.put("jsonText", VdoSVC.showLectureList(3,page));
 			 jso.put("page",page);
-//			try {
-//				ObjectMapper mapper = new ObjectMapper();
-//			 JsonObject js =new JsonObject();
-//			 js.addProperty("page", page);
-//			String jsonText = null;
-//				jsonText = mapper.writeValueAsString(  );
-//				jso.put("jsonText",jsonText);
-//			} catch (JsonProcessingException e) {
-//				e.printStackTrace();
-//			}
 			return jso ;
-//			비디오 강의 업로드시 좋아요 0 으로 업데이트
+
 		}
 	 
 	@RequestMapping(value= "video_upload.LF", method = RequestMethod.GET)
@@ -195,11 +203,23 @@ public class CreatorController {
 		return "creator/cre_video_upload.page";
 	}
 	@RequestMapping(value= "video_upload_proc.LF", method = RequestMethod.POST)
-	public String videoUpload( @ModelAttribute(value = "video") VideoVO vio, Model model, HttpSession ses) {
-		
-		return "creator/cre_video_upload.page";
+	public String videoUpload( @ModelAttribute(value = "video") VideoVO vio, Model model, HttpSession ses
+			 ) {
+//		fileSVC.extractImage(dd, 2, fi);
+//		비디오 강의 업로드시 좋아요 0 으로 업데이트
+		return "";
 	}
-	
+	@RequestMapping(value= "video_proc.LF", method = RequestMethod.POST)
+	public String videoUpload( Model model, HttpSession ses,
+			@RequestParam(value = "viFile")MultipartFile videoFile ) {
+	  Map<String, String> storedFileName = fileSVC.writeFilesForvideo(videoFile, 1, "gong");
+	  System.out.println(storedFileName.get("png"));
+	  System.out.println(storedFileName.get("gif"));
+	  System.out.println(storedFileName.get("video"));
+//		비디오 강의 업로드시 좋아요 0 으로 업데이트
+		return "";
+	}
+	 
 	
 	
 	

@@ -21,20 +21,22 @@
 //	}
 $().ready(function(){
 $("#uplUP").change(function () {
-	alert($(this).val());
-	var formdata =  $("#aform")[0];
-	var formData2 = new FormData();
-	formData2.append("name",$(this).val());
-	var form = new FormData(formdata);  
+// 	var fomr = $("#viform")[0];
+	var formdata =  new FormData();
+	var file = this.files[0];
+	formdata.append("viFile",file);
 $.ajax({
-	type :"POST",
+	type :"post",
 	enctype:"multipart/form-data",
-	url : "video_upload_proc.LF",
+	url : "video_proc.LF",
 	processData: false,
     contentType: false,
-	data: form,
+	data: formdata,
 	success: function () {
 		alert("성공");
+	},
+	error: function () {
+		
 	}
 	}); 
 });
@@ -48,7 +50,7 @@ $.ajax({
 
     <div class="uplPa" id="uplz">동영상 업로드 -</div>
     <div class="uplPa" id= 'uply'>동영상 정보</div>
-    <form action="Creator/creatorcenter.up" method="post" enctype="multipart/form-data">
+    <form action="Creator/creatorcenter.up" method="post" enctype="multipart/form-data" id = "viform">
     <input type="hidden" value="${video.CFId}" name= "CFId">
         <div id="uplT" class="uplflex" >
             <div id="uplL" class="uplPa">
