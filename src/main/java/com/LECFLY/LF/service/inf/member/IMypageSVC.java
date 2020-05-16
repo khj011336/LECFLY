@@ -1,7 +1,11 @@
 package com.LECFLY.LF.service.inf.member;
 
-import java.util.List;
 
+import java.util.List;
+import java.util.Map;
+
+import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.ShowClassVideoVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 
 public interface IMypageSVC {
@@ -17,11 +21,28 @@ public interface IMypageSVC {
 	
 //회원의 프로필 사진 수정하기							
 //	change_pro_pic.lf(proc; post, dao, attr)			proc완료후 mypage.lf 프로필사진 업데이트된 상태로 forward
-	boolean updateMemberProfileImg(int loginedId, int id, String pic);
+	
 //크리에이터 신청하기							
 //	크리에이터신청페이지.lf(form, post)			크리에이터 신청 폼으로 이동		
 
-	List<VideoVO> showAllAttendingLec();
+	boolean updateMemberProfileImg(int mbId, String pic);
+	
+	List<ShowClassVideoVO> selectLecToStatusForMbIdStatus(int mbId, int status);
+	
+	Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status);
+
+	
+	
+	VideoVO selectLecVideo(int vdId);
+
+	Map<String, Object> selectAllMyComment(int mbId, int pn);
+
+	Map<String, Object> selectAllMyQna(int mbId, int pn);
+
+	Map<String, Object> selectAllMyCoupon(int mbId, int pn);
+
+	MemberVO selectOneMember(int mbId); 
+
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴			
