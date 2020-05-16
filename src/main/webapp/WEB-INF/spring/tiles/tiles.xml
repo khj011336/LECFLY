@@ -74,5 +74,24 @@
     
     <definition name="*/*/*.ho" extends="lecfly_home">
         <put-attribute name="home_body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
-    </definition>  
+    </definition>
+    
+<!-- 결제 메뉴 표시 -->
+    <definition name="payment" template="/WEB-INF/views/payment/pay_tiles.jsp">
+    	<put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+    	<put-attribute name="left"   value="/WEB-INF/views/common/left.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+    </definition>
+    
+    <definition name="*.pay" extends="payment">
+        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.pay" extends="payment">
+         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.pay" extends="payment">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
  </tiles-definitions>
