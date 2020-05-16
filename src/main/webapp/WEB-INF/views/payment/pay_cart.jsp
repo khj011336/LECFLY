@@ -1,20 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
- 	response.setHeader("Cache-Control", "no-store");
-%>
-<meta charset="UTF-8">	
-<title>ShoppingCart</title>
-	<link type="text/css" rel="stylesheet" href="resources/css/goods/shoppingCart.css">
-</head>
-<body>
-	<div id="wrapper">
-		<div id="header" class="header" style="z-index:30;">
-			<%@ include file="../common/header.jsp"%>
-		</div>
-		<%@ include file="../common/side_nav.jsp"%>
-		
-		
+<title>장바구니</title>
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_cart.css">
 		<div id="shoppingCart_wrapper">
 			<div id="shoppingCart_content">
 				<div class="shoppingCart_title_box">
@@ -351,7 +338,3 @@
 			$("#homemain").load("payment/fundingPayment.jsp");
 		});
 	</script>
-</body>
-</html>	
-	
-	

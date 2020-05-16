@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<title>상품 상세페이지</title>
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_goodsDetail.css">
 <div id="register_wrapper">
 	<div id="register_nav">
 		<video class="register_video" controls>

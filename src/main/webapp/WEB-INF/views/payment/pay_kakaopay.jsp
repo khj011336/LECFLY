@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<title>카카오페이 결제</title>
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_kakaopay.css">
 <%
 	String name = "김건우";//(String)request.getAttribute("name");
 	String email = "frostkim21@nate.com";//(String)request.getAttribute("email");
