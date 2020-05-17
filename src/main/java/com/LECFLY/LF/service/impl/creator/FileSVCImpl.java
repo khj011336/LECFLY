@@ -21,6 +21,8 @@ import org.mvel2.ast.ReturnNode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.LECFLY.LF.model.vo.creator.VideoVO;
+
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
@@ -137,8 +139,48 @@ public class FileSVCImpl {
 		}
 		return null;
 	}
+	public Map<String, String> writeFile(MultipartFile file, String path, int id, String username) {
+		Map<String, String> rmap = new HashMap<String, String>();
+				if (file != null && !file.isEmpty()) {
+					String oriFileName = file.getOriginalFilename();
+					String storeFileName = fileNamingforImg(oriFileName, id, username);
+					System.out.println(file.getSize() + "파일사이즈");
+					String totalPath = path + storeFileName;
+					totalPath = totalPath.replaceAll("\\\\", "/");
+					File newFile = new File(totalPath);
+					try {
+						file.transferTo(newFile);
+						rmap.put("file", storeFileName);
+						System.out.println("저장 파일 이름 ->" + newFile + "등록완료");
+					} catch (IllegalStateException e) {
+						System.out.println("fileSVC writeFiles -han");
+						e.printStackTrace();
+					} catch (IOException e) {
+						System.out.println("fileSVC writeFiles -han");
+						e.printStackTrace();
+					}
+				}
+				return rmap;
+	}
 
-	public Map<String, String> writeFilesForvideo(MultipartFile file, int id, String username) {
+	public Map<String, String> writeFilesForvideo(MultipartFile file, int id, String username , VideoVO changevideo) {
+		if(changevideo.getVideoPath() != null && !changevideo.getVideoPath().isEmpty()) {
+			System.out.println("upload 비디오 변경 -");
+			String totalImgpath = getPath(username, 1);
+			String totalVideopath = getPath(username, 2);
+			String imgpaths[] =changevideo.getImgPath().split("-");
+			String gifPath = changevideo.getGifPath();
+			String videoPath = changevideo.getVideoPath();
+			 if(new File(totalImgpath+imgpaths[0]).delete()) {
+				 System.out.println(imgpaths[0]+"[imgPathA]가삭제되었습니다");
+			 }if(new File(totalImgpath+imgpaths[1]).delete()) {
+				 System.out.println(imgpaths[0]+"[imgPathB]가삭제되었습니다");
+			 }if(new File(totalImgpath+gifPath).delete()) {
+				 System.out.println(gifPath+"[gifPath]가삭제되었습니다");
+			 }if(new File(totalVideopath+videoPath).delete()) {
+			System.out.println(videoPath+"[videoPath]가삭제되었습니다");
+			 }
+		}
 		Map<String, String> rmap = new HashMap<String, String>();
 		File newFile = null;
 		String oriFileName = null;
@@ -165,9 +207,8 @@ public class FileSVCImpl {
 						String duration = media_player_time(tempVideoPath);
 						String pngAB = extractImageAndVideo(username, storeFileName, tempVideoPath, duration, id, 1, 1);
 						if(checkString(pngAB)) {
-						int lastExt = pngAB.lastIndexOf('.');
-						String oriFile = pngAB.substring(0, lastExt);
-						pngAB =oriFile+"_01"+".png"+"-"+oriFile+"_02"+"png";
+						String oriFile = pngAB; 
+							pngAB=oriFile+"_01"+".png"+"-"+oriFile+"_02"+".png";
 						}
 						String gif = extractImageAndVideo(username, storeFileName, tempVideoPath, duration, id, 1, 2);
 						String video = extractImageAndVideo(username, oriFileName, tempVideoPath, duration, id, 1, 3);
@@ -181,6 +222,7 @@ public class FileSVCImpl {
 							rmap.put("png", pngAB);
 							rmap.put("gif", gif);
 							rmap.put("video", video);
+							rmap.put("duration", duration);
 						}
 					}
 				}
@@ -244,9 +286,9 @@ public class FileSVCImpl {
 			int lastExt = oriFileName.lastIndexOf('.');
 			String withoutExt = oriFileName.substring(0, lastExt);
 			if (syntax == 1) {
-				returname = withoutExt + "%2d.png";
+				returname = withoutExt ;
 				commands = new String[] { "ffmpeg", "-ss", String.format("%02d:%02d:%02d", hours, minutes, seconds),
-						"-i", TempvideoFile, "-an", "-r", "0.2", "-vframes", "2", "-y", imgpath + returname };
+						"-i", TempvideoFile, "-an", "-r", "0.2", "-vframes", "2", "-y", imgpath + returname+"_%2d.png" };
 			} else if (syntax == 2) {
 				returname = withoutExt + ".gif";
 				commands = new String[] { "ffmpeg", "-i", TempvideoFile, "-vf", "scale=500:-1", "-t", "10", "-r", "10",
@@ -295,9 +337,7 @@ public class FileSVCImpl {
 	}
 
 	public static void main(String[] args) {
-//		media_player_time("C:/fusion11/cooking.mp4");
-		File d = new File("C:/fusion11/cooking.mp4");
-		File aa = new File("C:/fusion11/cooking%2d.png");
+		System.out.println(Double.parseDouble("0.26"));
 
 	}
 }

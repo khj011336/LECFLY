@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <script>
-//     var status = 0;
-
-
 var ex = false;
 var finallwrite = false;
-
 function setImageFromFile(input, expression, tempses) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -53,10 +49,10 @@ function setImageFromFile(input, expression, tempses) {
     	$(document).on("click",".exportb",function(){
     		if(!ispty()){
     			 var form = $('.pubf');
+    			 $(".exportb").attr("disabled","disabled");
     			 finallwrite = true;
     				form.submit();
     			}
-    		
    	   });
     	if(${p} == 1){
     		$("#fl1").css("color","#ffa500");
@@ -81,7 +77,6 @@ function setImageFromFile(input, expression, tempses) {
     		return false;
     	}
   }
-
  $(window).on("unload",function(e){
     		   var ischage = sessionStorage.getItem("s1");
     		 var ischageB =  sessionStorage.getItem("s2") ;
@@ -93,10 +88,6 @@ function setImageFromFile(input, expression, tempses) {
     			 nodename = false;
     		 }
     		   var pagenation = ${p};
-    		   console.log(e.target.activeElement.nodeName.toLowerCase());
-    		   console.log(ischage);
-    		   console.log(nodename);
-    		   console.log(pagenation);
     		   if(nodename && pagenation ==1 && ischage == "1" ){
     				  sessionStorage.setItem("s1","2");
     				  navigator.sendBeacon("creator_new_profile_proc.LF", formdata);
