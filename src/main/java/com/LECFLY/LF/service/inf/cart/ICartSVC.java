@@ -15,4 +15,5 @@ public interface ICartSVC {
 	// 회원이 장바구니안에 있는 상품의 갯수를 수정할 수 있다.
 	public boolean modifyCartCnt(int id) throws Exception;
 	// 회원이 장바구니 안에 있는 상품을 삭제 할 수 있다.
+	public Map<String, Object> showGoodsProc(int mbId, int lecId);
 }
