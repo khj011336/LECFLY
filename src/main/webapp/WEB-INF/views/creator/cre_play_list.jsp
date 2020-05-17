@@ -5,12 +5,17 @@
 <html>
 <meta charset="UTF-8">
 <head>
-<script src="resources/js/creator/select.js"></script>
+<!-- <script src="resources/js/creator/select.js"></script> -->
 <script>
 var max = ${maxPage};
 var CFID = ${CFId};
 var category =${category};
-var pagea = 1 ;
+var pagea = 1 ; 
+ $().ready(function () {
+	$(document).on("click","#kit",function(e){
+		location.href ="kit_upload.LF?CFID="+CFID+"&category="+category;
+	});
+});
 function nationforVideo(pagea , max){
 	var nate = "";
 	 if(pagea >1 ){
@@ -30,21 +35,19 @@ function nationforVideo(pagea , max){
 	 }
 	 
 	function videoUpload(id){
-		location.href ="video_upload.LF?CFID="+id;
+		location.href ="video_upload.LF?CFID="+CFID+"&category="+category;
 	}
 	
 function updateVideo(pk){
 	if($("option").val()== 1){
 // 		location.href ="video_upload.LF?CFID="+pk;
-	}else{
-		alert("키트");
-	}
+	} 
 }
 function pagenate(page){
 	$.ajax({
 	    type : 'get',  
 	    dataType : 'json', 
-	    data : {"page" : page ,"CFID" : CFID },
+	    data : {"page" : page ,"CFID" : CFID},
 	    url : 'creator_video_show_proc.LF',
 	    success : function(returnData) {
 	    	pagea = returnData.page;
@@ -53,8 +56,8 @@ function pagenate(page){
 	    		$("#appendList").append("<tr class = 'bottomlineaa videoTR'> <td class='checkbox'><input type='checkbox' class='check-one check' /></td>"+
 				"<td colspan='2' class='goods'><img src='"+item.imgPath+"' alt='홈트레이닝' />"+
 				"<div id='countor'> <span style='width: 500px'>"+item.title +"</span> <span><a href='##' class='sellerTitle'>"+item.createdAt+"</a></span>"+
-				" <span> <select name='test1'> <option value='1'>동영상 수정</option> <option value='2'>판매킷 수정</option> </select> </span> </div></td>"+
-				"<td class='count'></td> <td class='count'></td> <td class='subtotal'>"+
+				" <span> <select name='test1'> <option value='1'>동영상 수정</option> </select> </span> </div></td>"+
+				"<td class='count'></td> <td class='count'></td><td class='count'></td> <td class='subtotal'>"+
 				"<p><i class='fas fa-comment-dots'></i><span>"+item.status+"</span></p>"+
 				"<p><i class='fas fa-heart'></i><span></span>"+item.likeCount+"</p>"+
 				"<p><i class='fas fa-eye'></i><span>"+item.views+"</span></p>"+
@@ -89,6 +92,7 @@ function pagenate(page){
 										href="javascript:void(0)" class="selallSPAN">&nbsp;전체</a></span></label></th>
 							<th colspan="2"></th>
 							<th id="forfixs"></th>
+							<th class="crinf" id = "kit">판매킷 등록</th>
 							<th class="crinf">클래스 정보수정</th>
 							<th class="listup" onclick="videoUpload(CFID,category)">+영상업로드</th>
 							<th id="listdel">삭제</th>
@@ -117,10 +121,10 @@ function pagenate(page){
 													pattern="yyyy-MM-dd" /></a> </span> <span> <select
 											name="test1">
 												<option value="1">동영상 수정</option>
-												<option value="2">판매킷 수정</option>
 										</select>
 										</span>
 									</div></td>
+								<td class="count"></td>
 								<td class="count"></td>
 								<td class="count"></td>
 								<td class="subtotal">

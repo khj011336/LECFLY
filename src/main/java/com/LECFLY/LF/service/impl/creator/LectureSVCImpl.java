@@ -66,7 +66,7 @@ public class LectureSVCImpl{
 				}
 			}
 			if (countNull >= INPUT_EMPTY_CHECK) {
-				System.out.println(" lecture input 지정사이즈보다 많음 자동저장");
+				System.out.println(" lecture input 지정사이즈[3]보다 많음 자동저장");
 				int fid = (Integer)(ses.getAttribute("fid"));
 				LecDAO.insertNewLecture(fid,LecVO.getCategory(),
 						LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
@@ -84,7 +84,7 @@ public class LectureSVCImpl{
 		int id = (Integer) ses.getAttribute("id");
 		String newimgPath = null;
 		String username = (String) ses.getAttribute("membertest");
-		String userpath = fileSVC.getPath(username, 1);
+		String userpath = FileSVCImpl.getPath(username, 1);
 		 
 		if (LcVO.getTitleImgM() != null && !LcVO.getTitleImgM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
