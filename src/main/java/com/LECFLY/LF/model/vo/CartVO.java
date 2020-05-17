@@ -2,6 +2,8 @@ package com.LECFLY.LF.model.vo;
 
 import java.sql.Timestamp;
 
+import org.springframework.stereotype.Component;
+@Component("cartVO")
 public class CartVO {
 	/** 순서번호*/
 	int id;

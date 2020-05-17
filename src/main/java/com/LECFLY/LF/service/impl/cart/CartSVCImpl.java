@@ -25,14 +25,12 @@ public class CartSVCImpl implements ICartSVC {
 
 	@Override
 	public boolean findCartGoods(CartVO cartVO) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return cartDAO.selectCountInCart(cartVO);
 	}
 
 	@Override
 	public void addGoodsInCart(CartVO cartVO) throws Exception {
-		// TODO Auto-generated method stub
-
+		cartDAO.insertGoodsInCart(cartVO);
 	}
 
 	@Override
