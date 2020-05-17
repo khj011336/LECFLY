@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <script>
  $(document).ready(function() {
-	$("#update_faq_list").click(function() {
+	$("#update_comment_list").click(function() {
 		// 배열 선언 및 체크된 리스트 저장 
 		var checkArray = [];
 		$('input[name="checked"]:checked').each(function(i) {
@@ -16,7 +16,7 @@
 		
 		// ajax 호출
 		$.ajax({
-			url : "${pageContext.request.contextPath}/admin_update_faq_list.LF",
+			url : "${pageContext.request.contextPath}/admin_update_comment_list.LF",
 			dataType: "json",
 			type: "post",
 			data: params, 
@@ -32,7 +32,7 @@
 
 </script>
 
-<h4>자주묻는질문 관리</h4>
+<h4>댓글목록 관리</h4>
 
 <div class="admin_table_filter">
 	<table>
@@ -48,17 +48,14 @@
 			</td>
 		</tr>
 		<tr>
-			<th>카테고리 선택</th>
+			<th>댓글 위치 선택</th>
 			<td>
 				<select name="">
    					<option value="">전체</option>
-   					<option value="">이용안내</option>
-   					<option value="">강의수강</option>
-   					<option value="">준비물 키트</option>
-   					<option value="">결제/환불</option>
-   					<option value="">크리에이터</option>
-   					<option value="">기타</option>
-				</select>
+   					<option value="">강의</option>
+   					<option value="">동영상</option>
+   					<option value="">QNA게시판</option>
+   				</select>
 			</td>
 		</tr>
 		<tr>
@@ -66,15 +63,15 @@
 			<td>
 				<select name="">
    					<option value="">전체</option>
-  					<option value="">제목</option>
-    				<option value="">내용</option>
+  					<option value="">내용</option>
+    				<option value="">작성자</option>
     			</select>
 			<input type="text" size="40"></td>
 		</tr>
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" onclick="location.href='admin_board_faq.LF'">상세조회</button>
-		<button type="button" onclick="location.href='admin_board_faq.LF'">전체조회</button>
+		<button type="button" onclick="location.href='admin_board_comment.LF'">상세조회</button>
+		<button type="button" onclick="location.href='admin_board_comment.LF'">전체조회</button>
 	</div>
 </div>
 
@@ -89,7 +86,6 @@
 			<span class="date_filter"><a href="#">전체선택</a></span>
 			<span class="date_filter"><a href="#" id="update_qna_list">수정</a></span>
 			<span class="date_filter"><a href="#">삭제</a></span>
-			<span class="date_filter"><a href="#">새글 등록</a></span>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	
@@ -102,47 +98,29 @@
 		<tr class="admin_table_head">
 			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th>
 			<th>번호</th> 
-			<th>글번호</th> 
-			<th>분야</th> 
-			<th>제목</th> 
+			<th>댓글번호</th> 
+			<th>원글 위치</th>
+			<th>원글번호</th> 
 			<th>내용</th> 
+			<th>작성자</th> 
 			<th>미리보기</th> 
 		</tr>
-		<c:forEach items="${fqList}" var="faq" varStatus="vs">
+		<c:forEach items="${qcList}" var="comment" varStatus="vs">
 		<tr>
-			<td><input type="checkbox" name="checked" value="${faq.id }"/></td> 
+			<td><input type="checkbox" name="checked" value="${comment.id }"/></td> 
 			<td>${vs.count}</td> 
-			<td>${faq.id}</td> 
-			<td>${faq.stype}</td>
-			<%-- <td>${faq.title}</td> --%>
-			<td>
-				<c:choose>
-				<c:when test="${fn:length(faq.title) > 10}"> 
-				<c:out value="${fn:substring(faq.title,0,9)}"/>...
-				</c:when>
-				<c:otherwise>
-				<c:out value="${faq.title}"/>
-				</c:otherwise>
-				</c:choose>
-			</td>
-			<%-- <td>${faq.content}</td> --%>
-			<td>
-				<c:choose>
-				<c:when test="${fn:length(faq.content) > 20}"> 
-				<c:out value="${fn:substring(faq.content,0,19)}"/>...
-				</c:when>
-				<c:otherwise>
-				<c:out value="${faq.content}"/>
-				</c:otherwise>
-				</c:choose>
-			</td>
+			<td>${comment.id}</td> 
+			<td>원글 위치</td>
+			<td>${comment.qnaId}</td>
+			<td>${comment.content}</td>
+			<td>${comment.mbLogin}</td>
 			<td><button value="미리보기"></button></td>
 		</tr>
 		</c:forEach>
 	</table>
 	<div id="paginate">
 		<c:if test="${pn > 1}">
-			<a href="${pageContext.request.contextPath}/admin_board_faq.LF?pn=${pn-1}">[이전]</a>
+			<a href="${pageContext.request.contextPath}/admin_board_comment.LF?pn=${pn-1}">[이전]</a>
 		</c:if>
 		 &nbsp; &nbsp;
 		<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
@@ -150,7 +128,7 @@
 				<b style='color: orange'>${vs.current}</b>
 			</c:if>	
 			<c:if test='${vs.current ne pn}'>
-				<a href="${pageContext.request.contextPath}/admin_board_faq.LF?pn=${vs.current}">${vs.current}</a>
+				<a href="${pageContext.request.contextPath}/admin_board_comment.LF?pn=${vs.current}">${vs.current}</a>
 			</c:if>
 			 &nbsp;
 			 	
@@ -158,7 +136,7 @@
 		</c:forEach>
 		 &nbsp; &nbsp;
 		<c:if test="${pn < maxPn}">
-			<a href="${pageContext.request.contextPath}/admin_board_faq.LF?pn=${pn+1}">[다음]</a>
+			<a href="${pageContext.request.contextPath}/admin_board_comment.LF?pn=${pn+1}">[다음]</a>
 		</c:if>
 	</div>
 </div>

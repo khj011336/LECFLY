@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.LECFLY.LF.model.vo.FaqVO;
+import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.NoticeVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
@@ -88,11 +89,14 @@ public class CscenterController {
 	
 	
 	// 회원이 QnA 글쓰기 + 파일
-	@RequestMapping(value = "cs_post_new_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterPostNewQna() {
-		System.out.println("cscenterPostNewQna()...");
-		return "cscenter/cs_qna_post.ho";
-	}
+		@RequestMapping(value = "cs_post_new_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
+		public String cscenterPostNewQna(HttpSession ses, Model model) {
+			System.out.println("cscenterPostNewQna()...");
+			MemberVO mb = (MemberVO)ses.getAttribute("member");			
+			model.addAttribute("mb", mb);
+			System.out.println("mb = " + mb);
+			return "cscenter/cs_qna_post.ho";
+		}
 	
 	@RequestMapping(value = "cs_post_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String cscenterAddQna(int mbId, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
