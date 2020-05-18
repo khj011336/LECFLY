@@ -22,6 +22,9 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 	/** 전체 회원목록 조회 */
 	public static String SQL_ADMIN_MEMBER_SELECT_ALL = 
 			"SELECT * FROM MEMBERS";
+	/** 전체 크리에이터 목록 조회*/
+	public static String SQL_ADMIN_CREATOR__SELECT_ALL = 
+			"SELECT * FROM CREATOR";
 	/** 회원 상세 조회 */
 	public static String SQL_ADMIN_MEMBER_SELECT_ONE = 
 			"SELECT * FROM MEMBERS WHERE ID = ?";
@@ -63,6 +66,13 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 	/** 전체 멤버목록 조회(페이지별) */
 	public static String SQL_SELECT_MEMBER_ALL_PG = 
 			"SELECT * FROM MEMBERS ORDER BY ID DESC LIMIT ?,?";
+	
+	/** 전체 크리에이터 수 조회 */
+	public static String SQL_SELECT_CREATOR_NUMBER=
+			"SELECT COUNT(ID) FROM CREATOR";
+	/** 전체 크리에이터 목록 조회(페이지별) */
+	public static String SQL_ADMIN_CREATOR__SELECT_ALL_PG=
+			"SELECT * FROM CREATOR ORDER BY ID DESC LIMIT ?,?";
 
 //	public static final String SQL_ADMIN_MEMBER_SELECT_SHOW = 
 //		"select * from member where 1=1";
@@ -133,8 +143,7 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 
 	@Override
 	public List<CreatorVO> selectCreatorMemberList() {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.query(SQL_ADMIN_CREATOR__SELECT_ALL, BeanPropertyRowMapper.newInstance(CreatorVO.class));
 	}
 
 	@Override
@@ -146,6 +155,17 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 	public List<MemberVO> searchMemberForAll(int offset, int limit) {
 		return jtem.query(SQL_SELECT_MEMBER_ALL_PG, BeanPropertyRowMapper.newInstance(MemberVO.class),
 				offset, limit);
+	}
+
+	@Override
+	public List<CreatorVO> searchCreatorForAll(int offset, int limit) {
+		return jtem.query(SQL_ADMIN_CREATOR__SELECT_ALL_PG, BeanPropertyRowMapper.newInstance(CreatorVO.class),
+				offset, limit);
+	}
+
+	@Override
+	public int checkNumberOfCreators() {
+		return jtem.queryForObject(SQL_SELECT_CREATOR_NUMBER, Integer.class);
 	}
 	
 }

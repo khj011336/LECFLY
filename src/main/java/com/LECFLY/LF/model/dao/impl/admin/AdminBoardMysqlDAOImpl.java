@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -43,7 +44,7 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 		= "delete qnas where id = ?";
 	// QnA 페이지 조회
 	public static final String SQL_QNA_SHOWALL_PG
-		= "SELECT * FROM qnas order by created_at desc limit ?, ?";
+		= "SELECT * FROM qnas order by id desc limit ?, ?";
 	// QnA 갯수 카운트
 	public static final String SQL_CHECK_QNA_NUMBERS
 	= "select count(id) as cnt from qnas";	
@@ -69,7 +70,7 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 		= "delete faqs where id = ?";
 	// Faq 페이지 조회
 	public static final String SQL_FAQ_SHOWALL_PG
-		= "SELECT * FROM faqs order by created_at desc limit ?, ?";
+		= "SELECT * FROM faqs order by id desc limit ?, ?";
 	// Faq 갯수 카운트
 	public static final String SQL_CHECK_FAQ_NUMBERS
 	= "select count(id) as cnt from faqs";	
@@ -97,7 +98,7 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 		= "delete notices where id = ?";
 	// Notice 페이지 조회
 	public static final String SQL_NOTICE_SHOWALL_PG
-		= "SELECT * FROM notices order by created_at desc limit ?, ?";
+		= "SELECT * FROM notices order by id desc limit ?, ?";
 	// Notice 갯수 카운트
 	public static final String SQL_CHECK_NOTICE_NUMBERS
 	= "select count(id) as cnt from notices";	
@@ -107,22 +108,22 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 
 	// Comment 목록 보여주기
 	public static final String SQL_COMMENT_SHOWALL
-		= "select * from comments order by created_at desc";
+		= "select * from qna_comment order by created_at desc";
 	// Comment 등록하기
 	public static final String SQL_COMMENT_INSERT_VO
-		= "insert into comments values(0, ?, ?, ?, ?, ?, ?, ?, now())";
+		= "insert into qna_comment values(0, ?, ?, ?, ?, ?, ?, ?, now())";
 	// Comment 수정하기
 	public static final String SQL_COMMENT_UPDATE_VO
-		= "update comments set cMIF = ? where id = ?";
+		= "update qna_comment set cMIF = ? where id = ?";
 	// Comment 삭제하기
 	public static final String SQL_COMMENT_DELETE_VO
-		= "delete comments where id = ?";
+		= "delete qna_comment where id = ?";
 	// Comment 페이지 조회
 	public static final String SQL_COMMENT_SHOWALL_PG
-		= "SELECT * FROM comments order by created_at desc limit ?, ?";
+		= "SELECT * FROM qna_comment order by id desc limit ?, ?";
 	// Comment 갯수 카운트
 	public static final String SQL_CHECK_COMMENT_NUMBERS
-	= "select count(id) as cnt from comments";	
+	= "select count(id) as cnt from qna_comment";	
 		
 	
 	
@@ -155,20 +156,12 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 
 	@Override
 	public List<QnaVO> showAllQnas(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.query(SQL_QNA_SHOWALL_PG, BeanPropertyRowMapper.newInstance(QnaVO.class), offset, limit);
 	}
 
 	@Override
 	public int checkNumberOfQnas() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean insertNewComment(QnaCommentVO QC) {
-		// TODO Auto-generated method stub
-		return false;
+		return jtem.queryForObject(SQL_CHECK_QNA_NUMBERS, Integer.class);
 	}
 
 	@Override
@@ -191,14 +184,12 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 
 	@Override
 	public List<FaqVO> showAllFaqs(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.query(SQL_FAQ_SHOWALL_PG, BeanPropertyRowMapper.newInstance(FaqVO.class), offset, limit);
 	}
 
 	@Override
 	public int checkNumberOfFaqs() {
-		// TODO Auto-generated method stub
-		return 0;
+		return jtem.queryForObject(SQL_CHECK_FAQ_NUMBERS, Integer.class);
 	}
 
 	@Override
@@ -227,44 +218,40 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 
 	@Override
 	public List<NoticeVO> showAllNotices(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		return jtem.query(SQL_NOTICE_SHOWALL_PG, BeanPropertyRowMapper.newInstance(NoticeVO.class), offset, limit);
 	}
 
 	@Override
 	public int checkNumberOfNotices() {
-		// TODO Auto-generated method stub
-		return 0;
+		return jtem.queryForObject(SQL_CHECK_NOTICE_NUMBERS, Integer.class);
 	}
 
 	@Override
-	public boolean insertNewComment(CommentClassVO cm) {
+	public boolean insertNewComment(QnaCommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean updateComment(CommentClassVO cm) {
+	public boolean updateComment(QnaCommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean deleteComment(CommentClassVO cm) {
+	public boolean deleteComment(QnaCommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List<CommentClassVO> showAllComments(int offset, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+	public List <QnaCommentVO> showAllComments(int offset, int limit) {
+		return jtem.query(SQL_COMMENT_SHOWALL_PG, BeanPropertyRowMapper.newInstance(QnaCommentVO.class), offset, limit);
 	}
 
 	@Override
 	public int checkNumberOfComments() {
-		// TODO Auto-generated method stub
-		return 0;
+		return jtem.queryForObject(SQL_CHECK_COMMENT_NUMBERS, Integer.class);
 	}
 
 }

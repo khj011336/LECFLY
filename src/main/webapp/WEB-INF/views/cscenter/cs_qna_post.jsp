@@ -43,7 +43,8 @@
 	            	<th>이름</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_name"  name="mbId" placeholder="${mbName}" value="123" readonly>
+		            		<input type="hidden" name="mbId" value="${mb.id}" >
+		            		<input type="text" class="input input_qna_name"  name="mbname" placeholder="이름없음" value="${mb.name}" readonly>
 		            	</div>
 	            	</td>
 	            </tr>
@@ -51,7 +52,7 @@
 	            	<th>닉네임</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_id" name="mbNicname" placeholder="${mbnicname}" value="홍길동" readonly>
+		            		<input type="text" class="input input_qna_id" name="mbNicname" placeholder="닉네임 없음" value="${mb.nicname}" readonly>
 		            	</div>
 	            	</td>
 	            </tr>
@@ -59,7 +60,7 @@
 	            	<th>휴대폰</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_phone" placeholder="${mbphNumber}" value="${mbphNumber}" readonly>
+		            		<input type="text" class="input input_qna_phone" placeholder="연락처 없음" value="${mb.phNumber}" readonly>
 		            	</div>
 	            	</td>
 	            </tr>
@@ -67,7 +68,7 @@
 	            	<th>이메일</th>
 	            	<td>
 		            	<div class="post_input_wrap">
-		            		<input type="text" class="input input_qna_email" placeholder="${mbemail}" value="${mbemail}" readonly>
+		            		<input type="text" class="input input_qna_email" placeholder="이메일없음" value="${mb.email}" readonly>
 		            	</div>
 		            </td>
 	            </tr>

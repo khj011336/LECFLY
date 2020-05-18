@@ -88,12 +88,30 @@ public class AdminMemberSVCImpl implements IAdminMemberSVC {
 		rMap.put("maxPg", maxPg);
 		return rMap;
 	}
+	
+	@Override
+	public Map<String, Integer> checkMaxPageNumberForCreator() {
+		int totalRecords = amDao.checkNumberOfCreators();
+		int maxPg = totalRecords / AD_PAGE_SIZE + (
+				totalRecords % AD_PAGE_SIZE == 0 ? 0 : 1 );
+		HashMap<String,Integer> rMap = new HashMap<>();
+		rMap.put("totalRecords", totalRecords);
+		rMap.put("maxPg", maxPg);
+		return rMap;
+	}
 
 	@Override
 	public List<MemberVO> selectAllMember(int pageNumber) {
 		int offset = (pageNumber -1)*AD_PAGE_SIZE;
 		List<MemberVO> mbList = amDao.searchMemberForAll(offset, AD_PAGE_SIZE);
 		return mbList;
+	}
+
+	@Override
+	public List<CreatorVO> selectAllCreator(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<CreatorVO> crList = amDao.searchCreatorForAll(offset, AD_PAGE_SIZE);
+		return crList;
 	}
 
 }
