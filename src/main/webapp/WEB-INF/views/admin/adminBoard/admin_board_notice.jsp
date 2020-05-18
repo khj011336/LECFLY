@@ -111,16 +111,15 @@
 		</tr>
 		<c:forEach items="${ntList}" var="nt" varStatus="vs">
 		<tr>
-			<td><input type="checkbox" name="checked" value="${nt.id }"/></td>  
-			<td>${vs.count }</td> 
-			<td>${nt.id }</td> 
-			<td>${nt.stype }</td> 
-			<td>${nt.mbId }</td> 
+			<td><input type="checkbox" name="checked" value="${nt.id}"/></td>  
+			<td>${vs.count}</td> 
+			<td>${nt.id}</td> 
+			<td>${nt.stype}</td> 
 			<%-- <td>${nt.title }</td>  --%>
 			<td>
 				<c:choose>
-					<c:when test="${fn:length(nt.title) gt 10}"> <%--10글자 이상일 시 --%>
-		 		    <c:out value="${fn:substring(nt.title,0,9)}...">
+					<c:when test="${fn:length(nt.title) gt 15}"> <%--10글자 이상일 시 --%>
+		 		    <c:out value="${fn:substring(nt.title,0,14)}...">
 		 		    </c:out></c:when> 
 		 		    <c:otherwise>
 		 		    <c:out value="${nt.title}">
@@ -130,17 +129,17 @@
 			<%-- <td>${nt.content}</td>  --%>
 			<td>
 				<c:choose>
-					<c:when test="${fn:length(nt.content) gt 15}"> <%--15글자 이상일 시 --%>
-		 		    <c:out value="${fn:substring(cnt.content,0,14)}...">
+					<c:when test="${fn:length(nt.content) gt 20}"> <%--15글자 이상일 시 --%>
+		 		    <c:out value="${fn:substring(nt.content,0,19)}...">
 		 		    </c:out></c:when> 
 		 		    <c:otherwise>
 		 		    <c:out value="${nt.content}">
 		 		    </c:out></c:otherwise>
 	 		    </c:choose>
 			</td>
-			<td>${nt.writedDay }</td> 
-			<td>${nt.updatedDay }</td> 
-			<td>${nt.hits }</td> 
+			<td>${nt.writedDay}</td> 
+			<td>${nt.updatedDay}</td> 
+			<td>${nt.hits}</td> 
 			<td><button value="미리보기"></button></td> 
 		</tr>
 		</c:forEach>

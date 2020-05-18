@@ -117,8 +117,8 @@
 			<%-- <td>${faq.title}</td> --%>
 			<td>
 				<c:choose>
-				<c:when test="${fn:length(faq.title) > 10}"> 
-				<c:out value="${fn:substring(faq.title,0,9)}"/>...
+				<c:when test="${fn:length(faq.title) > 20}"> 
+				<c:out value="${fn:substring(faq.title,0,19)}"/>...
 				</c:when>
 				<c:otherwise>
 				<c:out value="${faq.title}"/>
@@ -128,8 +128,8 @@
 			<%-- <td>${faq.content}</td> --%>
 			<td>
 				<c:choose>
-				<c:when test="${fn:length(faq.content) > 20}"> 
-				<c:out value="${fn:substring(faq.content,0,19)}"/>...
+				<c:when test="${fn:length(faq.content) > 30}"> 
+				<c:out value="${fn:substring(faq.content,0,29)}"/>...
 				</c:when>
 				<c:otherwise>
 				<c:out value="${faq.content}"/>

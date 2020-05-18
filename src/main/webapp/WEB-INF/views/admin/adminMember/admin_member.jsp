@@ -146,7 +146,7 @@
 	</table>
 	<div id="paginate">
 		<c:if test="${pn > 1}">
-			<a href="${pageContext.request.contextPath}/admin_member_list.LF?pn=${pn-1}">[이전]</a>
+			<a href="${pageContext.request.contextPath}/admin_member.LF?pn=${pn-1}">[이전]</a>
 		</c:if>
 		 &nbsp; &nbsp;
 		<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
@@ -154,7 +154,7 @@
 				<b style='color: orange'>${vs.current}</b>
 			</c:if>	
 			<c:if test='${vs.current ne pn}'>
-				<a href="${pageContext.request.contextPath}/admin_member_list.LF?pn=${vs.current}">${vs.current}</a>
+				<a href="${pageContext.request.contextPath}/admin_member.LF?pn=${vs.current}">${vs.current}</a>
 			</c:if>
 			 &nbsp;
 			 	
@@ -162,7 +162,7 @@
 		</c:forEach>
 		 &nbsp; &nbsp;
 		<c:if test="${pn < maxPn}">
-			<a href="${pageContext.request.contextPath}/admin_member_list.LF?pn=${pn+1}">[다음]</a>
+			<a href="${pageContext.request.contextPath}/admin_member.LF?pn=${pn+1}">[다음]</a>
 		</c:if>
 	</div>
 </div>
