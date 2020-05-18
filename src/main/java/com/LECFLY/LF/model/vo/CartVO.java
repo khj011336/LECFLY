@@ -2,7 +2,7 @@ package com.LECFLY.LF.model.vo;
 
 import java.sql.Timestamp;
 
-public class ShopcartVO {
+public class CartVO {
 	/** 순서번호*/
 	int id;          	
 	/** 회원의 PK          /fk/*/
@@ -19,7 +19,7 @@ public class ShopcartVO {
 	/**
 	 * 더미
 	 */
-	public ShopcartVO() {
+	public CartVO() {
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public class ShopcartVO {
 	 * @param addAt
 	 * @param kOrFCnt
 	 */
-	public ShopcartVO(int id, int addMbId, int kOrF, int kOrFId, Timestamp addAt, int kOrFCnt) {
+	public CartVO(int id, int addMbId, int kOrF, int kOrFId, Timestamp addAt, int kOrFCnt) {
 		super();
 		this.id = id;
 		this.addMbId = addMbId;
@@ -79,7 +79,7 @@ public class ShopcartVO {
 	}
 	@Override
 	public String toString() {
-		return "ShopcartVO [id=" + id + ", addMbId=" + addMbId + ", kOrF=" + kOrF + ", kOrFId=" + kOrFId + ", addAt="
+		return "CartVO [id=" + id + ", addMbId=" + addMbId + ", kOrF=" + kOrF + ", kOrFId=" + kOrFId + ", addAt="
 				+ addAt + ", kOrFCnt=" + kOrFCnt + "]";
 	}
 	
