@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 import com.LECFLY.LF.model.vo.CouponVO;
@@ -384,9 +385,19 @@ public class MemberController {
 		return "redirect:mypage.LF?pn=apply_creator"; // ??? 조각페이지면 이런형식으로 띄우고 이거 체크필요
 	}
 	
+	@RequestMapping(value="mypage_delete_attending_lec.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageDeleteAttendingLec(HttpSession ses) 
+	{
+		System.out.println("memberMypageDeleteAttendingLec()");
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		
+		return null;
+	}
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
-	
 //	수강중인강의
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_attending_lec.LF", method=RequestMethod.POST)
@@ -404,7 +415,7 @@ public class MemberController {
 				model.addAttribute("scvList", scvList);
 			} else {
 				System.out.println("scvList = null");
-				model.addAttribute("msg_status", "수강중인");
+				model.addAttribute("msg_status", "수강중인 강의");
 				model.addAttribute("mp_msg", "수강중인 강의 내역이 없습니다.");
 			}
 			return "member/mypage/attend_lec_manager/mypage_attending_lec";
@@ -436,7 +447,7 @@ public class MemberController {
 		
 			} else {
 				
-				model.addAttribute("msg_status", "찜하기한");
+				model.addAttribute("msg_status", "찜하기한 강의");
 				model.addAttribute("mp_msg", "찜하기한 강의 내역이 없습니다.");
 			}
 			return "member/mypage/attend_lec_manager/mypage_will_attend";
@@ -468,7 +479,7 @@ public class MemberController {
 			model.addAttribute("creNickNameList", creNickNameList);
 	
 		} else {
-			model.addAttribute("msg_status", "좋아요한");
+			model.addAttribute("msg_status", "좋아요한  강의");
 			model.addAttribute("mp_msg", "좋아요한 강의 내역이 없습니다.");
 		}
 		return "member/mypage/attend_lec_manager/mypage_like";
@@ -519,7 +530,8 @@ public class MemberController {
 			model.addAttribute("qnaList", qnaList);
 			model.addAttribute("pn", pageNumber);
 		} else {
-			
+			model.addAttribute("msg_status", "댓글 내역");
+			model.addAttribute("mp_msg", mb.getNicname() + " 님의 댓글 내역이 없습니다.");
 		}
 		return "member/mypage/activity/mypage_comment";
 	}
@@ -535,11 +547,7 @@ public class MemberController {
 		int mbId = mb.getId();
 		System.out.println("mb = " + mb);
 		Map<String, Object> qnaMap = mpSvc.selectAllMyQna(mbId, pageNumber);
-		for(String k : qnaMap.keySet()) {
-			System.out.println("k = " + k );
-		}
 		
-		System.out.println("qnaMap = " + qnaMap);
 		if( qnaMap != null ) {
 			int totalRecords = (int)qnaMap.get("totalRecords");
 			int maxPG = (int)qnaMap.get("maxPG");
@@ -548,15 +556,22 @@ public class MemberController {
 			model.addAttribute("maxPG", maxPG);
 			model.addAttribute("qnaList", qnaList);
 			model.addAttribute("pn", pageNumber);
-		} 
+		} else {
+			model.addAttribute("msg_status", "문의 내역" );
+			model.addAttribute("mp_msg", mb.getNicname() + " 님의 문의 내역이 없습니다.");
+		}
 		return "member/mypage/activity/mypage_qna";
+		
 	}
 //펀딩신청내역 확인하기									펀딩신청내역
 //	mypage_funding.lf(proc,post,dao)		해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_funding.LF", method=RequestMethod.POST)
-	public String memberMypageFunding() {
+	public String memberMypageFunding(Model model) {
 		System.out.println("memberMypageFunding()...");	
-		return "member/mypage/activity/mypage_funding";
+		model.addAttribute("msg_status", "펀딩신청 내역" );
+		model.addAttribute("mp_msg", "펀딩은 다음 버전에 업데이트 될 예정입니다 :)");
+		
+		return "member/mypage/attend_lec_manager/mypage_no_list";
 	}
 	
 //회원이 보유중인 쿠폰 표시							나의쿠폰
@@ -579,6 +594,8 @@ public class MemberController {
 			model.addAttribute("pn", pageNumber);
 		} else {
 			System.out.println("couponMap 은 null");
+			model.addAttribute("msg_status", "나의 쿠폰" );
+			model.addAttribute("mp_msg", mb.getNicname() + " 님이 등록하신 쿠폰이 없습니다.");
 		}
 		
 		return "member/mypage/activity/mypage_coupon_info";

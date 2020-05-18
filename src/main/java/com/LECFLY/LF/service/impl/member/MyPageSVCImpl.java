@@ -71,7 +71,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Override // 마이페이지 멤버가 사진업데이트 하려면..~~~
 	public boolean updateMemberProfileImg(int mbId, String pic) {
 		System.out.println("updateMemberProfileImg()..."); 
-		boolean r = mbDao.updateMemberProfileImg(mbId, pic);
+		boolean r = mbDao.updateMemberProfileImg(mbId, pic); // 미구현
 		if( r ) {
 			System.out.println("member 사진 업데이트 성공");
 			return true;

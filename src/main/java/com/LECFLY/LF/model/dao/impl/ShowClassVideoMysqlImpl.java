@@ -59,22 +59,22 @@ public class ShowClassVideoMysqlImpl implements IShowClassVideoDAO {
 					ShowClassVideoVO.STATUS_LIKE + ", ?, ?, ?, ?, ?, ?, now())";
 	
 	public static final String SQL_SELECT_ALL_SCV_FOR_MBID_STATUS = 
-				"select * from show_class_video where mb_id = ?, status = ?";
+				"select * from show_class_video where mb_id = ? and status = ?";
 	
 	public static final String SQL_SELECT_ALL_VDID_FOR_MBID_STATUS = 
-			"select video_id from show_class_video where mb_id = ?, status = ?";
+			"select video_id from show_class_video where mb_id = ? and status = ?";
 	
 	public static final String SQL_CHECK_SVC_STATUS_ATTENDING = 
-			"select count(*) from show_class_video where mb_id = ?, status = " + 
+			"select count(*) from show_class_video where mb_id = ? and status = " + 
 					ShowClassVideoVO.STATUS_ATTENDING + ", video_id = ?";
 	
 	public static final String SQL_CHECK_SVC_STATUS_WILL_ATTENDING = 
-			"select count(*) from show_class_video where mb_id = ?, status = " + 
-					ShowClassVideoVO.STATUS_WILL_ATTENDING + ", video_id = ?";
+			"select count(*) from show_class_video where mb_id = ? and status = " + 
+					ShowClassVideoVO.STATUS_WILL_ATTENDING + " and video_id = ?";
 	
 	public static final String SQL_CHECK_SVC_STATUS_LIKE = 
-			"select count(*) from show_class_video where mb_id = ?, status = " + 
-					ShowClassVideoVO.STATUS_LIKE + ", video_id = ?"; 
+			"select count(*) from show_class_video where mb_id = ? and status = " + 
+					ShowClassVideoVO.STATUS_LIKE + " and video_id = ?"; 
 	
 	public static final String SQL_DELETE_SVC = 
 			"delete show_class_video where id = ?"; 
@@ -368,6 +368,8 @@ public class ShowClassVideoMysqlImpl implements IShowClassVideoDAO {
 	public List<ShowClassVideoVO> selectLecToStatusForMbId(int mbId, int status) {
 		System.out.println("selectAllAttendingLecByMbId()...");
 		try {
+			System.out.println(SQL_SELECT_ALL_SCV_FOR_MBID_STATUS + 
+					" / mb_id =" + mbId + " / status = " + status);
 			List<ShowClassVideoVO> scvList =
 					jtem.query(SQL_SELECT_ALL_SCV_FOR_MBID_STATUS, 
 							new ShowClassVideoRowMapperImpl(), mbId, status);
