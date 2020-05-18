@@ -6,17 +6,41 @@
 	width: 1200px;
 	min-height: 700px;
 }
-
+#receiveBoard_button {
+	margin: 0px auto;
+	width: 900px;
+	height: 40px;
+}
+#button_left {
+	float: left;
+}
+#button_right {
+	float: right;
+}
+#rbBtn{
+	display: inline-block;
+    width: 50px;
+	height: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-top: 5px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: buttonface;
+	border: 1px solid grey;
+	border-radius: 3px;
+}
 #receiveBoard_content {
 	margin: 0px auto;
 	padding: 50px;
-	width: 1000px;
+	width: 800px;
 	border: 1px solid black;
 }
 
 .receiveBoard_content_title {
 	padding-bottom: 10px;
 	border-bottom: 1px dashed #999999;
+	font-size: 16px;
 }
 
 .divider {
@@ -29,16 +53,15 @@
 	color: #666666;
 }
 
-.receiveBoard_category:hover {
-	color: #ff4400;
-}
-
 .titleRight {
 	font-size: 11px;
 	color: #666666;
 	float: right;
 }
-
+.readhits{
+	font-size: 13px;
+	color: orangered;
+}
 .receiveBoradgrade {
 	font-size: 11px;
 	color: #666666;
@@ -51,11 +74,28 @@
 .readLeft {
 	float: left;
 }
-
+.readLeft strong {
+	font-size: 14px;
+}
+.board_info_uploader_img { /* 게시판_업로더 사진 */
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	vertical-align: middle;
+	display: inline-block;
+}
 #receiveBoard_articleBody {
 	padding: 30px 15px;
 	min-height: 500px;
 	clear: both;
+	font-size: 18px;
+}
+
+#receiveBoard_articleBody >textarea {
+	font-size: 18px;
+	border: none;
+	width: 770px;
+	height: 500px;
 }
 
 #reply_count, #reply_selection, #reply_select,
@@ -69,8 +109,11 @@
 }
 
 #receiveBoard_bottom {
+	margin-top: 10px;
 	background-color: lightgray;
 	padding: 15px;
+	border-top: 1px dashed #999999;
+	font-size: 14px;
 }
 
 .counter {

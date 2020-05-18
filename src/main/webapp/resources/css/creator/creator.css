@@ -478,6 +478,7 @@ border: none;
 }
 #uplL textarea{
     width: 550px;
+    color: black;
 }
 #uply{
     font-size: 20px;
@@ -770,6 +771,7 @@ border: none;
 
             /* _sellkitregistration.html 공통*/
             
+          
 #sellkitregistration_wrap {
 	position: relative;
 	top: 36px;
@@ -847,6 +849,7 @@ font-weight: bold;
 .sellkitregistration_main_center {
 	width: 950px;
     clear: both;
+    padding-left: 115px;
 }
 
 /* 상품이미지 안에있는 img 들묶은 div */
@@ -869,7 +872,7 @@ font-weight: bold;
 /* 대표이미지, 추가이미지 버튼역할 하는 div */
 .sellkitregistration_img_add_btn_div {
 	width: 188px;
-	height: 20px;
+	height: 25px;
 	border: 1px solid black;
 	background-color: gray;
 	text-align: center;
@@ -963,7 +966,23 @@ font-weight: bold;
 	height:30px;
 	margin-left: 860px;
 }
-
+/* 페이지버튼 */
+#paginate{
+	margin-top:15px;
+	text-align: center;
+	padding: 0px auto;
+}
+#paginate *{
+	font-size: 23px;
+	cursor: pointer;
+	width: 60px;
+}
+#paginate span{
+	padding:3px 10px;
+	width:15px;
+	box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 1px 0px, rgba(41, 42, 43, 0.34) 0px 1px 3px 0px;
+}
+/* 페이지버튼 */
 /* /* ------------------------------------------------- */
 #shoppingCart_wrapper a {
 	color: black;

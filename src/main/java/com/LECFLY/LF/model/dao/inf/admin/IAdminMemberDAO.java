@@ -2,7 +2,6 @@ package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 
@@ -17,7 +16,7 @@ public interface IAdminMemberDAO {
 	// 일반 회원을 상세조회할 수 있다.
 	MemberVO selectNomalMember(MemberVO vo);
 	// 일반 회원을 전체조회할 수 있다.
-	List<MemberVO> selectNomalMemberList(MemberVO vo);
+	List<MemberVO> selectNomalMemberList();
 	
 	// 크리에이터 관리
 	// 을 등록할 수 있다.
@@ -29,6 +28,11 @@ public interface IAdminMemberDAO {
 	// 을 상세조회할 수 있다.
 	CreatorVO selectCreatorMember(CreatorVO vo);
 	// 을 전체조회할 수 있다.
-	List<CreatorVO> selectCreatorMemberList(CreatorVO vo);
+	List<CreatorVO> selectCreatorMemberList();
 	
+	int checkNumberOfCreators();
+	int checkNumberOfMembers();
+	
+	List<CreatorVO> searchCreatorForAll(int offset, int limit);
+	List<MemberVO> searchMemberForAll(int offset, int limit);
 }

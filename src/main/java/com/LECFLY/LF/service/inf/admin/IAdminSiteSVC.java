@@ -49,5 +49,6 @@ public interface IAdminSiteSVC {
 		List<LectureVO> selectLectureListForCategory(int category);
 		// 키워드로 강의를 검색할 수 있다. 
 		List<LectureVO> selectLectureListForKeyword(String keyword);	
-		
+		// 좋아요 한 강의 id를 가져온다.
+		List<Integer> getLikeLectures(int memberId);
 }

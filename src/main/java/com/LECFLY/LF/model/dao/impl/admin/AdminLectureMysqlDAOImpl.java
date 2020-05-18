@@ -2,6 +2,9 @@ package com.LECFLY.LF.model.dao.impl.admin;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminLectureDAO;
@@ -11,8 +14,22 @@ import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 
+@Repository
 public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 
+	@Autowired
+	private JdbcTemplate jtem;
+	
+	/** 전체 강의목록 조회 */
+	public static String SQL_ADMIN_SELECT_LECTURE_ALL = 
+			"SELECT * FROM LECTURES ORDER BY ID ASC";
+	/** 전체 강의갯수 조회 */
+	public static String SQL_SELECT_LECTURE_NUMBER = 
+			"SELECT COUNT(ID) FROM LECTURES";
+	/** 전체 강의목록 조회(페이지별) */
+	public static String SQL_SELECT_LECTURE_ALL_PG = 
+			"SELECT * FROM LECTURES ORDER BY ID DESC LIMIT ?,?";
+	
 	@Override
 	public boolean insertLecture(LectureVO vo) {
 		// TODO Auto-generated method stub
@@ -38,9 +55,8 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<LectureVO> selectLectureList(LectureVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<LectureVO> selectLectureList() {
+		return jtem.query(SQL_ADMIN_SELECT_LECTURE_ALL, BeanPropertyRowMapper.newInstance(LectureVO.class));
 	}
 
 	@Override
@@ -68,7 +84,7 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<VideoVO> selectVideoList(VideoVO vo) {
+	public List<VideoVO> selectVideoList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -98,7 +114,7 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<KitVO> selectKitList(KitVO vo) {
+	public List<KitVO> selectKitList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -128,9 +144,20 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public List<CouponVO> selectCouponList(CouponVO vo) {
+	public List<CouponVO> selectCouponList() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int checkNumberOfLectures() {
+		return jtem.queryForObject(SQL_SELECT_LECTURE_NUMBER, Integer.class);
+	}
+
+	@Override
+	public List<LectureVO> searchLectureForAll(int offset, int limit) {
+		return jtem.query(SQL_SELECT_LECTURE_ALL_PG, BeanPropertyRowMapper.newInstance(LectureVO.class),
+				offset, limit);
 	}
 
 }

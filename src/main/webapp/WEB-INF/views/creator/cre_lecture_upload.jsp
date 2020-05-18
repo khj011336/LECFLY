@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <script>
-    	
-    </script>
+    
 	<%@include file="cre_status.jsp" %>
 	<div id="cls_wrap">
 	<form id = "lecform" class='pubf'  method="post" enctype="multipart/form-data" action="creator_rightset_proc.LF">
@@ -10,7 +8,7 @@
        		<div id="cls_head"><span class="creator_h1">클래스기본정보</span></div>
        		<div id="cls_part1">
        			<div id="cls_form">
-       			<input type="hidden" name="unloadA" value="." id = "unloadb">
+       			<input type="hidden" name="unloadB" value="." id = "unloadb">
        			<input type= "hidden" name = "id"value ="${Lecture.id}">
        			<input type= "hidden" name = "fid"value ="${Lecture.fid}">
        			<input type= "hidden" name= "titleImg" value ="${Lecture.titleImg}" id ="temp1">

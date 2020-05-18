@@ -30,5 +30,5 @@ public interface IFaqDAO {
 	List<FaqVO> showAllFaqsForType(int type, boolean order);	
 	List<FaqVO> showAllFaqsForType(int type, int offset, int limit);
 	List<FaqVO> showAllFaqsForType(int type, int offset, int limit, boolean order);
-	int checkNumberOfFaqsForType();
+	int checkNumberOfFaqsForType(int type);
 }

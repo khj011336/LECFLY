@@ -1,5 +1,7 @@
 package com.LECFLY.LF.model.vo.creator;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class KitVO {
 private int id ;		//PK AI
 private int fId;		//FK
@@ -9,11 +11,19 @@ private int attribute;	// 상퓸속성
 private String title;	// 상품이름
 private int price;		// 상품가격
 private int remain;
+private String imgPath;
 private String deliver;
 private int deliveryPrice;
 private String fromTo;
 private String info;
-private String DetailInfo;
+private String detailInfo;
+private MultipartFile kitImg;
+public MultipartFile getKitImg() {
+	return kitImg;
+}
+public void setKitImg(MultipartFile kitImg) {
+	this.kitImg = kitImg;
+}
 public int getId() {
 	return id;
 }
@@ -87,19 +97,34 @@ public void setInfo(String info) {
 	this.info = info;
 }
 public String getDetailInfo() {
-	return DetailInfo;
+	return detailInfo;
 }
 public void setDetailInfo(String detailInfo) {
-	DetailInfo = detailInfo;
+	this.detailInfo = detailInfo;
+}
+
+public String getImgPath() {
+	return imgPath;
+}
+public void setImgPath(String imgPath) {
+	this.imgPath = imgPath;
+}
+ 
+@Override
+public String toString() {
+	return "KitVO [id=" + id + ", fId=" + fId + ", CFId=" + CFId + ", category=" + category + ", attribute=" + attribute
+			+ ", title=" + title + ", price=" + price + ", remain=" + remain + ", imgPath=" + imgPath + ", deliver="
+			+ deliver + ", deliveryPrice=" + deliveryPrice + ", fromTo=" + fromTo + ", info=" + info + ", DetailInfo="
+			+ detailInfo + "]";
 }
 public KitVO() {}
-public KitVO( int category, int attribute, String title, int price, int remain,
-		String deliver, int deliveryPrice, String fromTo, String info, String detailInfo) {
-	this(0,0,0, category, attribute, title, price,remain ,deliver, deliveryPrice, fromTo, info, detailInfo);
+public KitVO( int fId, int cFId, int category, int attribute, String title, int price, int remain,
+		String imgPath, String deliver, int deliveryPrice, String fromTo, String info, String detailInfo) {
+	this(0, fId, cFId, category, attribute, title,
+			price, remain, imgPath, deliver, deliveryPrice, fromTo, info, detailInfo);
 }
-	
 public KitVO(int id, int fId, int cFId, int category, int attribute, String title, int price, int remain,
-		String deliver, int deliveryPrice, String fromTo, String info, String detailInfo) {
+		String imgPath, String deliver, int deliveryPrice, String fromTo, String info, String detailInfo) {
 	super();
 	this.id = id;
 	this.fId = fId;
@@ -109,18 +134,12 @@ public KitVO(int id, int fId, int cFId, int category, int attribute, String titl
 	this.title = title;
 	this.price = price;
 	this.remain = remain;
+	this.imgPath = imgPath;
 	this.deliver = deliver;
 	this.deliveryPrice = deliveryPrice;
 	this.fromTo = fromTo;
 	this.info = info;
-	DetailInfo = detailInfo;
-}
-@Override
-public String toString() {
-	return "KitVO [id=" + id + ", fId=" + fId + ", CFId=" + CFId + ", category=" + category + ", attribute=" + attribute
-			+ ", title=" + title + ", price=" + price + ", remain=" + remain + ", deliver=" + deliver
-			+ ", deliveryPrice=" + deliveryPrice + ", fromTo=" + fromTo + ", info=" + info + ", DetailInfo="
-			+ DetailInfo + "]";
+	this.detailInfo = detailInfo;
 }
 
 }

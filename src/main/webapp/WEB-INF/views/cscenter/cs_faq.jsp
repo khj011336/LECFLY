@@ -10,12 +10,6 @@
 <title>CSCENTER/FAQ</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<script type="text/javascript">
-	function selectFaq(fqId) { window.location.href		
-			= '${pageContext.request.contextPath}'
-			+ '/faq_receive.LF?id='+ Id;
-	}	
 </script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
@@ -39,26 +33,25 @@
            
            <div id="faq_nav">
            <ul>
-           	   <li><a href="#" id="faq_0">전체</a></li>
-               <li><a href="#" id="faq_1">이용안내</a></li>
-               <li><a href="#" id="faq_2">강의수강</a></li>
-               <li><a href="#" id="faq_3">준비물 키트</a></li>
-               <li><a href="#" id="faq_4">결제/환불</a></li>
-               <li><a href="#" id="faq_5">크리에이터</a></li>
-               <li><a href="#" id="faq_6">기타</a></li>
+           	   <li><a href="cs_faq.LF" style="background-color: orange" id="faq_0">전체</a></li>
+               <li><a href="cs_faq_1.LF" id="faq_1">이용안내</a></li>
+               <li><a href="cs_faq_2.LF" id="faq_2">강의수강</a></li>
+               <li><a href="cs_faq_3.LF" id="faq_3">준비물 키트</a></li>
+               <li><a href="cs_faq_4.LF" id="faq_4">결제/환불</a></li>
+               <li><a href="cs_faq_5.LF" id="faq_5">크리에이터</a></li>
+               <li><a href="cs_faq_6.LF" id="faq_6">기타</a></li>
            </ul>
            </div>
            </div>
            <div id="faq_main">
            		<div id="faq_table">
-           		<h3>(test용 전체 게시글 리스트: ${pn}페이지-
-           			<c:out value="${fqSize}" default="0"/>개)</h3>
+           		
            			<c:if test="${!empty fqSize}">
 			    	<ul>
 			    		<c:forEach var="fq" items="${faq}" varStatus="vs">
 			    		<li>
 			    			<div id ="faq_acodian">
-			      		<div id="faq_aco_type">&#91;<c:out value="${fq.type}" default="type없음"/>&#93;</div>
+			      		<div id="faq_aco_type">&#91;<c:out value="${fq.stype}" default="type없음"/>&#93;</div>
 			      		<div id="faq_aco_title"><c:out value="${fq.title}" default="title없음"/></div>
 			             	<div id="faq_aco_txt">
 			             		<c:out value="${fq.content}" default="type없음"/>
@@ -68,6 +61,7 @@
 			    		</c:forEach>
 			    	</ul>
 			    	</c:if>
+			    	
 			        <div id="faq_numbering">
 			        	<c:if test="${pn > 1}">
 						<a href="${pageContext.request.contextPath}/cs_faq.LF?pn=${pn-1}">[PREV]</a>

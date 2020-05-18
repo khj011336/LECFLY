@@ -39,11 +39,10 @@ function checkVisible( box, tOf ) {
            data : {"page" : page},
            url : url,
            success : function(returnData) {
+        	 
         	   $(boxid).remove();
-        	   var cutor = $(boxid).html();
-        	   $(boxid).remove();
+        	   console.log(returnData)
         		$(appendid).append(returnData);
-        		$(appendid).append(cutor);
         	   page++;
         	   isVisible = false;
         	
@@ -57,19 +56,21 @@ function checkVisible( box, tOf ) {
        } 
    }
 }
-function selectLecture(Lcid) {
+function selectLecture(CFID,category) {
 	var form = document.createElement('form');
-	form.setAttribute('method', 'post');
+	form.setAttribute('method', 'Post');
 	form.setAttribute('action', 'creator_video_show.LF');
-	form.setAttribute('id', Lcid);
 	document.charset = "utf-8";
-//		for ( var key in params) {
-//			var hiddenField = document.createElement('input');
-//			hiddenField.setAttribute('type', 'hidden');
-//			hiddenField.setAttribute('name', key);
-//			hiddenField.setAttribute('value', params[key]);
-//			form.appendChild(hiddenField);
-//		}
+			var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name', "CFID");
+			hiddenField.setAttribute('value', CFID);
+			form.appendChild(hiddenField);
+			var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name',"category");
+			hiddenField.setAttribute('value', category);
+			form.appendChild(hiddenField);
 	document.body.appendChild(form);
 	form.submit();
 }

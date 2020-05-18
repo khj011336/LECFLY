@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
@@ -75,8 +74,9 @@ public class QnaSVCImpl implements IQnaSVC{
 	}
 	
 	@Override
-	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
-		return qaDao.updateQna(id, type, title, content, showPrivate);
+	public boolean updateQna(int id, String title, String content, int showPrivate) {
+		System.out.println("svcimpl test : "+ id+title+content+showPrivate);
+		return qaDao.updateQna(id, title, content, showPrivate);
 	}
 	
 	
@@ -88,8 +88,7 @@ public class QnaSVCImpl implements IQnaSVC{
 
 	@Override
 	public boolean deleteQna(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		return qaDao.deleteQna(id);
 	}
 
 	@Override
@@ -125,6 +124,19 @@ public class QnaSVCImpl implements IQnaSVC{
 		int maxPg = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 		return maxPg;
 	}
+	
+	@Override
+	public int checkPageNumber(int qaid) {
+		int totalRecords = qaDao.checkNumberOfQnas();
+			return ((totalRecords - qaid) / PAGE_SIZE)+1;
+//		int maxPg = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
+//		int endPgRecords = totalRecords -(totalRecords / PAGE_SIZE );
+//		if( qaid <= endPgRecords) {
+//			return maxPg;
+//		}else {
+//			return qaid / PAGE_SIZE;
+//		}
+	}
 
 	@Override
 	public boolean updateQna(QnaVO qa) {
@@ -132,12 +144,7 @@ public class QnaSVCImpl implements IQnaSVC{
 		return false;
 	}
 
-	@Override
-	public List<QnaRowVO> showAllQnasForRow(int pn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	
 	
 }

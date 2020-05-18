@@ -30,10 +30,10 @@ public class QnaCommentMysqlDAOImpl implements IQnaCommentDAO{
 	public static String SQL_INSERT_COMMENT 
 		= "insert into qna_comment values(0,?,?,?,?,?,?,now(),now())";
 	public static String SQL_SELECT_ALL_COMMENTS 
-		= "select * from qna_comment order by created_at desc";
+		="SELECT * FROM QNA_COMMENT ORDER BY IF(ISNULL(qna_comment_parents_id), qna_comment_id, qna_comment_parents_id), qna_comment_seq";
 	// 컴패션 2차정렬? 
-	public static String SQL_SELECT_ALL_COMMENTS_QNA 
-		= "select * from qna_comment where qna_id = ? order by created_at desc";
+	public static String SQL_SELECT_COMMENTS_QNA 
+		= "select * from qna_comment where qna_id = ? order by writed_day desc";
 	public static String SQL_COUNT_COMMENTS_QNA	
 		= "select count(*) from qna_comment where qna_id = ?";
 	@Override
@@ -54,7 +54,7 @@ public class QnaCommentMysqlDAOImpl implements IQnaCommentDAO{
 	}
 	@Override
 	public List<QnaCommentVO> qnaCommentListForQna(int qnaId) {
-		return jtem.query(SQL_SELECT_ALL_COMMENTS_QNA,BeanPropertyRowMapper.newInstance(QnaCommentVO.class));
+		return jtem.query(SQL_SELECT_COMMENTS_QNA,BeanPropertyRowMapper.newInstance(QnaCommentVO.class), qnaId);
 		}
 	@Override
 	public QnaCommentVO qnaCommentSelectOne(int id) {

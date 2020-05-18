@@ -15,6 +15,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js" type="text/javascript"></script> 
 <title>관리자 페이지</title>
+<script type="text/javascript">
+function checkAll(){
+    if( $("#checkAll").is(':checked') ){
+      $("input[name=checked]").prop("checked", true);
+    }else{
+      $("input[name=checked]").prop("checked", false);
+    }
+}
+</script>
+
 <style type="text/css">
 
 /* 관리자 리스트 출력 폼 */

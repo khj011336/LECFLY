@@ -1,10 +1,23 @@
 package com.LECFLY.LF.model.vo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FaqVO {
+	public static final String FAQ_TYPE_0 = "전체"; // 
+	public static final String FAQ_TYPE_1 = "이용안내"; // 이용안내
+	public static final String FAQ_TYPE_2 = "강의수강"; // 강의수강
+	public static final String FAQ_TYPE_3 = "준비물 키트"; // 준비물 키트
+	public static final String FAQ_TYPE_4 = "결제/환불"; // 결제/환불
+	public static final String FAQ_TYPE_5 = "크리에이터"; // 크리에이터
+	public static final String FAQ_TYPE_6 = "기타"; // 기타
+	
 	/** 자주묻는질문 글번호*/
 	int id; 
-	/** 분야	 0: 회원관련 1: 결제/배송관련 2: 이용권 3: 강의 4: 펀딩 5: 기타*/
+	/** 분야	 */
 	int type; 
+	/** 분야	 */
+	String stype;
 	/** 제목*/
 	String title;        
 	/** 내용 */
@@ -51,6 +64,30 @@ public class FaqVO {
 	public void setType(int type) {
 		this.type = type;
 	}
+	public String getStype() {
+		switch (type) {
+		case 0:
+			return FAQ_TYPE_0;
+		case 1:
+			return FAQ_TYPE_1;
+		case 2:
+			return FAQ_TYPE_2;
+		case 3:
+			return FAQ_TYPE_3;
+		case 4:
+			return FAQ_TYPE_4;
+		case 5:
+			return FAQ_TYPE_5;
+		case 6:
+			return FAQ_TYPE_6;
+		default:
+			break;
+		}
+		return stype;
+	}
+	public void setStype(String stype) {
+		this.stype = stype;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -70,5 +107,16 @@ public class FaqVO {
 	}
 	
 	
+//	public static String getFaqValueOfType(int typeKey) {
+//		Map<Integer, String>MAP_OF_TYPE = new HashMap<>();
+//		MAP_OF_TYPE.put(FAQ_TYPE_0, "전체");
+//		MAP_OF_TYPE.put(FAQ_TYPE_1, "이용안내");
+//		MAP_OF_TYPE.put(FAQ_TYPE_2, "강의수강");
+//		MAP_OF_TYPE.put(FAQ_TYPE_3, "준비물 키트");
+//		MAP_OF_TYPE.put(FAQ_TYPE_4, "결제/환불");
+//		MAP_OF_TYPE.put(FAQ_TYPE_5, "크리에이터");
+//		MAP_OF_TYPE.put(FAQ_TYPE_6, "기타");
+//		return MAP_OF_TYPE.get(typeKey); 
+//	}
 	
 }                                                   

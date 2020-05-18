@@ -2,6 +2,7 @@ package com.LECFLY.LF.service.impl.member;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,82 +17,128 @@ public class loginSVCImpl implements ILoginSVC {
 	@Autowired
 	MemberMySqlDAOImpl mbDao;
 	
-
-	public static final int MB_LOGIN_PARAM_ERROR = 1;
-	public static final int MB_PW_PARAM_ERROR = 2;
-	public static final int MB_LOGIN_NONE = 3;
-	public static final int MB_LOGIN_AUTH_OK = 4;
-	public static final int MB_LOGIN_PW_MISMATCH = 5;
-	
-	public static final HashMap<Integer, String> MB_MSG_MAP = new HashMap<Integer, String>();
-	
-	public static final String getMsg(int r) {
-		MB_MSG_MAP.put(MB_LOGIN_PARAM_ERROR, "로그인 파람 에러");
-		MB_MSG_MAP.put(MB_PW_PARAM_ERROR, "패스워드 파람 에러");
-		MB_MSG_MAP.put(MB_LOGIN_NONE, "가입되지 않은 회원 계정");
-		MB_MSG_MAP.put(MB_LOGIN_AUTH_OK, "로그인 인증 성공");
-		MB_MSG_MAP.put(MB_LOGIN_PW_MISMATCH, "로그인 암호 불일치");
+	@Override
+	public String getMsg(int r) {
+		MB_MSG_MAP.put(MB_EMAIL_ERROR, "로그인 비었음");
+		MB_MSG_MAP.put(MB_PW_ERROR, "패스워드 비었음");
+		MB_MSG_MAP.put(MB_EMAIL_NONE, "가입되지 않은 회원 이메일");
+		MB_MSG_MAP.put(MB_EMAIL_AUTH_OK, "로그인 인증 성공");
+		MB_MSG_MAP.put(MB_EMAIL_PW_MISMATCH, "로그인 암호 불일치");
 		return MB_MSG_MAP.get(r);
 	}
-	
 	
 	@Override
 	public int loginProcess(String email, String pw) {
 		if( email == null || email.isEmpty() ) {
-			return MB_LOGIN_PARAM_ERROR;
+			System.out.println(getMsg(MB_EMAIL_ERROR));
+			return MB_EMAIL_ERROR;
 		}
 		if( pw == null || pw.isEmpty() ) {
-			return MB_PW_PARAM_ERROR;
+			System.out.println(getMsg(MB_PW_ERROR));
+			return MB_PW_ERROR;
 		}
 		// 가입된 회원여부
-		if( mbDao.memberEamil(email) != 1 ) {
-			return MB_LOGIN_NONE;
+		int r = mbDao.memberEamil(email);
+		if( r == 0 ) {
+			System.out.println(getMsg(MB_EMAIL_NONE));
+			return MB_EMAIL_NONE;
 		} 
-		
 		// 패스워드 일치 여부 		controller단에서 아래 함수 재사용
 		MemberVO mb = this.mbDao.memberPassword(email, pw);
 		if( mb == null ) {
-			return MB_LOGIN_PW_MISMATCH;
-		} else {
-			return MB_LOGIN_AUTH_OK;
+			System.out.println(getMsg(MB_EMAIL_PW_MISMATCH));
+			return MB_EMAIL_PW_MISMATCH;
+		} else { //패스워드 일치
+			System.out.println(getMsg(MB_EMAIL_AUTH_OK));
+			return MB_EMAIL_AUTH_OK;
 		}
+	}
+	
+	@Override
+	public MemberVO login(String email, String pw) {
+		return this.mbDao.memberPassword(email, pw);
 	}
 
 	@Override
 	public boolean joinMember(String pic, String name, String nicname, Timestamp birthday, int gender, String email,
 			String password, String phNumber, int agreeReceive, String basicAddress, String detailAddress,
 			int postalCode) {
+		
+		
+		if ( name != null && nicname != null && birthday != null && gender < 0 && gender < 4 && email != null && 
+				password != null && phNumber != null && agreeReceive < -1 && agreeReceive > 4) {
+		} else {
+
+		}
+		
 		return mbDao.insertNewMember(pic, name, nicname, birthday, gender, email, password, 
 				phNumber, agreeReceive, basicAddress, detailAddress, postalCode);
 	}
-
+	
 	@Override
-	public String findEmail(String phNumber, String name) {
-		
-		return mbDao.findEmailByPhNmuberAndName(phNumber, name); 
-		//return null;
+	public boolean joinMember(MemberVO mb) {
+		return mbDao.insertNewMember(mb);
 	}
-
+	
 	@Override
-	public boolean findPw(String email) {
-		if( mbDao.findEmailInDB(email) ) {
-			StringBuffer tempPw;
-			char t = ' ';
-			for (int i = 0; i < 12; i++) {
-				
-			}
-			// 자바 메일발송 관련 api 실행후 임시 비밀번호 발송
-//			mbDao.setNewPwByEmail(email, newPw);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean logout() {
+	public boolean check_dup_nick(String nickname) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public boolean check_dup_email(String email) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int findEmail(String phNumber, String name) {
+		mbDao.findEmailByPhNmuberAndName(phNumber, name);
+		return 1;
+	}
+
+	@Override
+	public int findPw(String email, String name, String phNumber) {
+		MemberVO mbEmail = mbDao.findEmailInDB(email);
+		if( mbEmail == null ) {
+			System.out.println("이메일 db에 없음");
+			return 2;
+		} else if(!mbEmail.getName().equals(name)){
+			System.out.println("이메일과 이름 불일치");
+			return 3;
+		} else if(!mbEmail.getPhNumber().equals(phNumber)) {
+			System.out.println("이메일과 전화번호 불일치");
+			return 4;
+		} else {
+			System.out.println("인증 성공");
+			return 1;
+		}		
+	}
+	
+	@Override
+	public boolean makeTempPwIn(String email, String password) {
+			mbDao.updateMemberPasswordToEmail(email, password);
+		return false;
+	}
+	
+	@Override
+	public String makeTemptPw() {
+		String result = "";
+		int target = (int)(Math.random()*10 + 6);
+		for (int i = 0; i < target; i++) {
+			char c= ' ';
+			int ran = (int)(Math.random()*62);
+			if(ran<10) {
+				c = (char)(ran+48);//숫자
+			} else if(ran<36) {
+				c = (char)(ran+55);//대문자
+			} else {
+				c = (char)(ran+61);//소문자
+			}
+			result += c;
+		}
+		return result;
 	}
 
 }

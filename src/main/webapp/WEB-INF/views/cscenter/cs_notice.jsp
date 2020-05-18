@@ -11,12 +11,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 	function selectNotice(ntId) { window.location.href		
 			= '${pageContext.request.contextPath}'
-			+ '/Notice_receive.LF?id='+ Id;
+			+ '/cs_receive_notice.LF?id='+ ntId;
 	}	
-</script> -->
+</script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 
@@ -40,64 +40,43 @@
                 </div>
                 
                 <div id="notice_table">
+             	<c:if test="${!empty ntSize}">
+		     	
                     <table>
-                        <tr>
+                        <tr style="height:46px">
                             <th>NO</th>
                             <th>제목</th>
                             <th>등록일</th>
+                            <th>조회수</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>고객센터 전화상담 운영 임시중단 안내</td>
-                            <td>2020.02.25</td>
+                        <c:forEach var="nt" items="${notice}" varStatus="vs">
+                        <tr id="tr_nt_${nt.id}" onclick="selectNotice('${nt.id}')" style="height:46px">
+                            <td><c:out value="${nt.id}" default="0"/></td>
+                            <td><c:out value="${nt.title}" default="제목없음"/></td>
+                            <td><fmt:formatDate value="${nt.writedDay}" pattern="yyyy.MM.dd" /></td>
+                            <td><c:out value="${nt.hits}" default="0"/></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>설 연휴 배송 일정 및 고객센터 휴무 안내</td>
-                            <td>2020.01.20</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>서비스 이용약관 개정 안내</td>
-                            <td>2019.10.02</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>NH농협카드, KB국민카드 전산시스템 작업 안내</td>
-                            <td>2019.09.09</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>2019년 추석 연휴 배송 및 고객센터 휴무 일정 안내</td>
-                            <td>2019.09.05</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>홈페이지 서버 점검 안내</td>
-                            <td>2019.07.16</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>홈페이지 서버 점검 안내</td>
-                            <td>2019.07.16</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>홈페이지 서버 점검 안내</td>
-                            <td>2019.07.16</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>홈페이지 서버 점검 안내</td>
-                            <td>2019.07.16</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>홈페이지 서버 점검 안내</td>
-                            <td>2019.07.16</td>
-                        </tr>
+                        </c:forEach>
                      </table>
-                    <div id="notice_numbering">&lt;&nbsp;<b>1</b> 2 3 4 5 6 7 8 9 10&nbsp;&gt;</div>
+                     </c:if>
+                    <div id="notice_numbering"><c:if test="${pn > 1}">
+						<a href="${pageContext.request.contextPath}/cs_notice.LF?pn=${pn-1}">[PREV]</a>
+					</c:if>
+					 &nbsp; &nbsp;
+					<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
+						<c:if test='${vs.current eq pn}'>
+							<b style='color: orangered'> ${vs.current}</b>
+						</c:if>	
+						<c:if test='${vs.current ne pn}'>
+							<a href="${pageContext.request.contextPath}/cs_notice.LF?pn=${vs.current}"> ${vs.current}</a>
+						</c:if>
+						 &nbsp;
+						 ${vs.current eq maxPn ? '': '|&nbsp;'}
+					</c:forEach>
+					 &nbsp; &nbsp;
+					<c:if test="${pn < maxPn}">
+						<a href="${pageContext.request.contextPath}/cs_notice.LF?pn=${pn+1}">[NEXT]</a>
+					</c:if></div>
                 </div>
             </div>
 </div>

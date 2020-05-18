@@ -3,22 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_3_1.xsd">
 
-<!-- 업로드 서블릿관리 설정 temp -->
-<!-- <servlet> -->
-<!--  <servlet-name>UploadServlet</servlet-name> -->
-<!--  <servlet-class>mvc.UploadServlet</servlet-class> -->
-<!--  <multipart-config> -->
-<!--  <location>C:\fusion11\apache-tomcat-8.5.50\uploadTemp</location> -->
-<!--  <max-file-size>-1</max-file-size> -->
-<!--  <max-request-size>-1</max-request-size> -->
-<!--  <file-size-threshold>1024</file-size-threshold> -->
-<!--  </multipart-config> -->
-<!--  </servlet> -->
-<!--  <servlet-mapping> -->
-<!--  <servlet-name>UploadServlet</servlet-name> -->
-<!--  <url-pattern>*.up</url-pattern> -->
-<!--  </servlet-mapping> -->
- <!-- 업로드 서블릿관리 설정 temp -->
+ 
  
 <!-- 공통변수 처리 설정 jspf -->
 <jsp-config>
@@ -28,14 +13,7 @@
   </jsp-property-group>
   </jsp-config>
   
-<!--   <filter> -->
-<!--   <filter-name>MultipartFilter</filter-name> -->
-<!--   <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class> -->
-<!-- </filter> -->
-<!-- <filter-mapping> -->
-<!--   <filter-name>MultipartFilter</filter-name> -->
-<!--   <url-pattern>/*</url-pattern> -->
-<!-- </filter-mapping> -->
+ 
  
   <!-- 공통변수 처리 설정 jspf -->
   

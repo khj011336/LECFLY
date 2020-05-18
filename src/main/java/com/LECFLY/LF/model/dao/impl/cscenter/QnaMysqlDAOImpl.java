@@ -19,7 +19,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
-import com.LECFLY.LF.model.vo.QnaRowVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 @Repository
@@ -35,13 +34,13 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 		= "select * from qnas where id = ?";
 	// QnA 등록하기
 	public static String SQL_QNA_INSERT_VO
-		= "insert into qnas values(0, ?, ?, ?, ?, ?, ? , ?, now(), now(), ?, ?)";
+		= "insert into qnas values(0, ?, ?, ?, ?, ?, ?, ?, now(), now(), 0, 0)";
 	// QnA 수정하기
 	public static String SQL_QNA_UPDATE
-		= "update qnas set type = ?, title = ?, content = ?, showPrivate = ?, updated_day = now() where id = ?";
+		= "update qnas set title = ?, content = ?, show_private = ?, updated_day = now() where id = ?";
 	// QnA 삭제하기
 	public static String SQL_QNA_DELETE_VO
-		= "delete qnas where id = ?";
+		= "delete from qnas where id = ?";
 	// QnA 페이지 조회
 	public static String SQL_QNA_SHOWALL_PG
 		= "SELECT * FROM qnas order by id desc limit ?, ?";
@@ -81,9 +80,9 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 				qa.getContent(), qa.getFile(), qa.getShowPrivate(), qa.getHits(), qa.getComment() );
 		return r == 1; //? true: false;
 	}
-
+	
 	@Override
-	public int insertNewQnaReturnKey(QnaVO qa) {
+	public int insertNewQnaReturnKey2(QnaVO qa) {
 		Map<String,Object> paramMap = new HashMap<>();
 		paramMap.put("mbId", qa.getMbId());
 		paramMap.put("mbNicname", qa.getMbNicname());
@@ -102,7 +101,7 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 	}
 
 	@Override
-	public int insertNewQnaReturnKey2(QnaVO qa) {
+	public int insertNewQnaReturnKey(QnaVO qa) {
 		System.out.println("psc/keyholder...");
 		KeyHolder kh = new GeneratedKeyHolder();
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -111,15 +110,14 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement pstmt  = con.prepareStatement( SQL_QNA_INSERT_VO, new String[] {"id"});
 				pstmt.setInt(1, qa.getMbId());
-				pstmt.setInt(2, qa.getMbId());
-				pstmt.setString(3, qa.getMbNicname());
-				pstmt.setInt(4, qa.getType());
-				pstmt.setString(5, qa.getTitle());
-				pstmt.setString(6, qa.getContent());
-				pstmt.setString(7, qa.getFile());
-				pstmt.setInt(8, qa.getShowPrivate());
-				pstmt.setInt(9, qa.getHits());
-				pstmt.setInt(10, qa.getComment());
+				pstmt.setString(2, qa.getMbNicname());
+				pstmt.setInt(3, qa.getType());
+				pstmt.setString(4, qa.getTitle());
+				pstmt.setString(5, qa.getContent());
+				pstmt.setString(6, qa.getFile());
+				pstmt.setInt(7, qa.getShowPrivate());
+//				pstmt.setInt(9, qa.getHits());
+//				pstmt.setInt(10, qa.getComment());
 				return pstmt;
 			}
 		};
@@ -140,21 +138,20 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 	}
 
 	@Override
-	public boolean updateQna(int id, int type, String title, String content, int showPrivate) {
-		int r = jtem.update(SQL_QNA_UPDATE, id, type, title, content, showPrivate);
+	public boolean updateQna(int id, String title, String content, int showPrivate) {
+		int r = jtem.update(SQL_QNA_UPDATE, title, content, showPrivate, id);
 		return r == 1;
 	}
 	
-	@Override
-	public boolean updateQna(QnaVO vo) {
-		int r = jtem.update(SQL_QNA_UPDATE, 
-				vo.getId(),
-				vo.getType(),
-				vo.getTitle(), 
-				vo.getContent(), 
-				vo.getShowPrivate());
-		return r == 1;
-	}
+//	@Override
+//	public boolean updateQna(QnaVO vo) {
+//		int r = jtem.update(SQL_QNA_UPDATE, 
+//				vo.getId(),
+//				vo.getTitle(), 
+//				vo.getContent(), 
+//				vo.getShowPrivate());
+//		return r == 1;
+//	}
 	
 	@Override
 	public boolean increaseReadCount(int id) {
@@ -164,8 +161,8 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 
 	@Override
 	public boolean deleteQna(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		int r = jtem.update(SQL_QNA_DELETE_VO, id);
+		return r == 1;
 	}
 
 	@Override
@@ -186,10 +183,6 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 
 	}
 	
-	@Override
-	public List<QnaRowVO> showAllQnasForRow(int offset, int limit) {
-		return jtem.query(SQL_QNA_SHOWALL_PG_JOIN, BeanPropertyRowMapper.newInstance(QnaRowVO.class), offset, limit);
-	}
 	
 	@Override
 	public List<Map<String, Object>> showAllQnasForMap(int offset, int limit) {

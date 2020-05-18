@@ -1,8 +1,20 @@
 package com.LECFLY.LF.model.vo;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 public class QnaVO {
+	public static final String QNA_TYPE_0 = "회원관련";
+	public static final String QNA_TYPE_1 = "결제/배송관련";
+	public static final String QNA_TYPE_2 = "이용권";
+	public static final String QNA_TYPE_3 = "강의";
+	public static final String QNA_TYPE_4 = "펀딩";
+	public static final String QNA_TYPE_5 = "기타";
+	
+	public static final String QNA_PRIVATE_0 = "전체공개";
+	public static final String QNA_PRIVATE_1 = "비공개";
+	
 	/** qna 번호 */
 	int id; 
 	/** 작성자 번호       "fk	_member/id 출력은 nicname" */
@@ -11,6 +23,8 @@ public class QnaVO {
 	String mbNicname; 
 	/** 분야              0: 회원관련 1: 결제/배송관련 2: 이용권 3: 강의 4: 펀딩 5: 기타 */
 	int type;
+	/** 분야 */
+	String stype;
 	/** 제목 */
 	String title;
 	/** 내용 */
@@ -19,6 +33,8 @@ public class QnaVO {
 	String file; 
 	/** 공개 여부	0: 공개 1: 비공개 0 */
 	int showPrivate;
+	/** 공개 여부 */
+	String sshowPrivate;
 	/** 작성날짜 CURRENT_TIMESTAMP */
 	Timestamp writedDay; 
 	/** 갱신날짜 CURRENT_TIMESTAMP */
@@ -119,6 +135,28 @@ public class QnaVO {
 	public void setType(int type) {
 		this.type = type;
 	}
+	public String getStype() {
+		switch (type) {
+		case 0:
+			return QNA_TYPE_0;
+		case 1:
+			return QNA_TYPE_1;
+		case 2:
+			return QNA_TYPE_2;
+		case 3:
+			return QNA_TYPE_3;
+		case 4:
+			return QNA_TYPE_4;
+		case 5:
+			return QNA_TYPE_5;
+		default:
+			break;
+		}
+		return stype;
+	}
+	public void setStype(String stype) {
+		this.stype = stype;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -142,6 +180,20 @@ public class QnaVO {
 	}
 	public void setShowPrivate(int showPrivate) {
 		this.showPrivate = showPrivate;
+	}
+	public String getSshowPrivate() {
+		switch (showPrivate) {
+		case 0:
+			return QNA_PRIVATE_0;
+		case 1:
+			return QNA_PRIVATE_1;
+		default:
+			break;
+		}
+		return sshowPrivate;
+	}
+	public void setSshowPrivate(String sshowPrivate) {
+		this.sshowPrivate = sshowPrivate;
 	}
 	public Timestamp getWritedDay() {
 		return writedDay;
@@ -174,5 +226,4 @@ public class QnaVO {
 				+ ", content=" + content + ", file=" + file + ", showPrivate=" + showPrivate + ", writedDay="
 				+ writedDay + ", updatedDay=" + updatedDay + ", hits=" + hits + ", comment=" + comment + "]";
 	}
-	
 }

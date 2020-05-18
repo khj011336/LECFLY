@@ -18,7 +18,7 @@ public interface IAdminLectureDAO {
 	// 강의를 상세조회할 수 있다.
 	LectureVO selectLecture(LectureVO vo);
 	// 강의를 전체조회할 수 있다.
-	List<LectureVO> selectLectureList(LectureVO vo);
+	List<LectureVO> selectLectureList();
 	
 	// 영상 관리
 	// 영상을 등록할 수 있다.
@@ -30,7 +30,7 @@ public interface IAdminLectureDAO {
 	// 영상을 상세조회할 수 있다.
 	VideoVO selectVideo(VideoVO vo);
 	// 영상을 전체조회할 수 있다.
-	List<VideoVO> selectVideoList(VideoVO vo);
+	List<VideoVO> selectVideoList();
 	
 	// 키트 관리(Creator폴더)
 	// 키트를 등록할 수 있다.
@@ -42,7 +42,7 @@ public interface IAdminLectureDAO {
 	// 키트를 상세조회할 수 있다.
 	KitVO selectKit(KitVO vo);
 	// 키트를 전체조회할 수 있다.
-	List<KitVO> selectKitList(KitVO vo);
+	List<KitVO> selectKitList();
 	
 	// 쿠폰 관리
 	// 쿠폰을 등록할 수 있다.
@@ -54,5 +54,7 @@ public interface IAdminLectureDAO {
 	// 쿠폰을 상세조회할 수 있다.
 	CouponVO selectCoupon(CouponVO vo);
 	// 쿠폰을 전체조회할 수 있다.
-	List<CouponVO> selectCouponList(CouponVO vo);
+	List<CouponVO> selectCouponList();
+	int checkNumberOfLectures();
+	List<LectureVO> searchLectureForAll(int offset, int limit);
 }
