@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<title>결제 이메일</title>
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_sendEmail.css">
 <div id="paymentSendEmail_wrapper">
 	<div id="paymentSendEmail_content">
 		<div class="paymentSendEmail_title_box">
 			<h1 class="paymentSendEmail_title">주문완료</h1>
 			<h3 class="paymentSendEmail_subtitle">
-				<span class="paymentSendEmail_basket">장바구니</span> <span class="paymentSendEmail_order_sheet">&gt;
-					주문서</span> <span class="paymentSendEmail_order_finish">&gt; 주문완료</span>
+				<span class="paymentSendEmail_basket">장바구니</span> <span
+					class="paymentSendEmail_order_sheet">&gt; 주문서</span> <span
+					class="paymentSendEmail_order_finish">&gt; 주문완료</span>
 			</h3>
 		</div>
 		<br> <br> <br> <a href="#"

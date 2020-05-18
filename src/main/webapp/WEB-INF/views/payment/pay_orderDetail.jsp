@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<title>주문 상세페이지</title>
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_orderDetail.css">
 <a class="orderDetail" href="#popup2">주문상세조회</a>
 	<div id="popup2" class="orderDetail_overlay">
 		<div class="orderDetail_popup">

@@ -3,9 +3,9 @@ package com.LECFLY.LF.model.vo.creator;
 import java.sql.Timestamp;
 
 public class VideoVO {
-private int id;					// PK AI
-private int fId;				// FK
-private int CFId;				// FK
+private int id;					// PK AI 
+private int fId;				// FK 소유자 creator id
+private int CFId;				// FK 클래스 소속
 private String videoPath;		// UQ
 private int duration;			// 동영상 재생길이
 private String title;			// 동영상제목 UQ

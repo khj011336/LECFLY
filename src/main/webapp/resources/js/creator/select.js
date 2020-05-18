@@ -56,19 +56,21 @@ function checkVisible( box, tOf ) {
        } 
    }
 }
-function selectLecture(Lcid) {
+function selectLecture(CFID,category) {
 	var form = document.createElement('form');
-	form.setAttribute('method', 'get');
+	form.setAttribute('method', 'Post');
 	form.setAttribute('action', 'creator_video_show.LF');
-	form.setAttribute('id', Lcid);
 	document.charset = "utf-8";
-//		for ( var key in params) {
-//			var hiddenField = document.createElement('input');
-//			hiddenField.setAttribute('type', 'hidden');
-//			hiddenField.setAttribute('name', key);
-//			hiddenField.setAttribute('value', params[key]);
-//			form.appendChild(hiddenField);
-//		}
+			var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name', "CFID");
+			hiddenField.setAttribute('value', CFID);
+			form.appendChild(hiddenField);
+			var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name',"category");
+			hiddenField.setAttribute('value', category);
+			form.appendChild(hiddenField);
 	document.body.appendChild(form);
 	form.submit();
 }

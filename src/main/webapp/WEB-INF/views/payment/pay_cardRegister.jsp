@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <title>카드 결제</title>
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_cardRegister.css">
 <script type="text/javascript">
 
 	const name = document.getElementById('name');

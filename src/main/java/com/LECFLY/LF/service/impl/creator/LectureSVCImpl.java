@@ -20,6 +20,8 @@ import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.service.inf.creator.ILectureSVC;
 @Service
 public class LectureSVCImpl{
+	final int INPUT_EMPTY_CHECK = 3;
+	final int LECTURE_CHECK_VAR_SIZE = 8;
 	@Autowired
 	FileSVCImpl fileSVC;
 	public static final int PAGESIZE = 3;
@@ -51,10 +53,10 @@ public class LectureSVCImpl{
 	public void unloadProcess(String unload,LectureVO LecVO, HttpSession ses , CreatorVO cr,SessionStatus sesStatus) {
 		int countNull = 0;
 		if (unload.equals("y") ) {
-			System.out.println("언로드진입");
+			System.out.println("언로드진입 인풋 공백 체크중...");
 			String nullcheck = LecVO.toString();
 			String sep[] = nullcheck.split("=");
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < LECTURE_CHECK_VAR_SIZE; i++) {
 				String value = sep[i].split(",")[0].trim();
 				if ( !value.equals("0") &&!value.equals("null") &&!value.equals("category")) {
 					if(!value.isEmpty()) {
@@ -63,8 +65,8 @@ public class LectureSVCImpl{
 					}
 				}
 			}
-			if (countNull >= 3) {
-				System.out.println(" lec file > 3");
+			if (countNull >= INPUT_EMPTY_CHECK) {
+				System.out.println(" lecture input 지정사이즈[3]보다 많음 자동저장");
 				int fid = (Integer)(ses.getAttribute("fid"));
 				LecDAO.insertNewLecture(fid,LecVO.getCategory(),
 						LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
@@ -82,19 +84,19 @@ public class LectureSVCImpl{
 		int id = (Integer) ses.getAttribute("id");
 		String newimgPath = null;
 		String username = (String) ses.getAttribute("membertest");
-		String userpath = fileSVC.getPath(username, 1);
+		String userpath = FileSVCImpl.getPath(username, 1);
 		 
 		if (LcVO.getTitleImgM() != null && !LcVO.getTitleImgM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
-				System.out.println("진입");
-				if (LcVO.getTitleImg()!= null || !LcVO.getTitleImg().isEmpty()) {
+				System.out.println("[TitleImg]진입");
+				if (LcVO.getTitleImg()!= null && !LcVO.getTitleImg().isEmpty()) {
 					new File(userpath + LcVO.getTitleImg()).delete();
-					System.out.println(userpath + LcVO.getTitleImg() + "가 지워졌습니다");
+					System.out.println(userpath + LcVO.getTitleImg() + "가 지워졌습니다[TitleImg]");
 				}
 				HashMap<String, String> imgfilepath = (HashMap<String, String>) 
 						fileSVC.writeFiles(Arrays.asList(LcVO.getTitleImgM()),userpath, id, username);
 				newimgPath = imgfilepath.get(LcVO.getTitleImgM().getOriginalFilename());
-				System.out.println(newimgPath +"등록완료");
+				System.out.println(newimgPath +"[TitleImg] 등록완료");
 				LcVO.setTitleImg(newimgPath);
 				LcVO.setTitleImgM(null);
 				model.addAttribute(LcVO);
@@ -102,15 +104,15 @@ public class LectureSVCImpl{
 		}
 		if (LcVO.getInfoImgM() != null && !LcVO.getInfoImgM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
-				System.out.println("진입");
-				if (LcVO.getInfoImg()!= null || !LcVO.getInfoImg().isEmpty()) {
+				System.out.println("[InfoImg] 진입");
+				if (LcVO.getInfoImg()!= null && !LcVO.getInfoImg().isEmpty()) {
 					new File(userpath + LcVO.getInfoImg()).delete();
-					System.out.println(userpath + LcVO.getInfoImg() + "가 지워졌습니다");
+					System.out.println(userpath + LcVO.getInfoImg() + "가 지워졌습니다[InfoImg]");
 				}
 				HashMap<String, String> imgfilepath = (HashMap<String, String>) 
 						fileSVC.writeFiles(Arrays.asList(LcVO.getInfoImgM()),userpath, id, username);
 				newimgPath = imgfilepath.get(LcVO.getInfoImgM().getOriginalFilename());
-				System.out.println(newimgPath +"등록완료");
+				System.out.println(newimgPath +"[InfoImg] 등록완료");
 				LcVO.setInfoImg(newimgPath);
 				LcVO.setInfoImgM(null);
 				model.addAttribute(LcVO);
@@ -118,15 +120,15 @@ public class LectureSVCImpl{
 		}
 		if (LcVO.getInfoImgbM() != null && !LcVO.getInfoImgbM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {
-				System.out.println("진입");
-				if (LcVO.getInfoImgb()!= null || !LcVO.getInfoImgb().isEmpty()) {
+				System.out.println("[InfoImg-B-]진입");
+				if (LcVO.getInfoImgb()!= null && !LcVO.getInfoImgb().isEmpty()) {
 					new File(userpath + LcVO.getInfoImgb()).delete();
-					System.out.println(userpath + LcVO.getInfoImgb() + "가 지워졌습니다");
+					System.out.println(userpath + LcVO.getInfoImgb() + "가 지워졌습니다[InfoImg-B-]");
 				}
 				HashMap<String, String> imgfilepath = (HashMap<String, String>) 
 						fileSVC.writeFiles(Arrays.asList(LcVO.getInfoImgbM()),userpath, id, username);
 				newimgPath = imgfilepath.get(LcVO.getInfoImgbM().getOriginalFilename());
-				System.out.println(newimgPath +"등록완료");
+				System.out.println(newimgPath +"[InfoImg-B-]등록완료");
 				LcVO.setInfoImgb(newimgPath);
 				LcVO.setInfoImgbM(null);
 				model.addAttribute(LcVO);

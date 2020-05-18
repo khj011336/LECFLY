@@ -6,8 +6,8 @@ import com.LECFLY.LF.model.vo.creator.VideoVO;
 
 public interface IVideoDAO {
  boolean insertNewVideo(VideoVO Vvo);
- boolean insertNewVideo( String videoPath, int duration, String title, String info, String imgPath,
-			String gifPath, String orderInfo, int category, int commentYorN );
+ boolean insertNewVideo(int fid,int cfid,String videoPath, int duration, String title, String info, String imgPath,
+			String gifPath, String orderInfo, int category, int commentYorN,int views,int status);
  boolean updateVideo(int id ,int FK );
  boolean updateVideo(int id );
  boolean deleteVideo(int id );
