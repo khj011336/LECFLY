@@ -44,6 +44,7 @@ function updateVideo(pk){
 	} 
 }
 function pagenate(page){
+	var patha = '${crPath}';
 	$.ajax({
 	    type : 'get',  
 	    dataType : 'json', 
@@ -54,7 +55,7 @@ function pagenate(page){
 	    	$("#appendList").find(".videoTR").remove();
 	    	 $.each(returnData.jsonText,function(index,item){
 	    		$("#appendList").append("<tr class = 'bottomlineaa videoTR'> <td class='checkbox'><input type='checkbox' class='check-one check' /></td>"+
-				"<td colspan='2' class='goods'><img src='"+item.imgPath+"' alt='홈트레이닝' />"+
+				"<td colspan='2' class='goods'><img src='"+patha+item.imgPath+"' alt='홈트레이닝' />"+
 				"<div id='countor'> <span style='width: 500px'>"+item.title +"</span> <span><a href='##' class='sellerTitle'>"+item.createdAt+"</a></span>"+
 				" <span> <select name='test1'> <option value='1'>동영상 수정</option> </select> </span> </div></td>"+
 				"<td class='count'></td> <td class='count'></td><td class='count'></td> <td class='subtotal'>"+
@@ -112,7 +113,7 @@ function pagenate(page){
 								<td class="checkbox"><input type="checkbox"
 									class="check-one check" /></td>
 								<td colspan="2" class="goods"><img
-									src="${lecList[vs.index].imgPath}" alt="홈트레이닝" />
+									src="${crPath}${lecList[vs.index].imgPath}" alt="홈트레이닝" />
 									<div id="countor">
 										<span style="width: 500px"><c:out
 												value="${lecList[vs.current].title}" default="동영상을 만들어주세요"></c:out></span>

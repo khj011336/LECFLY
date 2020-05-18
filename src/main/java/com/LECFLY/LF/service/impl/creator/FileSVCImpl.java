@@ -2,8 +2,6 @@ package com.LECFLY.LF.service.impl.creator;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
@@ -12,21 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.tools.ant.taskdefs.Mkdir;
-import org.mvel2.ast.ReturnNode;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.LECFLY.LF.model.vo.creator.VideoVO;
-
-import net.bramp.ffmpeg.FFmpeg;
-import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
-import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.bramp.ffmpeg.probe.FFmpegFormat;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 
@@ -163,7 +154,7 @@ public class FileSVCImpl {
 				return rmap;
 	}
 
-	public Map<String, String> writeFilesForvideo(MultipartFile file, int id, String username , VideoVO changevideo) {
+	public Map<String, String> writeFilesForvideo(MultipartFile file, int id, String username , VideoVO changevideo, HttpSession ses) {
 		if(changevideo.getVideoPath() != null && !changevideo.getVideoPath().isEmpty()) {
 			System.out.println("upload 비디오 변경 -");
 			String totalImgpath = getPath(username, 1);
@@ -190,7 +181,9 @@ public class FileSVCImpl {
 				storeFileName = fileNamingforImg(oriFileName, id, username);
 				System.out.println(file.getSize() + "파일사이즈");
 				// TODO 패스 설정 글로벌변경
-				String totalPath = "C:/fusion11/spring_ws/LECFILE/videoTemp" + storeFileName;
+				String totalPath = 	ses.getServletContext()
+				.getRealPath("/videoTemp");
+				totalPath += storeFileName;
 				newFile = new File(totalPath);
 				try {
 					file.transferTo(newFile);
@@ -235,18 +228,15 @@ public class FileSVCImpl {
 	}
 
 	public static String getPath(String username, int IorV) {
-		Path relativePaht = Paths.get("LECFILE");
-		String path = relativePaht.toAbsolutePath().toString();
+		String path = "C:/fusion11/spring_ws/LECFLY/src/main/webapp/resources/LECFILE";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		String ImgorVideo = IorV == 1 ? DEF_DIR_IMG : DEF_DIR_VIDEO;
 		return path += "/" + sdf.format(new Date()) + "/" + username + ImgorVideo;
 	}
 
 	public boolean makeDir(String username) {
-		Path relativePaht = Paths.get("LECFILE");
-		String path = relativePaht.toAbsolutePath().toString();
+		String path = "C:/fusion11/spring_ws/LECFLY/src/main/webapp/resources/LECFILE";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-
 		path += "/" + sdf.format(new Date()) + "/" + username;
 		File mk = new File(path);
 		File mkimg = new File(path + "/" + "Img");
@@ -295,8 +285,8 @@ public class FileSVCImpl {
 						imgpath + returname };
 			} else if (syntax == 3) {
 				returname = fileNamingforVideo(duration, oriFileName, id, name);
-				commands = new String[] { "ffmpeg", "-i", TempvideoFile, "-ar", "44100", "-ab", "32", "-s", "1920x1080",
-						"-b", "1604k", "-r", "24", "-y", "-f", "mp4", videopath + returname };
+				commands = new String[] { "ffmpeg", "-i", TempvideoFile, "-ar", "44100", "-ab", "32", "-s", "800x600",
+						"-b", "100k", "-r", "24", "-y", "-f", "mp4", videopath + returname };
 //					-r 프레임 , -f변환 -b 비트프레임
 			}
 			Process processor = Runtime.getRuntime().exec(commands);
@@ -338,6 +328,8 @@ public class FileSVCImpl {
 
 	public static void main(String[] args) {
 		System.out.println(Double.parseDouble("0.26"));
-
+		Path relativePaht = Paths.get("fusion11\\LECFLY\\src\\main\\webapp\\resources\\LECFILE");
+		String path = relativePaht.toAbsolutePath().toString();
+		System.out.println(path);
 	}
 }

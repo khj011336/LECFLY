@@ -60,7 +60,7 @@ $(window).on("unload",function(e){
 				data : formdataimg,
 				success : function(result) {
 					console.log(result.png);
-					$("#img1").attr("src","resources/imges/logo/LecFly_SLOGO_W_C.png");
+					$("#img1").attr("src","${crPath}${video.imgPath}");
 					 
 				},
 				error : function() {
@@ -83,12 +83,16 @@ $(window).on("unload",function(e){
 				contentType : false,
 				data : formdata,
 				success : function(result) {
+					var ap = "${viPath}";
+					var videoaa = "${video.videoPath}";
 					videoChange = 1;
 					console.log(result.png);
-					$("#img1").attr("src","resources/imges/logo/LecFly_SLOGO_W_C.png");
-					$("#img2").attr("src","resources/imges/logo/LecFly_SLOGO_W_C.png");
-					$("#gif").attr("src","resources/imges/logo/LecFly_SLOGO_W_C.png");
-					$("#viosrc").attr("src","resources/video/cooking.mp4");
+					$("#img1").attr("src","${crPath}${video.imgPath}");
+					$("#img2").attr("src","${crPath}${video.imgPath }");
+					$("#gif").attr("src","${crPath}${video.gifPath }");
+					$("#viosrc").attr("src",videoaa);
+					console.log(videoaa);
+					console.log(ap);
 					$("#vioSample")[0].load();
 					$("#vioSample").attr("poster","");
 					 

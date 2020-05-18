@@ -1,17 +1,14 @@
 package com.LECFLY.LF.controller;
 
-import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.annotation.MultipartConfig;
+
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,13 +25,13 @@ import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
 import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.impl.creator.LectureSVCImpl;
-import com.LECFLY.LF.service.impl.creator.VideoSVCImpl;
 import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 
 @Controller
 @SessionAttributes({ "creator", "Lecture", "video","creatorKit" })
 public class CreatorController {
 	public static int MAXPAGE = 0;
+	public static String USERNAME = "";
 	@Autowired
 	LectureSVCImpl LecSVC;
 	@Autowired
@@ -47,7 +44,7 @@ public class CreatorController {
 	IVideoSVC VdoSVC;
 	@Autowired
 	FileSVCImpl fileSVC;
-
+ 
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -73,8 +70,9 @@ public class CreatorController {
 		// TODO 멤버아이디 id fid 이름 수정 체크넘버 수정
 		ses.setAttribute("id", 1);
 		ses.setAttribute("fid", 2);
-		ses.setAttribute("membertest", "hongil");
-		ses.setAttribute("crPath", FileSVCImpl.getPath((String) ses.getAttribute("membertest"), 1));
+		USERNAME = "hongil";
+		ses.setAttribute("crPath","resources/LECFILE/2020/"+USERNAME+"/Img");
+		ses.setAttribute("viPath","resources/LECFILE/2020/"+USERNAME+"/video");
 		int loginStatus = (Integer) ses.getAttribute("id");
 		int fid = (Integer) ses.getAttribute("fid");
 		MAXPAGE = LecSVC.checkOfLectureNumber(2);
@@ -200,7 +198,7 @@ public class CreatorController {
 	public Map<String, String> videoUploadProc(@ModelAttribute(value = "video") VideoVO vio, Model model,
 			HttpSession ses, @RequestParam(value = "viFile", required = false) MultipartFile videoFile) {
 //TODO		멤버 이름 수정 및 아이디 		비디오 강의 업로드시 좋아요 0 으로 업데이트
-		return VdoSVC.videoProc(vio, videoFile, model);
+		return VdoSVC.videoProc(vio, videoFile, model,ses);
 	}
 
 	@RequestMapping(value = "video_img_proc.LF", method = RequestMethod.POST)
