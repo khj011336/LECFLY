@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.LECFLY.LF.model.dao.impl.creator.KitMysqlDAOImpl;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
@@ -44,7 +46,8 @@ public class CreatorController {
 	IVideoSVC VdoSVC;
 	@Autowired
 	FileSVCImpl fileSVC;
- 
+	@Autowired
+	KitMysqlDAOImpl kitDAO;
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -220,7 +223,11 @@ public class CreatorController {
 			@RequestParam(value = "category") int category , Model model
 			,@ModelAttribute(value = "creatorKit") KitVO kit)  {
 		System.out.println(kit);
-//		fileSVC.writeFile(file, path, id, username);
+//		유저이름 fid
+		Map<String, String> filea = fileSVC.writeFile(kit.getKitImg(), "dd", 3, USERNAME);
+		kit.setImgPath(filea.get("file"));
+		kit.setfId(3);
+				kitDAO.insertKit(kit);
 		return "creator/cre_kit.page";
 	}
 	
