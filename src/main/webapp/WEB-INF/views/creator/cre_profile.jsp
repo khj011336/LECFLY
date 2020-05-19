@@ -37,7 +37,7 @@
 	            <div class="Crpf_text1"><span class="creator_h2">프로필 사진</span></div>
 		        <div class='Crpf_imgbox1'>
 		      
-		            <div><img src ="${creator.imgPath}"  class="Crpf_imgbox1"></div>
+		            <div><img src ="${crPath}${creator.imgPath}"  class="Crpf_imgbox1"></div>
 		            
 		            <div class="Crpf_find creator_h4"><input type='file' id="aas" accept="image/gif, image/jpeg, image/png"  name="imgPathM" ></div>
 	            </div>

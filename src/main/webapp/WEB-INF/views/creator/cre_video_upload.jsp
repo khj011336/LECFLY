@@ -30,7 +30,7 @@
 			<div id="uplR">
 				<div class='uplshadow'>
 					<video controls id="vioSample">
-						<source src="resource/video/soap.mp4" type='video/mp4' id="viosrc" />
+						<source src=" " type='video/mp4' id="viosrc" />
 					</video>
 					<div>
 						<input type="url"
@@ -47,13 +47,13 @@
 				<h3>미리보기 이미지</h3>
 				<div id="uplimgbox" class="uplflex">
 					<div class="uplimgb uplshadow">
-						<img alt="" src="${video.imgPath }" id='img1'>
+						<img alt="" src="${crPath }${video.imgPath }" id='img1'>
 					</div>
 					<div class="uplimgb uplshadow padp">
-						<img alt="" src="${video.imgPath }" id='img2'>
+						<img alt="" src="${crPath }${video.imgPath }" id='img2'>
 					</div>
 					<div class="uplimgb uplshadow padp">
-						<img alt="" src='${video.gifPath }' id="gif">
+						<img alt="" src='${crPath }${video.gifPath }' id="gif">
 					</div>
 					<div id="uplfile">
 						<input type="file" accept="image/*" id="imgProc" name="addimgFile">

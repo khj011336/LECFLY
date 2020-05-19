@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+@Component("memberVO")
 public class MemberVO {
 	
 	public static final int GENDER_FEMAIL = 1; // 여성

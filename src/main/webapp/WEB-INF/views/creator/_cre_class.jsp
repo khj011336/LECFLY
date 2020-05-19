@@ -5,12 +5,12 @@
 	<div class='CRconbox'
 		onmouseover="${empty lecList ?'creatNewclass()' :''}">
 		<div class='CRP'>
-			<c:set var="titleImg" value="${crPath}${lecList[vs.current].titleImg}" />
+			<c:set var="titleImg" value="${lecList[vs.current].titleImg}" />
 			<c:if test="${empty titleImg or titleImg eq 'sample'  }">
 				<c:set var="titleImg"
 					value="resources/imges/logo/LecFly_SLOGO_W_C.png" />
 			</c:if>
-			<img src="${titleImg}" class="CRimg" alt="이미지">
+			<img src="${crPath}${titleImg}" class="CRimg" alt="이미지">
 		</div>
 		<div class="CRC">
 			<p class='CRname'>
