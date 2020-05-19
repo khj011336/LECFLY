@@ -7,7 +7,7 @@ private int id ;		//PK AI
 private int fId;		//FK
 private int CFId;		//FK
 private int category;   // 상품 해당 카테고리
-private int attribute;	// 상퓸속성
+private String attribute;	// 상퓸속성
 private String title;	// 상품이름
 private int price;		// 상품가격
 private int remain;
@@ -18,6 +18,8 @@ private String fromTo;
 private String info;
 private String detailInfo;
 private MultipartFile kitImg;
+
+
 public MultipartFile getKitImg() {
 	return kitImg;
 }
@@ -48,10 +50,10 @@ public int getCategory() {
 public void setCategory(int category) {
 	this.category = category;
 }
-public int getAttribute() {
+public String getAttribute() {
 	return attribute;
 }
-public void setAttribute(int attribute) {
+public void setAttribute(String attribute) {
 	this.attribute = attribute;
 }
 public String getTitle() {
@@ -118,12 +120,12 @@ public String toString() {
 			+ detailInfo + "]";
 }
 public KitVO() {}
-public KitVO( int fId, int cFId, int category, int attribute, String title, int price, int remain,
+public KitVO( int fId, int cFId, int category, String attribute, String title, int price, int remain,
 		String imgPath, String deliver, int deliveryPrice, String fromTo, String info, String detailInfo) {
 	this(0, fId, cFId, category, attribute, title,
 			price, remain, imgPath, deliver, deliveryPrice, fromTo, info, detailInfo);
 }
-public KitVO(int id, int fId, int cFId, int category, int attribute, String title, int price, int remain,
+public KitVO(int id, int fId, int cFId, int category, String attribute, String title, int price, int remain,
 		String imgPath, String deliver, int deliveryPrice, String fromTo, String info, String detailInfo) {
 	super();
 	this.id = id;

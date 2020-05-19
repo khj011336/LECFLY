@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -29,10 +31,11 @@ public class VideoSVCImpl implements IVideoSVC {
 		int totalRecords = viDAO.checkNumberOfVideo(CFID);
 		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
-	public HashMap<String, String> videoProc(VideoVO vio, MultipartFile videoFile , Model model){
+	public HashMap<String, String> videoProc(VideoVO vio, MultipartFile videoFile , Model model,HttpSession ses){
 		HashMap<String, String> imgfile = new HashMap<String, String>();
 		VideoVO videoInput = vio;
-		Map<String, String> storedFileName = fileSVC.writeFilesForvideo(videoFile, 1, "gong",vio);
+//		TODO 이름관리
+		Map<String, String> storedFileName = fileSVC.writeFilesForvideo(videoFile, 1, "hongil",vio,ses);
 		String png = storedFileName.get("png");
 		String gif = storedFileName.get("gif");
 		String video = storedFileName.get("video");
@@ -56,8 +59,10 @@ public class VideoSVCImpl implements IVideoSVC {
 		 VideoVO video = vio;
 		 String png = video.getImgPath();
 		if(addimgfile != null && !addimgfile.isEmpty()) {
-			String userpath = FileSVCImpl.getPath("gong", 1);
-			Map<String, String> changeimg = fileSVC.writeFile(addimgfile,userpath ,1,"gong");
+//			TODO 이름관리
+			String userpath = FileSVCImpl.getPath("hongil", 1);
+//			TODO 이름관리
+			Map<String, String> changeimg = fileSVC.writeFile(addimgfile,userpath ,1,"hongil");
 			String splitImg[] = png.split("-");
 			if(new File(userpath+splitImg[0]).delete()) {
 				System.out.println("img1가 지워졌습니다");
