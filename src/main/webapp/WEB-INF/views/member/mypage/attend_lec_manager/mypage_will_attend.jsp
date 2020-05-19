@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
-<c:if test="${!empty vdList}">	
+<c:if test="${not empty vdList}">	
 	<div class="mypage_bottom_info">
 		<h2 class="mypage_bottom_title">찜하기한 강의</h2>
 		<div class="mypage_bottom_contents">
@@ -39,6 +39,6 @@
 	</div>
 </c:if>
 			
-<c:if test="${empty vdList}">
+<c:if test="${not empty msg_status}">
 	<%@ include file="mypage_no_list.jsp"  %>
 </c:if>

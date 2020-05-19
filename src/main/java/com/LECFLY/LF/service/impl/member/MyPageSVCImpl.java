@@ -99,7 +99,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 //				scvList.add(scv);
 //			} 
 		
-			if(scvList != null) {
+			if(scvList.size() > 0) {
 				return scvList;
 			}
 		} else {
@@ -119,9 +119,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 			List<Integer> vdIdList = scvDao.selectLecToStatusForMbIdRtVdPk(mbId, status);
 			if(vdIdList != null) {
 				final int VDIDLIST_SIZE = vdIdList.size();
-				List<VideoVO> vdList = new ArrayList<>(VDIDLIST_SIZE);
-				List<String> creImgPathList = new ArrayList<>(VDIDLIST_SIZE);
-				List<String> nicNameList = new ArrayList<>(VDIDLIST_SIZE);
+				List<VideoVO> vdList = null;
+				List<String> creImgPathList = null;
+				List<String> nicNameList = null;
 				Map<String, Object> rtMap = new HashMap<>();
 				for (int i = 0; i < VDIDLIST_SIZE; i++) {
 					VideoVO vd = //vdDao.selectOneVideoById(vdIdList.get(i));
@@ -133,30 +133,34 @@ public class MyPageSVCImpl implements IMypageSVC {
 						if(creImgPathAndNicnameMap != null) {
 							String imgPath = (String)creImgPathAndNicnameMap.get("img_path");
 							String nicName = (String)creImgPathAndNicnameMap.get("nickname");
+							vdList = new ArrayList<>();
 							vdList.add(vd);
+							creImgPathList = new ArrayList<>();
 							creImgPathList.add(imgPath);
+							nicNameList = new ArrayList<>();
 							nicNameList.add(nicName);
 						} else {
 							System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
 							System.out.println("creImgPathAndNicnameMap = null");
-							rtMap.put("err", "creImgPathAndNicnameMap = null");
 							break;
 						}
 					} else {
 						System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
 						System.out.println("vd = null");
-						rtMap.put("err", "vd = null");
 						break;
 					}
 				}
-				rtMap.put("vdList", vdList);
-				rtMap.put("creImgPathList", creImgPathList);
-				rtMap.put("nicNameList", nicNameList);
-				return rtMap;
+				if(vdList != null && creImgPathList !=null && nicNameList != null) {
+					rtMap.put("vdList", vdList);
+					rtMap.put("creImgPathList", creImgPathList);
+					rtMap.put("nicNameList", nicNameList);
+					return rtMap;
+				} else {
+					System.out.println("vdList or creImgPathList or nicNameList = null");
+				}
 			} else {
 				System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
 				System.out.println("rtMap = null");
-				
 			}
 		} else {
 			System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
