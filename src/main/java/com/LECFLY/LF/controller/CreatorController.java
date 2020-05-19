@@ -73,6 +73,7 @@ public class CreatorController {
 		// TODO 멤버아이디 id fid 이름 수정 체크넘버 수정
 		ses.setAttribute("id", 1);
 		ses.setAttribute("fid", 2);
+		ses.setAttribute("membertest", "hongil");
 		USERNAME = "hongil";
 		ses.setAttribute("crPath","resources/LECFILE/2020/"+USERNAME+"/Img");
 		ses.setAttribute("viPath","resources/LECFILE/2020/"+USERNAME+"/video");
