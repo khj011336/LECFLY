@@ -432,7 +432,7 @@ public class MemberController {
 //	mypage_will_attend.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_will_attend.LF", method=RequestMethod.POST)
 	public String memberMypageWillAttend(HttpSession ses,
-			@RequestParam(value="status", defaultValue ="0") int status, Model model) {
+			@RequestParam(value="status", defaultValue ="1") int status, Model model) {
 		System.out.println("memberMypageWillAttend()...");	
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) { 
@@ -465,7 +465,7 @@ public class MemberController {
 	//	mypage_like.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_like.LF", method=RequestMethod.POST)
 	public String memberMypageLike(HttpSession ses, 
-			@RequestParam(value="status", defaultValue ="0") int status, Model model) {
+			@RequestParam(value="status", defaultValue ="2") int status, Model model) {
 		System.out.println("memberMypageLike()...");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
@@ -474,11 +474,13 @@ public class MemberController {
 			System.out.println("listMap = " + listMap);
 			if(listMap != null) {
 				List<VideoVO> vdList = (List<VideoVO>)listMap.get("vdList");
+				List<String> vdCateList = (List<String>)listMap.get("vdCateList");
 				List<String> creImgPathList = (List<String>)listMap.get("creImgPathList");
 				List<String> creNickNameList = (List<String>)listMap.get("nickNameList");
 				System.out.println("vdList = " + vdList + " / creImgPathList = " + creImgPathList +
 						  " / creNickNameList" + creNickNameList);
 				model.addAttribute("vdList", vdList);
+				model.addAttribute("vdCateList", vdCateList);
 				model.addAttribute("creImgPathList", creImgPathList);
 				model.addAttribute("creNickNameList", creNickNameList);
 			} else {

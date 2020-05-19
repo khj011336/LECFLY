@@ -19,7 +19,7 @@
 					<a href="#"> <img src="${vd.imgPath}" alt="lecfly lecture"></a>
 					</div>
 					<div class="list_video_info">
-						<p class="video_info_category"><c:out value="${vd.category}" /></p>
+						<p class="video_info_category"><c:out value="${vdCateList.get(vs.index)}" /></p>
 						<p class="video_info_title"><c:out value="${vd.title}"/></p>
 						<img src="<c:out value='${creImgPathList.get(vs.index)}' />" class="video_info_creator_img">
 						<p class="video_info_creator_name"><c:out value="${creNickNameList.get(vs.index)}" /></p>
