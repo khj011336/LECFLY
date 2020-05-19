@@ -10,7 +10,7 @@ import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 public interface IAdminBoardSVC {
-	public static int AD_PAGE_SIZE = 20;
+	public static int AD_PAGE_SIZE = 30;
 	
 	// QnA 게시판 관리
 	

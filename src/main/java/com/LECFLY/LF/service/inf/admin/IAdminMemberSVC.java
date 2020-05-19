@@ -7,7 +7,7 @@ import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 
 public interface IAdminMemberSVC {
-	public static int AD_PAGE_SIZE = 20;
+	public static int AD_PAGE_SIZE = 30;
 	
 	// 일반 회원 관리
 	// 일반 회원을 등록할 수 있다.

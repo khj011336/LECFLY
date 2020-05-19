@@ -14,18 +14,29 @@
 	}	
 </script>
 <script>
-	function deleteconfirm(){
-		if(confirm("삭제하시겠습니까?")){
-			location.replace('${pageContext.request.contextPath}'+ '/qna_delete.LF?id=${qna.id}'); //yes
-		}else{
-			location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+	function deleteconfirm(mbId, logId){
+		if(mbId == logId){
+			if(confirm("삭제하시겠습니까?")){
+				location.replace('${pageContext.request.contextPath}'+ '/qna_delete.LF?id=${qna.id}'); //yes
+			}else{
+				location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+			}
+		}else {
+			alert("작성자가 아닙니다. 본인만 삭제 가능합니다.");
 		}
 	}
-	function editconfirm(){
-		if(confirm("수정하시겠습니까?")){
-			location.replace('${pageContext.request.contextPath}'+ '/cs_edit_qna.LF?id=${qna.id}'); //yes
-		}else{
-			location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+	function editconfirm(mbId, logId){
+		if(mbId == logId){
+			if(confirm("수정하시겠습니까?")){
+				location.replace('${pageContext.request.contextPath}'+ '/cs_edit_qna.LF?id=${qna.id}'); //yes
+			}else{
+				location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+			}
+		}else {
+			/* if(confirm("작성자가 아닙니다. 본인만 수정 가능합니다.")){
+				location.replace('${pageContext.request.contextPath}'+ '/qna_receive.LF?id=${qna.id}'); //no
+			} */
+			alert("작성자가 아닙니다. 본인만 수정 가능합니다.");
 		}
 	}
 	function listconfirm(){
@@ -47,8 +58,8 @@
 				<span id="rbBtn"><input type="button" value="목록" onclick="listconfirm()"></span>
 			</div>
 			<div id = "button_right">
-				<span id="rbBtn"><input type="button" value="수정" onclick="editconfirm()"></span>
-				<span id="rbBtn"><input type="button" value="삭제" onclick="deleteconfirm()"></span>
+				<span id="rbBtn"><input type="button" value="수정" onclick="editconfirm('${qna.mbId}', '${member.id}')"></span>
+				<span id="rbBtn"><input type="button" value="삭제" onclick="deleteconfirm('${qna.mbId}', '${member.id}')"></span>
 			</div>
 		</div>  
         <div id="receiveBoard_content">
