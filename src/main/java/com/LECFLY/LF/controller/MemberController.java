@@ -29,6 +29,7 @@ import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.model.vo.ShowClassVideoVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.service.impl.member.loginSVCImpl;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -128,6 +129,7 @@ public class MemberController {
 		if( birthday!=null ) {
 			System.out.println("생년월일");
 			model.addAttribute("birthday", birthday);
+			System.out.println(birthday);
 		}
 		if( !gender.isEmpty()&&gender!=null ) {
 			System.out.println("성별있음");
@@ -157,14 +159,16 @@ public class MemberController {
 			System.out.println("전화번호 뒷자리 있음");
 			model.addAttribute("phNumber2", phNumber2);
 		}
-		
+		model.addAttribute("msg", 
+				logSvc.check_none(name, nickname, birthday, gender, 
+				email, password, pw_confirm, phNumber, phNumber2));
 		if(!name.isEmpty()&&name!=null && !nickname.isEmpty()&&nickname!=null && birthday!=null && 
 				!gender.isEmpty()&&gender!=null && !email.isEmpty()&&email!=null && 
 				!password.isEmpty()&&password!=null && !pw_confirm.isEmpty()&&pw_confirm!=null && 
 				!phNumber.isEmpty()&&phNumber!=null && !phNumber2.isEmpty()&& phNumber2!=null) {
 			System.out.println("필수 인자값 모두 입력됨!");
 			// birthday 인자값 timestamp로 변환
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 			Timestamp birth = Timestamp.valueOf(sdf.format(birthday));
 			// gender 변환
 			int gen = 0;
@@ -192,7 +196,7 @@ public class MemberController {
 				System.out.println(name + "회원성공 실패");
 			}
 			
-			return "home";
+			return "member/login";
 			
 		}
 		return "member/create_new_member";

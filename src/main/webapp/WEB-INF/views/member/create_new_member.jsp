@@ -120,7 +120,8 @@
 			     	<tr>
 			        	<th><label class="cnm_subtitle" for="birthday">생년월일</label></th>
 	                    <td><input type="date" id="cnm_mb_birth" name="birthday" class="input_cnm" style="color:grey"
-			     		 value="${!empty birthday ? birthday : ''}"></td>
+			     		 value="${birthday}"></td>
+			     		 ${!empty birhday ?	 'y': 'n'}
 	                </tr>
 	                <tr>
 			        	<th><label class="cnm_subtitle">성별</label></th>
@@ -146,14 +147,18 @@
 			        	<th><label class="cnm_subtitle" for="email">이메일</label></th>
 	                    <td>
 	                    	<div style="display: inline-block">
-	                    		<input type="text" id="cnm_mb_email" name="email" class="input_cnm" placeholder="이메일">
+	                    		<input type="text" id="cnm_mb_email" name="email" class="input_cnm" placeholder="이메일" value=${email}>
 	                    		<input type="button" id="cnm_mb_email_check_btn" onclick="javascript:document.join_member.submit();" value="중복확인">
 	                    	</div>
 	                    </td>
 	                </tr>
 	                <tr>
+	                	<td></td>
+	                	<td style="font-size:12px;">${!empty email_msg ? email_msg : '실제 사용 가능한 이메일을 입력하세요.'}</td>
+	                </tr>
+	                <tr>
 			        	<th>비밀번호</th>
-	                    <td><input type="password" id="cnm_mb_pw" name="password" class="input_cnm" placeholder="비밀번호"></td>
+	                    <td><input type="password" id="cnm_mb_pw" name="password" class="input_cnm" placeholder="비밀번호" value=${password}></td>
 	                </tr>
 	                <tr>
 	                	<td></td>
@@ -161,7 +166,7 @@
 	                </tr>
 	                <tr>
 			        	<th>비밀번호 확인</th>
-	                    <td><input type="password" id="cnm_mb_pw_confirm" name="pw_confirm" class="input_cnm" placeholder="비밀번호 확인"></td>
+	                    <td><input type="password" id="cnm_mb_pw_confirm" name="pw_confirm" class="input_cnm" placeholder="비밀번호 확인" ${pw_confirm}></td>
 	                </tr>
 	                <tr>
 	                	<td></td>
@@ -172,10 +177,10 @@
 	                    <td>
 	                    	<label class="cnm_ph_padding">010 - </label>
 				        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_first" name="phNumber" placeholder="0000" maxlength="4"
-				        	 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+				        	 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value=${phNumber}>
 				        	<label>-</label>
 				        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_second" name="phNumber2" placeholder="0000" maxlength="4"
-				        	 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+				        	 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" value=${phNumber2}>
 				    	</td>
 	                </tr>
 	                <tr>
@@ -216,7 +221,8 @@
 			        </tr> -->
 	            </table>
 	        </div>
-		</div>	
+		</div>
+		<label>${msg}</label>
 		<div class="cnm_bottom">
 		    <div id="cnm_submit_btn">
 		    	<a style="color: black;" href="#" onclick="javascript:document.join_member.submit();">회원가입하기</a>
