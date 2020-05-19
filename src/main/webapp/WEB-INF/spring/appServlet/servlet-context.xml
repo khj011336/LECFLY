@@ -38,6 +38,7 @@
 	<resources mapping="/variable/**"
 		location="/resources/variable/" />
 	<resources mapping="/video/**" location="/resources/video/" />
+	<resources mapping="/LECFILE/**" location="/resources/LECFILE/" />
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
 	<beans:bean
