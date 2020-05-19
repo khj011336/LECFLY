@@ -41,9 +41,11 @@ function checkAll(){
 }
 .admin_table_wrap td {
 	border: .1px solid lightgray; 
+	text-align:center;
 }
 .admin_table_head > th {
 	background-color: #e8e8e8;
+	text-align:center;
 }
 .admin_table_filter > table {/* 결과물 정렬기준 */
 	margin: 30px;
