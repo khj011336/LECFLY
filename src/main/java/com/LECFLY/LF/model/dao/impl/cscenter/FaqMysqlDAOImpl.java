@@ -26,10 +26,10 @@ import com.LECFLY.LF.model.vo.QnaVO;
 public class FaqMysqlDAOImpl implements IFaqDAO{
 	// Faq 목록 보여주기
 	public static String SQL_FAQ_SHOWALL
-		= "select * from faqs order by id desc";
+		= "select * from faqs order by id asc";
 	// Faq 페이지 조회
 	public static String SQL_FAQ_SHOWALL_PG
-		= "SELECT * FROM faqs order by id desc limit ?, ?";
+		= "SELECT * FROM faqs order by id asc limit ?, ?";
 	// Faq 갯수 카운트
 	public static String SQL_CHECK_FAQ_NUMBERS
 		= "select count(id) as cnt from faqs";	

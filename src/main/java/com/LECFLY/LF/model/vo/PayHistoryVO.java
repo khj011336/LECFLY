@@ -268,9 +268,5 @@ public class PayHistoryVO {
 				+ checkSameOrder + ", deliveryStatus=" + deliveryStatus + ", deliveryRequire=" + deliveryRequire
 				+ ", updatedAt=" + updatedAt + ", PayHistorySum=" + PayHistorySum + "]";
 	}
-
-
-	
-	
 	
 }

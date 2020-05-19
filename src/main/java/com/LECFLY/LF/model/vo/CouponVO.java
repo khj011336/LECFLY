@@ -4,14 +4,18 @@ import java.sql.Timestamp;
 
 public class CouponVO {
 	
-	public static final String[] STR_APPLY_TO = {"신규회원"};
+
+	public static final int COUPON_APPLY_TO_DEFAULT = 0;
+	public static final int COUPON_APPLY_TO_NEW_MB = 1;
+	public static final String[] STR_APPLY_TO = {"모든회원", "신규회원"};
+
 	/** 쿠폰 번호 */
 	private int id; 
 	/** 쿠폰 코드 번호 */
 	private String code; 
 	/** 쿠폰이름 (ex: 신규회원쿠폰)*/
 	private String couponName;
-	/** 적용대상 (0: 신규회원 1:??회원)*/
+	/** 적용대상 (0: 모든회원  1:신규회원)*/
 	private int applyTo;
 	/** 쿠폰 발행자 fk/(회원테이블참조*/
 	private int makerId;         
@@ -34,7 +38,7 @@ public class CouponVO {
 	public CouponVO() {}
 	
 	/**
-	 * 중간생성자 최소 필요한거
+	 * 중간생성자1 최소 필요한거
 	 * @param code
 	 * @param couponName
 	 * @param applyTo

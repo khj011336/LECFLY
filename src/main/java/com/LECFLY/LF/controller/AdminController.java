@@ -183,13 +183,14 @@ public class AdminController {
 		model.addAttribute("cpList", cpList);
 		return "admin/adminLecture/admin_coupon.ad";
 	}
+	
 	// 관리자 회원관리
 	@RequestMapping(value = "/admin_member.LF")
 	public String adminMember() {
 		return "admin/adminMember/admin_member.ad";
 	}
 	// 관리자 회원리스트 출력
-	@RequestMapping(value = "/admin_member_list.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin_member.LF", method = RequestMethod.GET)
 	public String adminMemberListProc(Model model, 
 			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adMbSvc.checkMaxPageNumber();
@@ -212,35 +213,170 @@ public class AdminController {
 		return "redirect:admin_member_list.LF";
 	}
 	
+//	// 관리자 크리에이터관리
+//	@RequestMapping(value = "/admin_creator.LF")
+//	public String adminCreator(Model model) {
+//		List<CreatorVO> crList = adMbSvc.selectCreatorMemberList();
+//		model.addAttribute("crList", crList);
+//		return "admin/adminMember/admin_creator.ad";
+//	}
 	// 관리자 크리에이터관리
-	@RequestMapping(value = "/admin_creator.LF")
-	public String adminCreator(Model model) {
-		List<CreatorVO> crList = adMbSvc.selectCreatorMemberList();
-		model.addAttribute("crList", crList);
+		@RequestMapping(value = "/admin_creator.LF")
+		public String adminCreator() {
+			return "admin/adminMember/admin_creator.ad";
+		}
+	
+	// 관리자 크리에이터 회원리스트 출력
+	@RequestMapping(value = "/admin_creator.LF", method = RequestMethod.GET)
+	public String adminCreatorListProc(Model model, 
+			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+		System.out.println("PN? "+ pageNumber);
+		Map<String,Integer> rMap = adMbSvc.checkMaxPageNumberForCreator();
+		List<CreatorVO> crList = adMbSvc.selectAllCreator(pageNumber);
+		if(crList != null && rMap != null) {
+			model.addAttribute("listSize", crList.size());
+			model.addAttribute("crList", crList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
 		return "admin/adminMember/admin_creator.ad";
 	}
+	// 관리자 크리에이터리스트(다중) 갱신 AJAX 호출
+	@RequestMapping(value = "/admin_update_creator_list.LF", method = RequestMethod.POST)
+	public String adminCreatorListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
+		for (Integer id : checkList) {
+			System.out.println("체크 id: "+id);
+		}
+		return "redirect:admin_creator.LF";
+	}
+		
+	
 	// 관리자 공지내역
 	@RequestMapping(value = "/admin_board_notice.LF")
-	public String adminBoardNotice(Model model, int offset, int limit) {
-		List<NoticeVO> noList = adBdSvc.showAllNotices(offset, limit);
+	public String adminBoardNotice() {
 		return "admin/adminBoard/admin_board_notice.ad";
 	}
+	// 관리자 공지내역리스트 출력
+	@RequestMapping(value = "/admin_board_notice.LF", method = RequestMethod.GET)
+	public String adminBoardNoticeListProc(Model model, 
+			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+		System.out.println("PN? "+ pageNumber);
+		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfNotice();
+		List<NoticeVO> ntList = adBdSvc.selectAllNotice(pageNumber);
+		if(ntList != null && rMap != null) {
+			model.addAttribute("listSize", ntList.size());
+			model.addAttribute("ntList",ntList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminBoard/admin_board_notice.ad";
+	}
+	// 관리자 공지내역리스트(다중) 갱신 AJAX 호출
+	@RequestMapping(value = "/admin_update_notice_list.LF", method = RequestMethod.POST)
+	public String adminNoticeListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
+		for (Integer id : checkList) {
+			System.out.println("체크 id: "+id);
+		}
+		return "redirect:admin_board_notice.LF";
+	}
+	
+	
+	
+	
+	
+	
+	
 	// 관리자 자주묻는질문
 	@RequestMapping(value = "/admin_board_faq.LF")
-	public String adminBoardFaq(Model model, int offset, int limit) {
-		List<FaqVO> faqList = adBdSvc.showAllFaqs(offset, limit);
+	public String adminBoardFaq() {
 		return "admin/adminBoard/admin_board_faq.ad";
 	}
+	// 관리자 자주묻는질문 내역 리스트 출력
+	@RequestMapping(value = "/admin_board_faq.LF", method = RequestMethod.GET)
+	public String adminBoardFaqListProc(Model model, 
+			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+		System.out.println("PN? "+ pageNumber);
+		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfFaq();
+		List<FaqVO> fqList = adBdSvc.selectAllFaq(pageNumber);
+		if(fqList != null && rMap != null) {
+			model.addAttribute("listSize", fqList.size());
+			model.addAttribute("fqList",fqList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminBoard/admin_board_faq.ad";
+	}
+	// 관리자 자주묻는질문내역리스트(다중) 갱신 AJAX 호출
+	@RequestMapping(value = "/admin_update_faq_list.LF", method = RequestMethod.POST)
+	public String adminFaqListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
+		for (Integer id : checkList) {
+			System.out.println("체크 id: "+id);
+		}
+		return "redirect:admin_board_faq.LF";
+	}
+	
+	
 	// 관리자 문의내역
 	@RequestMapping(value = "/admin_board_qna.LF")
-	public String adminBoardQna(Model model, int offset, int limit) {
-		List<QnaVO> qnaList = adBdSvc.showAllQnas(offset, limit);
+	public String adminBoardQna() {
 		return "admin/adminBoard/admin_board_qna.ad";
 	}
+	// 관리자 문의내역 리스트 출력
+	@RequestMapping(value = "/admin_board_qna.LF", method = RequestMethod.GET)
+	public String adminBoardQnaListProc(Model model, 
+			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+		System.out.println("PN? "+ pageNumber);
+		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfQna();
+		List<QnaVO> qaList = adBdSvc.selectAllQna(pageNumber);
+		if(qaList != null && rMap != null) {
+			model.addAttribute("listSize", qaList.size());
+			model.addAttribute("qaList", qaList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminBoard/admin_board_qna.ad";
+	}
+	// 관리자 문의내역리스트(다중) 갱신 AJAX 호출
+	@RequestMapping(value = "/admin_update_qna_list.LF", method = RequestMethod.POST)
+	public String adminQnaListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
+		for (Integer id : checkList) {
+			System.out.println("체크 id: "+id);
+		}
+		return "redirect:admin_board_qna.LF";
+	}
+	
+	
 	// 관리자 댓글내역
 	@RequestMapping(value = "/admin_board_comment.LF")
-	public String adminBoardComment(Model model, int offset, int limit) {
-		List<CommentClassVO> coList= adBdSvc.showAllComments(offset, limit);
+	public String adminBoardComment() {
 		return "admin/adminBoard/admin_board_comment.ad";
+	}
+	// 관리자 댓글내역 리스트 출력
+	@RequestMapping(value = "/admin_board_comment.LF", method = RequestMethod.GET)
+	public String adminBoardCommentListProc(Model model, 
+			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+		System.out.println("PN? "+ pageNumber);
+		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfComment();
+		List<QnaCommentVO> qcList = adBdSvc.selectAllComment(pageNumber);
+		if(qcList != null && rMap != null) {
+			model.addAttribute("listSize", qcList.size());
+			model.addAttribute("qcList", qcList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminBoard/admin_board_comment.ad";
+	}
+	// 관리자 댓글내역리스트(다중) 갱신 AJAX 호출
+	@RequestMapping(value = "/admin_update_comment_list.LF", method = RequestMethod.POST)
+	public String adminCommentListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
+		for (Integer id : checkList) {
+			System.out.println("체크 id: "+id);
+		}
+		return "redirect:admin_board_comment.LF";
 	}
 }

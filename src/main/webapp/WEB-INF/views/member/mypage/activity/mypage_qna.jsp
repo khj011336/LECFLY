@@ -42,3 +42,6 @@
 		</div>
 	</div>
 </c:if>
+<c:if test="${empty qnaList}">
+	<%@ include file="../attend_lec_manager/mypage_no_list.jsp"  %>
+</c:if>

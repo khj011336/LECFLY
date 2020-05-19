@@ -37,9 +37,10 @@
 					<c:forEach var="coupon" items="${couponList}" varStatus="vs">
 					<tr>
 						<td><c:out value="${(pn-1) * 10 + vs.index}"/></td>
-						<td><c:out value="${coupon.couponName}" default="쿠폰명이없어요" />신규회원쿠폰</td> <!-- 쿠폰명이 없음.. -->
+						<td><c:out value="${coupon.couponName}" default="쿠폰" /></td>
 						<td><c:out value="${coupon.discount}"/></td> <!-- Property [discount] not found on type [java.lang.String] -->
-						<td><c:out value="${따로 스트링처리해서 보내서 적용할예정}" default="적용대상없어요" />신규회원</td> <!-- 적용 대상없음 -->
+						<td><c:out value="${coupon.applyTo}" default="모든회원" /></td>
+
 						<td><c:out value="${coupon.useCheck eq 0 ? 'O': 'X'}" /></td>
 						<td><fmt:formatDate value="${coupon.createdDay}" pattern="yyyy.MM.dd HH:mm" /></td>
 					</tr>
@@ -70,5 +71,5 @@
 	</div>
 </c:if>
 <c:if test="${empty couponList}">
-	empty couponList
+	<%@ include file="../attend_lec_manager/mypage_no_list.jsp"  %>
 </c:if>

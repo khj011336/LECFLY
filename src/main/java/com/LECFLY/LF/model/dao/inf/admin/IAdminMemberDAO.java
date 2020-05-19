@@ -30,6 +30,9 @@ public interface IAdminMemberDAO {
 	// 을 전체조회할 수 있다.
 	List<CreatorVO> selectCreatorMemberList();
 	
+	int checkNumberOfCreators();
 	int checkNumberOfMembers();
+	
+	List<CreatorVO> searchCreatorForAll(int offset, int limit);
 	List<MemberVO> searchMemberForAll(int offset, int limit);
 }
