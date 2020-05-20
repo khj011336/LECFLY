@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<c:if test="${not empty vdList}">
+<c:if test="${not empty likeCountList}">
 	<div class="mypage_bottom_info">
 		<h2 class="mypage_bottom_title">좋아요한 강의</h2>
 		<div class="mypage_bottom_contents">
@@ -10,19 +10,24 @@
 			<div class="list_video_wrapper">
 			
 			
-			<c:forEach var="vd" items="${vdList}" varStatus="vs">	
+			<c:forEach var="lc" items="${likeCountList}" varStatus="vs">	
 				<c:if test="${vs.index mod 4 eq 0}">
 				<div class="list_video_block_row">
 				</c:if>			
 				<div class="list_video_block">
 					<div class="list_video_thumb">
-					<a href="#"> <img src="${vd.imgPath}" alt="lecfly lecture"></a>
+					<a href="#"> <img src="<c:out value='${imgPathList.get(vs.index)}' />"></a>
 					</div>
 					<div class="list_video_info">
-						<p class="video_info_category"><c:out value="${vdCateList.get(vs.index)}" /></p>
-						<p class="video_info_title"><c:out value="${vd.title}"/></p>
-						<img src="<c:out value='${creImgPathList.get(vs.index)}' />" class="video_info_creator_img">
-						<p class="video_info_creator_name"><c:out value="${creNickNameList.get(vs.index)}" /></p>
+						<p class="video_info_category"><c:out value="${cateList.get(vs.index)}" /></p>
+						<p class="video_info_title"><c:out value="${titleList.get(vs.title)}"/></p>
+						<img src="<c:out value='${creImgList.get(vs.index)}' />" class="video_info_creator_img">
+						<p class="video_info_creator_name"><c:out value="${nickNameList.get(vs.index)}" /></p>
+						<div class="main_video_like">
+						<i class="fas fa-heart fa-lg"></i><c:out value="${lc}" /> &nbsp;
+						<!--  좋아요 누른사람/ 해당 클래스 강의를 듣는 멤버수 -->
+						<i class="far fa-thumbs-up fa-lg"></i>98%
+						</div>
 					</div>
 				</div>
 				<c:if test="${vs.index mod 4 eq 3 or vs.last}">

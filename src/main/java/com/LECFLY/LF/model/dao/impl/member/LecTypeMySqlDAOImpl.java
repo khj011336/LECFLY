@@ -31,7 +31,7 @@ public class LecTypeMySqlDAOImpl implements ILecTypeDAO {
 			"insert into lec_types values( null, ?, ?, ?, now() )";
 	
 	public static final String SQL_SELECT_ALL_LEC_TYPE_BY_MBID_STATUS = 
-			"select * from lec_types where mb_id = ? and status = " + LecTypeVO.STATUS_ATTENDING;
+			"select * from lec_types where mb_id = ? and status = ?";
 	
 	
 	class LecTypeMySqlImplRowMapper implements RowMapper<LecTypeVO> {
@@ -77,9 +77,10 @@ public class LecTypeMySqlDAOImpl implements ILecTypeDAO {
 	public List<LecTypeVO> selectAllLecTypeByMbIdStatus(int mbId, int status) {
 		System.out.println("selectAllLecTypeByMbIdStatus()..");
 		try {
-			System.out.println(SQL_SELECT_ALL_LEC_TYPE_BY_MBID_STATUS + " / mbId = " + mbId);
+			System.out.println(SQL_SELECT_ALL_LEC_TYPE_BY_MBID_STATUS + 
+							" / mbId = " + mbId + "/ status = " + status );
 			return jtem.query(SQL_SELECT_ALL_LEC_TYPE_BY_MBID_STATUS, 
-					BeanPropertyRowMapper.newInstance(LecTypeVO.class), mbId);
+					BeanPropertyRowMapper.newInstance(LecTypeVO.class), mbId, status);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException...");
 			e.printStackTrace();

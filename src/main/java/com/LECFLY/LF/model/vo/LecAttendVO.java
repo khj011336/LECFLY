@@ -12,6 +12,8 @@ public class LecAttendVO {
 	
 	/** 자동생성 순서번호 */
 	private int id;
+	/** 회원의 번호 */
+	private int mbId;
 	/** LecTypeVO 에서 0번으로 할시 선택된 클래스 아이디 그때말고는 생성되면안됨 */ 
 	private int classId;
 	/** 영상 번호 */
@@ -32,9 +34,10 @@ public class LecAttendVO {
 	 * 더미생성자 
 	 */
 	public LecAttendVO() {}
-	
+
 	/**
-	 *  중간생성자
+	 * 중간생성자
+	 * @param mbId
 	 * @param classId
 	 * @param videoId
 	 * @param videoName
@@ -42,15 +45,16 @@ public class LecAttendVO {
 	 * @param viewingTime
 	 * @param untilShow
 	 */
-	public LecAttendVO(int classId, int videoId, 
-			String videoName, String videoPic, int viewingTime, float untilShow) {
-		this(0, classId, videoId, videoName, videoPic, 
-				viewingTime, untilShow, new Timestamp(System.currentTimeMillis()));
+	public LecAttendVO(int mbId, int classId, int videoId, String videoName, String videoPic, int viewingTime,
+			float untilShow) {
+		this( 0, mbId, classId, videoId, videoName, 
+				videoPic, viewingTime, untilShow, new Timestamp(System.currentTimeMillis()) );
 	}
-	
+
 	/**
 	 * 풀생성자
 	 * @param id
+	 * @param mbId
 	 * @param classId
 	 * @param videoId
 	 * @param videoName
@@ -59,10 +63,11 @@ public class LecAttendVO {
 	 * @param untilShow
 	 * @param showAt
 	 */
-	public LecAttendVO(int id, int classId, int videoId, String videoName, String videoPic, int viewingTime,
+	public LecAttendVO(int id, int mbId, int classId, int videoId, String videoName, String videoPic, int viewingTime,
 			float untilShow, Timestamp showAt) {
 		super();
 		this.id = id;
+		this.mbId = mbId;
 		this.classId = classId;
 		this.videoId = videoId;
 		this.videoName = videoName;
@@ -78,6 +83,14 @@ public class LecAttendVO {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getMbId() {
+		return mbId;
+	}
+
+	public void setMbId(int mbId) {
+		this.mbId = mbId;
 	}
 
 	public int getClassId() {
@@ -136,12 +149,15 @@ public class LecAttendVO {
 		this.showAt = showAt;
 	}
 
-	
 	@Override
 	public String toString() {
-		return "LecAttendVO [id=" + id + ", classId=" + classId + ", videoId=" + videoId + ", videoName=" + videoName
-				+ ", videoPic=" + videoPic + ", viewingTime=" + viewingTime + ", untilShow=" + untilShow + ", showAt="
-				+ showAt + "]";
+		return "LecAttendVO [id=" + id + ", mbId=" + mbId + ", classId=" + classId + ", videoId=" + videoId
+				+ ", videoName=" + videoName + ", videoPic=" + videoPic + ", viewingTime=" + viewingTime
+				+ ", untilShow=" + untilShow + ", showAt=" + showAt + "]";
 	}
+	
+	
+	
+	
 	
 }

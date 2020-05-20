@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.LECFLY.LF.model.dao.impl.Test;
 
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
+import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
@@ -25,6 +26,7 @@ import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.model.vo.LecTypeVO;
+import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -38,8 +40,11 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Autowired
 	private IVideoDAO vdDao;
 	
-//	@Autowired
-//	private ICreatorDAO creDao;
+	@Autowired
+	private ICreatorDAO creDao;
+	
+	@Autowired
+	private ILectureDAO lecDao;
 	
 //	@Autowired
 //	private IQnaCommentDAO qnacomDao;		// 디버그용 잠시닫음
@@ -88,22 +93,148 @@ public class MyPageSVCImpl implements IMypageSVC {
 	}
 
 	
+	/**
+	 *	mbId 랑 status 회원이 강의를 수강한건지 or 찜하기한건지 or 좋아요 한건지 구분을하고
+	 *	mbId status 를 넣어 해당하는 lectureId를 가지고있는 LecTypeVO List를 뽑고
+	 *	LecTypeVOList안에서 classId 를 뽑았으며
+	 *	그 classId로 LecAttendVO 를 뽑아서 리스트로담아
+	 *	리턴하였음
+	 */
 	@Override //회원이 신청한수강중인 강의목록(비디오) 표시하기
 	public List<LecAttendVO> selectLecToStatusForMbIdStatus(int mbId, int status){
-		// 멤버아이디랑 저걸로 판달수있는거 lecType
-		List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
-		//여기서 클래스아이디를 통해 내가 수강중인 비디로들을 뽑아야됨 얼마만큼 저거리스트만큼 돌아야되
-		
-		
-		List<LecAttendVO> rtLaList = new ArrayList<>();
+		System.out.println("mpSvc : selectLecToStatusForMbIdStatus()");
+		if( mbId > 0 && 
+			status >= LecTypeVO.STATUS_WILL_ATTENDING &&
+			status <= LecTypeVO.STATUS_LIKE ) 
+		{
+			// 멤버아이디랑 저걸로 판달수있는거 lecType
+			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
+			//여기서 클래스아이디를 통해 내가 수강중인 비디로들을 뽑아야됨 얼마만큼 저거리스트만큼 돌아야되
+			if(ltList != null) {
+				List<LecAttendVO> rtLaList = new ArrayList<>();
+				final int LT_LIST_SIZE = ltList.size();
+				for (int i = 0; i < LT_LIST_SIZE; i++) {
+					LecTypeVO lt = ltList.get(i);
+					int classId = lt.getClassId();
+					LecAttendVO la = laDao.selectOneLecAttendByMbIdClassId(mbId, classId);
+					rtLaList.add(la);
+				}
+				if(rtLaList.size() > 0) {
+					return rtLaList;
+				}
+				System.out.println("rtLaList.size() =< 0  //  0 or 음수 ");
+			} else {
+				System.out.println("ltList == null ");
+			}
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) + 
+							" / mbId = " + mbId  + " / status = " + status);
+		}
 		return null;
 	}
 
 
-	@Override // 회원이 좋아요, 찜하기한 크리에이터의 이미지Path랑 nickName을 리스트로 뽑아야서 맵으로 담을꺼야
+	/**
+	 *	mbId 랑 status 회원이 강의를 수강한건지 or 찜하기한건지 or 좋아요 한건지 구분을하고
+	 *	mbId status 를 넣어 해당하는 lectureId를 가지고있는 LecTypeVO List를 뽑고
+	 *	리스트의 갯수만큼 LectureVO 의 파람 7개를 맵으로 뽑아서
+	 *	각각의 파람들을 리스트로 만들어서
+	 *	맵에담아리턴 Map<"ListName", ListValue>
+	 */
+	@Override
 	public Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status){
 		System.out.println("MyPageSVCImpl / selectVideoAndCreImgPathAndCreNicname()..");
-		
+		if(mbId > 0 && status >= LecTypeVO.STATUS_WILL_ATTENDING 
+								&& status <= LecTypeVO.STATUS_LIKE) {
+			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
+			if(ltList != null) {
+				List<Integer> idList = new ArrayList<>();
+				List<String> strCateList = new ArrayList<>();
+				List<String> subTitleList = new ArrayList<>();
+				List<String> imgPathList = new ArrayList<>();
+				List<String> nickNameList = new ArrayList<>();
+				List<Integer> likeCountList = new ArrayList<>();
+				List<String> creatorImgPathList = new ArrayList<>();
+				final int LTLIST_SIZE = ltList.size();
+				for (int i = 0; i < LTLIST_SIZE; i++) {
+					LecTypeVO lecType = ltList.get(i);
+					int classId = lecType.getClassId();
+					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById(classId); 
+							testDao.selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById(classId);
+					if(lecParamMap != null) {
+						int id = (int)lecParamMap.get("id");
+						idList.add(id);
+						
+						int cate = (int)lecParamMap.get("category");
+						String strCate = LecTypeVO.STR_CATEGORY[cate];
+						strCateList.add(strCate);
+						
+						String subTitle = (String)lecParamMap.get("subtitle");
+						subTitleList.add(subTitle);
+						
+						String titleImgPath = (String)lecParamMap.get("title_img");
+						imgPathList.add(titleImgPath);
+						
+						String nickName = (String)lecParamMap.get("nickname");
+						nickNameList.add(nickName);
+						
+						int likeCount = (int)lecParamMap.get("like_count");
+						likeCountList.add(likeCount);
+						
+						/* 	크리에이터의 이미지 path 를 뽑아야함 근데 lecture에서 뽑을수없음 프로필이미지가 없기때문에
+						 	지금 확인해야할게 그러면 크리에이터의 imgPath는 creatorVO 에서 뽑는건지 
+						 	memberVO 에서 뽑는건지 확인 (생각상으로는 memberVO 에서 뽑아야할건데) CreatorVO의 fid가
+						 	MemberVO id 와 같은지 확인하자(생각상으로는 그게맞긴함.)
+						*/
+						int creatorId = (int)lecParamMap.get("fid"); // LecturVO 기준 fid 는 크리에이터아이디
+						int creatorMemberId = //creDao.selectFidById(creatorId); // CreatorVO 기준 fid 는 해당크리에이터 멤버의 아이디
+												testDao.selectFidById(creatorId);
+						if(creatorMemberId > 0) {
+							String creProFileImgPath = //mbDao.selectMemberPicById(creatorMemberId);
+													testDao.selectMemberPicById(creatorMemberId);
+							if(creProFileImgPath != null) {
+								creatorImgPathList.add(creProFileImgPath);
+							} else { // empty 는허용 이미지를 안넣을수도있다.
+								System.out.println("creProFileImgPath == null");
+							}
+						} else {
+							System.out.println("creatorMemberId 는 0 혹은 음수");
+							return null;
+						}
+					} else {
+						System.out.println("lecParamMap == null");
+					}
+				}
+				if( 	idList.size() > 0  && strCateList.size() > 0 && 
+						subTitleList.size() > 0 && imgPathList.size() > 0 && 
+						nickNameList.size() > 0 && likeCountList.size() > 0 &&
+						creatorImgPathList.size() > 0 &&
+						idList.size() == strCateList.size() &&
+						idList.size() == subTitleList.size() && 
+						idList.size() == imgPathList.size() &&
+						idList.size() == nickNameList.size() && 
+						idList.size() == likeCountList.size() &&
+						idList.size() == creatorImgPathList.size() ) 
+				{ // 위조건이 참일때.
+					Map<String, Object> rMap = new HashMap<>();
+					rMap.put("idList", idList);
+					rMap.put("cateList", strCateList);
+					rMap.put("titleList", subTitleList);
+					rMap.put("imgPathList", imgPathList);
+					rMap.put("nicList", nickNameList);
+					rMap.put("likeCountList", likeCountList);
+					rMap.put("creatorImgList", creatorImgPathList);
+					return rMap;
+				} else {
+					System.out.println("list들의 사이즈가 0 이하거나 사이즈가 동일하지않음");
+				}
+			} else {
+				System.out.println("ltList == null");
+			}
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) + 
+					" / mbId = " + mbId  + " / status = " + status);
+		}
 		return null;
 	}
 	

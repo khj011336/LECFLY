@@ -60,6 +60,20 @@ public class Test {
 		return null;
 	}
 
+	final String SQL_SELECT_FID_BY_ID = "select fid from creator where id = ?";
+	
+	public int selectFidById(int creatorId) {
+		try {
+			System.out.println(SQL_SELECT_FID_BY_ID + " / id = " + creatorId);
+			return jtem.queryForObject(SQL_SELECT_FID_BY_ID, Integer.class, creatorId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
 	
 	////////////////////            』
 	
@@ -214,13 +228,55 @@ public class Test {
 		}
 		return null;
 	}
-
 	
 	////////////////////      』
 	
 	/** */
 	
+	/////////////// ILectureDAO
 	
+	final String SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_BY_ID 
+			= "select id, fid, category, subtitle, title_img nickname, like_count from lectures where id = ?";
+	
+	
+	public Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById(int lecId) {
+		System.out.println("selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById()");
+		try {
+			System.out.println(
+					SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_BY_ID + 
+						" / id = " + lecId);
+			Map<String, Object> rMap = 
+					jtem.queryForMap(
+							SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_BY_ID, lecId);
+			for(String k : rMap.keySet()) {
+				System.out.println("key = " + k);
+			}
+			return rMap;
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	///////////
+	
+	public static final String SQL_SELECT_PIC_BY_ID = "select pic from members where id = ?"; 
+	// MemberDAO 가져가세요..
+	public String selectMemberPicById(int id) {
+		try {
+			System.out.println(SQL_SELECT_PIC_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_PIC_BY_ID, String.class, id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException.."); 
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	//////////
 	
 	
 	
