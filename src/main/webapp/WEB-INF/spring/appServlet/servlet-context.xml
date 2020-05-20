@@ -31,14 +31,16 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/css/**" location="/resources/css/" />
+<!-- 	 <resources mapping="/images/**" location="file:///C:/fusion11/spring_ws/LECFILE/" /> -->
+	 <resources mapping="/css/**" location="/resources/css/" />
 	<resources mapping="/imges/**" location="/resources/imges/" />
 	<resources mapping="/js/**" location="/resources/js/" />
-	<resources mapping="/variable/**"
-		location="/resources/variable/" />
+	<resources mapping="/variable/**" location="/resources/variable/" />
 	<resources mapping="/video/**" location="/resources/video/" />
 	<resources mapping="/LECFILE/**" location="/resources/LECFILE/" />
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
 	<beans:bean

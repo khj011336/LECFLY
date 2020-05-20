@@ -75,8 +75,8 @@ public class CreatorController {
 		ses.setAttribute("fid", 2);
 		ses.setAttribute("membertest", "hongil");
 		USERNAME = "hongil";
-		ses.setAttribute("crPath","resources/LECFILE/2020/"+USERNAME+"/Img");
-		ses.setAttribute("viPath","resources/LECFILE/2020/"+USERNAME+"/video");
+		ses.setAttribute("crPath","/images/2020/"+USERNAME+"/Img");
+		ses.setAttribute("viPath","/images/2020/"+USERNAME+"/video");
 		int loginStatus = (Integer) ses.getAttribute("id");
 		int fid = (Integer) ses.getAttribute("fid");
 		MAXPAGE = LecSVC.checkOfLectureNumber(2);
