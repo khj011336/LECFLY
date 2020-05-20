@@ -13,7 +13,7 @@
 	display: inline-block;
 }
 
-#register_nav>.register_video {
+#register_nav > .register_video_img {
 	width: 774px;
 	height: 400px;
 }
@@ -56,12 +56,21 @@
 }
 
 .register_soap_img {
-	display: inline-block;
 	text-align: center;
-	padding: 25px;
+	margin: 25px;
 	width: 350px;
 	height: 250px;
 	float: left;
+}
+
+.register_soap_imgb {
+	position: relative;
+	text-align: center;
+	margin: 25px;
+	width: 350px;
+	height: 250px;
+	float: left;
+	bottom: 20px;
 }
 
 #register_tb {
@@ -134,8 +143,8 @@ textarea[name=feedback] {
 
 input[value=입력] {
 	position: relative;
-	bottom: 42px;
-	height: 70px;
+	bottom: 38px;
+	height: 65px;
 	width: 70px;
 	display: inline-block;
 	border-radius: 5px;
@@ -168,6 +177,7 @@ input[value=입력] {
 }
 
 #register_content .register_kit_select {
+	cursor: pointer;
 	font-weight: bold;
 	font-size: 15pt;
 }
@@ -187,7 +197,8 @@ input[value=입력] {
 	width: 250px;
 }
 
-#register_soap_title {
+#moveCart {
+	cursor: pointer;
 	width: 100px;
 	padding: 3px;
 	border: 1px solid darkgray;
@@ -197,13 +208,15 @@ input[value=입력] {
 	float: right;
 	position: relative;
 	text-align: center;
+	
 }
 
-#register_soap_title:hover {
+#moveCart:hover {
 	color: white;
 }
 
 .register_like_num {
+	cursor: pointer;
 	position: relative;
 	top: 10px;
 	font-size: 12pt;
@@ -223,6 +236,7 @@ input[value=입력] {
 }
 
 .register_lec_pick {
+	cursor: pointer;
 	display: block;
 	padding: 10px;
 	border: 1px solid lightgray;
@@ -235,6 +249,7 @@ input[value=입력] {
 }
 
 #register_lec_apply {
+	cursor: pointer;
 	display: block;
 	padding: 10px;
 	border: 1px solid lightgray;
@@ -242,7 +257,7 @@ input[value=입력] {
 	font-weight: bold;
 	background-color: lightgray;
 	float: right;
-	width: 375px;
+	width: 353px;
 	text-align: center;
 }
 

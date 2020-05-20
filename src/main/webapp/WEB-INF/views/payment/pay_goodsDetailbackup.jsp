@@ -2,45 +2,16 @@
 	pageEncoding="UTF-8"%>
 <title>상품 상세페이지</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_goodsDetail.css">
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#moveCart").on("click", function() {
-			var URLHD = '${pageContext.request.contextPath}/';
-			var url = URLHD+'payment/pay_cart.LF';
-			var kitId = "input[name=kit_id]";
-			var creId = ""
-			console.log("kitId = " + kitId);
-			var parmas = "kitId=" + kitId; + "&mbId=" + mbId;
-			
-			$.ajax({
-				type: 'post',
-				url : url,
-				data: "kitId=" + kitId + "&mbId=" + mbId,
-				success: function(res, status ,xhr){
-					alert("성공");
-				},
-				error: function(status, xhr){
-					alert("실패");
-				}
-			});
-		});
-	});
-
-
-	// 별점 추가
-	$('#register_review a').click(function() {
-		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
-		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-		return false;
-	});
-
-	
-</script>
 <div id="register_wrapper">
 	<div id="register_nav">
-		<div class="register_video_img">
-			<img src='<c:out value="${videos.play_imgs}" default="비디오 이미지.jpg" />' alt="비디오 이미지">
+<!-- 		<video class="register_video" controls> -->
+<!-- 			<source src="resource/video/soap.mp4" type="video/ogg"> -->
+<!-- 		</video> -->
+		<div>
+			<img src="${lec.titleImg}" alt="클래스 소개 img">
 		</div>
+		
+		<br> <br>
 		<ul id="register_tag_ul">
 			<li class="register_tag_li"><a class="register_tag_li_a"
 				href="#register_lecture_info">강의소개</a> |</li>
@@ -58,18 +29,17 @@
 		<br> <br>
 		<h1 id="register_lecture_info">강의소개</h1>
 		<p id="register_lec">
-			<img class="register_soap_img" src="<c:out value='${lec.infoImg}' default='soap.jpg' />">
-			<img class="register_soap_imgb" src="<c:out value='${lec.infoImgb}' default='soapb.jpg' />">
+			<img class="register_soap_img" src="${infoImg}"alt="soap">
+			<img class="register_soap_img" src="${infoImgb}" alt="soap">
 			${lec.info}
-		<br>
 		</p>
 		<br> <br>
 		<h1 id="register_kit_info">KIT 소개</h1>
-		<input type="hidden" name="kit_id" value="${kit.id}">
-		<br> <br> <img class="kit_img" src='<c:out value="${kit.img_path}" default="abc.jpg"></c:out>'> <br> <br>
+		<br> <br> <img class="kit_img"
+			src="${kit.img}" alt="kit"> <br> <br>
 		<h1 id="register_curri_info">커리큘럼</h1>
 		<table id="register_tb">
-			<c:forEach var="vd" items="${vidList}" varStatus="vs">
+			<c:forEach var="vd" items="${vdList}" varStatus="vs">
 				<tr>
 					<td class="register_td">${vs.index + 1}</td>
 					<td class="register_td">${vd.title}</td>
@@ -116,9 +86,9 @@
 		<br>
 		
 		<c:forEach var="rp" items="${ccList}" varStatus="vs">
-			<br> <i class="fas fa-user"> ${rp.mbId} <input type="date" value="<fmt:formatDate value='${rp.createdAt}' pattern='yyyy년-MM월-dd일 - HH시 mm분'/>" readonly>
-			${rp.comment}
-			</i> <br> <br> ${rp.mbNic} <br>
+			<br> <i class="fas fa-user"> ${rp.cMName} <input type="date" value="<fmt:formatDate value='${rp.cMDate}' pattern='yyyy-MM-dd' />" readonly>
+			${rp.cMDate}
+			</i> <br> <br> ${rp.cMIF}  <br>
 		</c:forEach>
 		 <br>
 		<textarea name="feedback" rows="5" cols="20" placeholder="댓글을 입력해주세요"></textarea>
@@ -126,12 +96,11 @@
 	</div>
 </div>
 <div id="register_content">
-	<c:out value="${cate}"  default="없음"/>
-	<br><br><br>
+	${lecCategory}
 	<h1 id="register_content_title">
-		<c:out value="${lec.subTitle}" default="없음" />	
+		${lec.subTitle}
 	</h1>
-	<div id="register_wri_name">by. ${creNickname}</div>
+	<div id="register_wri_name">by. ${creName}</div>
 	<br> <br>
 	<p>
 		<span class="register_kit_select">&lt;준비물 KIT&gt;</span> <span
@@ -140,12 +109,29 @@
 	<br> <br>
 	<select class = "register_kit_select">
 		<option selected="selected">선택안함</option>
-		<option>스타터를 위한 KIT (${kit.price})</option>
+		<option>스타터를 위한 KIT (18,000원)</option>
 	</select>  
-	<input id="moveCart" type="button" value="장바구니 담기">
+	<label for="register_soap" id="register_soap_title">장바구니 담기</label> <br>
 	<br> <br> <span class="register_like_num"><i
 		class="fas fa-heart"></i> ${lec.likeCount} </span> &nbsp; &nbsp; &nbsp; <span
 		class="register_lec_pick"> 강의 찜하기 </span> <br> <br> <br>
 	<p id="register_warning">'라이프스타일' 회원권 보유시 신청가능합니다.</p>
 	<br> <span id="register_lec_apply">강의 신청하기</span>
 </div>
+<script>
+	// 별점 추가
+	$('#register_review a').click(function() {
+		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
+		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+		return false;
+	});
+
+	// 장바구니로 이동
+	$(document).on("click", '#register_soap_title', function() {
+		$("#homemain").load("payment/shoppingCart.jsp");
+	});
+	// 결제페이지로 이동
+	$(document).on("click", '#register_lec_apply', function() {
+		$("#homemain").load("payment/fundingPayment.jsp");
+	});
+</script>

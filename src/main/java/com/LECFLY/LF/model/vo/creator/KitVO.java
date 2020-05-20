@@ -3,7 +3,7 @@ package com.LECFLY.LF.model.vo.creator;
 public class KitVO {
 private int id ;		//PK AI
 private int fId;		//FK
-private int CFId;		//FK
+private int cFId;		//FK
 private int category;   // 상품 해당 카테고리
 private int attribute;	// 상퓸속성
 private String title;	// 상품이름
@@ -13,7 +13,7 @@ private String deliver;
 private int deliveryPrice;
 private String fromTo;
 private String info;
-private String DetailInfo;
+private String detailInfo;
 public int getId() {
 	return id;
 }
@@ -27,10 +27,10 @@ public void setfId(int fId) {
 	this.fId = fId;
 }
 public int getCFId() {
-	return CFId;
+	return cFId;
 }
 public void setCFId(int cFId) {
-	CFId = cFId;
+	cFId = cFId;
 }
 public int getCategory() {
 	return category;
@@ -87,10 +87,10 @@ public void setInfo(String info) {
 	this.info = info;
 }
 public String getDetailInfo() {
-	return DetailInfo;
+	return detailInfo;
 }
 public void setDetailInfo(String detailInfo) {
-	DetailInfo = detailInfo;
+	detailInfo = detailInfo;
 }
 public KitVO() {}
 public KitVO( int category, int attribute, String title, int price, int remain,
@@ -103,7 +103,7 @@ public KitVO(int id, int fId, int cFId, int category, int attribute, String titl
 	super();
 	this.id = id;
 	this.fId = fId;
-	CFId = cFId;
+	cFId = cFId;
 	this.category = category;
 	this.attribute = attribute;
 	this.title = title;
@@ -113,14 +113,14 @@ public KitVO(int id, int fId, int cFId, int category, int attribute, String titl
 	this.deliveryPrice = deliveryPrice;
 	this.fromTo = fromTo;
 	this.info = info;
-	DetailInfo = detailInfo;
+	detailInfo = detailInfo;
 }
 @Override
 public String toString() {
-	return "KitVO [id=" + id + ", fId=" + fId + ", CFId=" + CFId + ", category=" + category + ", attribute=" + attribute
+	return "KitVO [id=" + id + ", fId=" + fId + ", CFId=" + cFId + ", category=" + category + ", attribute=" + attribute
 			+ ", title=" + title + ", price=" + price + ", remain=" + remain + ", deliver=" + deliver
 			+ ", deliveryPrice=" + deliveryPrice + ", fromTo=" + fromTo + ", info=" + info + ", DetailInfo="
-			+ DetailInfo + "]";
+			+ detailInfo + "]";
 }
 
 }

@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <title>주문페이지</title>
-<link type="text/css" rel="stylesheet"
-	href="resources/css/payment/pay_order.css">
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_order.css">
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <div id="wrapper">
 	<div id="fundingPayment_wrapper">
 		<div id="fundingPayment_main_title">

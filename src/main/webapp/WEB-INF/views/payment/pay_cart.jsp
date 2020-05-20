@@ -103,13 +103,7 @@
 				</div>
 			</div>
 		</div>
-		
-		
-		<div id="footer" class="footer">
-			<%@ include file="../common/footer.jsp"%>
-		</div>
-	</div>
-	<script>
+	<script type="text/javascript">
 		// javaScript의 html 내의 요소들을 움직일 수 있는 dom 객체를 조작하는 방법.
 	// 	window.onload = function() {
 			//호환document.getElementsByClassName 방법；
@@ -332,7 +326,6 @@
 				}
 				;
 			}
-	// 	}
 		// 결제페이지로 이동
 		$(document).on("click", '.closing', function() {
 			$("#homemain").load("payment/fundingPayment.jsp");

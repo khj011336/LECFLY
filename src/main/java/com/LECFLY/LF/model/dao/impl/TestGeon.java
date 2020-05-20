@@ -61,8 +61,7 @@ public class TestGeon {
 	/////////////////////////////////////////////////////
 	// videoDAO
 	
-	final String SQL_SELECT_ALL_VIDEO_BY_CFID = 
-			"select * from videos where play_c_f_id = ?";
+	final String SQL_SELECT_ALL_VIDEO_BY_CFID = "select * from videos where play_c_f_id = ?";
 	
 	public List<VideoVO> selectAllViedosByCFId(int cFId) {
 		System.out.println("selectAllViedosByCFId()");
@@ -99,7 +98,5 @@ public class TestGeon {
 	public List<CommentClassVO> selectAllCommentByLecId(int cFId) {
 		return jtem.query(SQL_SELECT_CFID_AND_BY_CFID, BeanPropertyRowMapper.newInstance(CommentClassVO.class), cFId);
 	}
-	
-	
 	/////////////////////////////////////////
 }
