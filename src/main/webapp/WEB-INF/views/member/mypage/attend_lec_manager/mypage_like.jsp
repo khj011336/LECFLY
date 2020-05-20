@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<c:if test="${!empty vdList}">
+<c:if test="${not empty vdList}">
 	<div class="mypage_bottom_info">
 		<h2 class="mypage_bottom_title">좋아요한 강의</h2>
 		<div class="mypage_bottom_contents">
@@ -19,7 +19,7 @@
 					<a href="#"> <img src="${vd.imgPath}" alt="lecfly lecture"></a>
 					</div>
 					<div class="list_video_info">
-						<p class="video_info_category"><c:out value="${vd.category}" /></p>
+						<p class="video_info_category"><c:out value="${vdCateList.get(vs.index)}" /></p>
 						<p class="video_info_title"><c:out value="${vd.title}"/></p>
 						<img src="<c:out value='${creImgPathList.get(vs.index)}' />" class="video_info_creator_img">
 						<p class="video_info_creator_name"><c:out value="${creNickNameList.get(vs.index)}" /></p>
@@ -27,7 +27,7 @@
 				</div>
 				<c:if test="${vs.index mod 4 eq 3 or vs.last}">
 				</div>
-				</c:if>					
+				</c:if>
 			</c:forEach>		
 		</div>
 		
@@ -35,6 +35,6 @@
 
 </c:if>
 			
-<c:if test="${empty vdList}">
+<c:if test="${not empty msg_status}">
 	<%@ include file="mypage_no_list.jsp"  %>
 </c:if>

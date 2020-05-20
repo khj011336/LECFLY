@@ -40,6 +40,7 @@
 						<td><c:out value="${coupon.couponName}" default="쿠폰" /></td>
 						<td><c:out value="${coupon.discount}"/></td> <!-- Property [discount] not found on type [java.lang.String] -->
 						<td><c:out value="${coupon.applyTo}" default="모든회원" /></td>
+
 						<td><c:out value="${coupon.useCheck eq 0 ? 'O': 'X'}" /></td>
 						<td><fmt:formatDate value="${coupon.createdDay}" pattern="yyyy.MM.dd HH:mm" /></td>
 					</tr>

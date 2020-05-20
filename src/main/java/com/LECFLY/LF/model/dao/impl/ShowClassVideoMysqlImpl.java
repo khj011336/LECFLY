@@ -385,6 +385,8 @@ public class ShowClassVideoMysqlImpl implements IShowClassVideoDAO {
 	@Override
 	public List<Integer> selectLecToStatusForMbIdRtVdPk(int mbId, int status) {
 		try {
+			System.out.println(SQL_SELECT_ALL_VDID_FOR_MBID_STATUS + 
+					" / mbId = " + mbId + "status = "  + status );
 			List<Integer> vdIdList = jtem.queryForList(
 					SQL_SELECT_ALL_VDID_FOR_MBID_STATUS, Integer.class, mbId, status);
 			return vdIdList;

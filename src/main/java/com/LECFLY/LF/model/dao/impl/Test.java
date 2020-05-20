@@ -52,7 +52,7 @@ public class Test {
 	public Map<String, Object> selectOneCreatorByIdRtImgPathAndNicname(int fId) {
 		try {
 			System.out.println(SQL_SELECT_IMG_PATH_BY_ID + " / id = " + fId);
-			return jtem.queryForMap(SQL_SELECT_IMG_PATH_BY_ID, String.class ,fId);
+			return jtem.queryForMap(SQL_SELECT_IMG_PATH_BY_ID ,fId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();
