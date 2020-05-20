@@ -39,15 +39,21 @@ public class VideoSVCImpl implements IVideoSVC {
 		String png = storedFileName.get("png");
 		String gif = storedFileName.get("gif");
 		String video = storedFileName.get("video");
+		String cr = (String) ses.getAttribute("crPath");
+		String vi = (String)ses.getAttribute("viPath");
+		System.out.println(video);
 		String durationStr = storedFileName.get("duration");
 		double duration  =  durationStr == null ? 0 : Double.parseDouble(durationStr);
+		imgfile.put("vi", vi);
+		imgfile.put("cr", cr);
 		imgfile.put("gif", gif);
 		imgfile.put("video", video);
+		imgfile.put("png", png);
 		videoInput.setGifPath(gif);
 		videoInput.setVideoPath(video);
 		videoInput.setDuration((int)duration);
 		videoInput.setImgPath(png);
-		imgfile.put("png", png);
+		
 		model.addAttribute(videoInput);
 		return imgfile;
 	}
