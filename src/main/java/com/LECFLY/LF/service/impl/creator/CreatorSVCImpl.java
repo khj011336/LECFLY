@@ -14,9 +14,9 @@ import com.LECFLY.LF.model.vo.creator.CreatorVO;
 public class CreatorSVCImpl {
 	@Autowired
 	FileSVCImpl fileSVC;
- public void fileProcessforCreator(CreatorVO CrVO, HttpSession ses ,Model  model) {
-	 String username = (String) ses.getAttribute("membertest");
-	 int id = (Integer) ses.getAttribute("id");
+ public void fileProcessforCreator(CreatorVO CrVO, HttpSession ses ,Model  model , String username,
+		 int userId ) {
+	 
 	 String userpath = FileSVCImpl.getPath(username, 1);
 	 System.out.println("전체 저장경로 ->"+userpath);
 	 String newimgPath = null;
@@ -29,7 +29,7 @@ public class CreatorSVCImpl {
 					System.out.println(userpath + CrVO.getImgPath() + "가 지워졌습니다");
 				}
 				HashMap<String, String> imgfilepath = (HashMap<String, String>) fileSVC
-						.writeFiles(Arrays.asList(CrVO.getImgPathM()), userpath, id, username);
+						.writeFiles(Arrays.asList(CrVO.getImgPathM()), userpath, userId, username);
 				newimgPath = imgfilepath.get(CrVO.getImgPathM().getOriginalFilename());
 				System.out.println(newimgPath+"[Creator ImgPath]등록완료");
 				CrVO.setImgPath(newimgPath);
