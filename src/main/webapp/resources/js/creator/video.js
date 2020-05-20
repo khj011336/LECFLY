@@ -1,4 +1,14 @@
- var videoChange = 0;
+ $().ready(function() {
+ function videoChange(){
+	var video = $("#viosrc").attr("src");
+	if(video == undefined || video == null || video == ""){
+	 
+		return false;
+	} else{
+		 
+		return true;
+	}
+}
 var upbutton = 0;
 function ispty(){
     var each =	$('#viform').find("input[type!=hidden],textarea,select").not("input[type=url]").not("input[type=button]").not("input[type=file]");
@@ -18,6 +28,7 @@ function ispty(){
 
 $(window).on("unload",function(e){
 	 var nodename = false;
+	 $("#unloadz").val("1");
 	 var formdata = new FormData($('#viform')[0]);
 	 if(e.target.activeElement.nodeName.toLowerCase() == "body"||e.target.activeElement.nodeName.toLowerCase() == "input"){
 		   nodename = true;
@@ -25,15 +36,15 @@ $(window).on("unload",function(e){
 			 nodename = false;
 		 }
 	 console.log(e.target.activeElement.nodeName.toLowerCase());
-	 if(nodename == false && videoChange == 1 && upbutton != 1){
+	 if(nodename == false && videoChange() == true && upbutton != 1){
 		 $("#uplUP").attr("disabled","disabled");
 		 navigator.sendBeacon("video_upload_proc.LF", formdata);
 	 }
 });
-	$().ready(function() {
+	
 		$(".upl_bt").on("click",function(){
 			if(!ispty()){
-				if(videoChange == 0){
+				if(videoChange() == false){
 					alert("동영상을 등록해주세요");
 				}else{
 					upbutton = 1;
@@ -45,7 +56,7 @@ $(window).on("unload",function(e){
 			}
 		});
 	$("#imgProc").change(function () {
-		if(videoChange == 0){
+		if(videoChange() == false){
 			alert("비디오를 먼저 추가해주세요");
 		}else{
 			var formdataimg = new FormData();
@@ -70,7 +81,6 @@ $(window).on("unload",function(e){
 		}
 	});
 		$("#uplUP").change(function() {
-			videoChange = 0;
 			$("#vioSample").attr("poster","resources/imges/creator/loading.gif");
 			var formdata = new FormData();
 			var file = this.files[0];

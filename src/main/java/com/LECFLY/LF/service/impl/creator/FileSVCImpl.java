@@ -130,7 +130,8 @@ public class FileSVCImpl {
 		}
 		return null;
 	}
-	public Map<String, String> writeFile(MultipartFile file, String path, int id, String username) {
+	public Map<String, String> writeFile(MultipartFile file, int id, String username) {
+		String path =getPath(username, 1);
 		Map<String, String> rmap = new HashMap<String, String>();
 				if (file != null && !file.isEmpty()) {
 					String oriFileName = file.getOriginalFilename();
@@ -197,6 +198,7 @@ public class FileSVCImpl {
 				if (makeDir(username)) {
 					if (newFile.isFile()) {
 						String tempVideoPath = newFile.getAbsolutePath();
+						System.out.println(tempVideoPath);
 						String duration = media_player_time(tempVideoPath);
 						String pngAB = extractImageAndVideo(username, storeFileName, tempVideoPath, duration, id, 1, 1);
 						if(checkString(pngAB)) {
@@ -235,9 +237,7 @@ public class FileSVCImpl {
 	}
 
 	public boolean makeDir(String username) {
-		String path = "C:/fusion11/spring_ws/LECFILE";
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-		path += "/" + sdf.format(new Date()) + "/" + username;
+		String path  = getPath(username, 1);
 		File mk = new File(path);
 		File mkimg = new File(path + "/" + "Img");
 		File mkvideo = new File(path + "/" + "video");
@@ -289,6 +289,7 @@ public class FileSVCImpl {
 						"-b", "100k", "-r", "24", "-y", "-f", "mp4", videopath + returname };
 //					-r 프레임 , -f변환 -b 비트프레임
 			}
+			System.out.println(TempvideoFile+"시작전");
 			Process processor = Runtime.getRuntime().exec(commands);
 			String line1 = null;
 			BufferedReader error = new BufferedReader(new InputStreamReader(processor.getErrorStream()));

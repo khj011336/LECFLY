@@ -161,20 +161,7 @@
  			});
  		}); // 문의내역
  		
- 		$("#mypage_funding").click(function() {
- 			$.ajax({
- 				type: "POST",
- 				url: "mypage_funding.LF",
-	 			cache: true,
-				datatype: "text",
-				data: "",
-				success:function(res){
-					$("#mypage_bottom").html(res);
-				},
-				error:function(request,status,error){	
-				}
- 			});			
-		}); // 펀딩신청내역
+ 		//펀딩날림 -세현
  		
 		$("#mypage_coupon_info").click(function() {
 			var params = "pn=1"

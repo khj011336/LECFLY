@@ -4,9 +4,11 @@ import java.sql.Timestamp;
 
 public class CouponVO {
 	
+
 	public static final int COUPON_APPLY_TO_DEFAULT = 0;
 	public static final int COUPON_APPLY_TO_NEW_MB = 1;
 	public static final String[] STR_APPLY_TO = {"모든회원", "신규회원"};
+
 	/** 쿠폰 번호 */
 	private int id; 
 	/** 쿠폰 코드 번호 */

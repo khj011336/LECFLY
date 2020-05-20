@@ -58,7 +58,7 @@ function checkVisible( box, tOf ) {
 }
 function selectLecture(CFID,category) {
 	var form = document.createElement('form');
-	form.setAttribute('method', 'Post');
+	form.setAttribute('method', 'get');
 	form.setAttribute('action', 'creator_video_show.LF');
 	document.charset = "utf-8";
 			var hiddenField = document.createElement('input');

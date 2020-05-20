@@ -31,7 +31,8 @@ public class VideoSVCImpl implements IVideoSVC {
 		int totalRecords = viDAO.checkNumberOfVideo(CFID);
 		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
-	public HashMap<String, String> videoProc(VideoVO vio, MultipartFile videoFile , Model model,HttpSession ses){
+	public HashMap<String, String> videoProc(VideoVO vio, MultipartFile videoFile , Model model,HttpSession ses,
+			String imgPath, String videoPath){
 		HashMap<String, String> imgfile = new HashMap<String, String>();
 		VideoVO videoInput = vio;
 //		TODO 이름관리
@@ -39,8 +40,8 @@ public class VideoSVCImpl implements IVideoSVC {
 		String png = storedFileName.get("png");
 		String gif = storedFileName.get("gif");
 		String video = storedFileName.get("video");
-		String cr = (String) ses.getAttribute("crPath");
-		String vi = (String)ses.getAttribute("viPath");
+		String cr = imgPath;
+		String vi = videoPath;
 		System.out.println(video);
 		String durationStr = storedFileName.get("duration");
 		double duration  =  durationStr == null ? 0 : Double.parseDouble(durationStr);
@@ -58,17 +59,17 @@ public class VideoSVCImpl implements IVideoSVC {
 		return imgfile;
 	}
 	public boolean insertNewVideo(VideoVO vo) {
-		vo.setStatus(1);
 		return viDAO.insertNewVideo(vo);
 	}
-	public String imgProc(VideoVO vio,MultipartFile addimgfile,Model model) {
+	public String imgProc(VideoVO vio,MultipartFile addimgfile,Model model,String username) {
 		 VideoVO video = vio;
 		 String png = video.getImgPath();
+		 
 		if(addimgfile != null && !addimgfile.isEmpty()) {
 //			TODO 이름관리
-			String userpath = FileSVCImpl.getPath("hongil", 1);
+			String userpath = FileSVCImpl.getPath(username, 1);
 //			TODO 이름관리
-			Map<String, String> changeimg = fileSVC.writeFile(addimgfile,userpath ,1,"hongil");
+			Map<String, String> changeimg = fileSVC.writeFile(addimgfile  ,1,"hongil");
 			String splitImg[] = png.split("-");
 			if(new File(userpath+splitImg[0]).delete()) {
 				System.out.println("img1가 지워졌습니다");
@@ -82,7 +83,6 @@ public class VideoSVCImpl implements IVideoSVC {
 	}
 	
 	public String showVideoList(int cagtegory, int CFID,int MAXPAGE , int page , Model model ) {
-//TODO			cfid 임시 번호 입력 연결후 때 수정
 			model.addAttribute("category", cagtegory);
 			model.addAttribute("CFId", CFID);
 			model.addAttribute("maxPage", MAXPAGE);
