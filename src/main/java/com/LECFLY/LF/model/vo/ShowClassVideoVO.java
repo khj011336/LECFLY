@@ -12,6 +12,9 @@ public class ShowClassVideoVO {
 	public static final int STATUS_ATTENDING = 0;
 	public static final int STATUS_WILL_ATTENDING = 1;
 	public static final int STATUS_LIKE = 2;
+	//(0:전체 1:미술 2:음악 3:요리 4:라이프스타일 5:운동 6:커리어 7:여행)
+	public static final String[] STR_CATEGORY = {"전체", "미술", "음악", "요리", 
+			"라이프 스타일", "운동", "커리어", "여행"};
 	
 	
 	/** 순서번호*/

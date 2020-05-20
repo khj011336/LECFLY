@@ -2,14 +2,6 @@
 <!-- 2. 로그인과 마찬가지로 색상 적용이 안되어 있음. 기준 색상대로 적용할 것. -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<%
- 	response.setHeader("Cache-Control", "no-store");
-%>
-<meta charset="UTF-8">
-<title>LecFly - 마이페이지</title>
 
 	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage.css">
 	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage_list.css">
@@ -19,14 +11,7 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	<script src="resources/js/member/mypage.js"></script>
-</head>
-	<body>
-		<div id="wrapper">
-			<div id="header" class="header" style="z-index:30;">
-				<%@ include file="../common/header.jsp"%>
-			</div>
-			<%@ include file="../common/side_nav.jsp"%>
-				
+
 			<div id="mypage_wrap"> 											<!-- 조각페이지 -->	
 				<div id="mypage_top"> 										<!-- 개인정보 영역 -->
 					<div id="mypage_pic">
@@ -85,7 +70,6 @@
 					  	<ul>
 					    	<li><a href="#" id="mypage_comment">댓글내역</a></li>
 					    	<li><a href="#" id="mypage_qna">문의내역</a></li>
-					    	<li><a href="#" id="mypage_funding">펀딩신청내역</a></li>
 					    	<li><a href="#" id="mypage_coupon_info">나의 쿠폰</a><li>
 						</ul>
 					  </div>
@@ -109,11 +93,3 @@
 				<div id="mypage_bottom">									<!-- 조각페이지 영역 -->
 					<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%>
 				</div>
-			</div>
-			<div id="footer" class="footer">
-				<%@ include file="../common/footer.jsp"%>
-			</div>
-		</div>
-</body>
-</html>
-
