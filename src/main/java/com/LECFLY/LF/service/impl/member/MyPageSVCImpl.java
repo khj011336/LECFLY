@@ -12,17 +12,19 @@ import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.impl.Test;
 
-import com.LECFLY.LF.model.dao.inf.IShowClassVideoDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
+import com.LECFLY.LF.model.dao.inf.member.ILecAttendDAO;
+import com.LECFLY.LF.model.dao.inf.member.ILecTypeDAO;
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 import com.LECFLY.LF.model.vo.CouponVO;
+import com.LECFLY.LF.model.vo.LecAttendVO;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
-import com.LECFLY.LF.model.vo.ShowClassVideoVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -35,9 +37,6 @@ public class MyPageSVCImpl implements IMypageSVC {
 	
 	@Autowired
 	private IVideoDAO vdDao;
-	
-	@Autowired
-	private IShowClassVideoDAO scvDao;
 	
 //	@Autowired
 //	private ICreatorDAO creDao;
@@ -53,6 +52,13 @@ public class MyPageSVCImpl implements IMypageSVC {
 	
 //	@Autowired
 //	private ICouponDAO couponDao;			// 디버그용 잠시닫음
+	
+	@Autowired
+	private ILecTypeDAO ltDao;
+	
+	@Autowired
+	private ILecAttendDAO laDao;
+	
 	
 	private static final int PAGE_SIZE = 10;
 	
@@ -82,90 +88,22 @@ public class MyPageSVCImpl implements IMypageSVC {
 	}
 
 	
-	@Override //회원이 신청한 강의목록 표시하기
-	public List<ShowClassVideoVO> selectLecToStatusForMbIdStatus(int mbId, int status){
-		System.out.println("MyPageSVCImpl: selectLecToStatusForMbIdStatus()");
-		if( mbId > 0 && status >= ShowClassVideoVO.STATUS_ATTENDING && 
-								status <= ShowClassVideoVO.STATUS_LIKE ) {
-			List<ShowClassVideoVO> scvList = 
-					scvDao.selectLecToStatusForMbId(mbId, status); 
-			
-			// 디버그 테스트 
-//			List<ShowClassVideoVO> scvList = new ArrayList<>();
-//			for (int i = 0; i < 10; i++) {
-//	
-//				ShowClassVideoVO scv = new ShowClassVideoVO((i+1), 4, (i % 3 == 1 ? 0 : (i % 3 == 2 ? 1 : 2)), 
-//						5, 12, "첫번째강의", "firstclass.jpg", 142114, 14.f, new Timestamp(120000) );
-//				scvList.add(scv);
-//			} 
+	@Override //회원이 신청한수강중인 강의목록(비디오) 표시하기
+	public List<LecAttendVO> selectLecToStatusForMbIdStatus(int mbId, int status){
+		// 멤버아이디랑 저걸로 판달수있는거 lecType
+		List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
+		//여기서 클래스아이디를 통해 내가 수강중인 비디로들을 뽑아야됨 얼마만큼 저거리스트만큼 돌아야되
 		
-			if(scvList.size() > 0) {
-				return scvList;
-			}
-		} else {
-			System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
-			System.out.println("mbId = " + mbId + "/ status = " + status);
-		}
+		
+		List<LecAttendVO> rtLaList = new ArrayList<>();
 		return null;
 	}
 
 
-	@Override // video id 를찾고 그 비디오 아이디로 VideoVO를 찾은후  creatorId로 creator를 찾은후 creator닉네임 이미지패스만뺌
+	@Override // 회원이 좋아요, 찜하기한 크리에이터의 이미지Path랑 nickName을 리스트로 뽑아야서 맵으로 담을꺼야
 	public Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status){
 		System.out.println("MyPageSVCImpl / selectVideoAndCreImgPathAndCreNicname()..");
-		if( mbId > 0 && status >= ShowClassVideoVO.STATUS_ATTENDING && 
-				status <= ShowClassVideoVO.STATUS_LIKE ) {
-			
-			List<Integer> vdIdList = scvDao.selectLecToStatusForMbIdRtVdPk(mbId, status);
-			if(vdIdList != null) {
-				final int VDIDLIST_SIZE = vdIdList.size();
-				List<VideoVO> vdList = new ArrayList<>();
-				List<String> vdCateList = new ArrayList<>();
-				List<String> creImgPathList = new ArrayList<>();
-				List<String> nicNameList = new ArrayList<>();
-				Map<String, Object> rtMap = new HashMap<>();
-				for (int i = 0; i < VDIDLIST_SIZE; i++) {
-					VideoVO vd = //vdDao.selectOneVideoById(vdIdList.get(i));
-							testDao.selectOneVideoById(vdIdList.get(i));
-					if(vd != null) {
-						Map<String, Object> creImgPathAndNicnameMap = 
-								//creDao.selectOneCreatorByIdRtImgPathAndNicname(vd.getfId()); // creator id = fid
-								testDao.selectOneCreatorByIdRtImgPathAndNicname(vd.getfId());
-						if(creImgPathAndNicnameMap != null) { // 인코딩??
-							String imgPath = (String)creImgPathAndNicnameMap.get("img_path");
-							String nicName = (String)creImgPathAndNicnameMap.get("nickname");
-							vdCateList.add(ShowClassVideoVO.STR_CATEGORY[vd.getCategory()]);
-							vdList.add(vd);
-							creImgPathList.add(imgPath);
-							nicNameList.add(nicName);
-						} else {
-							System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-							System.out.println("creImgPathAndNicnameMap = null");
-							break;
-						}
-					} else {
-						System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-						System.out.println("vd = null");
-						break;
-					}
-				}
-				if(vdList != null && creImgPathList !=null && nicNameList != null) {
-					rtMap.put("vdList", vdList);
-					rtMap.put("vdCateList", vdCateList);
-					rtMap.put("creImgPathList", creImgPathList);
-					rtMap.put("nicNameList", nicNameList);
-					return rtMap;
-				} else {
-					System.out.println("vdList or creImgPathList or nicNameList = null");
-				}
-			} else {
-				System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-				System.out.println("rtMap = null");
-			}
-		} else {
-			System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
-			System.out.println("mbId = " + mbId + "/ status = " + status);
-		}
+		
 		return null;
 	}
 	

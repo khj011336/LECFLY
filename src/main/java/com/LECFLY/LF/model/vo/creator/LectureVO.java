@@ -18,7 +18,7 @@ public class LectureVO {
 	private int status; // 클래스 상태 1 ~ 미정
 	private String MBofLikes; // 좋아요한 멤버들 , 로 구분
 	private int likeCount; // 좋아요 카운트
-	private int videoTrack; // 강의 비디오개수
+	private int videoTrack; // 강의 비디오개수2
 	private String nickname; // 메인화면 클래스 업로드를위한 닉네임 크리에이터VO nickname과 같음
 	private String imgPath; // 메인화면 클래스 업로드를 위한 이미지패스 마찬가지로 크리에이터VO와 중복
 	private Timestamp createdAt; // 만든시간

@@ -20,10 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.LECFLY.LF.model.vo.CouponVO;
+import com.LECFLY.LF.model.vo.LecAttendVO;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
-import com.LECFLY.LF.model.vo.ShowClassVideoVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
@@ -412,7 +413,7 @@ public class MemberController {
 		System.out.println("mb = " + mb);
 		if(mb != null) { 
 			int mbId = mb.getId();
-			List<ShowClassVideoVO> scvList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
+			List<LecAttendVO> scvList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
 			if(scvList != null) {
 				System.out.println("scvList = " + scvList + " / scvList.size() = " + scvList.size());
 				model.addAttribute("scvList", scvList);

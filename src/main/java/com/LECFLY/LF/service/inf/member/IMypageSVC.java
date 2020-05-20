@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.LECFLY.LF.model.vo.MemberVO;
-import com.LECFLY.LF.model.vo.ShowClassVideoVO;
+import com.LECFLY.LF.model.vo.LecAttendVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 
 public interface IMypageSVC {
@@ -27,7 +28,7 @@ public interface IMypageSVC {
 
 	boolean updateMemberProfileImg(int mbId, String pic);
 	
-	List<ShowClassVideoVO> selectLecToStatusForMbIdStatus(int mbId, int status);
+	List<LecAttendVO> selectLecToStatusForMbIdStatus(int mbId, int status);
 	
 	Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status);
 
