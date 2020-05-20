@@ -228,14 +228,14 @@ public class FileSVCImpl {
 	}
 
 	public static String getPath(String username, int IorV) {
-		String path = "C:/fusion11/spring_ws/LECFLY/src/main/webapp/resources/LECFILE";
+		String path = "C:/fusion11/spring_ws/LECFILE";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		String ImgorVideo = IorV == 1 ? DEF_DIR_IMG : DEF_DIR_VIDEO;
 		return path += "/" + sdf.format(new Date()) + "/" + username + ImgorVideo;
 	}
 
 	public boolean makeDir(String username) {
-		String path = "C:/fusion11/spring_ws/LECFLY/src/main/webapp/resources/LECFILE";
+		String path = "C:/fusion11/spring_ws/LECFILE";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		path += "/" + sdf.format(new Date()) + "/" + username;
 		File mk = new File(path);

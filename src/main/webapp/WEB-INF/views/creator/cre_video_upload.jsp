@@ -30,7 +30,7 @@
 			<div id="uplR">
 				<div class='uplshadow'>
 					<video controls id="vioSample">
-						<source src=" " type='video/mp4' id="viosrc" />
+						<source src="${viPath}${video.videoPath}" type='video/mp4' id="viosrc" />
 					</video>
 					<div>
 						<input type="url"
@@ -47,10 +47,10 @@
 				<h3>미리보기 이미지</h3>
 				<div id="uplimgbox" class="uplflex">
 					<div class="uplimgb uplshadow">
-						<img alt="" src="${crPath }${video.imgPath }" id='img1'>
+						<img alt="" src="${crPath }${fn:split(video.imgPath,'-')[0] }" id='img1'>
 					</div>
 					<div class="uplimgb uplshadow padp">
-						<img alt="" src="${crPath }${video.imgPath }" id='img2'>
+						<img alt="" src="${crPath }${fn:split(video.imgPath,'-')[1] }" id='img2'>
 					</div>
 					<div class="uplimgb uplshadow padp">
 						<img alt="" src='${crPath }${video.gifPath }' id="gif">
