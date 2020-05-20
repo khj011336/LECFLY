@@ -83,8 +83,11 @@ public class loginSVCImpl implements ILoginSVC {
 	
 	@Override
 	public boolean check_dup_nick(String nickname) {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println("check_dup_nick");
+//		boolean r = mbDao.selectOneMemberByNicName(nickname) != null;
+//		return r;
+		return mbDao.dupCheckNickname(nickname);
+		
 	}
 	
 	@Override

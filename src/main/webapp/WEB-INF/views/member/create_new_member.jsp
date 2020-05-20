@@ -10,24 +10,12 @@
 	
     <link type="text/css" rel="stylesheet" href="resources/css/common/main.css">
     <link type="text/css" rel="stylesheet" href="resources/css/member/create_new_member.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- 다음지도 가져오는 스크립트-->
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
     <script>
-// 	    $('#cnm_mb_name').focusout(function() {
-// 	    	var name = $('#cnm_mb_name').val();
-// 	    	if(name == null)
-// 	    });
-// 	    $('#cnm_mb_nick_check_btn').click(function() {
-// 	    	window.open("home.LF", "width=500,height=600", false);
-// 	    	console.log("1");
-// 		});
-	    function dup_nic_check() {
-	    	var nickname =  document.getElementById("cnm_mb_nick").value;
-	    	location.replace("dup_nic_check_proc.LF?nickname="+nickname);
-	    	console.log("dup_nic_check_proc");
-		}
-	    
 	    // input text에서 숫자만 받게 하는 스크립트
 	    $("input:text[numberOnly]").on("keyup", function() {
 	        $(this).val($(this).val().replace(/[^0-9]/g,""));
@@ -77,7 +65,80 @@
 	            }
 	        }).open();
 	    }
-	</script>
+        
+        // 중복체크
+        $(document).ready( function() {
+    		$('#cnm_mb_nick_check_btn').on("click", function() {
+    			var nicname = $('input[name=nickname]').val();
+    			var tUrl = "${pageContext.request.contextPath}/";
+    			tUrl += 'nic_dupcheck.LF';
+    			$.ajax ({ 
+    				type: 'get', 
+    				url: tUrl,
+    				data: "nickname="+nicname,
+    				success: function(res) {
+    					console.log(res);
+    					$('#nicmsg').html();
+    					$('#nicmsg').removeClass('yes');
+    					$('#nicmsg').removeClass('no');
+    					$('#nicmsg').removeClass('error');
+    					var msg = "";
+    					switch(res) {
+    						case 'yes': 
+    							msg = '이미 사용중인 닉네임입니다';
+    							$('input[type=submit]').attr('disabled',true);
+    							break;
+    						case 'no':
+    							msg = '사용 가능한 닉네임입니다';
+    							$('input[type=submit]').attr('disabled',false);
+    							break;
+    						case 'error':
+    							msg = '입력된 닉네임이 없습니다.';
+    							$('input[type=submit]').attr('disabled',true);
+    							break;
+    					}
+    					$('#nicmsg')
+    						.html('<b>'+msg+'</b>');
+    					$('#nicmsg').addClass(res);
+    				}
+    			});
+    		});
+    		$('#cnm_mb_email_check_btn').on("click", function() {
+    			var email = $('input[name=email]').val();
+    			var tUrl = "${pageContext.request.contextPath}/";
+    			tUrl += 'email_dupcheck.LF';
+    			$.ajax ({ 
+    				type: 'get', 
+    				url: tUrl,
+    				data: "email="+email,
+    				success: function(res) {
+    					console.log(res);
+    					$('#emailmsg').html();
+    					$('#emailmsg').removeClass('yes');
+    					$('#emailmsg').removeClass('no');
+    					$('#emailmsg').removeClass('error');
+    					var msg = "";
+    					switch(res) {
+    						case 'yes': 
+    							msg = '이미 사용중인 이메일입니다';
+    							$('input[type=submit]').attr('disabled',true);
+    							break;
+    						case 'no':
+    							msg = '사용 가능한 이메일입니다';
+    							$('input[type=submit]').attr('disabled',false);
+    							break;
+    						case 'error':
+    							msg = '입력된 이메일이 없습니다.';
+    							$('input[type=submit]').attr('disabled',true);
+    							break;
+    					}
+    					$('#emailmsg')
+    						.html('<b>'+msg+'</b>');
+    					$('#emailmsg').addClass(res);
+    				}
+    			});
+    		});
+    	});
     </script>
     
 </head>
@@ -109,13 +170,14 @@
 	                    	<div style="display: inline-block">
 	                    		<input type="text" id="cnm_mb_nick" name="nickname" class="input_cnm" placeholder="닉네임"
 	                    		 value="${!empty nickname ? nickname : ''}">
-	                    		<input type="button" id="cnm_mb_nick_check_btn" onclick="javascript:document.join_member.submit();" value="중복확인">
+<!-- 	                    		<input type="button" id="cnm_mb_nick_check_btn" onclick="javascript:document.join_member.submit();" value="중복확인"> -->
+	                    		<input type="button" id="cnm_mb_nick_check_btn" value="중복확인">
 	                    	</div>
 	                    </td>
 	                </tr>
 	                <tr>
 	                	<td></td>
-	                	<td style="font-size:12px;">${!empty nickname ? nick_msg : '닉네임은 6~14자의 영어/숫자 조합해주세요.'}</td>
+	                	<td style="font-size:12px;" id="nicmsg">${!empty nickname ? nick_msg : '닉네임은 6~14자의 영어/숫자 조합해주세요.'}</td>
 	                </tr>
 			     	<tr>
 			        	<th><label class="cnm_subtitle" for="birthday">생년월일</label></th>
@@ -147,13 +209,13 @@
 	                    <td>
 	                    	<div style="display: inline-block">
 	                    		<input type="text" id="cnm_mb_email" name="email" class="input_cnm" placeholder="이메일" value=${email}>
-	                    		<input type="button" id="cnm_mb_email_check_btn" onclick="javascript:document.join_member.submit();" value="중복확인">
+	                    		<input type="button" id="cnm_mb_email_check_btn" value="중복확인">
 	                    	</div>
 	                    </td>
 	                </tr>
 	                <tr>
 	                	<td></td>
-	                	<td style="font-size:12px;">${!empty email_msg ? email_msg : '실제 사용 가능한 이메일을 입력하세요.'}</td>
+	                	<td style="font-size:12px;" id="">${!empty email_msg ? email_msg : '실제 사용 가능한 이메일을 입력하세요.'}</td>
 	                </tr>
 	                <tr>
 			        	<th>비밀번호</th>
@@ -186,16 +248,16 @@
 			        	<th rowspan="3"><label class="cnm_subtitle">주소</label></th>
 	                    <td>
 	                    	<div style="display: inline-block">
-					    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" readonly>
+					    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" readonly value="${postalcode}">
 					        	<input type="button" id="find_adress_btn" value="주소찾기" onclick="find_address()">
 				        	</div>
 	                    </td>
 	                </tr>
 	                <tr>
-			        	<td><input type="text" id="cnm_mb_adress_basic" name="basic_address" class="input_cnm" placeholder="주소"></td>
+			        	<td><input type="text" id="cnm_mb_adress_basic" name="basic_address" class="input_cnm" placeholder="주소" value=${basic_address}></td>
 	                </tr>
 	                <tr>
-	                	<td><input type="text" id="cnm_mb_adress_detail" name="detail_address" class="input_cnm" placeholder="상세주소"></td>
+	                	<td><input type="text" id="cnm_mb_adress_detail" name="detail_address" class="input_cnm" placeholder="상세주소" value=${detail_address}></td>
 	                </tr>
 	                <tr>
 			        	<th rowspan="2">소식 수신 동의</th>
@@ -221,7 +283,7 @@
 	            </table>
 	        </div>
 		</div>
-		<label>${msg}</label>
+		<div id="print_msg">${msg}</div>
 		<div class="cnm_bottom">
 		    <div id="cnm_submit_btn">
 		    	<a style="color: black;" href="#" onclick="javascript:document.join_member.submit();">회원가입하기</a>

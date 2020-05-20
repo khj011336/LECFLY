@@ -132,7 +132,7 @@
 	border-bottom: 2px solid black;
 	margin-left: auto;
 	margin-right: auto;
-	height: 690px; 
+	height: 720px; 
 }
 #cnm_wrap3{ /* 회원정보수정 래퍼 */
 	border-top: 2px solid black;
@@ -300,5 +300,10 @@
 	font-size: 2.0em;
 }
 
-
+#print_msg{
+	margin: auto;
+	padding-top: 20px;
+	color: red;
+	font-size: 2.0em;
+}
 
