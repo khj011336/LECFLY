@@ -120,8 +120,7 @@
 			     	<tr>
 			        	<th><label class="cnm_subtitle" for="birthday">생년월일</label></th>
 	                    <td><input type="date" id="cnm_mb_birth" name="birthday" class="input_cnm" style="color:grey"
-			     		 value="${birthday}"></td>
-			     		 ${!empty birhday ?	 'y': 'n'}
+			     		 value=<fmt:formatDate value="${birthday}" pattern="yyyy-MM-dd"/>></td>
 	                </tr>
 	                <tr>
 			        	<th><label class="cnm_subtitle">성별</label></th>

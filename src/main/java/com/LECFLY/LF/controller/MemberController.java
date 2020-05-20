@@ -128,8 +128,10 @@ public class MemberController {
 		}
 		if( birthday!=null ) {
 			System.out.println("생년월일");
-			model.addAttribute("birthday", birthday);
-			System.out.println(birthday);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+			Timestamp birth = Timestamp.valueOf(sdf.format(birthday));
+			model.addAttribute("birthday", birth);
+			System.out.println(birth);
 		}
 		if( !gender.isEmpty()&&gender!=null ) {
 			System.out.println("성별있음");
@@ -183,10 +185,14 @@ public class MemberController {
 			String ph = "010"+ phNumber + phNumber2;
 			// agreeReceive 값 결합 및 변환
 			int agreeReceive = 0;
-			if( agree_receive_email.equals("agree_email"))
-				agreeReceive += 1;
-			if( agree_receive_sms.equals("agree_sms"))
-				agreeReceive += 2;
+			if( agree_receive_email.isEmpty() || agree_receive_email==null || agree_receive_sms.isEmpty() || agree_receive_sms==null)
+				agreeReceive = 0;
+			else {
+				if( agree_receive_email.equals("agree_email"))
+					agreeReceive += 1;
+				if( agree_receive_sms.equals("agree_sms"))
+					agreeReceive += 2;
+			}
 			
 			if(logSvc.joinMember(cnm_upload_pic, name, nickname, birth, gen, 
 					email, password, ph, agreeReceive, basic_address, 
