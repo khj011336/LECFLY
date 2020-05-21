@@ -107,13 +107,14 @@ function pagenate(page){
 					</thead>
 
 					<tbody id="appendList">
+					<c:if test="${not empty lecList }">
 						<c:forEach varStatus="vs" begin="0" end="${lecList.size()-1}"
 							step="1">
 							<tr class='bottomlineaa videoTR'>
 								<td class="checkbox"><input type="checkbox"
 									class="check-one check" /></td>
 								<td colspan="2" class="goods"><img
-									src="${crPath}${lecList[vs.index].imgPath}" alt="홈트레이닝" />
+									src="${crPath}${fn:split(lecList[vs.index].imgPath,'-')[0]}"  alt="홈트레이닝" />
 									<div id="countor">
 										<span style="width: 500px"><c:out
 												value="${lecList[vs.current].title}" default="동영상을 만들어주세요"></c:out></span>
@@ -139,10 +140,12 @@ function pagenate(page){
 									class="deleteOne">수정</span></td>
 							</tr>
 						</c:forEach>
+						</c:if>
 					</tbody>
 				</table>
 			 
 				<div id="paginate">
+				<c:if test ="${not empty lecList }">
 					<c:if test="${videoPage > 1}">
 						<span onclick="pagenate(${videoPage-1})">[이전]</span>
 					</c:if>
@@ -156,6 +159,7 @@ function pagenate(page){
 		</c:forEach>
 					<c:if test="${videoPage < maxPage}">
 						<span onclick="pagenate(${videoPage+1})">[다음]</span>
+					</c:if>
 					</c:if>
 				</div>
 			</div>

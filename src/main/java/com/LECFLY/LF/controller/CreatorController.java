@@ -1,5 +1,6 @@
 package com.LECFLY.LF.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.LECFLY.LF.model.dao.impl.creator.KitMysqlDAOImpl;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
+import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -34,6 +36,9 @@ import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 public class CreatorController {
 	public static int MAXPAGE = 0;
 	public static String USERNAME = "";
+	public static int memberId = 0;
+	public static String imgPath = "";
+	public static String videoPath = "";
 	@Autowired
 	LectureSVCImpl LecSVC;
 	@Autowired
@@ -70,28 +75,31 @@ public class CreatorController {
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-		// TODO 멤버아이디 id fid 이름 수정 체크넘버 수정
-		ses.setAttribute("id", 1);
-		ses.setAttribute("fid", 2);
-		ses.setAttribute("membertest", "hongil");
-		USERNAME = "hongil";
-		ses.setAttribute("crPath","/images/2020/"+USERNAME+"/Img");
-		ses.setAttribute("viPath","/images/2020/"+USERNAME+"/video");
+//		lectures fid = member id ; 
+//		agreerecive 3= 승인 , 2 = 승인중 , 1 = 거절  
+		MemberVO mb = (MemberVO) ses.getAttribute("member");
+		if(mb != null) {
+		memberId = mb.getId();
+		MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
+		USERNAME = mb.getName();
+		imgPath = "/images/2020/"+USERNAME+"/Img";
+		videoPath = "/images/2020/"+USERNAME+"/video";
 		int loginStatus = (Integer) ses.getAttribute("id");
-		int fid = (Integer) ses.getAttribute("fid");
-		MAXPAGE = LecSVC.checkOfLectureNumber(2);
+		
 		if (loginStatus == 1 && page == 1) {
 			MAXPAGE = LecSVC.checkOfLectureNumber(2);
 			model.addAttribute("maxPage", MAXPAGE);
-			model.addAttribute("lecList", LecSVC.showLectureList(2, page, 0));
+			model.addAttribute("lecList", LecSVC.showLectureList(memberId, page, 0));
 			return "creator/cre_class_list.page";
 		} else if (loginStatus == 1 && page >= 2) {
 			model.addAttribute("maxPage", MAXPAGE);
-			List<LectureVO> LecList = LecSVC.showLectureList(2, page, 0);
+			List<LectureVO> LecList = LecSVC.showLectureList(memberId, page, 0);
 			model.addAttribute("lecList", LecList);
 			return "creator/_cre_class";
-		} else {
-			return "회원로그인폼";
+		}
+		return "creator/_cre_class";
+		}else {
+			return "login.LF";
 		}
 	}
 
@@ -108,16 +116,15 @@ public class CreatorController {
 //		세션 자동 저장단
 		System.out.println("크리에이터 프로세스");
 		model.addAttribute("p", 1);
+		// 언로드시 Lecture 정보가 지정해놓은 수보다 많이 입력되있으면 자동 저장하기위함
 		LectureVO LecVO = (LectureVO) ses.getAttribute("Lecture");
 		// TODO 멤버관련 인수 수정
-		String memberName = (String) ses.getAttribute("membertest");
-		int memberId = (Integer) ses.getAttribute("id") != null ? (Integer) ses.getAttribute("id") : null;
-		if (memberName != null) {
-			cr.setId(memberId);
-			cr.setName(memberName);
+		if (USERNAME != null) {
+			cr.setFid(memberId);
+			cr.setName(USERNAME);
 		}
-		CreSVC.fileProcessforCreator(cr, ses, model);
-		LecSVC.unloadProcess(unload, LecVO, ses, cr, sesStatus);
+		CreSVC.fileProcessforCreator(cr, ses, model,USERNAME , memberId  );
+		LecSVC.unloadProcess(unload, LecVO, ses, cr, sesStatus , USERNAME,memberId);
 		return "creator/cre_lecture_upload.page";
 	}
 
@@ -133,11 +140,12 @@ public class CreatorController {
 			@RequestParam(value = "unloadB", required = false) String unload) {
 //		세션 자동 저장단
 //TODO 회원이 크리에이터 인경우
+		
 		System.out.println("렉쳐 프로세스");
 		model.addAttribute("p", 2);
 		CreatorVO cr = (CreatorVO) ses.getAttribute("creator");
-		LecSVC.fileProcessforLectures(lec, ses, model);
-		LecSVC.unloadProcess(unload, lec, ses, cr, sesStatus);
+		LecSVC.fileProcessforLectures(lec,memberId, model , USERNAME);
+		LecSVC.unloadProcess(unload, lec, ses, cr, sesStatus , USERNAME,memberId);
 
 		return "storeMapping";
 	}
@@ -147,18 +155,18 @@ public class CreatorController {
 			SessionStatus sesStatus) {
 		// TODO 회원이 크리에이터 인경우 및 리다이렉트
 		CreatorVO cr = (CreatorVO) ses.getAttribute("creator");
-		LecSVC.storeProcess(lec, ses, cr, sesStatus, model);
+		LecSVC.storeProcess(lec, memberId, cr, sesStatus, model , USERNAME);
 		return "creator/cre_href";
 	}
 
-	@RequestMapping(value = "creator_video_show.LF", method = RequestMethod.POST)
-	public String showVideoList(HttpSession ses, Model model, @RequestParam(value = "CFID", required = false) String CF,
+	@RequestMapping(value = "creator_video_show.LF", method = RequestMethod.GET)
+	public String showVideoList(HttpSession ses, Model model, @RequestParam(value = "CFID", required = false) int CF,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			@RequestParam(value = "category") int category) {
-
 		int loginStatus = (Integer) ses.getAttribute("id");
-		int fid = (Integer) ses.getAttribute("id");
-		int CFID = 3;
+		System.out.println(USERNAME+"ddddd");
+		System.out.println(memberId);
+		int CFID =CF;
 		MAXPAGE = VdoSVC.checkOfLectureNumber(CFID);
 		if (loginStatus == 1 && page == 1) {
 			return VdoSVC.showVideoList(category, CFID, MAXPAGE, page, model);
@@ -169,10 +177,10 @@ public class CreatorController {
 
 	@RequestMapping(value = "creator_video_show_proc.LF", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> showVideoListProc(@RequestParam(value = "CFID", required = false) String CF,
+	public Map<String, Object> showVideoListProc(@RequestParam(value = "CFID", required = false) int CF,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 		Map<String, Object> jso = new HashMap<String, Object>();
-		jso.put("jsonText", VdoSVC.showLectureList(3, page));
+		jso.put("jsonText", VdoSVC.showLectureList(CF, page));
 		jso.put("page", page);
 		return jso;
 
@@ -183,14 +191,19 @@ public class CreatorController {
 			@ModelAttribute(value = "video") VideoVO vio) {
 		if (CFID != 0) {
 			vio.setCFId(CFID);
+			vio.setfId(memberId);
 			model.addAttribute(vio);
 		}
 		return "creator/cre_video_upload.page";
 	}
 
 	@RequestMapping(value = "video_upload_proc.LF", method = RequestMethod.POST)
-	public String videoUpload(@ModelAttribute(value = "video") VideoVO vio, Model model, SessionStatus sesStatus) {
+	public String videoUpload(@ModelAttribute(value = "video") VideoVO vio, Model model, SessionStatus sesStatus
+			,@RequestParam(value = "unloadz") String unload) {
 //		비디오 강의 업로드시 좋아요 0 으로 업데이트
+		if(unload.equals("1")) {
+			vio.setStatus(4);
+		}
 		System.out.println(vio.toString());
 		VdoSVC.insertNewVideo(vio);
 		sesStatus.setComplete();
@@ -202,7 +215,7 @@ public class CreatorController {
 	public Map<String, String> videoUploadProc(@ModelAttribute(value = "video") VideoVO vio, Model model,
 			HttpSession ses, @RequestParam(value = "viFile", required = false) MultipartFile videoFile) {
 //TODO		멤버 이름 수정 및 아이디 		비디오 강의 업로드시 좋아요 0 으로 업데이트
-		return VdoSVC.videoProc(vio, videoFile, model,ses);
+		return VdoSVC.videoProc(vio, videoFile, model,ses,imgPath,videoPath);
 	}
 
 	@RequestMapping(value = "video_img_proc.LF", method = RequestMethod.POST)
@@ -210,26 +223,41 @@ public class CreatorController {
 	public String imgUploadProc(@ModelAttribute(value = "video") VideoVO vio, Model model,
 			@RequestParam(value = "addimgFile", required = false) MultipartFile addimgfile) {
 //TODO		멤버 이름 수정 및 아이디
-		return VdoSVC.imgProc(vio, addimgfile, model);
+		return VdoSVC.imgProc(vio, addimgfile, model,USERNAME);
 	}
 	@RequestMapping(value="kit_upload.LF" ,method = RequestMethod.GET )
-		public String KitUpload(@RequestParam(value = "CFID", required = false) String CF,
+		public String KitUpload(@RequestParam(value = "CFID", required = false) int CF,
 				@RequestParam(value = "category") int category , Model model
 				,@ModelAttribute(value = "creatorKit") KitVO kit)  {
-		
+		KitVO kitCheck = kitDAO.selectOneKit(CF);
+		if(kitCheck != null) {
+			kitCheck.setAttribute("update");
+			model.addAttribute("creatorKit",kitCheck);
+			
+		}
 		return "creator/cre_kit.page";
 	}
 	@RequestMapping(value="kit_upload_proc.LF" ,method = RequestMethod.POST )
-	public String KitUploadProc(@RequestParam(value = "CFID", required = false) String CF,
+	public String KitUploadProc(@RequestParam(value = "CFID", required = false) int CF,
 			@RequestParam(value = "category") int category , Model model
-			,@ModelAttribute(value = "creatorKit") KitVO kit)  {
+			,@ModelAttribute(value = "creatorKit") KitVO kit , HttpSession ses)  {
+		
+		if(kit.getAttribute().equals("update")) {
+			if(new File(FileSVCImpl.getPath(USERNAME, 1)+kit.getImgPath()).delete()) {
+				System.out.println("기존 키트 이미지 삭제");
+				Map<String, String> file = fileSVC.writeFile(kit.getKitImg(), CF, USERNAME);
+				kit.setImgPath(file.get("file"));
+				kitDAO.updateKit(kit);
+			}
+		}else {
 		System.out.println(kit);
-//		유저이름 fid
-		Map<String, String> filea = fileSVC.writeFile(kit.getKitImg(), "dd", 3, USERNAME);
+		
+		Map<String, String> filea = fileSVC.writeFile(kit.getKitImg(), CF, USERNAME);
 		kit.setImgPath(filea.get("file"));
-		kit.setfId(3);
+		kit.setfId(memberId);
 				kitDAO.insertKit(kit);
-		return "creator/cre_kit.page";
+		}
+		return "creator/cre_href";
 	}
 	
 	@RequestMapping(value = "creator_comment_List.LF", method = RequestMethod.GET)
