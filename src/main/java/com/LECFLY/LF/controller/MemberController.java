@@ -8,21 +8,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
+import com.LECFLY.LF.model.vo.CouponVO;
 import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.QnaCommentVO;
+import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.ShowClassVideoVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
@@ -33,7 +34,7 @@ public class MemberController {
 	@Autowired
 	ILoginSVC logSvc;
 	@Autowired
-	IMypageSVC mpSvc;
+	private IMypageSVC mpSvc;
 	
 	
 	// 로그인창 으로 이동했을때
@@ -342,28 +343,37 @@ public class MemberController {
 	//회원이 수강중인 강의 갯수 확인하기
 	//회원이 해당 강의 중 보던 영상 표시하기"	
 	// 마이페이지 이동
-	@RequestMapping(value="mypage.LF", method=RequestMethod.GET)
-	public String memberMyPage() {
+	@RequestMapping(value="mypage.LF", method= {RequestMethod.GET, RequestMethod.POST})
+	public String memberMyPage(HttpSession ses, Model model) {
 		System.out.println("memberMyPage()");
-		
-		return "member/mypage";
-	}	
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) {
+			model.addAttribute("mb", mb);
+			model.addAttribute("mbLoginNicname", mb.getNicname());
+			System.out.println("mb = " + mb);
+			return "member/mypage.ho";
+		} else {
+			// 실패시 로그인창으로~
+			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			return "member/login";
+		}
+	}		
 	
 //	회원의 프로필 사진 수정하기							
 //	change_pro_pic.lf(proc; post, dao, attr)			proc완료후 mypage.lf 프로필사진 업데이트된 상태로 forward
 	@RequestMapping(value="change_pro_pic.LF", method=RequestMethod.POST)
-	public String memberChangeProfilePicture(HttpSession ses, 
-			@RequestParam(value="id", defaultValue ="0") int id, // 바꾸려고하는 id
+	public String memberChangeProfilePicture(HttpSession ses,
 			@RequestParam(value="pic", defaultValue ="") String filePath,  
 			Model model) {
-		System.out.println("memberChangeProfilePicture()...");
-		// 교수님말: 회원 비밀번호 한번더 인증하는 작업이 필요하다고함 (회원의 개인정보를 바꾸기 때문에)		
-		int loginedId = (Integer)ses.getAttribute("mbId");
-		boolean b = mpSvc.updateMemberProfileImg(loginedId, id, filePath);
+		System.out.println("memberChangeProfilePicture()...");		
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		boolean b = mpSvc.updateMemberProfileImg(mbId, filePath);
 		if( b ) {
-			
+			model.addAttribute("msg", "회원 프로필 이미지 변경 성공");
 		} else {
-			
+			model.addAttribute("msg", "회원 프로필 이미지 변경 실패");
+			model.addAttribute("errCode", 1);
 		}
 		return "member/mypage/mypage"; // forward
 	}
@@ -378,39 +388,110 @@ public class MemberController {
 		return "redirect:mypage.LF?pn=apply_creator"; // ??? 조각페이지면 이런형식으로 띄우고 이거 체크필요
 	}
 	
+	@RequestMapping(value="mypage_delete_attending_lec.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageDeleteAttendingLec(HttpSession ses) 
+	{
+		System.out.println("memberMypageDeleteAttendingLec()");
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		
+		return null;
+	}
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
-	
 //	수강중인강의
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_attending_lec.LF", method=RequestMethod.POST)
-	public String memberMypageAttendingLec(HttpSession ses, 
-			@RequestParam(value="id", defaultValue ="0") int id, Model model) {
-		System.out.println("memberMypageAttendingLec()...");	
-		
-//		List<VideoVO> vdList = mpSvc.showAllAttendingLec(); // 내가 수강한 비디오 목록을 리스트로 받으려함
-//		if(vdList != null) {
-//			return "";
-//		} else {
-//			return "";
-//		}
-		 return "member/mypage/attend_lec_manager/mypage_attending_lec";
+	public String memberMypageAttendingLec(HttpSession ses,
+			@RequestParam(value="status", defaultValue ="0") int status, Model model) {
+		System.out.println("memberMypageAttendingLec()...");
+		// 내가 수강한 비디오 목록을 리스트로 받으려함
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		System.out.println("mb = " + mb);
+		if(mb != null) { 
+			int mbId = mb.getId();
+			List<ShowClassVideoVO> scvList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
+			if(scvList != null) {
+				System.out.println("scvList = " + scvList + " / scvList.size() = " + scvList.size());
+				model.addAttribute("scvList", scvList);
+			} else {
+				System.out.println("scvList = null");
+				model.addAttribute("msg_status", "수강중인 강의");
+				model.addAttribute("mp_msg", "수강중인 강의 내역이 없습니다.");
+			}
+			return "member/mypage/attend_lec_manager/mypage_attending_lec";
+		} else {
+			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			return "member/login";
+		}
 	}
 	
 	//회원이 찜하기한 강의 확인하기							
 //	mypage_will_attend.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_will_attend.LF", method=RequestMethod.POST)
-	public String memberMypageWillAttend() {
+	public String memberMypageWillAttend(HttpSession ses,
+			@RequestParam(value="status", defaultValue ="1") int status, Model model) {
 		System.out.println("memberMypageWillAttend()...");	
-		return "member/mypage/attend_lec_manager/mypage_will_attend";
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) { 
+			int mbId = mb.getId();
+			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
+			if(listMap != null) {
+				List<VideoVO> vdList = (List<VideoVO>)listMap.get("vdList");
+				List<String> creImgPathList = (List<String>)listMap.get("creImgPathList");
+				List<String> creNickNameList = (List<String>)listMap.get("nickNameList");
+				System.out.println("vdList = " + vdList + " / creImgPathList = " + creImgPathList +
+						  " / creNickNameList" + creNickNameList);
+				model.addAttribute("vdList", vdList);
+				model.addAttribute("creImgPathList", creImgPathList);
+				model.addAttribute("creNickNameList", creNickNameList);
+		
+			} else {
+				
+				model.addAttribute("msg_status", "찜하기한 강의");
+				model.addAttribute("mp_msg", "찜하기한 강의 내역이 없습니다.");
+			}
+			return "member/mypage/attend_lec_manager/mypage_will_attend";
+		} else {
+			System.out.println("mb = null");
+			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			return "member/login";
+		}
 	}
 
 	//회원이 좋아요한 강의 확인하기							
 	//	mypage_like.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_like.LF", method=RequestMethod.POST)
-	public String memberMypageLike() {
-		System.out.println("memberMypageLike()...");	
-		return "member/mypage/attend_lec_manager/mypage_like";
+	public String memberMypageLike(HttpSession ses, 
+			@RequestParam(value="status", defaultValue ="2") int status, Model model) {
+		System.out.println("memberMypageLike()...");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) {
+			int mbId = mb.getId();
+			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
+			System.out.println("listMap = " + listMap);
+			if(listMap != null) {
+				List<VideoVO> vdList = (List<VideoVO>)listMap.get("vdList");
+				List<String> vdCateList = (List<String>)listMap.get("vdCateList");
+				List<String> creImgPathList = (List<String>)listMap.get("creImgPathList");
+				List<String> creNickNameList = (List<String>)listMap.get("nickNameList");
+				System.out.println("vdList = " + vdList + " / creImgPathList = " + creImgPathList +
+						  " / creNickNameList" + creNickNameList);
+				model.addAttribute("vdList", vdList);
+				model.addAttribute("vdCateList", vdCateList);
+				model.addAttribute("creImgPathList", creImgPathList);
+				model.addAttribute("creNickNameList", creNickNameList);
+			} else {
+				model.addAttribute("msg_status", "좋아요한  강의");
+				model.addAttribute("mp_msg", "좋아요한 강의 내역이 없습니다.");
+			}
+			return "member/mypage/attend_lec_manager/mypage_like";
+		} else {
+			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			return "member/login";
+		}
 	}
 	
 	
@@ -433,35 +514,92 @@ public class MemberController {
 	
 ////////활동내역
 		
-//회원이 작성한 댓글내역 확인하기							활동 내역
+	//회원이 작성한 댓글내역 확인하기							활동 내역
 //	mypage_comment.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_comment.LF", method=RequestMethod.POST)
-	public String memberMypageComment() {
-		System.out.println("memberMypageComment()...");	
-		return "memeber/mypage/activity/mypage_comment";
+	public String memberMypageComment(HttpSession ses,
+			@RequestParam(value = "pn", required = false, defaultValue = "1" ) int pageNumber,
+			Model model) 
+	{
+		System.out.println("memberMypageComment()...");
+		System.out.println("pn =" + pageNumber);
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		System.out.println("mb = " + mb);
+		Map<String, Object> qnaComMap = mpSvc.selectAllMyComment(mbId, pageNumber);
+		System.out.println("qnaComMap = " + qnaComMap);
+		if( qnaComMap != null ) {
+			int totalRecords = (int)qnaComMap.get("totalRecords");
+			int maxPG = (int)qnaComMap.get("maxPG");
+			List<QnaCommentVO> qnacomList = (List<QnaCommentVO>)qnaComMap.get("qnacomList");
+			List<QnaVO> qnaList = (List<QnaVO>)qnaComMap.get("qnaList");
+			model.addAttribute("totalRecords", totalRecords);
+			model.addAttribute("maxPG", maxPG);
+			model.addAttribute("qnacomList", qnacomList);
+			model.addAttribute("qnaList", qnaList);
+			model.addAttribute("pn", pageNumber);
+		} else {
+			model.addAttribute("msg_status", "댓글 내역");
+			model.addAttribute("mp_msg", mb.getNicname() + " 님의 댓글 내역이 없습니다.");
+		}
+		return "member/mypage/activity/mypage_comment";
 	}
 
 //회원이 문의한 qna내역 확인하기							문의 내역
 //	mypage_qna.lf(proc,post,dao)				해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_qna.LF", method=RequestMethod.POST)
-	public String memberMypageQna() {
-		System.out.println("memberMypageQna()...");	
+	public String memberMypageQna( HttpSession ses,
+			@RequestParam(value = "pn", required = false, defaultValue = "1" ) int pageNumber,
+			Model model ) {
+		System.out.println("memberMypageQna()...");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		System.out.println("mb = " + mb);
+		Map<String, Object> qnaMap = mpSvc.selectAllMyQna(mbId, pageNumber);
+		
+		if( qnaMap != null ) {
+			int totalRecords = (int)qnaMap.get("totalRecords");
+			int maxPG = (int)qnaMap.get("maxPG");
+			List<QnaVO> qnaList = (List<QnaVO>)qnaMap.get("qnaList");
+			model.addAttribute("totalRecords", totalRecords);
+			model.addAttribute("maxPG", maxPG);
+			model.addAttribute("qnaList", qnaList);
+			model.addAttribute("pn", pageNumber);
+		} else {
+			model.addAttribute("msg_status", "문의 내역" );
+			model.addAttribute("mp_msg", mb.getNicname() + " 님의 문의 내역이 없습니다.");
+		}
 		return "member/mypage/activity/mypage_qna";
+		
 	}
-//펀딩신청내역 확인하기									펀딩신청내역
-//	mypage_funding.lf(proc,post,dao)		해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_funding.LF", method=RequestMethod.POST)
-	public String memberMypageFunding() {
-		System.out.println("memberMypageFunding()...");	
-		return "member/mypage/activity/mypage_funding";
-	}
+//펀딩신청내역 확인하기	펀딩 날림. -세현
+
 	
 //회원이 보유중인 쿠폰 표시							나의쿠폰
 //	mypage_coupon.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_coupon_info.LF", method=RequestMethod.POST)
-	public String memberMypageCoupon() {
-		System.out.println("memberMypageCoupon()...");	
-		return "member/mypage/activity/coupon_info";
+	public String memberMypageCoupon( HttpSession ses, 
+			@RequestParam(value = "pn", required = false, defaultValue = "1" ) int pageNumber,
+			Model model ) {
+		System.out.println("memberMypageCoupon()...");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		Map<String, Object> couponMap = mpSvc.selectAllMyCoupon(mbId, pageNumber); // select 저함수안에서 디버그처리
+		if( couponMap != null ) {
+			int totalRecords = (int)couponMap.get("totalRecords");
+			int maxPG = (int)couponMap.get("maxPG");
+			List<CouponVO> couponList = (List<CouponVO>)couponMap.get("couponList");
+			model.addAttribute("totalRecords", totalRecords);
+			model.addAttribute("maxPG", maxPG);
+			model.addAttribute("couponList", couponList);
+			model.addAttribute("pn", pageNumber);
+		} else {
+			System.out.println("couponMap 은 null");
+			model.addAttribute("msg_status", "나의 쿠폰" );
+			model.addAttribute("mp_msg", mb.getNicname() + " 님이 등록하신 쿠폰이 없습니다.");
+		}
+		
+		return "member/mypage/activity/mypage_coupon_info";
 	}
 
 	
@@ -531,8 +669,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="mypage_delivery_info.LF", method=RequestMethod.GET)
-	public String memberMypageDeliveryInfo() {
-		System.out.println("memberMypageDeliveryInfo()...");	
+	public String memberMypageDeliveryInfo(HttpSession ses
+			) 
+	{
+		System.out.println("memberMypageDeliveryInfo()...");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		System.out.println("mbId = " + mbId);
+		Map<String, Object> rMap = mpSvc.selectMyPageDeliveryInfoMap(mbId);
 		return "member/mypage/order_manager/mypage_delivery_info";
 	}
 	

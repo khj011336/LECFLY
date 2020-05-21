@@ -82,13 +82,15 @@ public class PaymentController {
 				List<CreatorVO> creList = (List<CreatorVO>)cMap.get("creList");
 				model.addAttribute("creList", creList);
 			} else { 
-				return "pay_goodsDetail.pay";
+				System.out.println("payment/pay_goodsDetail.pay");
+				return "payment/pay_goodsDetail.pay";
 			}
 		} else {
 			System.out.println("비회원으로 장바구니 이동!");
 			Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
 		}
-		return "pay_cart.pay";
+		System.out.println("payment/pay_cart.pay");
+		return "payment/pay_cart.pay";
 	}
 	
 	

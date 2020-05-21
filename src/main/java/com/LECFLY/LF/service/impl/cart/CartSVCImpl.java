@@ -121,22 +121,32 @@ public class CartSVCImpl implements ICartSVC {
 		// 장바구니의 리스트를 뽑는다. gdsId랑 kitId랑 같은 걸로.
 		// 키트의 리스트를 뽑는다.
 		// 크리에이터의 리스트를 뽑느다. <FK랑 참조>
-		List<CreatorVO> creList = new ArrayList<>();
-		List<KitVO> kitList = new ArrayList<>();
-		List<CartVO> ctList = cartDAO.selectCartList(mbId); 
-		
-		for (int i = 0; i < ctList.size(); i++) {
-			KitVO kit = testDAO2.selectOneKitbyId(kitId);
-			CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId()); 
-			creList.add(cre);
-			kitList.add(kit);
+		int r = cartDAO.insertNewCartByMbIdKitId(mbId, kitId);
+		if(r == 1) {
+			List<CartVO> ctList = cartDAO.selectCartList(mbId, kitId);
+			
+			List<CreatorVO> creList = new ArrayList<>();
+			List<KitVO> kitList = new ArrayList<>();	
+			for (int i = 0; i < ctList.size(); i++) {
+				KitVO kit = testDAO2.selectOneKitbyId(kitId);
+				CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId()); 
+				creList.add(cre);
+				kitList.add(kit);
+			}
+			
+			Map<String, Object> rMap = new HashMap<>();
+			rMap.put("cartList", ctList);
+			rMap.put("kitList", kitList);
+			rMap.put("creList", creList);
+			
+			return rMap;
+		} else {
+			return null;
 		}
 		
-		Map<String, Object> rMap = new HashMap<>();
-		rMap.put("cartList", ctList);
-		rMap.put("kitList", kitList);
-		rMap.put("creList", creList);
-		return rMap;
+		
+		
+		
 	}
 
 	

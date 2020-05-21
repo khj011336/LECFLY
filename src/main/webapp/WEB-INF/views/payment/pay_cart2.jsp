@@ -1,122 +1,146 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-  <link href="resources/css/creator/creator.css" rel ="stylesheet" type="text/css" >
-<link href="resources/css/creator/cre_comment_mt.css" rel ="stylesheet" type="text/css" >
-<link href ="resources/css/creator/lecplay.css" rel ="stylesheet" type="text/css" >
-<title>주제</title>
-<!-- <link type="text/css" rel="stylesheet" -->
-<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"> -->
-<!-- <script -->
-</head>
-<body>
-	<div id="shoppingCart_wrapper">
-		<div id="shoppingCart_content">
-			<div class="shoppingCart_title_box">
-				<h1 class="shoppingCart_title">동영상 목록</h1>
-				<h3 class="shoppingCart_subtitle"></h3>
-			</div>
-			<div class="cartMain">
-				<table id="cartTable">
-					<thead>
-						<tr >
-							<th><label for="fl select-all"> <input
-									type="checkbox" class="check-all check"> <span><a
-										href="javascript:void(0)" class="selallSPAN">&nbsp;전체</a></span></label></th>
-							<th colspan="2"></th>
-							<th id="forfixs"></th>
-							<th class="crinf">클래스 정보수정</th>
-							<th class="listup">+영상업로드</th>
-							<th id="listdel">삭제</th>
-							<th style="width: 150px;">정렬&nbsp;<select>
-									<option>오름차순</option>
-									<option>내림차순</option>
-									<option>날자순</option>
-									<option>조회순</option>
-							</select></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class = 'bottomlineaa'>
-							<td class="checkbox"><input type="checkbox"
-								class="check-one check" /></td>
-							<td colspan="2" class="goods"><img
-								src="../resource/img/l3.PNG" alt="홈트레이닝" />
-
-								<div id="countor">
-									<span style="width: 500px">dddddddddddd홈트의 재정의&gt; 다이어트
-										패키지ddddddddddd</span> <span><a href="##" class="sellerTitle">2020.09.09.10:33</a>
-									</span> <span> <select name="test1">
-											<option value="1">동영상 수정</option>
-											<option value="2">판매킷 수정</option>
-									</select>
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_cart.css">
+		<div id="shoppingCart_wrapper">
+			<div id="shoppingCart_content">
+				<div class="shoppingCart_title_box">
+					<h1 class="shoppingCart_title">장바구니</h1>
+					<h3 class="shoppingCart_subtitle">
+						<span class="shoppingCart_basket">장바구니</span> <span class="shoppingCart_order_sheet">&gt;
+							주문서</span> <span class="shoppingCart_order_finish">&gt; 주문완료</span>
+					</h3>
+				</div>
+				<div class="cartMain">
+					<table id="cartTable">
+						<thead>
+							<tr>
+								<th id="shoppingCart_th"><label for="fl select-all">
+										<input type="checkbox" class="check-all check" /> <span><a
+											href="javascript:void(0)" class="selallSPAN">&nbsp;전체</a></span>
+								</label></th>
+								<th id="shoppingCart_th" colspan="2">상품정보</th>
+								<th id="shoppingCart_th">예상가격</th>
+								<th id="shoppingCart_th">수 량</th>
+								<th id="shoppingCart_th">최종가격</th>
+								<th id="shoppingCart_th">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="shoppingCart_td" class="checkbox">
+									<input type="checkbox" class="check-one check">
+								</td>
+								<td id="shoppingCart_td" colspan="2" class="goods">
+								<img src="${kit.imgPath}" alt="홈트레이닝"> 
+									<span>
+										<a id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;&lt;홈트의 재정의&gt; 다이어트 패키지</a>
+									</span> 
+									<span>
+										<a id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;판매자</a>
 									</span>
-								</div></td>
-							<td class="count"></td>
-							<td class="count"></td>
-							<td class="subtotal">
-								<p>
-									<i class="fas fa-comment-dots"></i><span>2342342</span>
-								</p>
-								<p>
-									<i class="fas fa-heart"></i><span></span>234234234
-								</p>
-								<p>
-									<i class="fas fa-eye"></i><span>23423442</span>
-								</p>
-							</td>
-							<td></td>
-							<td class="opration"><span class="deleteOne">수정</span></td>
-						</tr>
-							<tr class = 'bottomlineaa'>
-							<td class="checkbox"><input type="checkbox"
-								class="check-one check" /></td>
-							<td colspan="2" class="goods"><img
-								src="../resource/img/l3.PNG" alt="홈트레이닝" />
-
-								<div id="countor">
-									<span style="width: 500px">dddddddddddd홈트의 재정의&gt; 다이어트
-										패키지ddddddddddd</span> <span><a href="##" class="sellerTitle">2020.09.09.10:33</a>
-									</span> <span> <select name="test1">
-											<option value="1">동영상 수정</option>
-											<option value="2">판매킷 수정</option>
-									</select>
+								</td>
+								<td id="shoppingCart_td" class="price">35,000</td>
+								<td id="shoppingCart_td" class="count">
+									<span class="reduce">-</span>
+									<input type="text" class="count-input" value="1">
+									<span class="add">+</span>
+								</td>
+								<td id="shoppingCart_td" class="subtotal">
+									35,000
+								</td>
+								<td id="shoppingCart_td" class="opration">
+									<span class="deleteOne">삭 제</span>
+								</td>
+							</tr>
+							<tr>
+								<td id="shoppingCart_td" class="checkbox">
+									<input type="checkbox" class="check-one check">
+								</td>
+								<td id="shoppingCart_td" colspan="2" class="goods">
+									<img src="resource/img/payment/soap.jpg" alt="비누">
+									<span>
+										<a id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;LOVE YOUR LIFE 나를 위한 천연비누</a>
 									</span>
-								</div></td>
-							<td class="count"></td>
-							<td class="count"></td>
-							<td class="subtotal">
-								<p>
-									<i class="fas fa-comment-dots"></i><span>2342342</span>
-								</p>
-								<p>
-									<i class="fas fa-heart"></i><span></span>234234234
-								</p>
-								<p>
-									<i class="fas fa-eye"></i><span>23423442</span>
-								</p>
-							</td>
-							<td></td>
-							<td class="opration"><span class="deleteOne">수정</span></td>
-						</tr>
-<!-- 						<tr> -->
-					</tbody>
-				</table>
+									<br> 
+									<span>
+										<a id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;판매자</a>
+									</span>
+								</td>
+								<td id="shoppingCart_td" class="price">18,000</td>
+								<td id="shoppingCart_td" class="count">
+									<span class="reduce">-</span>
+									<input type="text" class="count-input" value="1">
+									<span class="add">+</span>
+								</td>
+								<td id="shoppingCart_td" class="subtotal">18,000</td>
+								<td id="shoppingCart_td" class="opration">
+									<span class="deleteOne">삭 제</span>
+								</td>
+							</tr>
+							<tr>
+								<td id="shoppingCart_td" class="checkbox">
+									<input type="checkbox" class="check-one check">
+								</td>
+								<td id="shoppingCart_td" colspan="2" class="goods">
+								<img src="resource/img/payment/cooking.jpg" alt="원데이클래스">
+									 <span>
+									 	<a id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;내 상황에 딱 맞는 쿠킹클래스</a>
+									 </span>
+									 <br>
+									 <span>
+									 	<a id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;판매자</a>
+									 </span>
+								</td>
+								<td id="shoppingCart_td" class="price">23,000</td>
+								<td id="shoppingCart_td" class="count">
+									<span class="reduce">-</span>
+									<input type="text" class="count-input" value="1">
+									<span class="add">+</span>
+								</td>
+								<td id="shoppingCart_td" class="subtotal">23,000</td>
+								<td id="shoppingCart_td" class="opration">
+									<span class="deleteOne">삭 제</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="cartFooter" id="cartFooter">
+					<div class="selall fl">
+						<label for="fl select-all"> 
+							<input type="checkbox" class="check-all check">
+							<span>
+								<a id="shoppingCart_a" href="javascript:void(0)" class="selallSPAN">&nbsp;전체</a>
+							</span>
+						</label>
+					</div>
+					<a href="#" id="multiDelete" class="fl delete">삭제</a>
+					 <a href="#" id="allDelete" class="fl delete">전체삭제</a>
+					<div class="fr closing">주문하기</div>
+					<div class="fr total">
+						전체 주문금액: <span id="priceTotal">0</span>
+					</div>
+					<div class="fr selected" id="selected">
+						선택된 상품 <span id="selectedTotal">0</span>개 
+						<span class="arrow up">︽선택 상품 미리보기</span>
+						<span class="arrow down">︾</span>
+					</div>
+					<div class="selected-view">
+						<div id="selectedViewList" class="clearfix">
+						</div>
+						<span class="arrow">◆<span>◆</span></span>
+					</div>
+				</div>
 			</div>
-			<div class="cartFooter" id="cartFooter"></div>
 		</div>
-	</div>
-	<script>
+	<script type="text/javascript">
 		// javaScript의 html 내의 요소들을 움직일 수 있는 dom 객체를 조작하는 방법.
-		window.onload = function() {
+	// 	window.onload = function() {
 			//호환document.getElementsByClassName 방법；
-
+	
 			// getElementsById() id 속성을 사용하여 접근.
 			// getElementsByClassName() class 속성을 사용하여 접근, 컬렉션 객체를 반환
-
+	
 			// cls => class, ret => return, els =
 			if (!document.getElementsByClassName) {
 				document.getElementsByClassName = function(cls) {
@@ -134,7 +158,7 @@
 					return ret;
 				}
 			}
-
+	
 			var cartTable = document.getElementById('cartTable');
 			var tr = cartTable.children[1].rows; //children 자식노드;
 			var checkInputs = document.getElementsByClassName('check');
@@ -147,7 +171,7 @@
 			var multiDelete = document.getElementById('multiDelete');
 			var allDelete = document.getElementById('allDelete');
 			var selallSPAN = document.getElementsByClassName('selallSPAN');
-
+	
 			//박스 이벤트 선택；
 			for (var i = 0; i < checkInputs.length; i++) {
 				checkInputs[i].onclick = function() {
@@ -170,7 +194,7 @@
 				for (var k = 0; k < checkAllInput.length; k++) {
 					if (checkAllInput[k].checked) {
 						checkAllInput[k].checked = false;
-
+	
 					} else {
 						checkAllInput[k].checked = true;
 					}
@@ -180,7 +204,7 @@
 				}
 				getTotal();
 			}
-
+	
 			//계산；
 			function getTotal() {
 				var selected = 0;
@@ -190,14 +214,13 @@
 					var perCount = tr[i].getElementsByTagName('input')[1].value;
 					if (tr[i].getElementsByTagName('input')[0].checked) {
 						tr[i].className = "on";
-						selected += parseInt(tr[i]
-								.getElementsByTagName('input')[1].value);
+						selected += parseInt(tr[i].getElementsByTagName('input')[1].value);
 						price += parseFloat(tr[i].cells[4].innerHTML);
 						HTMLstr += '<div><img src="'
 								+ tr[i].getElementsByTagName('img')[0].src
 								+ '"/><span class="selCount">'
 								+ perCount
-								+ '</span><span class="del" index="' + i + '">선택해제</span></div>'
+								+ '</span><span class="del" index="'+i+'">선택해제</span></div>'
 					} else {
 						tr[i].className = " ";
 					}
@@ -211,7 +234,7 @@
 					cartFooter.className = "cartFooter";
 				}
 			}
-
+	
 			//선택한 상자 표시 및 숨기기；
 			selected.onclick = function() {
 				if (cartFooter.className == 'cartFooter') {
@@ -222,7 +245,7 @@
 					cartFooter.className = "cartFooter";
 				}
 			}
-
+	
 			//이벤트 에이전트 선택 해제;
 			selectedViewList.onclick = function(e) {
 				e = e || window.event;
@@ -234,7 +257,7 @@
 					input.onclick();
 				}
 			}
-
+	
 			//더하기와 빼기 이벤트；
 			for (var i = 0; i < tr.length; i++) {
 				//더하기 및 빼기 버튼；
@@ -301,7 +324,7 @@
 				var subTotal = parseFloat(price * count).toFixed(3);
 				tds[4].innerHTML = subTotal;
 			}
-
+	
 			//삭제；
 			multiDelete.onclick = function() {
 				if (selectedTotal.innerHTML != '0') {
@@ -333,7 +356,4 @@
 				}
 				;
 			}
-		}
 	</script>
-</body>
-</html>

@@ -87,7 +87,7 @@ public class TestGeon2 {
 				BeanPropertyRowMapper.newInstance(KitVO.class), kitId);
 	}
 	
-	private final String SQL_SELECT_CREATOR_FID ="select * from creator fid = ?";
+	private final String SQL_SELECT_CREATOR_FID ="select * from creator where fId = ?";
 	public CreatorVO selectOneCreByfId(int getfId) {
 		
 		System.out.println(SQL_SELECT_CREATOR_FID + "getfId = " + getfId);

@@ -1,6 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  
+<script>
+ $(document).ready(function() {
+	$("#update_creator_list").click(function() {
+		// 배열 선언 및 체크된 리스트 저장 
+		var checkArray = [];
+		$('input[name="checked"]:checked').each(function(i) {
+			checkArray.push($(this).val());
+		});
+		
+		// 파람으로 보낼 정보들 저장
+		var params = {
+				"checkList" : checkArray
+		}
+		
+		// ajax 호출
+		$.ajax({
+			url : "${pageContext.request.contextPath}/admin_update_creator_list.LF",
+			dataType: "json",
+			type: "post",
+			data: params, 
+			success: function(res) {
+				console.log(res);
+			},
+			error: function(request, status, error) {
+				console.log("send checkedlist error");
+			}
+		});
+	});
+});
+
+</script>  
 <h4>크리에이터 관리</h4>
 
 <div class="admin_table_filter">
@@ -47,15 +77,15 @@
 		</tr>
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" onclick="location.href='admin_banner_list.LF'">상세조회</button>
-		<button type="button" onclick="location.href='admin_banner_list.LF'">전체조회</button>
+		<button type="button" onclick="location.href='admin_creator_list.LF'">상세조회</button>
+		<button type="button" onclick="location.href='admin_creator_list.LF'">전체조회</button>
 	</div>
 </div>
 
 <div class="board_sort_filter">
 	<h6 class="admin_search_result">
-	[오늘 등록된 정보 <span class="board_result_count">1</span>건]
-	검색결과 <span class="board_result_count">20</span>건
+	[현재 페이지 결과 <span class="board_result_count"><c:out value="${listSize}건" default=""/></span>]
+	총 검색결과 <span class="board_result_count"><c:out value="${totalRecords}건" default=""/></span>
 	</h6>
 	
 	<ul class="admin_search_edit">	
@@ -96,15 +126,55 @@
 			<td><input type="checkbox" name="checked" value="${cr.id }"/></td> 
 			<td>${vs.count}</td> 
 			<td>${cr.id }</td> 
-			<td>${cr.imgPath }</td> 
+			<%-- <td>${cr.imgPath }</td> --%> 
+			<td>
+				<c:choose>
+					<c:when test="${fn:length(cr.imgPath) gt 10}"> <%--10글자 이상일 시 --%>
+		 		    <c:out value="${fn:substring(cr.imgPath,0,9)}...">
+		 		    </c:out></c:when> 
+		 		    <c:otherwise>
+		 		    <c:out value="${cr.imgPath}">
+		 		    </c:out></c:otherwise>
+	 		    </c:choose>
+			</td>
 			<td>${cr.name }</td> 
 			<td>${cr.nickname }</td> 
 			<td>${cr.cellPhone }</td> 
 			<td>${cr.SNS }</td> 
-			<td>${cr.info }</td> 
+			<%-- <td>${cr.info }</td>  --%>
+			<td>
+				<c:choose>
+					<c:when test="${fn:length(cr.info) gt 10}"> <%--10글자 이상일 시 --%>
+		 		    <c:out value="${fn:substring(cr.info,0,9)}...">
+		 		    </c:out></c:when> 
+		 		    <c:otherwise>
+		 		    <c:out value="${cr.info}">
+		 		    </c:out></c:otherwise>
+	 		    </c:choose>
+			</td>
 			<td>${cr.status }</td> 
 			<td>${cr.grantDate }</td> 
 		</tr>
 		</c:forEach>
 	</table>
+	<div id="paginate">
+		<c:if test="${pn > 1}">
+			<a href="${pageContext.request.contextPath}/admin_creator.LF?pn=${pn-1}">[이전]</a>
+		</c:if>
+		 &nbsp; &nbsp;
+		<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
+			<c:if test='${vs.current eq pn}'>
+				<b style='color: orange'>${vs.current}</b>
+			</c:if>	
+			<c:if test='${vs.current ne pn}'>
+				<a href="${pageContext.request.contextPath}/admin_creator.LF?pn=${vs.current}">${vs.current}</a>
+			</c:if>
+			 &nbsp;
+			 ${vs.current eq maxPn ? '': '|'}
+		</c:forEach>
+		 &nbsp; &nbsp;
+		<c:if test="${pn < maxPn}">
+			<a href="${pageContext.request.contextPath}/admin_creator.LF?pn=${pn+1}">[다음]</a>
+		</c:if>
+	</div>
 </div>

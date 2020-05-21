@@ -2,6 +2,7 @@ package com.LECFLY.LF.model.vo;
 
 import java.sql.Timestamp;
 
+
 import org.springframework.stereotype.Component;
 @Component("cartVO")
 public class CartVO {
@@ -22,6 +23,7 @@ public class CartVO {
 	 * 
 	 */
 	public CartVO() {
+
 	}
 	
 	/**
@@ -42,6 +44,7 @@ public class CartVO {
 	 * @param gdCnt
 	 * @param createdAt
 	 */
+
 	public CartVO(int id, int mbId, int categoryId, int gdsId, int gdCnt, Timestamp createdAt) {
 		super();
 		this.id = id;

@@ -23,8 +23,6 @@ public interface IAdminBoardDAO {
 	// 게시글을 전체 조회할수 있다.
 	List<QnaVO> showAllQnas(int offset, int limit);
 	int checkNumberOfQnas();
-	// 게시글에 답변을 남길 수 있다.
-	boolean insertNewComment(QnaCommentVO QC);
 	
 	
 	// FAQ 게시판 관리
@@ -58,13 +56,13 @@ public interface IAdminBoardDAO {
 	// COMMENT 게시판 관리
 	
 	// comment를 등록할 수 있다.
-	boolean insertNewComment(CommentClassVO cm);
+	boolean insertNewComment(QnaCommentVO cm);
 	// comment를 편집 할 수 있다.
-	boolean updateComment(CommentClassVO cm);
+	boolean updateComment(QnaCommentVO cm);
 	// comment를 삭제 할 수 있다.
-	boolean deleteComment(CommentClassVO cm);
+	boolean deleteComment(QnaCommentVO cm);
 	// comment를 전체 조회할수 있다.
-	List<CommentClassVO> showAllComments(int offset, int limit);
+	List<QnaCommentVO> showAllComments(int offset, int limit);
 	int checkNumberOfComments();
 		
 }

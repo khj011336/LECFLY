@@ -32,6 +32,9 @@ public interface IAdminMemberSVC {
 	CreatorVO selectCreatorMember(CreatorVO vo);
 	// 을 전체조회할 수 있다.
 	List<CreatorVO> selectCreatorMemberList();	
-	Map<String,Integer> checkMaxPageNumber();
+	
+	Map<String, Integer> checkMaxPageNumberForCreator();
+	Map<String, Integer> checkMaxPageNumber();
+	List<CreatorVO> selectAllCreator(int pageNumber);
 	List<MemberVO> selectAllMember(int pageNumber);	
 }

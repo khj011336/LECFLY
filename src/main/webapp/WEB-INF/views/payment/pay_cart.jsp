@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<title>장바구니</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_cart.css">
 		<div id="shoppingCart_wrapper">
 			<div id="shoppingCart_content">
@@ -27,77 +26,64 @@
 							</tr>
 						</thead>
 						<tbody>
+						<c:forEach var="gd" items="${kitList}" varStatus="vs">
+							<c:if test="${kitList eq 1 and kitList lt 0}">
 							<tr>
-								<td id="shoppingCart_td" class="checkbox"><input
-									type="checkbox" class="check-one check" /></td>
-								<td id="shoppingCart_td" colspan="2" class="goods"><img
-									src="resource/img/payment/working%20out.jpg" alt="홈트레이닝" /> <span><a
-										id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;&lt;홈트의
-											재정의&gt; 다이어트 패키지</a></span> <span><a id="shoppingCart_a" href="##"
-										class="sellerTitle">&nbsp;판매자</a></span></td>
-								<td id="shoppingCart_td" class="price">35,000</td>
-								<td id="shoppingCart_td" class="count"><span class="reduce">-</span>
-									<input type="text" class="count-input" value="1" /> <span
-									class="add">+</span></td>
-								<td id="shoppingCart_td" class="subtotal">35,000</td>
-								<td id="shoppingCart_td" class="opration"><span
-									class="deleteOne">삭 제</span></td>
+								<td id="shoppingCart_td" class="checkbox">
+									<input type="checkbox" class="check-one check">
+								</td>
+								<td id="shoppingCart_td" colspan="2" class="goods">
+								<img src="${gd.imgPath}" alt="홈트레이닝"> 
+									<span>
+										<a id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;&lt;${gd.category}&gt;${gd.title}</a>
+									</span> 
+									<span>
+										<a id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;${creList.get(vs.index).nickname}</a>
+									</span>
+								</td>
+								<td id="shoppingCart_td" class="price">${gd.price}</td>
+								<td id="shoppingCart_td" class="count">
+									<span class="reduce">-</span>
+									<input type="text" class="count-input" value="1">
+									<span class="add">+</span>
+								</td>
+								<td id="shoppingCart_td" class="subtotal">
+									${gd.price} 
+								</td>
+								<td id="shoppingCart_td" class="opration">
+									<span class="deleteOne">삭 제</span>
+								</td>
 							</tr>
-							<tr>
-								<td id="shoppingCart_td" class="checkbox"><input
-									type="checkbox" class="check-one check" /></td>
-								<td id="shoppingCart_td" colspan="2" class="goods"><img
-									src="resource/img/payment/soap.jpg" alt="비누" /> <span><a
-										id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;LOVE
-											YOUR LIFE 나를 위한 천연비누</a></span><br> <span><a
-										id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;판매자</a>
-								</span></td>
-								<td id="shoppingCart_td" class="price">18,000</td>
-								<td id="shoppingCart_td" class="count"><span class="reduce">-</span>
-									<input type="text" class="count-input" value="1" /> <span
-									class="add">+</span></td>
-								<td id="shoppingCart_td" class="subtotal">18,000</td>
-								<td id="shoppingCart_td" class="opration"><span
-									class="deleteOne">삭 제</span></td>
-							</tr>
-							<tr>
-								<td id="shoppingCart_td" class="checkbox"><input
-									type="checkbox" class="check-one check" /></td>
-								<td id="shoppingCart_td" colspan="2" class="goods"><img
-									src="resource/img/payment/cooking.jpg" alt="원데이클래스" /> <span><a
-										id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;내 상황에
-											딱 맞는 쿠킹클래스</a></span><br /> <span><a id="shoppingCart_a" href="##"
-										class="sellerTitle">&nbsp;판매자</a> </span></td>
-								<td id="shoppingCart_td" class="price">23,000</td>
-								<td id="shoppingCart_td" class="count"><span class="reduce">-</span>
-									<input type="text" class="count-input" value="1" /> <span
-									class="add">+</span></td>
-								<td id="shoppingCart_td" class="subtotal">23,000</td>
-								<td id="shoppingCart_td" class="opration"><span
-									class="deleteOne">삭 제</span></td>
-							</tr>
+							</c:if>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 				<div class="cartFooter" id="cartFooter">
 					<div class="selall fl">
-						<label for="fl select-all"> <input type="checkbox"
-							class="check-all check" /> <span><a id="shoppingCart_a"
-								href="javascript:void(0)" class="selallSPAN">&nbsp;전체</a></span>
+						<label for="fl select-all"> 
+							<input type="checkbox" class="check-all check">
+							<span>
+								<a id="shoppingCart_a" href="javascript:void(0)" class="selallSPAN">&nbsp;전체</a>
+							</span>
 						</label>
 					</div>
-					<a href="#" id="multiDelete" class="fl delete">삭제</a> <a href="#"
-						id="allDelete" class="fl delete">전체삭제</a>
+					<a href="#" id="multiDelete" class="fl delete">삭제</a>
+					 <a href="#" id="allDelete" class="fl delete">전체삭제</a>
 					<div class="fr closing">주문하기</div>
 					<div class="fr total">
-						전체 주문금액: <span id="priceTotal">0</span>
+						<c:forEach var="gd" items="${kitList}" varStatus="vs">
+						전체 주문금액: <span id="priceTotal">${gd.price}</span>
+						</c:forEach>
 					</div>
 					<div class="fr selected" id="selected">
-						선택된 상품 <span id="selectedTotal">0</span>개 <span class="arrow up">︽선택
-							상품 미리보기</span> <span class="arrow down">︾</span>
+						선택된 상품 <span id="selectedTotal">0</span>개 
+						<span class="arrow up">︽선택 상품 미리보기</span>
+						<span class="arrow down">︾</span>
 					</div>
 					<div class="selected-view">
-						<div id="selectedViewList" class="clearfix"></div>
+						<div id="selectedViewList" class="clearfix">
+						</div>
 						<span class="arrow">◆<span>◆</span></span>
 					</div>
 				</div>
@@ -326,8 +312,4 @@
 				}
 				;
 			}
-		// 결제페이지로 이동
-		$(document).on("click", '.closing', function() {
-			$("#homemain").load("payment/fundingPayment.jsp");
-		});
 	</script>

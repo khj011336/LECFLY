@@ -17,19 +17,19 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	final String SELECT_ViDEO_limit = "select * from video where fid = ? order by created_at desc  limit ?,? ";
 	final String SELECT_CLASS_ViDEO_limit = "select * from video where CFId = ? order by created_at desc  limit ?,? ";
 	final String COUNT_VIDEO = "select count(*) as vi from video where CFId =? ";
-	final String INSERT= "insert into video values(null,fid,cfid,videoPath,duration,title,info,imgPath,gifPath,"
-	+ "orderInfo,category,comment_y_n,views,status,now(),now(),likecount,likeofmember)";
+	final String INSERT= "insert into video values(null,?,?,?,?,?,?,?,"
+	+ "?,?,?,?,?,?,now(),now(),0,' ')";
 	@Override
 	public boolean insertNewVideo(VideoVO Vvo) {
-		
-		return false;
+	int r = 	jtem.update(INSERT, Vvo.getfId(),Vvo.getcFId(),Vvo.getVideoPath(),Vvo.getDuration(),Vvo.getTitle(),Vvo.getInfo(),Vvo.getImgPath()
+				,Vvo.getGifPath(),Vvo.getOrderInfo(),Vvo.getCategory(),Vvo.getCommentYorN(),Vvo.getViews(),Vvo.getStatus());
+		return r == 1;
 	}
-
 	@Override
-	public boolean insertNewVideo(String videoPath, int duration, String title, String info, String imgPath,
-			String gifPath, String orderInfo, int category, int commentYorN) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean insertNewVideo(int fid,int cfid,String videoPath, int duration, String title, String info, String imgPath,
+			String gifPath, String orderInfo, int category, int commentYorN ,int views, int status) {
+		int r = jtem.update(INSERT, fid, cfid, videoPath, duration, title, info , imgPath , gifPath , orderInfo,category,commentYorN,views,status );
+		return r ==1;
 	}
 
 	@Override
@@ -57,7 +57,6 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	}
 	public int checkNumberOfVideo(int CFID){
 		int r = jtem.queryForObject(COUNT_VIDEO, Integer.class,CFID );
-		System.out.println(r);
 		return 	r;
 		
 	}

@@ -39,9 +39,10 @@ public class LectureSVCImpl{
 		int totalRecords = LecDAO.checkNumberOfLectures(fid);
 		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
-	public void storeProcess(LectureVO LecVO, HttpSession ses , CreatorVO cr,SessionStatus sesStatus,Model model) {
-		fileProcessforLectures( LecVO ,  ses ,  model);
-		int fid = (Integer)(ses.getAttribute("fid"));
+	public void storeProcess(LectureVO LecVO, int memberId , CreatorVO cr,SessionStatus sesStatus,Model model , String username) {
+		fileProcessforLectures( LecVO ,  memberId ,  model , username);
+		int fid =  memberId;
+		System.out.println("저장단  fid"+fid);
 		LecDAO.insertNewLecture(fid,LecVO.getCategory(),
 				LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
 				LecVO.getInfo(), cr.getNickname(),
@@ -50,7 +51,8 @@ public class LectureSVCImpl{
 				cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo());
 		sesStatus.setComplete();
 	}
-	public void unloadProcess(String unload,LectureVO LecVO, HttpSession ses , CreatorVO cr,SessionStatus sesStatus) {
+	public void unloadProcess(String unload,LectureVO LecVO, HttpSession ses , CreatorVO cr,SessionStatus sesStatus 
+			, String username,int memberId) {
 		int countNull = 0;
 		if (unload.equals("y") ) {
 			System.out.println("언로드진입 인풋 공백 체크중...");
@@ -66,25 +68,44 @@ public class LectureSVCImpl{
 				}
 			}
 			if (countNull >= INPUT_EMPTY_CHECK) {
-				System.out.println(" lecture input 지정사이즈보다 많음 자동저장");
-				int fid = (Integer)(ses.getAttribute("fid"));
-				LecDAO.insertNewLecture(fid,LecVO.getCategory(),
+				System.out.println(" lecture input 지정사이즈[3]보다 많음 자동저장");
+				LecVO.setStatus(4);
+				cr.setStatus(4);
+				LecDAO.insertNewLecture(memberId,LecVO.getCategory(),
 						LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
 						LecVO.getInfo(), cr.getNickname(),
 						cr.getImgPath());
-				CreDAO.insertNewCreator(fid, cr.getImgPath(), cr.getName(),
+				CreDAO.insertNewCreator(memberId, cr.getImgPath(), cr.getName(),
 						cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo());
 				
+			}else {
+				String path = FileSVCImpl.getPath(username, 1);
+				if(LecVO.getImgPath() != null && !LecVO.getImgPath().isEmpty()) {
+					if(new File(path+LecVO.getImgPath()).delete()) {
+						System.out.println(LecVO.getImgPath()+"[imgPath]언로드로 인해 지워졌습니다");
+					}
+				}if(LecVO.getInfoImg() != null && !LecVO.getInfoImg().isEmpty()) {
+					if(new File(path+LecVO.getInfoImg()).delete()) {
+						System.out.println(LecVO.getInfoImg()+"[infoImg]언로드로 인해 지워졌습니다");
+					}
+				}if(LecVO.getTitleImg()!= null && !LecVO.getTitleImg().isEmpty()) {
+					if(new File(path+LecVO.getTitleImg()).delete()) {
+						System.out.println(LecVO.getTitleImg()+"[TitleImg]언로드로 인해 지워졌습니다");
+					}
+				}if(cr.getImgPath()!= null && !cr.getImgPath().isEmpty()) {
+					if(new File(path+cr.getImgPath()).delete()) {
+						System.out.println(cr.getImgPath()+"[creatorImg]언로드로 인해 지워졌습니다");
+					}
+				}
 			}
 			sesStatus.setComplete();
 		}
 	}
 	
-	public void fileProcessforLectures(LectureVO LcVO , HttpSession ses , Model model) {
-		int id = (Integer) ses.getAttribute("id");
+	public void fileProcessforLectures(LectureVO LcVO , int memberId , Model model, String username) {
+		int id =  memberId;
 		String newimgPath = null;
-		String username = (String) ses.getAttribute("membertest");
-		String userpath = fileSVC.getPath(username, 1);
+		String userpath = FileSVCImpl.getPath(username, 1);
 		 
 		if (LcVO.getTitleImgM() != null && !LcVO.getTitleImgM().isEmpty()) {
 			if (fileSVC.makeDir(username)) {

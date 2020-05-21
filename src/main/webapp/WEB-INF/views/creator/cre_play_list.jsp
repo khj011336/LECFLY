@@ -5,12 +5,17 @@
 <html>
 <meta charset="UTF-8">
 <head>
-<script src="resources/js/creator/select.js"></script>
+<!-- <script src="resources/js/creator/select.js"></script> -->
 <script>
 var max = ${maxPage};
 var CFID = ${CFId};
 var category =${category};
-var pagea = 1 ;
+var pagea = 1 ; 
+ $().ready(function () {
+	$(document).on("click","#kit",function(e){
+		location.href ="kit_upload.LF?CFID="+CFID+"&category="+category;
+	});
+});
 function nationforVideo(pagea , max){
 	var nate = "";
 	 if(pagea >1 ){
@@ -30,31 +35,30 @@ function nationforVideo(pagea , max){
 	 }
 	 
 	function videoUpload(id){
-		location.href ="video_upload.LF?CFID="+id;
+		location.href ="video_upload.LF?CFID="+CFID+"&category="+category;
 	}
 	
 function updateVideo(pk){
 	if($("option").val()== 1){
 // 		location.href ="video_upload.LF?CFID="+pk;
-	}else{
-		alert("키트");
-	}
+	} 
 }
 function pagenate(page){
+	var patha = '${crPath}';
 	$.ajax({
 	    type : 'get',  
 	    dataType : 'json', 
-	    data : {"page" : page ,"CFID" : CFID },
+	    data : {"page" : page ,"CFID" : CFID},
 	    url : 'creator_video_show_proc.LF',
 	    success : function(returnData) {
 	    	pagea = returnData.page;
 	    	$("#appendList").find(".videoTR").remove();
 	    	 $.each(returnData.jsonText,function(index,item){
 	    		$("#appendList").append("<tr class = 'bottomlineaa videoTR'> <td class='checkbox'><input type='checkbox' class='check-one check' /></td>"+
-				"<td colspan='2' class='goods'><img src='"+item.imgPath+"' alt='홈트레이닝' />"+
+				"<td colspan='2' class='goods'><img src='"+patha+item.imgPath+"' alt='홈트레이닝' />"+
 				"<div id='countor'> <span style='width: 500px'>"+item.title +"</span> <span><a href='##' class='sellerTitle'>"+item.createdAt+"</a></span>"+
-				" <span> <select name='test1'> <option value='1'>동영상 수정</option> <option value='2'>판매킷 수정</option> </select> </span> </div></td>"+
-				"<td class='count'></td> <td class='count'></td> <td class='subtotal'>"+
+				" <span> <select name='test1'> <option value='1'>동영상 수정</option> </select> </span> </div></td>"+
+				"<td class='count'></td> <td class='count'></td><td class='count'></td> <td class='subtotal'>"+
 				"<p><i class='fas fa-comment-dots'></i><span>"+item.status+"</span></p>"+
 				"<p><i class='fas fa-heart'></i><span></span>"+item.likeCount+"</p>"+
 				"<p><i class='fas fa-eye'></i><span>"+item.views+"</span></p>"+
@@ -89,6 +93,7 @@ function pagenate(page){
 										href="javascript:void(0)" class="selallSPAN">&nbsp;전체</a></span></label></th>
 							<th colspan="2"></th>
 							<th id="forfixs"></th>
+							<th class="crinf" id = "kit">판매킷 등록</th>
 							<th class="crinf">클래스 정보수정</th>
 							<th class="listup" onclick="videoUpload(CFID,category)">+영상업로드</th>
 							<th id="listdel">삭제</th>
@@ -102,13 +107,14 @@ function pagenate(page){
 					</thead>
 
 					<tbody id="appendList">
+					<c:if test="${not empty lecList }">
 						<c:forEach varStatus="vs" begin="0" end="${lecList.size()-1}"
 							step="1">
 							<tr class='bottomlineaa videoTR'>
 								<td class="checkbox"><input type="checkbox"
 									class="check-one check" /></td>
 								<td colspan="2" class="goods"><img
-									src="${lecList[vs.index].imgPath}" alt="홈트레이닝" />
+									src="${crPath}${fn:split(lecList[vs.index].imgPath,'-')[0]}"  alt="홈트레이닝" />
 									<div id="countor">
 										<span style="width: 500px"><c:out
 												value="${lecList[vs.current].title}" default="동영상을 만들어주세요"></c:out></span>
@@ -117,10 +123,10 @@ function pagenate(page){
 													pattern="yyyy-MM-dd" /></a> </span> <span> <select
 											name="test1">
 												<option value="1">동영상 수정</option>
-												<option value="2">판매킷 수정</option>
 										</select>
 										</span>
 									</div></td>
+								<td class="count"></td>
 								<td class="count"></td>
 								<td class="count"></td>
 								<td class="subtotal">
@@ -134,10 +140,12 @@ function pagenate(page){
 									class="deleteOne">수정</span></td>
 							</tr>
 						</c:forEach>
+						</c:if>
 					</tbody>
 				</table>
 			 
 				<div id="paginate">
+				<c:if test ="${not empty lecList }">
 					<c:if test="${videoPage > 1}">
 						<span onclick="pagenate(${videoPage-1})">[이전]</span>
 					</c:if>
@@ -151,6 +159,7 @@ function pagenate(page){
 		</c:forEach>
 					<c:if test="${videoPage < maxPage}">
 						<span onclick="pagenate(${videoPage+1})">[다음]</span>
+					</c:if>
 					</c:if>
 				</div>
 			</div>

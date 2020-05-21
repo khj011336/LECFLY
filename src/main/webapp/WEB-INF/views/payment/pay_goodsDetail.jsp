@@ -3,21 +3,22 @@
 <title>상품 상세페이지</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_goodsDetail.css">
 <script type="text/javascript">
+
 	$(document).ready(function() {
 		$("#moveCart").on("click", function() {
 			var URLHD = '${pageContext.request.contextPath}/';
-			var url = URLHD+'payment/pay_cart.LF';
-			var kitId = "input[name=kit_id]";
-			var creId = ""
+			var url = URLHD+'pay_cart.LF';
+			var kitId = $("input[name=kit_id]").val();
 			console.log("kitId = " + kitId);
-			var parmas = "kitId=" + kitId; + "&mbId=" + mbId;
-			
+			var parmas = "kitId=" + kitId;
 			$.ajax({
-				type: 'post',
+				type: 'POST',
 				url : url,
-				data: "kitId=" + kitId + "&mbId=" + mbId,
+				data: "kitId=" + kitId,
 				success: function(res, status ,xhr){
 					alert("성공");
+					console.log(res);
+					$('#homemain').html(res);
 				},
 				error: function(status, xhr){
 					alert("실패");
@@ -66,7 +67,7 @@
 		<br> <br>
 		<h1 id="register_kit_info">KIT 소개</h1>
 		<input type="hidden" name="kit_id" value="${kit.id}">
-		<br> <br> <img class="kit_img" src='<c:out value="${kit.img_path}" default="abc.jpg"></c:out>'> <br> <br>
+		<br> <br> <img class="kit_img" src='<c:out value="${kit.imgPath}" default="abc.jpg"></c:out>'> <br> <br>
 		<h1 id="register_curri_info">커리큘럼</h1>
 		<table id="register_tb">
 			<c:forEach var="vd" items="${vidList}" varStatus="vs">

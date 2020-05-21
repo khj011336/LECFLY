@@ -478,6 +478,7 @@ border: none;
 }
 #uplL textarea{
     width: 550px;
+    color: black;
 }
 #uply{
     font-size: 20px;
@@ -770,6 +771,7 @@ border: none;
 
             /* _sellkitregistration.html 공통*/
             
+          
 #sellkitregistration_wrap {
 	position: relative;
 	top: 36px;
@@ -847,6 +849,7 @@ font-weight: bold;
 .sellkitregistration_main_center {
 	width: 950px;
     clear: both;
+    padding-left: 115px;
 }
 
 /* 상품이미지 안에있는 img 들묶은 div */
@@ -869,7 +872,7 @@ font-weight: bold;
 /* 대표이미지, 추가이미지 버튼역할 하는 div */
 .sellkitregistration_img_add_btn_div {
 	width: 188px;
-	height: 20px;
+	height: 25px;
 	border: 1px solid black;
 	background-color: gray;
 	text-align: center;

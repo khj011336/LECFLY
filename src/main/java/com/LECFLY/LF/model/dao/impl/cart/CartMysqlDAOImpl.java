@@ -25,7 +25,9 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	JdbcTemplate jtem;
 	
 	// SQL 정의문
-	private static final String SQL_SELECT_CART_LIST = "select * from cart where mbId = ?";
+	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, 1, now() )";
+	private static final String SQL_SELECT_CART_LIST = "select * from cart where member_id = ? and goods_id = ?"; 
+			//"insert into cart(member_id, goods_id) values(?, ?)";
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
 	private static final String SQL_SELECT_KIT_LIST = "";
 	private static final String SQL_SELECT_COUNT_IN_CART = "select if(count(*)=0, 'false', 'true) from cart where gdsId = ? and mbId = ? ";
@@ -37,8 +39,17 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	private static final String SQL_INSERT_IN_CART = "insert into cart values(null, ?, 1, ?, 1, now())";
 	
 	@Override
-	public List<CartVO> selectCartList(int mbId) throws DataAccessException {
-		List<CartVO> cartList = jtem.query(SQL_SELECT_CART_LIST, BeanPropertyRowMapper.newInstance(CartVO.class), mbId);
+	public int insertNewCartByMbIdKitId(int mbId, int kitId) {
+		System.out.println(SQL_INSERT_NEW_CART + " / mbId = " + mbId + " / kitId = " + kitId);
+		int r = jtem.update(SQL_INSERT_NEW_CART, mbId, kitId);
+		return r;
+	}
+	
+	
+	@Override
+	public List<CartVO> selectCartList(int mbId, int kitId) throws DataAccessException {
+		System.out.println(SQL_SELECT_CART_LIST + "mbId = " + mbId + "kitId = " + kitId);
+		List<CartVO> cartList = jtem.query(SQL_SELECT_CART_LIST, BeanPropertyRowMapper.newInstance(CartVO.class), mbId, kitId);
 		return cartList;
 	}
 

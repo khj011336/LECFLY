@@ -1,6 +1,7 @@
 package com.LECFLY.LF.service.inf.admin;
 
 import java.util.List;
+import java.util.Map;
 
 import com.LECFLY.LF.model.vo.CommentClassVO;
 import com.LECFLY.LF.model.vo.FaqVO;
@@ -9,6 +10,8 @@ import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 
 public interface IAdminBoardSVC {
+	public static int AD_PAGE_SIZE = 20;
+	
 	// QnA 게시판 관리
 	
 	// 게시글을 등록할 수 있다.
@@ -22,14 +25,16 @@ public interface IAdminBoardSVC {
 	// 게시글을 전체 조회할수 있다.
 	List<QnaVO> showAllQnas(int offset, int limit);
 	int checkNumberOfQnas();
-	// 게시글에 답변을 남길 수 있다.
-	boolean insertNewComment(QnaCommentVO QC);
+	
+	Map<String, Integer> checkMaxPageNumberOfQna();
+	List<QnaVO> selectAllQna(int pageNumber);
+	
 	
 	
 	// FAQ 게시판 관리
 	
 	// 게시글을 등록할 수 있다.
-	boolean insertNewQna(FaqVO fq);
+	boolean insertNewFaq(FaqVO fq);
 	// 게시글을 편집 할 수 있다.
 	boolean updateFaq(FaqVO fq);
 	// 게시글을 삭제 할 수 있다.
@@ -38,6 +43,8 @@ public interface IAdminBoardSVC {
 	List<FaqVO> showAllFaqs(int offset, int limit);
 	int checkNumberOfFaqs();
 	
+	Map<String, Integer> checkMaxPageNumberOfFaq();
+	List<FaqVO> selectAllFaq(int pageNumber);
 	
 	// Notice 게시판 관리
 	
@@ -53,17 +60,22 @@ public interface IAdminBoardSVC {
 	List<NoticeVO> showAllNotices(int offset, int limit);
 	int checkNumberOfNotices();
 	
+	Map<String, Integer> checkMaxPageNumberOfNotice();
+	List<NoticeVO> selectAllNotice(int pageNumber);
 	
 	// COMMENT 게시판 관리
 	
 	// comment를 등록할 수 있다.
-	boolean insertNewComment(CommentClassVO cm);
+	boolean insertNewComment(QnaCommentVO cm);
 	// comment를 편집 할 수 있다.
-	boolean updateComment(CommentClassVO cm);
+	boolean updateComment(QnaCommentVO cm);
 	// comment를 삭제 할 수 있다.
-	boolean deleteComment(CommentClassVO cm);
+	boolean deleteComment(QnaCommentVO cm);
 	// comment를 전체 조회할수 있다.
-	List<CommentClassVO> showAllComments(int offset, int limit);
+	List<QnaCommentVO> showAllComments(int offset, int limit);
 	int checkNumberOfComments();
-		
+	
+	Map<String, Integer> checkMaxPageNumberOfComment();
+	List<QnaCommentVO> selectAllComment(int pageNumber);
+	
 }
