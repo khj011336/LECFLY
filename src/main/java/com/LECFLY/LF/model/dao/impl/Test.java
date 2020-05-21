@@ -235,19 +235,19 @@ public class Test {
 	
 	/////////////// ILectureDAO
 	
-	final String SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_BY_ID 
-			= "select id, fid, category, subtitle, title_img nickname, like_count from lectures where id = ?";
+	final String SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
+			= "select id, fid, category, subtitle, title_img nickname, like_count, img_path from lectures where id = ?";
 	
 	
-	public Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById(int lecId) {
-		System.out.println("selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById()");
+	public Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(int lecId) {
+		System.out.println("selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById()");
 		try {
 			System.out.println(
-					SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_BY_ID + 
+					SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID + 
 						" / id = " + lecId);
 			Map<String, Object> rMap = 
 					jtem.queryForMap(
-							SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_BY_ID, lecId);
+							SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID, lecId);
 			for(String k : rMap.keySet()) {
 				System.out.println("key = " + k);
 			}

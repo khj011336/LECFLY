@@ -79,6 +79,19 @@ public class MyPageSVCImpl implements IMypageSVC {
 	
 	
 	
+	/**
+	 *	마이페이지 들어올시 필요한 것들
+	 *	Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수 + 
+	 *	뷰단하단에 아무것도안보여주려고함(ResponseBody json map으로 데이터리턴해야될거같은데) 
+	 */
+	@Override
+	public Map<String, Object> selectMyPageContents(int mbId) {
+		System.out.println("selectMyPageContents()..");
+		
+		return null;
+	}
+	
+	
 	@Override // 마이페이지 멤버가 사진업데이트 하려면..~~~
 	public boolean updateMemberProfileImg(int mbId, String pic) {
 		System.out.println("updateMemberProfileImg()..."); 
@@ -159,8 +172,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 				for (int i = 0; i < LTLIST_SIZE; i++) {
 					LecTypeVO lecType = ltList.get(i);
 					int classId = lecType.getClassId();
-					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById(classId); 
-							testDao.selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountById(classId);
+					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId); 
+							testDao.selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId);
 					if(lecParamMap != null) {
 						int id = (int)lecParamMap.get("id");
 						idList.add(id);
@@ -181,26 +194,21 @@ public class MyPageSVCImpl implements IMypageSVC {
 						int likeCount = (int)lecParamMap.get("like_count");
 						likeCountList.add(likeCount);
 						
-						/* 	크리에이터의 이미지 path 를 뽑아야함 근데 lecture에서 뽑을수없음 프로필이미지가 없기때문에
-						 	지금 확인해야할게 그러면 크리에이터의 imgPath는 creatorVO 에서 뽑는건지 
-						 	memberVO 에서 뽑는건지 확인 (생각상으로는 memberVO 에서 뽑아야할건데) CreatorVO의 fid가
-						 	MemberVO id 와 같은지 확인하자(생각상으로는 그게맞긴함.)
+						/* 	크리에이터 프로필 이미지? 뽑는방법
+						 * LectureVO 타입의 객체를 뽑는다. 그곳의 LectureVO.getImgPath() 
+						 * 	를 하면 제일마지막 이미지 이름이나옴.<1>
+						 * LectureVO.getImgPath().split("_")[1] 하면 크리에이터의 이름이나옴 <2>
+						 * creatorDao.get 경로하면 폴더경로가나옴.    ...<3>
+						 * <3> + <2> + img + <1> 하면 해당 이미지 사진의 경로가 완성이됨. 
+						 * 	(경로니까 사이에 / 없으면 추가해주자)
 						*/
-						int creatorId = (int)lecParamMap.get("fid"); // LecturVO 기준 fid 는 크리에이터아이디
-						int creatorMemberId = //creDao.selectFidById(creatorId); // CreatorVO 기준 fid 는 해당크리에이터 멤버의 아이디
-												testDao.selectFidById(creatorId);
-						if(creatorMemberId > 0) {
-							String creProFileImgPath = //mbDao.selectMemberPicById(creatorMemberId);
-													testDao.selectMemberPicById(creatorMemberId);
-							if(creProFileImgPath != null) {
-								creatorImgPathList.add(creProFileImgPath);
-							} else { // empty 는허용 이미지를 안넣을수도있다.
-								System.out.println("creProFileImgPath == null");
-							}
-						} else {
-							System.out.println("creatorMemberId 는 0 혹은 음수");
-							return null;
-						}
+						String localPath = "";// creDao.
+						String creImgPath = (String)lecParamMap.get("img_path");
+						String creNickName = creImgPath.split("_")[1];
+						System.out.println("creNickName = " + creNickName);
+						String creatorImgPath = localPath + creNickName + "img" + creImgPath;
+						creatorImgPathList.add(creatorImgPath);
+						
 					} else {
 						System.out.println("lecParamMap == null");
 					}
@@ -410,6 +418,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 		return null;
 	}
+
+
+	
 	
 
 	

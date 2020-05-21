@@ -40,7 +40,6 @@ public class MemberController {
 	
 	
 	// 로그인창 으로 이동했을때
-	
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
 	public String memberLoginPage(Model model, String msg) {
 		model.addAttribute("login_msg", msg);
@@ -405,13 +404,17 @@ public class MemberController {
 		System.out.println("memberMyPage()");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
+			//마이페이지에 필요한거 카테고리 이용권개수(무엇을이용하는지(카테고리) + 종료날짜) + 쿠폰 개수 + 강의신청 목록 개수
+			int mbId = mb.getId();
+			Map<String, Object> pMap = mpSvc.selectMyPageContents(mbId);
+			
 			model.addAttribute("mb", mb);
 			model.addAttribute("mbLoginNicname", mb.getNicname());
 			System.out.println("mb = " + mb);
 			return "member/mypage.ho";
 		} else {
 			// 실패시 로그인창으로~
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}		
@@ -457,13 +460,62 @@ public class MemberController {
 		return null;
 	}
 	
+	/**
+	 * 마이페이지 상단에 내가 수강중인 클래스 (이미지 클릭시 보여주는것)
+	 * 
+	 * 
+	 */
+	@RequestMapping(value="mypage_attending_lec.LF", method={RequestMethod.GET, RequestMethod.POST})
+	public String memberMypageAttendingLec(HttpSession ses,
+			@RequestParam(value="status", defaultValue ="0") int status, Model model) {
+		System.out.println("memberMypageAttendingVideo()...");
+		// 내가 수강한 비디오 목록을 리스트로 받으려함
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		System.out.println("mb = " + mb);
+		if(mb != null) { 
+			int mbId = mb.getId();
+			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
+			if(listMap != null) {
+				List<Integer> idList = (List<Integer>)listMap.get("idList");
+				List<String> strCateList = (List<String>)listMap.get("cateList");
+				List<String> subTitleList = (List<String>)listMap.get("titleList");
+				List<String> imgPathList = (List<String>)listMap.get("imgPathList");
+				List<String> nickNameList = (List<String>)listMap.get("nicList");
+				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
+				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
+				
+				model.addAttribute("msg_status", "수강중인 강의");
+				model.addAttribute("idList", idList);
+				model.addAttribute("cateList", strCateList);
+				model.addAttribute("titleList", subTitleList);
+				model.addAttribute("imgPathList", imgPathList);
+				model.addAttribute("nicNameList", nickNameList);
+				model.addAttribute("likeCountList", likeCountList );
+				model.addAttribute("creImgList", creImgList);
+				
+				
+			} else {
+				System.out.println("laList = null");
+				model.addAttribute("msg_status", "강의 신청 목록");
+				model.addAttribute("mp_msg", "수강중인 강의 신청 목록 내역이 없습니다.");
+			}
+			return "member/mypage/attend_lec_manager/mypage_attending_lec";
+		} else {
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
+			return "member/login";
+		}
+	}
+	
+	
+	
+	
 //회원이 신청한 강의목록 표시하기							수강 관리
 //	수강중인강의
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_attending_lec.LF", method=RequestMethod.POST)
-	public String memberMypageAttendingLec(HttpSession ses,
+	@RequestMapping(value="mypage_attending_vd.LF", method=RequestMethod.POST)
+	public String memberMypageAttendingVideo(HttpSession ses,
 			@RequestParam(value="status", defaultValue ="0") int status, Model model) {
-		System.out.println("memberMypageAttendingLec()...");
+		System.out.println("memberMypageAttendingVideo()...");
 		// 내가 수강한 비디오 목록을 리스트로 받으려함
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		System.out.println("mb = " + mb);
@@ -478,9 +530,9 @@ public class MemberController {
 				model.addAttribute("msg_status", "수강중인 강의");
 				model.addAttribute("mp_msg", "수강중인 강의 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_attending_lec";
+			return "member/mypage/attend_lec_manager/mypage_will_attend";
 		} else {
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}
@@ -503,7 +555,7 @@ public class MemberController {
 				List<String> nickNameList = (List<String>)listMap.get("nicList");
 				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
 				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
-				
+				model.addAttribute("msg_status", "찜하기한 강의");
 				model.addAttribute("idList", idList);
 				model.addAttribute("cateList", strCateList);
 				model.addAttribute("titleList", subTitleList);
@@ -519,7 +571,7 @@ public class MemberController {
 			return "member/mypage/attend_lec_manager/mypage_will_attend";
 		} else {
 			System.out.println("mb = null");
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}
@@ -544,6 +596,7 @@ public class MemberController {
 				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
 				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
 				
+				model.addAttribute("msg_status", "좋아요한  강의");
 				model.addAttribute("idList", idList);
 				model.addAttribute("cateList", strCateList);
 				model.addAttribute("titleList", subTitleList);
@@ -555,9 +608,9 @@ public class MemberController {
 				model.addAttribute("msg_status", "좋아요한  강의");
 				model.addAttribute("mp_msg", "좋아요한 강의 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_like";
+			return "member/mypage/attend_lec_manager/mypage_will_attend";
 		} else {
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}
