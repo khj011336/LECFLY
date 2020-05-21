@@ -82,17 +82,21 @@ $(window).on("unload",function(e){
 				processData : false,
 				contentType : false,
 				data : formdata,
+				dataType:"json",
 				success : function(result) {
-					var ap = "${viPath}";
-					var videoaa = "${video.videoPath}";
+					
+					var cr = result.cr ,
+					  vi = result.vi,
+					  png = result.png ,
+					 gif =result.gif ,
+					 video =result.video ,
 					videoChange = 1;
-					console.log(result.png);
-					$("#img1").attr("src","${crPath}${video.imgPath}");
-					$("#img2").attr("src","${crPath}${video.imgPath }");
-					$("#gif").attr("src","${crPath}${video.gifPath }");
-					$("#viosrc").attr("src",videoaa);
-					console.log(videoaa);
-					console.log(ap);
+					var ims = png.split('-');
+					console.log(result.video);
+					$("#img1").attr("src",cr+ims[0] );
+					$("#img2").attr("src",cr+ims[1] );
+					$("#gif").attr("src",cr+gif );
+					$("#viosrc").attr("src",vi+video );
 					$("#vioSample")[0].load();
 					$("#vioSample").attr("poster","");
 					 

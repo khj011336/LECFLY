@@ -20,10 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.LECFLY.LF.model.vo.CouponVO;
+import com.LECFLY.LF.model.vo.LecAttendVO;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
-import com.LECFLY.LF.model.vo.ShowClassVideoVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.impl.member.loginSVCImpl;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
@@ -468,12 +469,12 @@ public class MemberController {
 		System.out.println("mb = " + mb);
 		if(mb != null) { 
 			int mbId = mb.getId();
-			List<ShowClassVideoVO> scvList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
-			if(scvList != null) {
-				System.out.println("scvList = " + scvList + " / scvList.size() = " + scvList.size());
-				model.addAttribute("scvList", scvList);
+			List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
+			if(laList != null) {
+				System.out.println("laList = " + laList + " / laList.size() = " + laList.size());
+				model.addAttribute("scvList", laList);
 			} else {
-				System.out.println("scvList = null");
+				System.out.println("laList = null");
 				model.addAttribute("msg_status", "수강중인 강의");
 				model.addAttribute("mp_msg", "수강중인 강의 내역이 없습니다.");
 			}
@@ -495,15 +496,21 @@ public class MemberController {
 			int mbId = mb.getId();
 			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
 			if(listMap != null) {
-				List<VideoVO> vdList = (List<VideoVO>)listMap.get("vdList");
-				List<String> creImgPathList = (List<String>)listMap.get("creImgPathList");
-				List<String> creNickNameList = (List<String>)listMap.get("nickNameList");
-				System.out.println("vdList = " + vdList + " / creImgPathList = " + creImgPathList +
-						  " / creNickNameList" + creNickNameList);
-				model.addAttribute("vdList", vdList);
-				model.addAttribute("creImgPathList", creImgPathList);
-				model.addAttribute("creNickNameList", creNickNameList);
-		
+				List<Integer> idList = (List<Integer>)listMap.get("idList");
+				List<String> strCateList = (List<String>)listMap.get("cateList");
+				List<String> subTitleList = (List<String>)listMap.get("titleList");
+				List<String> imgPathList = (List<String>)listMap.get("imgPathList");
+				List<String> nickNameList = (List<String>)listMap.get("nicList");
+				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
+				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
+				
+				model.addAttribute("idList", idList);
+				model.addAttribute("cateList", strCateList);
+				model.addAttribute("titleList", subTitleList);
+				model.addAttribute("imgPathList", imgPathList);
+				model.addAttribute("nicNameList", nickNameList);
+				model.addAttribute("likeCountList", likeCountList );
+				model.addAttribute("creImgList", creImgList);
 			} else {
 				
 				model.addAttribute("msg_status", "찜하기한 강의");
@@ -529,16 +536,21 @@ public class MemberController {
 			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
 			System.out.println("listMap = " + listMap);
 			if(listMap != null) {
-				List<VideoVO> vdList = (List<VideoVO>)listMap.get("vdList");
-				List<String> vdCateList = (List<String>)listMap.get("vdCateList");
-				List<String> creImgPathList = (List<String>)listMap.get("creImgPathList");
-				List<String> creNickNameList = (List<String>)listMap.get("nickNameList");
-				System.out.println("vdList = " + vdList + " / creImgPathList = " + creImgPathList +
-						  " / creNickNameList" + creNickNameList);
-				model.addAttribute("vdList", vdList);
-				model.addAttribute("vdCateList", vdCateList);
-				model.addAttribute("creImgPathList", creImgPathList);
-				model.addAttribute("creNickNameList", creNickNameList);
+				List<Integer> idList = (List<Integer>)listMap.get("idList");
+				List<String> strCateList = (List<String>)listMap.get("cateList");
+				List<String> subTitleList = (List<String>)listMap.get("titleList");
+				List<String> imgPathList = (List<String>)listMap.get("imgPathList");
+				List<String> nickNameList = (List<String>)listMap.get("nicList");
+				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
+				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
+				
+				model.addAttribute("idList", idList);
+				model.addAttribute("cateList", strCateList);
+				model.addAttribute("titleList", subTitleList);
+				model.addAttribute("imgPathList", imgPathList);
+				model.addAttribute("nicNameList", nickNameList);
+				model.addAttribute("likeCountList", likeCountList );
+				model.addAttribute("creImgList", creImgList);
 			} else {
 				model.addAttribute("msg_status", "좋아요한  강의");
 				model.addAttribute("mp_msg", "좋아요한 강의 내역이 없습니다.");
