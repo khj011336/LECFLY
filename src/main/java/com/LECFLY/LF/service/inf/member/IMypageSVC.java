@@ -55,7 +55,8 @@ public interface IMypageSVC {
 	boolean updateOneMember(MemberVO mb);
 
 	// 비밀번호 변경에서 비밀번호를 새로 설정하는 서비스
-	boolean updateOneMemberPw(String email, String pw);
+	boolean updateOneMemberPw(String email, String newPw, String newPwConfirm);
+	boolean updateOneMember(String email, String pw);
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴			

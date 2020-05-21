@@ -452,10 +452,16 @@ public class MyPageSVCImpl implements IMypageSVC {
 		System.out.println("svc: updateOneMember");
 		return mbDao.updateOneMemberInfo(mb);
 	}
-
+	
 	
 	@Override
-	public boolean updateOneMemberPw(String email, String pw) {
+	public boolean updateOneMemberPw(String email, String newPw, String newPwConfirm) {
+		String pw = newPw;
+		return updateOneMember(email, pw);
+	}
+	
+	@Override
+	public boolean updateOneMember(String email, String pw) {
 		System.out.println("svc: updateOneMemberPw");
 		return mbDao.updateMemberPasswordToEmail(email, pw);
 	}
