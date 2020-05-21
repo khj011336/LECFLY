@@ -1,4 +1,5 @@
-  
+ 
+
 function selectList(boxid,maxPage,appendid,method,url){
 	  var page = 2;  
 	  var isVisible = false;
@@ -56,6 +57,24 @@ function checkVisible( box, tOf ) {
        } 
    }
 }
+function creatorUpdate(isupdate,creId) {
+	var form = document.createElement('form');
+	form.setAttribute('method', 'get');
+	form.setAttribute('action', 'creator_writing_profile.LF');
+	document.charset = "utf-8";
+			var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name', "LecId");
+			hiddenField.setAttribute('value', isupdate);
+			form.appendChild(hiddenField);
+			var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name',"isupdate");
+			hiddenField.setAttribute('value', creId);
+			form.appendChild(hiddenField);
+	document.body.appendChild(form);
+	form.submit();
+}
 function selectLecture(CFID,category) {
 	var form = document.createElement('form');
 	form.setAttribute('method', 'get');
@@ -74,10 +93,12 @@ function selectLecture(CFID,category) {
 	document.body.appendChild(form);
 	form.submit();
 }
+ 
 function creatNewclass(){
 	 $(".CRC").css("cursor","pointer");
 	 $(".CRP").css("cursor","pointer");
 	 $(".CRC,.CRP").on("click", function () {
 		window.location.href="creator_new_profile.LF";
+		 
 	});
 	   }

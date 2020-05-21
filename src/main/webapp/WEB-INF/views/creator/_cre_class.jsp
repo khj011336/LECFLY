@@ -29,10 +29,26 @@
 				</c:if>
 			</div>
 			<c:if test="${ !empty lecList }">
+			<c:set var = "status" value="${lecList[vs.current].status}"/>
+			 <c:if test="${status  != 4 }">
 				<div class='CRsend'
 					onclick="selectLecture(${lecList[vs.current].id},${lecList[vs.current].category})">
 					<p>수정하기</p>
 				</div>
+				</c:if>
+				<c:if test="${status eq 4 }">
+				 
+				<div class='CRsend'
+					onclick="creatorUpdate(${lecList[vs.current].id},'4')">
+					<p>작성하기</p>
+				</div>
+				</c:if>
+			<c:if test="${status eq 1}">
+				<div class='CRsend'
+					onclick="selectLecture(${lecList[vs.current].id},${lecList[vs.current].category})">
+					<p>작성하기</p>
+				</div>
+				</c:if>
 			</c:if>
 		</div>
 

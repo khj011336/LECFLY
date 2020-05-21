@@ -237,7 +237,9 @@ public class FileSVCImpl {
 	}
 
 	public boolean makeDir(String username) {
-		String path  = getPath(username, 1);
+		String path = "C:/fusion11/spring_ws/LECFILE";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		path += "/" + sdf.format(new Date()) + "/" + username;
 		File mk = new File(path);
 		File mkimg = new File(path + "/" + "Img");
 		File mkvideo = new File(path + "/" + "video");
