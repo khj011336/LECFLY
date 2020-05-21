@@ -4,7 +4,7 @@
 	
 <c:if test="${not empty likeCountList}">	
 	<div class="mypage_bottom_info">
-		<h2 class="mypage_bottom_title">찜하기한 강의</h2>
+		<h2 class="mypage_bottom_title"><c:out value="${msg_status}" /></h2>
 		<div class="mypage_bottom_contents">
 			<div class="list_video_wrapper">
 			<c:forEach var="lc" items="${likeCountList}" varStatus="vs">
@@ -38,6 +38,6 @@
 	</div>
 </c:if>
 			
-<c:if test="${not empty msg_status}">
+<c:if test="${not empty mp_msg}">
 	<%@ include file="mypage_no_list.jsp"  %>
 </c:if>

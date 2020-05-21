@@ -470,3 +470,9 @@ input:focus {
 	font-size: 1.2em;
 	font-weight: 700;
 }
+
+/* 세현 추가 0521 헤더에 로그인 로그아웃 마우스 호버시 줄생기는거 */
+.header_menues:hover {
+	border-bottom: 2px solid orange;
+	
+}

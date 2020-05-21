@@ -31,10 +31,10 @@
 			        	<br><br>
 			        	<a href="Creator/_classdes.jsp"><h3>크리에이터 신청하기</h3></a>
 			        </div>
-			        <div class="mypage_mb_t">
+			        <div class="mypage_mb_t" id="mypage_mb_t_attendlec">
 			        	<img src="resources/imges/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">
 						<br><br><br>
-						<span>강의 신청 목록 <b>6</b> 개</span>
+						<span>강의 신청 목록<b>6</b> 개</span>
 			        </div>
 			        <div class="mypage_mb_t">
 			        	<img src="resources/imges/mypage/mypage_coupon.png" class="mypage_1" alt="쿠폰" width="64px" height="64px">
@@ -46,7 +46,11 @@
 						<br><br><br>
 						<span><b>3</b> 카테고리 이용권</span>
 						<br>
-						<p><a>미술</a> / <a>요리</a> / <a>라이프스타일</a></p>
+						<p>
+						<!--  여기서 포문 -->
+							<a>미술</a> / <a>요리</a> / <a>라이프스타일</a> 
+							<!--  여기서 포문 끝 마지막에는 / 없어야됨 -->
+						</p>
 			        </div>
 			    </div>
 				<div id="mypage_middle">									<!-- 정보 영역 및 메뉴영역 -->
@@ -59,27 +63,27 @@
 						    <li><a href="#tabs-4" id="tabs-mom-4">주문/배송관리</a></li>
 						  </ul>
 						 </div>
-					  <div id="tabs-1" class="mypage_tabs_li">
+					  <div id="tabs-1" class="mypage_tabs_li mypage_tabs_none">
 					  	<ul>
 					    	<li><a href="#" id="mypage_attending_lec">수강중인 강의</a></li>
 					    	<li><a href="#" id="mypage_will_attend">찜하기</a></li>
 					    	<li><a href="#" id="mypage_like">좋아요</a></li>
 						</ul>
 					  </div>
-					  <div id="tabs-2" class="mypage_tabs_li">
+					  <div id="tabs-2" class="mypage_tabs_li mypage_tabs_none">
 					  	<ul>
 					    	<li><a href="#" id="mypage_comment">댓글내역</a></li>
 					    	<li><a href="#" id="mypage_qna">문의내역</a></li>
 					    	<li><a href="#" id="mypage_coupon_info">나의 쿠폰</a><li>
 						</ul>
 					  </div>
-					  <div id="tabs-3" class="mypage_tabs_li">
+					  <div id="tabs-3" class="mypage_tabs_li mypage_tabs_none">
 					  	<ul>
 					    	<li><a href="#" id="mypage_mb_update">회원정보 수정</a></li>
 					    	<li><a href="#" id="mypage_pw_update">비밀번호 변경</a></li>
 						</ul>
 					  </div>
-					  <div id="tabs-4" class="mypage_tabs_li">
+					  <div id="tabs-4" class="mypage_tabs_li mypage_tabs_none">
 					  	<ul>
 					    	<!-- <li><a href="#" id="mypage_shoppingcart">장바구니</a></li>
 					    	<li><a href="#" id="mypage_receive_address">배송지관리</a></li> -->
