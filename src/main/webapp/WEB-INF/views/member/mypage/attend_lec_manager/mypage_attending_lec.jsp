@@ -14,7 +14,7 @@
 					<div class="list_video_block nav_video_list">
 						<div class="list_video_thumb nav_video_list">
 							<a href="#">
-								<img src="${la.videoPic}" alt="lecfly lecture"> 
+								<img src="<c:out value='${la.videoPic}' default='resources/imges/unknown/xbox_img.PNG' />" alt="lecfly lecture"> 
 								<div class="video_info_progressbar_bg">
 									<div class="video_info_progressbar" style="width: 3%"></div>
 								</div>
