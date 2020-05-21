@@ -3,6 +3,7 @@ package com.LECFLY.LF.model.dao.impl.member;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -46,7 +47,7 @@ public class LecAttendMySqlDAOImpl implements ILecAttendDAO {
 	public static final String SQL_INSERT_NEW_LEC_ATTEND = 
 			"insert into lec_attends values( null, ?, ?, ?, ?, ?, ?, 0, now() )"; //
 	
-	public static final String SQL_SELECT_ONE_LEC_ATTEND_BY_MBID_CLASSID = 
+	public static final String SQL_SELECT_ALL_LEC_ATTEND_BY_MBID_CLASSID = 
 				"select * from lec_attends where mb_id = ? and class_id = ?";
 	
 	@Override
@@ -84,12 +85,13 @@ public class LecAttendMySqlDAOImpl implements ILecAttendDAO {
 	
 	
 	@Override
-	public LecAttendVO selectOneLecAttendByMbIdClassId(int mbId, int classId) {
-		System.out.println("selectOneLecAttendByMbIdClassId()");
+	public List<LecAttendVO> selectAllLecAttendByMbIdClassId(int mbId, int classId) {
+		System.out.println("selectAllLecAttendByMbIdClassId()");
 		try {
-			System.out.println(SQL_SELECT_ONE_LEC_ATTEND_BY_MBID_CLASSID + 
+			// select * from lec_attends where mb_id = ? and class_id = ?"
+			System.out.println(SQL_SELECT_ALL_LEC_ATTEND_BY_MBID_CLASSID + 
 										"mbId = " + mbId + "classId = " + classId);
-			return jtem.queryForObject(SQL_SELECT_ONE_LEC_ATTEND_BY_MBID_CLASSID, 
+			return jtem.query(SQL_SELECT_ALL_LEC_ATTEND_BY_MBID_CLASSID, 
 					new LecAttendMySqlImplRowMapper(), mbId, classId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");

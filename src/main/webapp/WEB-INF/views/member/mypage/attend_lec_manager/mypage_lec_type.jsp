@@ -17,7 +17,7 @@
 					</div>
 					<div class="list_video_info">
 						<p class="video_info_category"><c:out value="${cateList.get(vs.index)}" /></p>
-						<p class="video_info_title"><c:out value="${titleList.get(vs.title)}"/></p>
+						<p class="video_info_title"><c:out value="${titleList.get(vs.index)}"/></p>
 						<img src="<c:out value='${creImgList.get(vs.index)}' />" class="video_info_creator_img">
 						<p class="video_info_creator_name"><c:out value="${nickNameList.get(vs.index)}" /></p>
 						<div class="main_video_like">

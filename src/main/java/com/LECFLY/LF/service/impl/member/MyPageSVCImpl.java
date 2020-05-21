@@ -157,25 +157,31 @@ public class MyPageSVCImpl implements IMypageSVC {
 	public List<LecAttendVO> selectLecToStatusForMbIdStatus(int mbId, int status){
 		System.out.println("mpSvc : selectLecToStatusForMbIdStatus()");
 		if( mbId > 0 && 
-			status >= LecTypeVO.STATUS_WILL_ATTENDING &&
+			status >= LecTypeVO.STATUS_ATTENDING &&
 			status <= LecTypeVO.STATUS_LIKE ) 
 		{
 			// 멤버아이디랑 저걸로 판달수있는거 lecType
 			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
+			
 			//여기서 클래스아이디를 통해 내가 수강중인 비디로들을 뽑아야됨 얼마만큼 저거리스트만큼 돌아야되
 			if(ltList != null) {
 				List<LecAttendVO> rtLaList = new ArrayList<>();
 				final int LT_LIST_SIZE = ltList.size();
 				for (int i = 0; i < LT_LIST_SIZE; i++) {
-					LecTypeVO lt = ltList.get(i);
-					int classId = lt.getClassId();
-					LecAttendVO la = laDao.selectOneLecAttendByMbIdClassId(mbId, classId);
-					rtLaList.add(la);
+					int classId = ltList.get(i).getClassId();
+					List<LecAttendVO> laList = laDao.selectAllLecAttendByMbIdClassId(mbId, classId);
+					if(laList.size() >= 0) {
+						final int LA_LIST_SIZE = laList.size();
+						for (int j = 0; j < LA_LIST_SIZE; j++) {
+							LecAttendVO la = laList.get(j);
+							rtLaList.add(la);
+						}
+						
+					} else {
+						System.out.println("laList < 0 ::  음수");
+					}
 				}
-				if(rtLaList.size() > 0) {
-					return rtLaList;
-				}
-				System.out.println("rtLaList.size() =< 0  //  0 or 음수 ");
+				return rtLaList;
 			} else {
 				System.out.println("ltList == null ");
 			}
@@ -197,8 +203,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Override
 	public Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status){
 		System.out.println("MyPageSVCImpl / selectVideoAndCreImgPathAndCreNicname()..");
-		if(mbId > 0 && status >= LecTypeVO.STATUS_WILL_ATTENDING 
+		if(mbId > 0 && status >= LecTypeVO.STATUS_ATTENDING 
 								&& status <= LecTypeVO.STATUS_LIKE) {
+			// 판단하는게 있어야되 회원을기준으로  찜하기/좋아요 한
 			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
 			if(ltList != null) {
 				List<Integer> idList = new ArrayList<>();
@@ -213,7 +220,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 					LecTypeVO lecType = ltList.get(i);
 					int classId = lecType.getClassId();
 					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId); 
-							testDao.selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId);
+							testDao.selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId);
 					if(lecParamMap != null) {
 						int id = (int)lecParamMap.get("id");
 						idList.add(id);
@@ -248,7 +255,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 						System.out.println("creNickName = " + creNickName);
 						String creatorImgPath = localPath + creNickName + "img" + creImgPath;
 						creatorImgPathList.add(creatorImgPath);
-						
+						System.out.printf("%d회차 id = %d, strCate = %s, subTitle =  %s," + 
+						" titleImgPath = %s, nickName = %s, likeCount = %d, creatorImgPath =  %s\r\n" ,
+						i, id, strCate, subTitle, titleImgPath, nickName, likeCount, creatorImgPath);
 					} else {
 						System.out.println("lecParamMap == null");
 					}
@@ -301,6 +310,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 			int totalRecords = //qnacomDao.checkNumberOfQnaCommentsForMember(mbId);
 					testDao.checkNumberOfQnaCommentsForMember(mbId);
 			int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
+			System.out.println("totalRecorde = " + totalRecords + 
+					" / maxPG = " + maxPG);
 			if(pn > 0 && pn <= maxPG) {
 				Map<String, Object> rMap = new HashMap<>();
 				int offset = (pn-1) * 10;
@@ -310,7 +321,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 						//qnacomDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
 						testDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
 				System.out.println("qnacomList = " + qnacomList);
-				if(qnacomList.size() > 0) {
+				if(qnacomList.size() >= 0) {
 					final int QNACOM_LIST_SIZE = qnacomList.size();
 					List<QnaVO> qnaList = new ArrayList<>(QNACOM_LIST_SIZE);
 					for (int i = 0; i < QNACOM_LIST_SIZE; i++) {
@@ -331,7 +342,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 					rMap.put("qnaList", qnaList);
 					return rMap;
 				} else {
-					System.out.println("qnacomList.size()는 0 이거나 음수");
+					System.out.println("qnacomList.size() <0 :: 음수");
 				}
 			} else {
 				System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
