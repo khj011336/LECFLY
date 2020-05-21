@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.LECFLY.LF.model.vo.CouponVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.TicketVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 
 @Repository
@@ -175,6 +176,10 @@ public class Test {
 //	public static final String SQL_SELECT_ALL_NOT_USE_MY_COUPONS_BY_MBID = 
 //			"SELECT * FROM COUPONS WHERE MB_ID = ? AND USE_CHECK=0 ORDER BY END_DAY";
 	
+	/** 사용하지않은쿠폰(사용가능한 쿠폰의 갯수를 세어주는 함수) */
+	public static final String SQL_COUNT_NOT_USE_COUPONS_BY_MBID = 
+			"SELECT COUNT(*) FORM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
+	
 	public CouponVO selectOneCouponByCode (String code) {
 		System.out.println("selectOneCouponByCode()");
 		try {
@@ -229,15 +234,31 @@ public class Test {
 		return null;
 	}
 	
+	public int checkNumberOfCouponseByMbId(int mbId) {
+		System.out.println("dao: checkNumberOfCouponseByMbId()");
+		try {
+			System.out.println(SQL_COUNT_NOT_USE_COUPONS_BY_MBID + " / mb_id = " + mbId);
+			return jtem.queryForObject(
+					SQL_COUNT_NOT_USE_COUPONS_BY_MBID, Integer.class, mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
 	////////////////////      』
 	
 	/** */
 	
 	/////////////// ILectureDAO
 	
-	final String SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
+	public static final String SQL_SELECT_ONE_ID_FID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
 			= "select id, fid, category, subtitle, title_img nickname, like_count, img_path from lectures where id = ?";
 	
+	public static final String SQL_SELECT_COUNT_LECTURES_BY_MBID = 
+			"select count(*) from lectures where fid = ?";	
 	
 	public Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(int lecId) {
 		System.out.println("selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById()");
@@ -259,6 +280,23 @@ public class Test {
 		return null;
 	}
 
+	
+	/**
+	 * 회원의 아이디로 검색할경우 그회원이 듣고있는 lectuer 의개수
+	 */
+	public int checkNumberOfLectureByMbId(int fId) {
+		System.out.println("checkNumberOfLectureByMbId()");
+		try {
+			System.out.println(SQL_SELECT_COUNT_LECTURES_BY_MBID + " / fId = " + fId);
+			jtem.queryForObject(SQL_SELECT_COUNT_LECTURES_BY_MBID, Integer.class, fId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
 
 	///////////
 	
@@ -274,10 +312,27 @@ public class Test {
 		}
 		return null;
 	}
-	
-	
+
 	//////////
 	
+	/** */
+	
+	////////// TiketDAOImpl 에서 사용하세요~
+	
+	public static final String SQL_SELECT_ONE_TIKET_BY_MBID = 
+			"SELECT * FROM TICKETS WHERE MB_ID = ?";
+	
+	public TicketVO selectOneTiketByMbId(int mbId) {
+		System.out.println("dao : selectOneTiketByMbId()");
+		try {
+			System.out.println(SQL_SELECT_ONE_TIKET_BY_MBID + " / mb_id = " + mbId);
+			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, TicketVO.class, mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	

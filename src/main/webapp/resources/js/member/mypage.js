@@ -46,6 +46,21 @@
  			});			
  		}); // 강의 신청 목록
  		
+ 		$("#mypage_mb_t_coupon").click(function() {
+ 			$.ajax({
+ 				type: "POST",
+ 				url: "mypage_coupon_info.LF",
+	 			cache: true,
+				datatype: "text",
+				data: "pn=1",
+				success:function(res){
+					$("#mypage_bottom").html(res);
+				},
+				error:function(request,status,error){	
+				}
+ 			});
+ 		});// 쿠폰내역
+ 		
  		$("#mypage_mb_t_ticket").click(function() {
  			$.ajax({
  				type: "POST",
@@ -65,7 +80,7 @@
  			var params = "status=0";
  			$.ajax({
  				type: "POST",
- 				url: "mypage_attending_lec.LF",
+ 				url: "mypage_attending_vd.LF",
 	 			cache: true,
 				datatype: "text",
 				data: params,
@@ -126,7 +141,7 @@
  			var params = "status=0";
  			$.ajax({
  				type: "POST",
- 				url: "mypage_attending_lec.LF",
+ 				url: "mypage_attending_vd.LF",
 	 			cache: true,
 				datatype: "text",
 				data: params,
@@ -138,7 +153,7 @@
  			});
  		}); // 수강중인 강의
  		
- 		
+ 		   
  		$("#mypage_will_attend").click(function() {
  			var rtPn = "pn=1";
  			$.ajax({
@@ -308,20 +323,7 @@
 				}
  			});
  		}); // 결제내역
- 		$(".mypage_mb_t").click(function() {
- 			$.ajax({
- 				type: "POST",
- 				url: "mypage_coupon_info.LF",
-	 			cache: true,
-				datatype: "text",
-				data: "",
-				success:function(res){
-					$("#mypage_bottom").html(res);
-				},
-				error:function(request,status,error){	
-				}
- 			});
- 		});// 쿠폰내역
+ 	
  		
  		
 // 		$("#mypage_update_info_btn").click(function() {

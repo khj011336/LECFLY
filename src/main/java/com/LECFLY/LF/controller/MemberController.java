@@ -410,6 +410,7 @@ public class MemberController {
 			
 			model.addAttribute("mb", mb);
 			model.addAttribute("mbLoginNicname", mb.getNicname());
+			model.addAttribute("mpNone", "");
 			System.out.println("mb = " + mb);
 			return "member/mypage.ho";
 		} else {
@@ -499,7 +500,7 @@ public class MemberController {
 				model.addAttribute("msg_status", "강의 신청 목록");
 				model.addAttribute("mp_msg", "수강중인 강의 신청 목록 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_attending_lec";
+			return "member/mypage/attend_lec_manager/mypage_lec_type";
 		} else {
 			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
@@ -524,13 +525,13 @@ public class MemberController {
 			List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
 			if(laList != null) {
 				System.out.println("laList = " + laList + " / laList.size() = " + laList.size());
-				model.addAttribute("scvList", laList);
+				model.addAttribute("laList", laList);
 			} else {
 				System.out.println("laList = null");
 				model.addAttribute("msg_status", "수강중인 강의");
 				model.addAttribute("mp_msg", "수강중인 강의 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_will_attend";
+			return "member/mypage/attend_lec_manager/mypage_attending_lec";
 		} else {
 			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
@@ -564,11 +565,10 @@ public class MemberController {
 				model.addAttribute("likeCountList", likeCountList );
 				model.addAttribute("creImgList", creImgList);
 			} else {
-				
 				model.addAttribute("msg_status", "찜하기한 강의");
 				model.addAttribute("mp_msg", "찜하기한 강의 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_will_attend";
+			return "member/mypage/attend_lec_manager/mypage_lec_type";
 		} else {
 			System.out.println("mb = null");
 			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
@@ -608,7 +608,7 @@ public class MemberController {
 				model.addAttribute("msg_status", "좋아요한  강의");
 				model.addAttribute("mp_msg", "좋아요한 강의 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_will_attend";
+			return "member/mypage/attend_lec_manager/mypage_lec_type";
 		} else {
 			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";

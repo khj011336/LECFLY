@@ -36,7 +36,7 @@
 						<br><br><br>
 						<span>강의 신청 목록<b>6</b> 개</span>
 			        </div>
-			        <div class="mypage_mb_t">
+			        <div class="mypage_mb_t" id="mypage_mb_t_coupon">
 			        	<img src="resources/imges/mypage/mypage_coupon.png" class="mypage_1" alt="쿠폰" width="64px" height="64px">
 						<br><br><br>
 						<span>쿠폰 <b>4</b> 개</span>
@@ -95,5 +95,10 @@
 				</div>
 				
 				<div id="mypage_bottom">									<!-- 조각페이지 영역 -->
-					<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%>
+					<c:if test="${not empty mpNone}">
+						<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%>
+					</c:if>
+					<c:if test="${empty mpNone}">
+						
+					</c:if>
 				</div>

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.InvalidTimeoutException;
 
 import com.LECFLY.LF.model.dao.impl.Test;
 
@@ -25,6 +26,7 @@ import com.LECFLY.LF.model.vo.LecAttendVO;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.TicketVO;
 import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
@@ -64,6 +66,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Autowired
 	private ILecAttendDAO laDao;
 	
+//	@Autowired
+//	private ITiketDAO tiketDao;
 	
 	private static final int PAGE_SIZE = 10;
 	
@@ -87,7 +91,43 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Override
 	public Map<String, Object> selectMyPageContents(int mbId) {
 		System.out.println("selectMyPageContents()..");
-		
+		Map<String, Object> rMap = new HashMap<>(); 
+		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
+		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
+				 testDao.selectOneTiketByMbId(mbId);
+		if(ticket != null) {
+			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
+			//쿠폰
+			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
+					testDao.checkNumberOfCouponseByMbId(mbId);
+			if(cntCoupon >= 0) {
+				int cntLecture = testDao.checkNumberOfLectureByMbId(mbId); // 회원이듣는강의개수
+				if(cntLecture >= 0) {
+					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
+					int rtCnt = (cntUseCategory == 1 ? 
+								1 : cntUseCategory == 2 ? 
+										3 : cntUseCategory == 3 ? 
+												7 : -1); // 1 아니면 3 아니면 7 아니면 -1 이나옴
+					
+					rMap.put("cntUseCategory", rtCnt); // 티켓 이용권 이름? 가지고 몇개의 카테고리를 인지 확인해야되고 // 들을수있는 개수
+					
+					/* 개수가지고 카테고리를 어떻게? 하는지 확인이필요함 
+					 티켓을 가지고 있다가 강의볼떄마다 하나씩사용하는지 애초에 살떄 3개짜리를사게되는 
+					순간 정해져서 오는지 오게되면은 번호로 하는데 스플릿을 나타나는지 알아야한다 */
+					rMap.put("strCateList", ""); 
+					rMap.put("tiketEndDay", ""); // 티켓의 종류날짜
+					rMap.put("cntCoupon", cntCoupon);
+					rMap.put("cntLecture", cntLecture);
+					return rMap;
+				} else {
+					System.out.println("cntLecture = 음수");
+				}
+			} else {
+				System.out.println("cntCoupon = 음수 ");
+			}
+		} else {
+			System.out.println("ticket = null");
+		} 	
 		return null;
 	}
 	
