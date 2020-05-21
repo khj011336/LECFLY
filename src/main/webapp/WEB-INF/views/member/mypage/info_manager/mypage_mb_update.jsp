@@ -44,8 +44,11 @@
 	            }
 	        }).open();
 	    }
-	 	// 중복체크
+	    
+	    //jquery
         $(document).ready( function() {
+
+    	 	// 중복체크
     		$('#cnm_mb_nick_check_btn').on("click", function() {
     			var nickname = $('input[name=nickname]').val();
     			var tUrl = "${pageContext.request.contextPath}/";
@@ -80,6 +83,49 @@
     				}
     			});
     			}
+    		});
+    		
+    	 	// 수정시 해결사항
+    		$('#cnm_mb_nick_check_btn').on("click", function() {
+    			var nic = $('input[name=nickname]').val();
+    			var ph1 = $('input[name=ph1]').val();
+    			var ph2 = $('input[name=ph2]').val();
+    			var pc = $('input[name=postalcode]').val();
+    			var ba = $('input[name=basic_address]').val();
+    			var da = $('input[name=detail_address]').val();
+    			var ae = $('input[name=agree_email]').val();
+    			var as = $('input[name=agree_sms]').val();
+    			var tUrl = "${pageContext.request.contextPath}/";
+    			tUrl += 'update_mb_info.LF';
+    			if(nickname == '${member.nicname}'){
+					$('#nicmsg').html('<b>사용예정인 닉네임을 입력하세요</b>');
+    			} else{
+    			$.ajax ({ 
+    				type: 'get', 
+    				url: tUrl,
+    				data: "nic="+nic+"&ph1="+ph1+"&ph2="+ph2+"&pc="+pc+"&ba="+ba+"&da="+da+"&ae="+ae+"&as="+as,
+    				success: function(res) {
+    					console.log(res);
+    					$('#nicmsg').html();
+    					$('#nicmsg').removeClass('yes');
+    					$('#nicmsg').removeClass('no');
+    					$('#nicmsg').removeClass('error');
+    					var msg = "";
+    					switch(res) {
+    						case '1': 
+    							msg = '이미 사용중인 닉네임입니다';
+    							break;
+    						case 'no':
+    							msg = '사용 가능한 닉네임입니다';
+    							break;
+    						case 'error':
+    							msg = '입력된 닉네임이 없습니다.';
+    							break;
+    					}
+    					
+<%--     					$('#mypage_bottom').html(<%@ include file="mypage/attend_lec_manager/mmypage_mb_update.jsp"%>); --%>
+    				}
+    			});
     		});
         });
     </script>
@@ -151,10 +197,10 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_ph_first">휴대전화</label></th>
 		                    <td>
 		                    	<label class="cnm_ph_padding">010 - </label>
-					        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_first" name="cnm_mb_ph" placeholder="0000" maxlength="4"
+					        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_first" name="ph1" placeholder="0000" maxlength="4"
 					        	 numberOnly value=${fn:substring(member.phNumber,3,7)}>
 					        	<label>-</label>
-					        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_second" name="cnm_mb_ph" placeholder="0000" maxlength="4"
+					        	<input type="text" class="cnm_mb_ph" id="cnm_mb_ph_second" name="ph2" placeholder="0000" maxlength="4"
 					        	 numberOnly value=${fn:substring(member.phNumber,7,11)}>
 					    	</td>
 		                </tr>
@@ -162,16 +208,16 @@
 				        	<th rowspan="3"><label class="cnm_subtitle">주소</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-						    		<input type="text" id="cnm_mb_adress_num" name="cnm_mb_adress_num" placeholder="우편번호" value=${member.postalCode}>
+						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" value=${member.postalCode}>
 						        	<input type="button" id="find_adress_btn" value="주소찾기" onclick="find_address()">
 					        	</div>
 		                    </td>
 		                </tr>
 		                <tr>
-				        	<td><input type="text" id="cnm_mb_adress_basic" name="cnm_mb_adress_basic" class="input_cnm" placeholder="주소" value="${member.basicAddress}"></td>
+				        	<td><input type="text" id="cnm_mb_adress_basic" name="basic_adress" class="input_cnm" placeholder="주소" value="${member.basicAddress}"></td>
 		                </tr>
 		                <tr>
-		                	<td><input type="text" id="cnm_mb_adress_detail" name="cnm_mb_adress_detail" class="input_cnm" placeholder="상세주소" value="${member.detailAddress}"></td>
+		                	<td><input type="text" id="cnm_mb_adress_detail" name="detail_adress" class="input_cnm" placeholder="상세주소" value="${member.detailAddress}"></td>
 		                </tr>
 		                <tr>
 				        	<th rowspan="2">소식 수신 동의</th>
@@ -181,10 +227,10 @@
 				        </tr>
 				        <tr>
 		                    <td>
-		                    	<input type="checkbox" id = "cnm_mb_agree_news_bymail" name = "cnm_mb_agree_news_bymail"  value="agree_email" 
+		                    	<input type="checkbox" id = "cnm_mb_agree_news_bymail" name = "agree_email"  value="agree_email" 
 		                    	${member.agreeReceive==1 or member.agreeReceive==3 ? 'checked' : ''}>
 	                            <label for= "cnm_mb_agree_news_bymail">네 이메일로 받아볼래요!</label>
-	                            <input type="checkbox" id = "cnm_mb_agree_news_bysms" name = "cnm_mb_agree_news_bysms"  value="agree_sms"
+	                            <input type="checkbox" id = "cnm_mb_agree_news_bysms" name = "agree_sms"  value="agree_sms"
 	                            ${member.agreeReceive==2 or member.agreeReceive==3 ? 'checked' : ''}>
 	                            <label for= "cnm_mb_agree_news_bysms">네 문자로 받아볼래요!</label>
 	                        </td>

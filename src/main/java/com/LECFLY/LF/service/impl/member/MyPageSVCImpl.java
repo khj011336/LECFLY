@@ -418,10 +418,45 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean updateOneMemberInfo(MemberVO mb, String nickname, String ph1, String ph2, String agreeEmail, String agreeSms,
+			int postalcode, String basicAddress, String detailAddress) {
+		System.out.println("svc: updateOneMemberInfo");
+		if(!nickname.isEmpty() && nickname!=null)
+			mb.setNicname(nickname);
+		if(!ph1.isEmpty() && ph1!=null && !ph2.isEmpty() && ph2!=null) {
+			String ph="010"+ph1+ph2;
+			mb.setPhNumber(ph);
+		}
+		if(agreeEmail!=null && !agreeEmail.isEmpty() && agreeSms!=null && !agreeSms.isEmpty()) {
+			int agreeReceive = 0;
+			if( agreeEmail.equals("agree_email"))
+				agreeReceive += 1;
+			if( agreeSms.equals("agree_sms"))
+				agreeReceive += 2;
+			mb.setAgreeReceive(agreeReceive);
+		}
+		if(postalcode!=0)
+			mb.setPostalCode(postalcode);
+		if(!basicAddress.isEmpty() && basicAddress!=null)
+			mb.setbasicAddress(basicAddress);
+		if(!detailAddress.isEmpty() && detailAddress!=null)
+			mb.setDetailAddress(detailAddress);
+		
+		return updateOneMember(mb);
+	}
 
+	@Override
+	public boolean updateOneMember(MemberVO mb) {
+		System.out.println("svc: updateOneMember");
+		return mbDao.updateOneMemberInfo(mb);
+	}
 
 	
-	
-
-	
+	@Override
+	public boolean updateOneMemberPw(String email, String pw) {
+		System.out.println("svc: updateOneMemberPw");
+		return mbDao.updateMemberPasswordToEmail(email, pw);
+	}
 }
