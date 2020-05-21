@@ -7,6 +7,10 @@
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
     <script>
+	    $("input:text[close]").on("click", function() {
+			$('#mypage_mb_update_confirm').html('');
+	    });
+    
 	    // input text에서 숫자만 받게 하는 스크립트
 	    $("input:text[numberOnly]").on("keyup", function() {
 	        $(this).val($(this).val().replace(/[^0-9]/g,""));
@@ -43,13 +47,16 @@
 	 	// 중복체크
         $(document).ready( function() {
     		$('#cnm_mb_nick_check_btn').on("click", function() {
-    			var nicname = $('input[name=nickname]').val();
+    			var nickname = $('input[name=nickname]').val();
     			var tUrl = "${pageContext.request.contextPath}/";
     			tUrl += 'nic_dupcheck.LF';
+    			if(nickname == '${member.nicname}'){
+					$('#nicmsg').html('<b>사용예정인 닉네임을 입력하세요</b>');
+    			} else{
     			$.ajax ({ 
     				type: 'get', 
     				url: tUrl,
-    				data: "nickname="+nicname,
+    				data: "nickname="+nickname,
     				success: function(res) {
     					console.log(res);
     					$('#nicmsg').html();
@@ -68,12 +75,13 @@
     							msg = '입력된 닉네임이 없습니다.';
     							break;
     					}
-    					$('#nicmsg')
-    						.html('<b>'+msg+'</b>');
+    					$('#nicmsg').html('<b>'+msg+'</b>');
     					$('#nicmsg').addClass(res);
     				}
     			});
+    			}
     		});
+        });
     </script>
 <div class="mypage_bottom_info">
 	<h2 class="mypage_bottom_title">회원정보 수정</h2>
@@ -192,13 +200,12 @@
 	</div>
 	</div>
 	<div id="mypage_mb_update_confirm" class="overlay">
-	<div class="popup">
-		
-		<a class="close" href="#">x</a>
-		<div class="mypage_mb_update_popup_content">
-			<h2 class="mypage_mb_isupdate">'${member.name}'님 회원정보 수정 성공</h2>
+		<div class="popup">
+			<a class="close" href="#">x</a>
+			<div class="mypage_mb_update_popup_content">
+				<h2 class="mypage_mb_isupdate">'${member.name}'님 회원정보 수정 성공</h2>
+			</div>
+			<input id="mypage_mb_update_popup_submitbtn" type="button" value="확인" close>
 		</div>
-		<input id="mypage_mb_update_popup_submitbtn" type="button" value="확인">
 	</div>
-</div>
 </div>

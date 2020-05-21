@@ -251,7 +251,7 @@ public class MemberController {
 	@ResponseBody
 	public String nicknameDupCheck(String nickname) {
 		// req.getParam과 타입맵핑을 자동으로 해줌
-		System.out.println("nic_dupcheck.LF");
+		System.out.println("nic_dupcheck.LF" + nickname);
 		//String login = req.getParameter("login");
 		if( nickname != null && !nickname.isEmpty() ) {
 			if( logSvc.check_dup_nick(nickname) ) {
