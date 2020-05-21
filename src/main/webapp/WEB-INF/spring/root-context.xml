@@ -11,5 +11,8 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		<import resource="aop/aop_conf.xml"></import>
 		<import resource="dataSource/dbcp_ds.xml"/>
-		<bean class="org.springframework.jdbc.core.JdbcTemplate" id="jtemplete" p:dataSource-ref="ds"></bean>
+		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+			<property name="dataSource" ref="ds"></property>
+		</bean>
+<!-- 		<bean class="org.springframework.jdbc.core.JdbcTemplate" id="jtemplete" p:dataSource-ref="ds"></bean> -->
 </beans>

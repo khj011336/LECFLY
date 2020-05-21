@@ -105,6 +105,9 @@ public interface IMemberDAO {
 	// 5.14 이메일을 매개로 패스워드 업데이트(비밀번호 재발급 기능에 사용함)
 	boolean updateMemberPasswordToEmail(String email, String password);
 	
+	// 5.20 닉네임이 중복체크
+	boolean dupCheckNickname(String nickname);
+	
 
 	
 	

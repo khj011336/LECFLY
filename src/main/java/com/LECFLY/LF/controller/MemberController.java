@@ -26,6 +26,7 @@ import com.LECFLY.LF.model.vo.QnaCommentVO;
 import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.service.impl.member.loginSVCImpl;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -42,7 +43,7 @@ public class MemberController {
 	
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
 	public String memberLoginPage(Model model, String msg) {
-		model.addAttribute("msg", msg);
+		model.addAttribute("login_msg", msg);
 		System.out.println("memberLoginPage()...");
 		return "member/login";
 	}
@@ -59,9 +60,11 @@ public class MemberController {
 			System.out.println(mb);
 			return "redirect:/";
 		} else {
-			ses.setAttribute("msg", logSvc.getMsg(r));
-//			return "member/login";
-			return "redirect:login.LF";
+			model.addAttribute("login_msg", logSvc.getMsg(r));
+			model.addAttribute("email", email);
+			model.addAttribute("pw", pw);
+			return "member/login";
+//			return "redirect:login.LF";
 		}
 	} 
 	
@@ -108,8 +111,6 @@ public class MemberController {
 			){
 		// 인자 테스트
 		System.out.println("join_member_proc....");
-		System.out.println(phNumber +"/"+ phNumber2 +"/"+ agree_receive_email +"/"+ agree_receive_sms +"/"
-				+ birthday);
 		if( !name.isEmpty() && name != null ) {
 			System.out.println("이름 있음");
 			model.addAttribute("name", name);
@@ -124,7 +125,10 @@ public class MemberController {
 		}
 		if( birthday!=null ) {
 			System.out.println("생년월일");
-			model.addAttribute("birthday", birthday);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+			Timestamp birth = Timestamp.valueOf(sdf.format(birthday));
+			model.addAttribute("birthday", birth);
+			System.out.println(birth);
 		}
 		if( !gender.isEmpty()&&gender!=null ) {
 			System.out.println("성별있음");
@@ -154,15 +158,31 @@ public class MemberController {
 			System.out.println("전화번호 뒷자리 있음");
 			model.addAttribute("phNumber2", phNumber2);
 		}
-		
+		if( !postalcode.isEmpty()&& postalcode!=null ) {
+			System.out.println("우편번호 있음");
+			model.addAttribute("postalcode", postalcode);
+		}
+		if( !basic_address.isEmpty()&& basic_address!=null ) {
+			System.out.println("기본 주소 있음");
+			System.out.println(basic_address);
+			model.addAttribute("basic_address", basic_address);
+		}
+		if( !detail_address.isEmpty()&& detail_address!=null ) {
+			System.out.println("상세주소 있음");
+			model.addAttribute("detail_address", detail_address);
+		}
+		model.addAttribute("msg", 
+				logSvc.check_none(name, nickname, birthday, gender, 
+				email, password, pw_confirm, phNumber, phNumber2));
 		if(!name.isEmpty()&&name!=null && !nickname.isEmpty()&&nickname!=null && birthday!=null && 
 				!gender.isEmpty()&&gender!=null && !email.isEmpty()&&email!=null && 
 				!password.isEmpty()&&password!=null && !pw_confirm.isEmpty()&&pw_confirm!=null && 
 				!phNumber.isEmpty()&&phNumber!=null && !phNumber2.isEmpty()&& phNumber2!=null) {
 			System.out.println("필수 인자값 모두 입력됨!");
 			// birthday 인자값 timestamp로 변환
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 			Timestamp birth = Timestamp.valueOf(sdf.format(birthday));
+			System.out.println("birthday check" + birthday);
 			// gender 변환
 			int gen = 0;
 			int code = 0;
@@ -172,14 +192,22 @@ public class MemberController {
 			} catch (NullPointerException e) {
 				System.out.println(e);
 			}
+			System.out.println("gen" + gen + "/code" +  code);
 			// ph 인자값 결합
 			String ph = "010"+ phNumber + phNumber2;
 			// agreeReceive 값 결합 및 변환
 			int agreeReceive = 0;
-			if( agree_receive_email.equals("agree_email"))
-				agreeReceive += 1;
-			if( agree_receive_sms.equals("agree_sms"))
-				agreeReceive += 2;
+			if( agree_receive_email==null || agree_receive_email.isEmpty() || agree_receive_sms==null || agree_receive_sms.isEmpty()) {
+				agreeReceive = 0;
+				System.out.println("agree없음");
+			}else {
+				if( agree_receive_email.equals("agree_email"))
+					agreeReceive += 1;
+				if( agree_receive_sms.equals("agree_sms"))
+					agreeReceive += 2;
+				System.out.println("agree있음");
+			}
+			System.out.println("agreeReceive " + agreeReceive);
 			
 			if(logSvc.joinMember(cnm_upload_pic, name, nickname, birth, gen, 
 					email, password, ph, agreeReceive, basic_address, 
@@ -189,7 +217,7 @@ public class MemberController {
 				System.out.println(name + "회원성공 실패");
 			}
 			
-			return "home";
+			return "member/login";
 			
 		}
 		return "member/create_new_member";
@@ -219,22 +247,50 @@ public class MemberController {
 		// UQ가 걸린 3개 항목 nickname/email/ph_number를 검색해서 사용가능한지 확인하는 서비스 단을 구성해야됨.
 	}
 	// 닉네임 중복체크
-	@RequestMapping(value="dup_nic_check_proc.LF", method=RequestMethod.GET)
-	public String test_proc(HttpSession ses, Model model,
-			@RequestParam(value = "nickname")String nickname
-			) {
-		System.out.println("들어옴"+nickname);
-		model.addAttribute("nickname", nickname);
-//		ses.setAttribute("nickname", nickname);
-		if(logSvc.check_dup_nick(nickname))
-//			ses.setAttribute("nick_msg", "중복된 닉네임입니다.");
-			model.addAttribute("nick_msg", "중복된 닉네임입니다.");
-		else
-//			ses.setAttribute("nick_msg", "사용가능한 닉네임입니다.");
-			model.addAttribute("nick_msg", "사용가능한 닉네임입니다.");
-		return "redirect:join_new_member.LF";
-//		return "member/create_new_member";
+	@RequestMapping(value="nic_dupcheck.LF", method=RequestMethod.GET)
+	@ResponseBody
+	public String nicknameDupCheck(String nickname) {
+		// req.getParam과 타입맵핑을 자동으로 해줌
+		System.out.println("nic_dupcheck.LF");
+		//String login = req.getParameter("login");
+		if( nickname != null && !nickname.isEmpty() ) {
+			if( logSvc.check_dup_nick(nickname) ) {
+				return "yes";
+			} else {
+				return "no";
+			}
+		} else {
+			return "error";
+		} 
 	}
+	// 이메일 중복체크
+	@RequestMapping(value="email_dupcheck.LF", method=RequestMethod.GET)
+	@ResponseBody
+	public String emailDupCheck(String email) {
+		// req.getParam과 타입맵핑을 자동으로 해줌
+		System.out.println("email_dupcheck.LF");
+		//String login = req.getParameter("login");
+		if( email != null && !email.isEmpty() ) {
+			if( logSvc.check_dup_email(email) ) {
+				return "yes";
+			} else {
+				return "no";
+			}
+		} else {
+			return "error";
+		} 
+	}
+//		System.out.println("들어옴"+nickname);
+//		ses.setAttribute("nickname", nickname);
+//		if(logSvc.check_dup_nick(nickname))
+//			ses.setAttribute("nick_msg", "중복된 닉네임입니다.");
+//			model.addAttribute("nick_msg", "중복된 닉네임입니다.");
+//		else
+//			ses.setAttribute("nick_msg", "사용가능한 닉네임입니다.");
+//			model.addAttribute("nick_msg", "사용가능한 닉네임입니다.");
+//		return "redirect:join_new_member.LF";
+//		return "member/create_new_member";
+//	}
 	//test_proc.LF
 //	@RequestMapping(value="test_proc.LF", method=RequestMethod.POST)
 //	public String test_proc(HttpSession ses, Model model, String cnm_upload_pic,
