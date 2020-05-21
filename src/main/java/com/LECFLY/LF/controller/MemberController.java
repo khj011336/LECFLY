@@ -681,6 +681,8 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	
+	
+	
 //회원의 비밀번호 변경하기								비밀번호 변경
 //	mypage_update_pw.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_pw_update.LF", method=RequestMethod.POST)

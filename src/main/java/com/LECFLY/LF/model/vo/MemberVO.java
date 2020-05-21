@@ -46,7 +46,7 @@ public class MemberVO {
 	int checkCreator;      //  check_creator	tinyint            default 0     (0:일반회원 1:신청중인회원 2:거절된 회원 3:크리에이터권한받은 회원)
 	int loginCount;        //  login_count		int                                
 	Timestamp loginedAt;   //  logined_at		timestamp                          
-	String baiscAddress;	//	basic_address	varchar(256)
+	String basicAddress;	//	basic_address	varchar(256)
 	String detailAddress;	//	detail_address	varchar(256)
 	int postalCode;			//	postalcode	int
 	String addressName;		//	address_name	varchar(24)
@@ -87,7 +87,7 @@ public class MemberVO {
 		this.checkCreator = 0;
 		this.loginCount = 0;
 		this.loginedAt = null;
-		this.baiscAddress = null;
+		this.basicAddress = null;
 		this.detailAddress = null;
 		this.postalCode = 0;
 		this.addressName = null;
@@ -122,7 +122,7 @@ public class MemberVO {
 		this.checkCreator = 0;
 		this.loginCount = 0;
 		this.loginedAt = null;
-		this.baiscAddress = null;
+		this.basicAddress = null;
 		this.detailAddress = null;
 		this.postalCode = 0;
 		this.addressName = null;
@@ -145,7 +145,7 @@ public class MemberVO {
 	 * @param checkCreator
 	 * @param loginCount
 	 * @param loginedAt
-	 * @param baiscAddress
+	 * @param basicAddress
 	 * @param detailAddress
 	 * @param postalCode
 	 * @param addressName
@@ -153,10 +153,10 @@ public class MemberVO {
 	 */
 	public MemberVO(int id, String pic, String name, String nicname, Timestamp birthday, int gender, String email,
 			String phNumber, Timestamp joinedAt, int agreeReceive, int useTicket, int checkCreator,
-			int loginCount, Timestamp loginedAt, String baiscAddress, String detailAddress, int postalCode,
+			int loginCount, Timestamp loginedAt, String basicAddress, String detailAddress, int postalCode,
 			String addressName, String receiverName) {
 		this(id, pic, name, nicname, birthday, gender, email, null, phNumber, joinedAt, 
-				agreeReceive, useTicket, checkCreator, loginCount, loginedAt, baiscAddress, detailAddress, 
+				agreeReceive, useTicket, checkCreator, loginCount, loginedAt, basicAddress, detailAddress, 
 				postalCode, addressName, receiverName);
 	}
 	
@@ -171,16 +171,16 @@ public class MemberVO {
 	 * @param password
 	 * @param phNumber
 	 * @param agreeReceive
-	 * @param baiscAddress
+	 * @param basicAddress
 	 * @param detailAddress
 	 * @param postalCode
 	 */
 	public MemberVO(String pic, String name, String nicname, 
 			Timestamp birthday, int gender, String email, String password, String phNumber, 
-			int agreeReceive, String baiscAddress, String detailAddress, int postalCode) {
+			int agreeReceive, String basicAddress, String detailAddress, int postalCode) {
 		
 		this(0, pic, name, nicname, birthday, gender, email, password, phNumber, 
-				null, agreeReceive, 0, 0, 0, null, baiscAddress, detailAddress, postalCode, null, null);
+				null, agreeReceive, 0, 0, 0, null, basicAddress, detailAddress, postalCode, null, null);
 		
 	}
 	
@@ -201,7 +201,7 @@ public class MemberVO {
 	 * @param checkCreator
 	 * @param loginCount
 	 * @param loginedAt
-	 * @param baiscAddress
+	 * @param basicAddress
 	 * @param detailAddress
 	 * @param postalCode
 	 * @param addressName
@@ -209,7 +209,7 @@ public class MemberVO {
 	 */
 	public MemberVO(int id, String pic, String name, String nicname, Timestamp birthday, int gender, String email,
 			String password, String phNumber, Timestamp joinedAt, int agreeReceive, int useTicket, int checkCreator,
-			int loginCount, Timestamp loginedAt, String baiscAddress, String detailAddress, int postalCode,
+			int loginCount, Timestamp loginedAt, String basicAddress, String detailAddress, int postalCode,
 			String addressName, String receiverName) {
 		super();
 		this.id = id;
@@ -227,7 +227,7 @@ public class MemberVO {
 		this.checkCreator = checkCreator;
 		this.loginCount = loginCount;
 		this.loginedAt = loginedAt;
-		this.baiscAddress = baiscAddress;
+		this.basicAddress = basicAddress;
 		this.detailAddress = detailAddress;
 		this.postalCode = postalCode;
 		this.addressName = addressName;
@@ -295,8 +295,8 @@ public class MemberVO {
 		return loginedAt;
 	}
 
-	public String getBaiscAddress() {
-		return baiscAddress;
+	public String getbasicAddress() {
+		return basicAddress;
 	}
 
 	public String getDetailAddress() {
@@ -376,8 +376,8 @@ public class MemberVO {
 		this.loginedAt = loginedAt;
 	}
 
-	public void setBaiscAddress(String baiscAddress) {
-		this.baiscAddress = baiscAddress;
+	public void setbasicAddress(String basicAddress) {
+		this.basicAddress = basicAddress;
 	}
 
 	public void setDetailAddress(String detailAddress) {
@@ -402,7 +402,7 @@ public class MemberVO {
 				+ birthday + ", gender=" + gender + ", email=" + email + ", password=" + password + ", phNumber="
 				+ phNumber + ", joinedAt=" + joinedAt + ", agreeReceive=" + agreeReceive + ", useTicket=" + useTicket
 				+ ", checkCreator=" + checkCreator + ", loginCount=" + loginCount + ", loginedAt=" + loginedAt
-				+ ", baiscAddress=" + baiscAddress + ", detailAddress=" + detailAddress + ", postalCode=" + postalCode
+				+ ", basicAddress=" + basicAddress + ", detailAddress=" + detailAddress + ", postalCode=" + postalCode
 				+ ", addressName=" + addressName + ", receiverName=" + receiverName + "]";
 	}
 	                                                       
