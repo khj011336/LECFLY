@@ -250,7 +250,7 @@ public class MemberController {
 	@ResponseBody
 	public String nicknameDupCheck(String nickname) {
 		// req.getParam과 타입맵핑을 자동으로 해줌
-		System.out.println("nic_dupcheck.LF");
+		System.out.println("nic_dupcheck.LF" + nickname);
 		//String login = req.getParameter("login");
 		if( nickname != null && !nickname.isEmpty() ) {
 			if( logSvc.check_dup_nick(nickname) ) {
@@ -733,6 +733,8 @@ public class MemberController {
 		System.out.println("memberMypageUpdateInfo()...");	
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
+	
+	
 	
 //회원의 비밀번호 변경하기								비밀번호 변경
 //	mypage_update_pw.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
