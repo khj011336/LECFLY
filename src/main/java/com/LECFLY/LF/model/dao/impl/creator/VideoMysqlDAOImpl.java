@@ -57,7 +57,6 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	}
 	public int checkNumberOfVideo(int CFID){
 		int r = jtem.queryForObject(COUNT_VIDEO, Integer.class,CFID );
-		System.out.println(r);
 		return 	r;
 		
 	}

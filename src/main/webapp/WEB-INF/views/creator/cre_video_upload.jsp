@@ -13,6 +13,7 @@
 	<div class="uplPa" id='uply'>동영상 정보</div>
 	<form action="video_upload_proc.LF" method="post"
 		enctype="multipart/form-data" id="viform">
+		<input type="hidden" value="0" name = "unloadz" id = "unloadz">
 		<input type="hidden" value="${video.CFId}" name="CFId">
 		<div id="uplT" class="uplflex">
 			<div id="uplL" class="uplPa">
