@@ -23,6 +23,8 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	final String INSERT_NEW_LECTURE = "insert into lectures values(null , ? , ?, ? , ? ,? ,?,?,?,?,null,0,0,?,?,now(),now());";
 	final String UPDATE_NEW_LECTURE = "update lectures set category = ?, subtitle = ?, title = ?, title_img = ? ,info_img = ? , info_imgb = ? ,"+ 
 			"info = ? , status = ? , updated_at = now() , img_path  =  ? , nickname = ? where id = ?";
+	final String UPDATE_ONLY_LECTURE = "update lectures set category = ?, subtitle = ?, title = ?, title_img = ? ,info_img = ? , info_imgb = ? ,"+ 
+			"info = ? , status = ? , updated_at = now()  where id = ?";
 
 	@Override
 	public boolean isCreator(int id) {
@@ -46,6 +48,7 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 		try {
 		return  jtem.queryForObject(SELECT_ONE_LECTURE, BeanPropertyRowMapper.newInstance(LectureVO.class),Lectureid);
 		}catch (DataAccessException e) {
+			System.out.println("셀렉트 렉쳐 에러");
 			System.out.println(e);
 			return null;
 		}
@@ -61,6 +64,12 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	public boolean updateLecture(LectureVO lecVO ,CreatorVO crVO, int id) {
 		int r = jtem.update(UPDATE_NEW_LECTURE,lecVO.getCategory(),lecVO.getSubTitle(),lecVO.getTitle(),lecVO.getTitleImg(),lecVO.getInfoImg(),lecVO.getInfoImgb()
 				,lecVO.getInfo(),lecVO.getStatus(),crVO.getImgPath(),crVO.getNickname(),id);
+		return r ==1;
+	}
+	@Override
+	public boolean updateOnlyLecuture(LectureVO lecVO , int id) {
+		int r = jtem.update(UPDATE_ONLY_LECTURE,lecVO.getCategory(),lecVO.getSubTitle(),lecVO.getTitle(),lecVO.getTitleImg(),lecVO.getInfoImg(),lecVO.getInfoImgb()
+				,lecVO.getInfo(),lecVO.getStatus(),id);
 		return r ==1;
 	}
 

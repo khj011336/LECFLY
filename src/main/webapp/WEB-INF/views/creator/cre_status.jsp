@@ -74,12 +74,17 @@ function setImageFromFile(input, expression, tempses) {
     		if(!ispty()){
     			if(isCreator == 4){
     				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId;
+    			}else if(${Lecture.status == 4}){
+    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId;
+    			}else if(${update == 2}){
+    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId+"&isUpdate=2";
     			}else{
-    			 var form = $('.pubf');
-    			 $(".exportb").attr("disabled","disabled");
-    			 finallwrite = true;
-    				form.submit();
+    				var form = $('.pubf');
+       			 $(".exportb").attr("disabled","disabled");
+       			 finallwrite = true;
+       				form.submit();	
     			}
+    			
     		}
    	   });
     	if(${p} == 1){

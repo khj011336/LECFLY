@@ -57,7 +57,7 @@ function checkVisible( box, tOf ) {
        } 
    }
 }
-function creatorUpdate(isupdate,creId) {
+function creatorUpdate(creId) {
 	var form = document.createElement('form');
 	form.setAttribute('method', 'get');
 	form.setAttribute('action', 'creator_writing_profile.LF');
@@ -65,13 +65,21 @@ function creatorUpdate(isupdate,creId) {
 			var hiddenField = document.createElement('input');
 			hiddenField.setAttribute('type', "hidden");
 			hiddenField.setAttribute('name', "LecId");
-			hiddenField.setAttribute('value', isupdate);
-			form.appendChild(hiddenField);
-			var hiddenField = document.createElement('input');
-			hiddenField.setAttribute('type', "hidden");
-			hiddenField.setAttribute('name',"isupdate");
 			hiddenField.setAttribute('value', creId);
 			form.appendChild(hiddenField);
+	document.body.appendChild(form);
+	form.submit();
+}
+function LectureUpdate(creId) {
+	var form = document.createElement('form');
+	form.setAttribute('method', 'get');
+	form.setAttribute('action', 'creator_writing_lecture.LF');
+	document.charset = "utf-8";
+	var hiddenField = document.createElement('input');
+	hiddenField.setAttribute('type', "hidden");
+	hiddenField.setAttribute('name', "LecId");
+	hiddenField.setAttribute('value', creId);
+	form.appendChild(hiddenField);
 	document.body.appendChild(form);
 	form.submit();
 }

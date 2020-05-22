@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.LECFLY.LF.model.dao.impl.creator.KitMysqlDAOImpl;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
+import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
@@ -35,9 +36,10 @@ import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 @Controller
 @SessionAttributes({ "creator", "Lecture", "video", "creatorKit" })
 public class CreatorController {
+	public static final int REFUSE= 1;
 	public static final int APPLY = 2;
 	public static final int GRANT = 3;
-	public static final int Writing =4;
+	public static final int WRITING =4;
 	public static int MAXPAGE = 0;
 	public static String USERNAME = "";
 	public static int memberId = 0;
@@ -52,6 +54,8 @@ public class CreatorController {
 	ILectureDAO LecDAO;
 	@Autowired
 	ICreatorDAO CreDAO;
+	@Autowired
+	IVideoDAO  ViDAO;
 	@Autowired
 	IVideoSVC VdoSVC;
 	@Autowired
@@ -88,20 +92,25 @@ public class CreatorController {
 		MemberVO mb = new MemberVO(30325, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
 				"dd", 1111, null, null);
 //		MemberVO mb =(MemberVO) ses.getAttribute("member");
+		String[] grant = {"","거절","요청중","승인","작성중"};
+		model.addAttribute("grant",grant);
 		if (mb != null) {
 			memberId = mb.getId();
 			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
 			USERNAME = mb.getName();
 			imgPath = "/images/2020/" + USERNAME + "/Img";
 			videoPath = "/images/2020/" + USERNAME + "/video";
+			
 			CreatorVO creVO = CreDAO.selectOneCreator(memberId);
 			if (creVO != null) {
-				if (creVO.getStatus() == 3) {
-					isCreator = 3;
-				} else if (creVO.getStatus() == 2) {
-					isCreator = 2;
-				}else if (creVO.getStatus() == 4) {
-					isCreator = 4;
+				if (creVO.getStatus() == GRANT) {
+					isCreator = GRANT;
+				} else if (creVO.getStatus() == APPLY) {
+					isCreator = APPLY;
+				}else if (creVO.getStatus() == WRITING) {
+					isCreator = WRITING;
+				}else if(creVO.getStatus() == REFUSE) {
+					isCreator = REFUSE;
 				}
 			}
 		} else {
@@ -127,14 +136,13 @@ public class CreatorController {
 	}
 	@RequestMapping(value = "creator_writing_profile.LF", method = RequestMethod.GET)
 	public String createProfileWriting(Model model,
-			@RequestParam(value = "CreisUpdate", required = false, defaultValue = "0") int isUpdate,
 			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id,
 			HttpSession ses, @ModelAttribute(value = "creator") CreatorVO cr) {
 		model.addAttribute("LecId",id);
 		model.addAttribute("p", 1);
 		model.addAttribute("isCreator", isCreator);
 		model.addAttribute("crPath",imgPath);
-		System.out.println("도착 뉴프로필");
+		System.out.println("도착 뉴프로필 라이팅");
 		if(cr.getId() == 0) {
 			System.out.println("널첵");
 			CreatorVO creVO= CreDAO.selectOneCreator(memberId);
@@ -146,8 +154,10 @@ public class CreatorController {
 	@RequestMapping(value = "creator_writing_lecture.LF", method = RequestMethod.GET)
 	public String createLectureWriting(Model model,
 			@ModelAttribute(value = "Lecture") LectureVO lec,
-			@RequestParam(value = "LecisUpdate", required = false, defaultValue = "0") int isUpdate,
-			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id) {
+			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id,
+			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up
+			) {
+		model.addAttribute("update",up);
 		model.addAttribute("p", 2);
 		model.addAttribute("isCreator", isCreator);
 		model.addAttribute("crPath",imgPath);
@@ -160,15 +170,24 @@ public class CreatorController {
 	}
 	@RequestMapping(value = "creator_writing_store.LF", method = RequestMethod.GET)
 	public String createWritingStore(Model model, HttpSession ses ,SessionStatus sesStatus,
-			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id) {
+			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id,
+			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up) {
 		model.addAttribute("isCreator", isCreator);
 		System.out.println("작성중인 첫 프로필 처리");
 		CreatorVO creVO = (CreatorVO) ses.getAttribute("creator");
 		 LectureVO lecVO = (LectureVO) ses.getAttribute("Lecture");
-		 lecVO.setStatus(2);
-		 creVO.setStatus(2);
+		 if(up == 0) {
+		 lecVO.setStatus(APPLY);
+		 creVO.setStatus(APPLY);
+		 }
+		 if(isCreator == WRITING) {
+			 if(up ==0) {
 		 CreDAO.updateCreator(creVO, memberId);
+			 }
 		 LecDAO.updateLecture(lecVO,creVO, id);
+		 }else {
+			 LecDAO.updateOnlyLecuture(lecVO, id);
+		 }
 		sesStatus.setComplete();
 		return "creator/cre_href";
 	}
@@ -195,7 +214,7 @@ public class CreatorController {
 		LectureVO LecVO = (LectureVO) ses.getAttribute("Lecture");
 		
 		// TODO 멤버관련 인수 수정
-		if (USERNAME != null && isCreator != 4 ) {
+		if (USERNAME != null && isCreator != WRITING ) {
 			cr.setFid(memberId);
 			cr.setName(USERNAME);
 		}
@@ -277,7 +296,6 @@ public class CreatorController {
 	@ResponseBody
 	public Map<String, String> videoUploadProc(@ModelAttribute(value = "video") VideoVO vio, Model model,
 			HttpSession ses, @RequestParam(value = "viFile", required = false) MultipartFile videoFile) {
-//TODO		멤버 이름 수정 및 아이디 		비디오 강의 업로드시 좋아요 0 으로 업데이트
 		return VdoSVC.videoProc(vio, videoFile, model, ses, USERNAME, imgPath, videoPath);
 	}
 
@@ -285,14 +303,12 @@ public class CreatorController {
 	@ResponseBody
 	public String imgUploadProc(@ModelAttribute(value = "video") VideoVO vio, Model model,
 			@RequestParam(value = "addimgFile", required = false) MultipartFile addimgfile) {
-//TODO		멤버 이름 수정 및 아이디
 		return VdoSVC.imgProc(vio, addimgfile, model, USERNAME);
 	}
 
 	@RequestMapping(value = "video_upload_proc.LF", method = RequestMethod.POST)
 	public String videoUpload(@ModelAttribute(value = "video") VideoVO vio, Model model, SessionStatus sesStatus,
 			@RequestParam(value = "unloadz") String unload) {
-//		비디오 강의 업로드시 좋아요 0 으로 업데이트
 		if (unload.equals("1")) {
 			vio.setStatus(4);
 		} else {
@@ -304,7 +320,47 @@ public class CreatorController {
 		sesStatus.setComplete();
 		return "creator/cre_href";
 	}
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "video_update.LF", method = RequestMethod.GET)
+	public String videoUpdate(@RequestParam(value = "CFID", defaultValue = "0") int CFID,
+			@RequestParam(value = "VID", defaultValue = "0") int id,
+			Model model, HttpSession ses,
+			@ModelAttribute(value = "video") VideoVO vio) {
+		if (CFID != 0 && id != 0) {
+			VideoVO viVO = ViDAO.selectOneVideo(CFID, id);
+			model.addAttribute(viVO);
+			model.addAttribute("videoUP","1");
+			model.addAttribute("crPath", imgPath);
+			model.addAttribute("viPath", videoPath);
+		}
+		return "creator/cre_video_upload.page";
+	}
+	@RequestMapping(value = "video_update_proc.LF", method = RequestMethod.GET)
+	public String videoUpdateProc(
+			 HttpSession ses,
+			@ModelAttribute(value = "video") VideoVO vio) {
+	 System.out.println(vio);
+	 if(vio.getCFId() != 0 && vio.getId() != 0) {
+	 ViDAO.updateVideo(vio, vio.getCFId(), vio.getId());
+	 }
+	 
+		return "creator/cre_href";
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = "kit_upload.LF", method = RequestMethod.GET)
 	public String KitUpload(@RequestParam(value = "CFID", required = false) int CF,
 			@RequestParam(value = "category") int category, Model model,

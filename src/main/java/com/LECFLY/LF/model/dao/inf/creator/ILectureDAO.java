@@ -33,6 +33,7 @@ public interface ILectureDAO {
 			String info ,int status, String nickname , String imgpath ) ;
  LectureVO selectOneLectureForUpdate(int fid);
 	boolean updateLecture(LectureVO lecVO ,CreatorVO crVO, int id);
+	boolean updateOnlyLecuture(LectureVO lecVO , int id);
 	boolean updateLectureStatus(int id);
 	boolean deleteLecture();
 	
