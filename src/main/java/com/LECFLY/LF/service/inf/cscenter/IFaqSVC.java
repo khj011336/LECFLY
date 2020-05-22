@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
 
 
 public interface IFaqSVC {

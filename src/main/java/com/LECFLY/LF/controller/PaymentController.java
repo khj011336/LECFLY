@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.LECFLY.LF.model.vo.CartVO;
-import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.cart.ICartSVC;
 
 @Controller

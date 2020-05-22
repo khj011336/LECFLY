@@ -129,8 +129,8 @@
 			<%-- <td>${nt.content}</td>  --%>
 			<td>
 				<c:choose>
-					<c:when test="${fn:length(nt.content) gt 20}"> <%--15글자 이상일 시 --%>
-		 		    <c:out value="${fn:substring(nt.content,0,19)}...">
+					<c:when test="${fn:length(nt.content) gt 30}"> <%--15글자 이상일 시 --%>
+		 		    <c:out value="${fn:substring(nt.content,0,29)}...">
 		 		    </c:out></c:when> 
 		 		    <c:otherwise>
 		 		    <c:out value="${nt.content}">

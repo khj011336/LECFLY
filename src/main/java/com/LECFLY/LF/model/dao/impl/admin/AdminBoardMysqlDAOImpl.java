@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminBoardDAO;
 import com.LECFLY.LF.model.vo.CommentClassVO;
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.NoticeVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 
 @Repository
 public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{

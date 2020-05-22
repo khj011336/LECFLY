@@ -3,11 +3,11 @@ package com.LECFLY.LF.service.inf.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 public interface IAdminMemberSVC {
-	public static int AD_PAGE_SIZE = 20;
+	public static int AD_PAGE_SIZE = 30;
 	
 	// 일반 회원 관리
 	// 일반 회원을 등록할 수 있다.

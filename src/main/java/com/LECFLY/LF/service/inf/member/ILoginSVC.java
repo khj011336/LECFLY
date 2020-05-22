@@ -7,7 +7,7 @@ import java.util.HashMap;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 @Service
 public interface ILoginSVC {

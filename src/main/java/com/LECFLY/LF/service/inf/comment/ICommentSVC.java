@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.LECFLY.LF.model.vo.CommentVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 
 /*
  	**********필독: 대댓글의 모체(부모)를 삭제하면 안됨! 원글/원댓글 삭제시 대댓글처리문제 미정되어 구현 안한 상태!!*************

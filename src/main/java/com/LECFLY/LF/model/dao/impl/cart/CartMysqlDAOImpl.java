@@ -9,8 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
-import com.LECFLY.LF.model.vo.CartVO;
-import com.LECFLY.LF.model.vo.TicketVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 
 @Repository

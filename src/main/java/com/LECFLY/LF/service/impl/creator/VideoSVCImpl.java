@@ -31,12 +31,13 @@ public class VideoSVCImpl implements IVideoSVC {
 		int totalRecords = viDAO.checkNumberOfVideo(CFID);
 		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
-	public HashMap<String, String> videoProc(VideoVO vio, MultipartFile videoFile , Model model,HttpSession ses,
-			String imgPath, String videoPath){
+	public HashMap<String, String> videoProc(VideoVO vio, MultipartFile videoFile , Model model,HttpSession ses ,
+			String username ,String imgPath , String videoPath){
 		HashMap<String, String> imgfile = new HashMap<String, String>();
 		VideoVO videoInput = vio;
+		FileSVCImpl.getPath(username, 1);
 //		TODO 이름관리
-		Map<String, String> storedFileName = fileSVC.writeFilesForvideo(videoFile, 1, "hongil",vio,ses);
+		Map<String, String> storedFileName = fileSVC.writeFilesForvideo(videoFile, 1, username,vio,ses);
 		String png = storedFileName.get("png");
 		String gif = storedFileName.get("gif");
 		String video = storedFileName.get("video");

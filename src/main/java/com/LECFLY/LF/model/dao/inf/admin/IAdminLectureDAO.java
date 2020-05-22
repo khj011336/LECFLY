@@ -1,11 +1,13 @@
 package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
+import java.util.Map;
 
-import com.LECFLY.LF.model.vo.CouponVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO;
 
 public interface IAdminLectureDAO {
 	// 강의 관리
@@ -55,6 +57,20 @@ public interface IAdminLectureDAO {
 	CouponVO selectCoupon(CouponVO vo);
 	// 쿠폰을 전체조회할 수 있다.
 	List<CouponVO> selectCouponList();
+	
 	int checkNumberOfLectures();
 	List<LectureVO> searchLectureForAll(int offset, int limit);
+	List<VideoVO> searchVideoForAll(int offset, int limit);
+	int checkNumberOfVideos();
+	int checkNumberOfLecturesSearchFilter(Map<String, Object> condition);
+	List<LectureVO> selectLectureListSearchFilter(Map<String, Object> condition);
+	int selectLectureApproval();
+	int selectLectureAll();
+	int selectTodayInCnt();
+	int selectMemberCnt();
+	int selectCreatorCnt();
+	int selectNewMemberCnt();
+	int selectCreatorApprovalCnt();
+	int selectQnaCommentCnt();
+	List<CategoryLectureStatVO> selectCategoryLectureCnt();
 }
