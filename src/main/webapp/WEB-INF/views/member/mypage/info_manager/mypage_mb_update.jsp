@@ -176,6 +176,7 @@
              </div>
              <div id="cnm_table_right">
                 <div id="cnm_table2">
+                	<form action="update_mb_info.LF" method="post">
 	                <table>
 	                	<tr>
 	                		<td colspan="2" style="height:70px;"><b style="color:orangered;">*수정 가능 Part*</b><br><span style="font-size:12px; color:orangered;">&nbsp;</span></td>
@@ -236,6 +237,7 @@
 	                        </td>
 		                </tr>
 		           </table>
+		           </form>
 		    </div>
 	        </div>
 		</div>
