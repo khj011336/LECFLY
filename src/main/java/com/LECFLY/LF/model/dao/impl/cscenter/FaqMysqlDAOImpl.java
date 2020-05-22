@@ -19,8 +19,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.IFaqDAO;
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.admin.FaqVO;
+import com.LECFLY.LF.model.vo.admin.QnaVO;
 
 @Repository
 public class FaqMysqlDAOImpl implements IFaqDAO{

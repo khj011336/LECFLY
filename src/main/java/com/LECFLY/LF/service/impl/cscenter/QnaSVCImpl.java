@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.admin.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
 

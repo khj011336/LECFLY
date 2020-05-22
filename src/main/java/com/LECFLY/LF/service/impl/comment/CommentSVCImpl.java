@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
-import com.LECFLY.LF.model.vo.CommentVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.service.inf.comment.ICommentSVC;
 
 @Service

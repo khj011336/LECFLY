@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.IFaqDAO;
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.admin.FaqVO;
+import com.LECFLY.LF.model.vo.admin.QnaVO;
 import com.LECFLY.LF.service.inf.cscenter.IFaqSVC;
 
 

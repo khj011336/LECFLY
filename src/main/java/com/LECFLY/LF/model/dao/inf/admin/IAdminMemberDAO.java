@@ -2,8 +2,8 @@ package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 public interface IAdminMemberDAO {
 	// 일반 회원 관리
