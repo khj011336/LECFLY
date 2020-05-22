@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
-import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 @Repository
 public class MemberMySqlDAOImpl implements IMemberDAO {

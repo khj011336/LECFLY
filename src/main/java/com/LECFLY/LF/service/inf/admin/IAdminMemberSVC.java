@@ -3,8 +3,8 @@ package com.LECFLY.LF.service.inf.admin;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 public interface IAdminMemberSVC {
 	public static int AD_PAGE_SIZE = 30;

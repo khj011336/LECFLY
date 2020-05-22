@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.impl.member.MemberMySqlDAOImpl;
-import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 
 @Service

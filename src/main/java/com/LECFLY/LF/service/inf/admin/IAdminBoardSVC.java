@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.LECFLY.LF.model.vo.CommentClassVO;
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.NoticeVO;
 import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.admin.FaqVO;
+import com.LECFLY.LF.model.vo.admin.NoticeVO;
+import com.LECFLY.LF.model.vo.admin.QnaVO;
 
 public interface IAdminBoardSVC {
 	public static int AD_PAGE_SIZE = 30;

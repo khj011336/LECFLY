@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminMemberDAO;
-import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.admin.IAdminMemberSVC;
 
 @Service

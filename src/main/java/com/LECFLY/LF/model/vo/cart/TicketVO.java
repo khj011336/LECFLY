@@ -1,4 +1,4 @@
-package com.LECFLY.LF.model.vo;
+package com.LECFLY.LF.model.vo.cart;
 
 import java.sql.Timestamp;
 

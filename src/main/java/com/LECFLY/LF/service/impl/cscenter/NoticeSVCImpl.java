@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.INoticeDAO;
-import com.LECFLY.LF.model.vo.NoticeVO;
+import com.LECFLY.LF.model.vo.admin.NoticeVO;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
 
 @Service
