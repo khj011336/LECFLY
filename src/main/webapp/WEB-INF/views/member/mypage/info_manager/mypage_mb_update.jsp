@@ -84,7 +84,43 @@
     			});
     			}
     		});
-        });
+    	 	
+    	 	$("#mb_update_confirm").on("click", function() {
+    	 		console.log("mb_update_confirm 눌럿다");
+    	 		var url = "${pageContext.request.contextPath}/mypage_mb_update_proc.LF";
+    	 		var nickname = $("input[name=nickname]").val();
+    	 		var ph1 = $("input[name=ph1]").val();
+    	 		var ph2 = $("input[name=ph2]").val();
+    	 		var agreeEmail = $("input[name=agreeEmail]").val();	
+    	 		var agreeSms = $("input[name=agreeSms]").val();
+    	 		var postalcode = $("input[name=postalcode]").val();
+    	 		var basicAddress = $("input[name=basicAddress]").val();
+    	 		var detailAddress = $("input[name=detailAddress]").val();
+    	 		
+    	 		var params = "nickname=" + encodeURIComponent(nickname) +  "&ph1=" + 
+    	 			encodeURIComponent(ph1) + "&ph2=" + encodeURIComponent(ph2) + 
+    	 			"&agreeEmail=" + encodeURIComponent(agreeEmail) + "&agreeSms=" + encodeURIComponent(agreeSms) + 
+    	 			"&postalcode=" + postalcode + "&basicAddress=" + encodeURIComponent(basicAddress) + 
+    	 			"&detailAddress=" + encodeURIComponent(detailAddress);
+    	 		console.log("params = " + params );
+    	 		$.ajax({
+    	 			type: "POST",
+    	 			url: url,
+    	 			data: params,
+    	 			dataType: "JSON",
+    	 			success: function(res, status, xhr) {
+    	 				console.log("수정성공");
+    	 				$("#mypage_mb_update_confirm").html(res.temp);
+    	 			},
+    	 			error: function(status, xhr) {
+    	 				console.log("수정실패")
+    	 			}
+    	 		});
+    	 		
+    	 	
+    	 	})
+    	 	
+    	});
     </script>
 <div class="mypage_bottom_info">
 	<h2 class="mypage_bottom_title">회원정보 수정</h2>
@@ -135,6 +171,8 @@
              </div>
              <div id="cnm_table_right">
                 <div id="cnm_table2">
+<!--                 	<form action="update_mb_info.LF" method="post"> -->
+				<form>
 	                <table>
 	                	<tr>
 	                		<td colspan="2" style="height:70px;"><b style="color:orangered;">*수정 가능 Part*</b><br><span style="font-size:12px; color:orangered;">&nbsp;</span></td>
@@ -203,16 +241,16 @@
     </div>	
    	<div id="mypage_update_info_btn">
 <!-- 			<button>회원정보 수정</button> -->
-		<a href="#mypage_mb_update_confirm">회원정보 수정</a> 
+		<a href="#mypage_mb_update_confirm" id="mb_update_confirm">회원정보 수정</a> 
 	</div>
 	</div>
 	<div id="mypage_mb_update_confirm" class="overlay">
-		<div class="popup">
-			<a class="close" href="#">x</a>
-			<div class="mypage_mb_update_popup_content">
-				<h2 class="mypage_mb_isupdate">'${member.name}'님 회원정보 수정 성공</h2>
-			</div>
-			<input id="mypage_mb_update_popup_submitbtn" type="button" value="확인">
-		</div>
+<!-- 		<div class="popup"> -->
+<!-- 			<a class="close" href="#">x</a> -->
+<!-- 			<div class="mypage_mb_update_popup_content"> -->
+<%-- 				<h2 class="mypage_mb_isupdate">'${member.name}'님 회원정보 수정 성공</h2> --%>
+<!-- 			</div> -->
+<!-- 			<input id="mypage_mb_update_popup_submitbtn" type="button" value="확인" class="close"> -->
+<!-- 		</div> -->
 	</div>
 </div>
