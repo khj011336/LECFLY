@@ -43,13 +43,13 @@
 	</div>
 	<div class="header_column_menu">
 		<ul>
-			<li id= "CSCenter" class="header_menues"><a href="cs_qna.LF">고객섬김센터</a></li>
-			<li id= "TEST" class="header_menues"><a href="creator.LF" >크리에이터센터</a></li>
+			<li id= "CSCenter"><a href="cs_qna.LF">고객섬김센터</a></li>
+			<li id= "TEST"><a href="creator.LF" >크리에이터센터</a></li>
 			<!--  세현추가  c:if-->
-			<c:if test="${not empty member}">
-				<li id= "TEST2" class="header_menues" style="z-index:30;"><a href="${PageContext.request.contextPath}mypage.LF"><c:out value="${member.nicname}님" default="없음"/></a></li>
+			<c:if test="${not empty memberb}">
+				<li id= "TEST2" style="z-index:30;"><a href="">${member.nickname}님</a></li>
 			</c:if>
-			<li id= "TEST2" class="header_menues" style="z-index:30;"><a href="#" onclick="goLogin(${member.id})">${empty member ? '로그인':'로그아웃'}</a></li>
+			<li id= "TEST2" style="z-index:30;"><a href="#" onclick="goLogin(${member.id})">${empty member ? '로그인':'로그아웃'}</a></li>
 		
 			
 		</ul>

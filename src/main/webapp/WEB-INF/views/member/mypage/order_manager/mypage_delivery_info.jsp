@@ -57,12 +57,6 @@ $(document).ready(function() {
 				<br><br>
 				<span style="color:orange">3</span></a>
 			</div>
-			<!-- <ul>
-		    	<li><a href="#" id="mypage_dilivery_status_1">결제대기</a></li>
-		    	<li><a href="#" id="mypage_dilivery_status_2">배송준비</a></li>
-		    	<li><a href="#" id="mypage_dilivery_status_3">배송중</a></li>
-		    	<li><a href="#" id="mypage_dilivery_status_4">배송완료</a></li>
-			</ul> -->
 		</div>
 		<div class="dilivery_status_chart">
 			<%@ include file="delivery_stat1.jsp"%>
