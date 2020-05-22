@@ -2,7 +2,7 @@ package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.CouponVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;

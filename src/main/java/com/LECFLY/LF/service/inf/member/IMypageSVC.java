@@ -4,9 +4,9 @@ package com.LECFLY.LF.service.inf.member;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.ShowClassVideoVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 public interface IMypageSVC {
 							

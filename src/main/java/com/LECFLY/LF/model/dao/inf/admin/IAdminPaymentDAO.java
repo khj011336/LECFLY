@@ -2,9 +2,9 @@ package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.CouponVO;
-import com.LECFLY.LF.model.vo.PayHistoryVO;
 import com.LECFLY.LF.model.vo.ProfitHistoryVO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
 
 
 public interface IAdminPaymentDAO {

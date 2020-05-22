@@ -3,7 +3,7 @@ package com.LECFLY.LF.service.inf.cart;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.CartVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
 
 public interface ICartSVC {
 	// 회원이 장바구니의 목록을 조회할 수 있다.

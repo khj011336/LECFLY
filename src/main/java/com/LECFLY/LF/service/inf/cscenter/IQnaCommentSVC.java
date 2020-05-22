@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.admin.QnaVO;
 
 
 

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
@@ -39,20 +38,23 @@ public class LectureSVCImpl{
 		int totalRecords = LecDAO.checkNumberOfLectures(fid);
 		return 	totalRecords /PAGESIZE +(totalRecords % PAGESIZE == 0? 0:1);
 	}
-	public void storeProcess(LectureVO LecVO, int memberId , CreatorVO cr,SessionStatus sesStatus,Model model , String username) {
+	public void storeProcess(LectureVO LecVO, int memberId , CreatorVO cr,SessionStatus sesStatus,Model model , String username, int isCreator) {
 		fileProcessforLectures( LecVO ,  memberId ,  model , username);
 		int fid =  memberId;
-		System.out.println("저장단  fid"+fid);
+		
 		LecDAO.insertNewLecture(fid,LecVO.getCategory(),
 				LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
-				LecVO.getInfo(), cr.getNickname(),
+				LecVO.getInfo(),2, cr.getNickname(),
 				cr.getImgPath());
+		if(isCreator != 3) {
+		cr.setStatus(2);
 		CreDAO.insertNewCreator(fid, cr.getImgPath(), cr.getName(),
-				cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo());
+				cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo(),2);
+		}
 		sesStatus.setComplete();
 	}
 	public void unloadProcess(String unload,LectureVO LecVO, HttpSession ses , CreatorVO cr,SessionStatus sesStatus 
-			, String username,int memberId) {
+			, String username,int memberId ,int isCreator) {
 		int countNull = 0;
 		if (unload.equals("y") ) {
 			System.out.println("언로드진입 인풋 공백 체크중...");
@@ -73,11 +75,13 @@ public class LectureSVCImpl{
 				cr.setStatus(4);
 				LecDAO.insertNewLecture(memberId,LecVO.getCategory(),
 						LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
-						LecVO.getInfo(), cr.getNickname(),
+						LecVO.getInfo(),4 ,cr.getNickname(),
 						cr.getImgPath());
+				if(isCreator != 3) {
 				CreDAO.insertNewCreator(memberId, cr.getImgPath(), cr.getName(),
-						cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo());
-				
+						cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo(),4);
+				System.out.println("초기 크레이터 등록");
+				}
 			}else {
 				String path = FileSVCImpl.getPath(username, 1);
 				if(LecVO.getImgPath() != null && !LecVO.getImgPath().isEmpty()) {
