@@ -11,16 +11,20 @@
 <link rel="stylesheet" href="resources/css/common/main.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
+	type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/esm/popper.js"
+	type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.js"
 	type="text/javascript"></script>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<!-- 차트 -->
+<%-- <script src="${pageContext.request.contextPATH}/RESOURCES/CHART/HIGHCHARTS.JS"></SCRIPT> --%>
+<%-- <SCRIPT SRC="${PAGECONTEXT.REQUEST.CONTEXTPATH}/RESOURCES/CHART/MODULES/EXPORTING.JS"></SCRIPT> --%>
+<%-- <SCRIPT SRC="${PAGECONTEXT.REQUEST.CONTEXTPATH}/RESOURCES/CHART/MODULES/EXPORT-DATA.JS"></SCRIPT> --%>
+<%-- <SCRIPT SRC="${PAGECONTEXT.REQUEST.CONTEXTPATH}/RESOURCES/CHART/MODULES/ACCESSIBILITY.JS"></SCRIPT> --%>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
 <script src="https://code.highcharts.com/modules/drilldown.js"></script>
@@ -51,7 +55,6 @@ $(document).ready(function() {
 });	
 	
 </script>
-
 </head>
 <body>
 	<div class="page-wrapper chiller-theme toggled">
