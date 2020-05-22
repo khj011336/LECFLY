@@ -61,6 +61,7 @@
 	            	<td>
 		            	<div class="post_input_wrap">
 		            		<input type="text" class="input input_qna_phone" placeholder="연락처 없음" value="${mb.phNumber}" readonly>
+		            		<%-- <input type="date" class="input input_qna_phone" placeholder="연락처 없음" value=<fmt:formatDate value="${mb.birthday}" pattern="yyyy-MM-dd" /> /> --%>
 		            	</div>
 	            	</td>
 	            </tr>

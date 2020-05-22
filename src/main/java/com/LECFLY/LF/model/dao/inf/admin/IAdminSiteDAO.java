@@ -2,7 +2,7 @@ package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.HomeFileManagerVO;
+import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 
 public interface IAdminSiteDAO {

@@ -1,6 +1,8 @@
 package com.LECFLY.LF.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,23 +11,25 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.LECFLY.LF.model.vo.CommentClassVO;
-import com.LECFLY.LF.model.vo.HomeFileManagerVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.admin.FaqVO;
-import com.LECFLY.LF.model.vo.admin.NoticeVO;
-import com.LECFLY.LF.model.vo.admin.QnaVO;
+import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
+import com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO;
 import com.LECFLY.LF.service.inf.admin.IAdminBoardSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminFileSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminLectureSVC;
@@ -49,9 +53,54 @@ public class AdminController {
 	
 	// 관리자 홈
 	@RequestMapping(value = "/admin.LF", method = RequestMethod.GET)
-	public String adminHome() {
+	public String adminHome(HttpSession ses, Model model) {
+		// 방문자수 select count(id) from members where logined_at > date_sub(now(), interval 1 day);
+		int allMbToday = adLecSvc.selectTodayInCnt();
+		// 회원수 select count(id) from members;
+		int allMbCnt = adLecSvc.selectMemberCnt();
+		// 업로더수 select count(id) from members where check_creator = 3;
+		int allCrCnt = adLecSvc.selectCreatorCnt();
+		// 전체 강의수 select count(id) from lectures;
+		int allLecCnt = adLecSvc.selectLectureAll();
+		// 신규회원수 select count(id) from members where joined_at >=(CURDATE()-interval 7 day);
+		int newMbCnt = adLecSvc.selectNewMemberCnt();
+		// 업로더 승인대기수 select count(id) from members where check_creator = 1;
+		int appCrCnt = adLecSvc.selectCreatorApprovalCnt();
+		// 강의 승인대기수 select count(id) from lectures where status = 0;
+		int appLecCnt = adLecSvc.selectLectureApproval();
+		// 문의 답변하기 수  select count(id) from qnas where comment = 0;
+		int cmQnaCnt = adLecSvc.selectQnaCommentCnt();
+		
+		model.addAttribute("allMbToday", allMbToday);// 방문자수
+		model.addAttribute("allMbCnt", allMbCnt);// 회원수
+		model.addAttribute("allCrCnt", allCrCnt);// 업로더수
+		model.addAttribute("allLecCnt", allLecCnt);// 전체 강의수
+		model.addAttribute("newMbCnt", newMbCnt);// 신규회원수
+		model.addAttribute("appCrCnt", appCrCnt);// 업로더 승인대기수 
+		model.addAttribute("appLecCnt", appLecCnt);// 강의 승인대기수
+		model.addAttribute("cmQnaCnt", cmQnaCnt);// 문의 답변하기 수
 		return "admin/admin_main.ad";
 	}
+	// 관리자 메인 통계 - 카테고리별 강의수
+	@RequestMapping(value = "/stat_categoryLecture.LF", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> statCategoryLecture () {
+		Map<String,Object> jsonMap = new HashMap<String, Object>();
+		System.out.println("카테고리별 강의수 검색");
+		List<CategoryLectureStatVO> cateLecList = adLecSvc.selectCategoryLectureCnt();
+		List<String> cateName = new ArrayList<>();
+		List<Integer> lectureCnt = new ArrayList<>();
+		for (CategoryLectureStatVO ca : cateLecList) {
+			ca.setName(ca.getName());
+			System.out.println(ca.toString());
+			cateName.add(ca.getName());
+			lectureCnt.add(ca.getLectureCnt());
+		}
+		jsonMap.put("cateName",cateName);
+		jsonMap.put("lectureCnt", lectureCnt);
+		return jsonMap;
+	}
+	
 	// 관리자 사이트이용안내
 	@RequestMapping(value = "/admin_site.LF")
 	public String adminSite() {
@@ -138,7 +187,7 @@ public class AdminController {
 	@RequestMapping(value = "/admin_lecture_list.LF", method = RequestMethod.GET)
 	public String adminLectureListProc(Model model, 
 			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		Map<String,Integer> rMap = adLecSvc.checkMaxPageNumber();
+		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
 		List<LectureVO> lecList = adLecSvc.selectAllLecture(pageNumber);
 		if(lecList != null && rMap != null) {
 			model.addAttribute("listSize", lecList.size());
@@ -149,19 +198,61 @@ public class AdminController {
 		}
 		return "admin/adminLecture/admin_lecture.ad";
 	}
+	// 관리자 강의관리(상세조회) json
+	@RequestMapping(value = "/admin_lecture_list_search.LF", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> adminLectureListSearch(
+			@RequestBody Map<String, Object> condition){
+		System.out.println(condition);
+
+		String pn = (String) condition.get("pn");
+		int pageNumber = Integer.parseInt(pn);
+
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
+		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumberSearchFilter(condition);
+		System.out.println("검색결과 수 : "+rMap);
+		List<LectureVO> lecList = adLecSvc.selectLectureListSearchFilter(condition);
+		jsonMap.put("lecList", lecList);
+		jsonMap.put("listSize", lecList.size());
+		jsonMap.put("maxPn", rMap.get("maxPg"));
+		jsonMap.put("totalRecords", rMap.get("totalRecords"));
+		jsonMap.put("pn", pageNumber);
+		return jsonMap;
+	}
+	
 	// 관리자 강의리스트(다중) 갱신 AJAX 호출
-		@RequestMapping(value = "/admin_update_lecture_list.LF", method = RequestMethod.POST)
-		public String adminLectureListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
-			for (Integer id : checkList) {
-				System.out.println("체크 id: "+id);
+		@RequestMapping(value = "/update_approve_lecture.LF", method = RequestMethod.POST)
+		public String adminLectureListUpdateProc(
+				@RequestBody Map<String, Object> params,
+				@RequestParam(value="checkList[]") List<Integer> checkList,
+				@RequestParam(value="status") String status) {
+			
+			List<Integer> ids = (List<Integer>) params.get("checkList");
+			for (Integer id : ids) {
+				System.out.println(id);
 			}
-			return "redirect:admin_lecture_list.LF";
+			return "redirect:admin_lecture.LF";
 		}
 	// 관리자 영상관리
 	@RequestMapping(value = "/admin_video.LF")
 	public String adminVideo(Model model) {
 		List<VideoVO> vdList = adLecSvc.selectVideoList();
 		model.addAttribute("vdList", vdList);
+		return "admin/adminLecture/admin_video.ad";
+	}
+	// 관리자 영상관리(전체조회)
+	@RequestMapping(value = "/admin_video_list.LF", method = RequestMethod.GET)
+	public String adminVideoListProc(Model model, 
+			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+		Map<String,Integer> rMap = adLecSvc.checkVideoMaxPageNumber();
+		List<VideoVO> vdList = adLecSvc.selectAllVideo(pageNumber);
+		if(vdList != null && rMap != null) {
+			model.addAttribute("listSize", vdList.size());
+			model.addAttribute("vdList", vdList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
 		return "admin/adminLecture/admin_video.ad";
 	}
 	// 관리자 키트관리

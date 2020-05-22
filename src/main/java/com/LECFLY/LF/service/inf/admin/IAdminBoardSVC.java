@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.LECFLY.LF.model.vo.CommentClassVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.admin.FaqVO;
-import com.LECFLY.LF.model.vo.admin.NoticeVO;
-import com.LECFLY.LF.model.vo.admin.QnaVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 
 public interface IAdminBoardSVC {
-	public static int AD_PAGE_SIZE = 20;
+	public static int AD_PAGE_SIZE = 30;
 	
 	// QnA 게시판 관리
 	

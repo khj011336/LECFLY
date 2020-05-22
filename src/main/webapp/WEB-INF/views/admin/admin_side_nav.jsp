@@ -62,17 +62,17 @@
 							<li><a href="admin_kit.LF">키트관리</a></li>
 						</ul>
 					</div></li>
-				<li class="sidebar-dropdown"><a href="#"> <i
-						class="far fa-gem"></i> <span>펀딩관리</span> <span
-						class="badge badge-pill badge-primary">Beta</span>
-				</a>
-					<div class="sidebar-submenu">
-						<ul>
-							<li><a href="#">펀딩승인관리</a></li>
-							<li><a href="#">펀딩상품관리</a></li>
-							<li><a href="#">리워드관리</a></li>
-						</ul>
-					</div></li>
+<!-- 				<li class="sidebar-dropdown"><a href="#"> <i -->
+<!-- 						class="far fa-gem"></i> <span>펀딩관리</span> <span -->
+<!-- 						class="badge badge-pill badge-primary">Beta</span> -->
+<!-- 				</a> -->
+<!-- 					<div class="sidebar-submenu"> -->
+<!-- 						<ul> -->
+<!-- 							<li><a href="#">펀딩승인관리</a></li> -->
+<!-- 							<li><a href="#">펀딩상품관리</a></li> -->
+<!-- 							<li><a href="#">리워드관리</a></li> -->
+<!-- 						</ul> -->
+<!-- 					</div></li> -->
 				<li class="sidebar-dropdown"><a href="#"> <i
 						class="fa fa-shopping-cart"></i> <span>결제관리</span> <span
 						class="badge badge-pill badge-danger">63</span>

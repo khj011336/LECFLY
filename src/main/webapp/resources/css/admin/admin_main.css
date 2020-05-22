@@ -101,10 +101,112 @@
 	padding: 5px;
 }
 
+/* 관리자 리스트 출력 폼 */
+.admin_table_wrap {/* 결과물 출력부 래퍼 */
+	margin: 0 auto;
+	text-align:center;
+	padding: 0 30px;
+	table-layout: fixed
+}
+.admin_table_wrap > table {
+	border-top: 2px solid black; 
+	border-bottom: 2px solid black; 
+	width:100%;
+}
+.admin_table_wrap td {
+	border: .1px solid lightgray; 
+}
+.admin_table_head > th {
+	background-color: #e8e8e8;
+}
+.admin_table_filter > table {/* 결과물 정렬기준 */
+	margin: 30px;
+	width:100%;
+}
+
+.admin_table_filter th {
+	background-color: #e8e8e8;
+}
+.admin_table_filter caption {
+	caption-side: top;
+	
+}
+.date_filter{/* 기간검색 */
+	padding: 0px;
+}
+.board_sort_filter ul{
+	list-style: none;
+}
+.board_sort_filter li{
+	display: inline-block;
+}
+.board_result_count {
+	color: orangered;
+}
+.admin_search_btns {
+ 	text-align:center;
+}
+/* 결과 상단 출력결과 및 정렬 */
+.admin_search_result {
+	margin-left: 30px;
+}
+.admin_search_edit {
+	float: left;
+}
+.admin_search_edit li{
+	margin-left: 30px; 
+}
+.admin_search_sort{
+	float: right;
+	margin-right: 30px;
+}
+.admin_search_sort li{
+/* 	margin-right: 5px; */
+} 
 
 
+/*----------------chart css ----------------*/
+.highcharts-figure, .highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 1em auto;
+}
 
+#container {
+	height: 400px;
+}
 
+.highcharts-data-table table {
+	font-family: Verdana, sans-serif;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
 
+.highcharts-data-table caption {
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
+}
 
+.highcharts-data-table th {
+	font-weight: 600;
+	padding: 0.5em;
+}
 
+.highcharts-data-table td, .highcharts-data-table th,
+	.highcharts-data-table caption {
+	padding: 0.5em;
+}
+
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
+	{
+	background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+	background: #f1f7ff;
+}
