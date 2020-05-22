@@ -49,13 +49,13 @@ public interface IMypageSVC {
 	Map<String, Object> selectMyPageContents(int mbId); 
 	
 	// 회원정보 수정에서 회원정보를 수정하는 서비스
-	boolean updateOneMemberInfo(
+	Map<String, Object> updateOneMemberInfo(
 			MemberVO mb, String nickname, String ph1, String ph2, String agreeEmail, String agreeSms, 
 			int postalcode, String basicAddress, String detailAddress);
 	boolean updateOneMember(MemberVO mb);
 
 	// 비밀번호 변경에서 비밀번호를 새로 설정하는 서비스
-	boolean updateOneMemberPw(String email, String newPw, String newPwConfirm);
+	Map<String, Object> updateOneMemberPw(String email, String newPw, String newPwConfirm);
 	boolean updateOneMember(String email, String pw);
 	
 //회원이 신청한 강의목록 표시하기							수강 관리

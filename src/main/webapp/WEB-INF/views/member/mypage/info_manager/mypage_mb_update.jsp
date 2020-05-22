@@ -7,9 +7,10 @@
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
     <script>
-// 	    $("input:text[close]").on("click", function() {
-// 			$('#mypage_mb_update_confirm').html('');
-// 	    });
+	    function goBack() {
+			console.log("goBack 실행");
+			location.replace("${pageContext.request.contextPath}/mypage.LF#tabs-3");
+		}
     
 	    // input text에서 숫자만 받게 하는 스크립트
 	    $("input:text[numberOnly]").on("keyup", function() {
@@ -91,11 +92,11 @@
     	 		var nickname = $("input[name=nickname]").val();
     	 		var ph1 = $("input[name=ph1]").val();
     	 		var ph2 = $("input[name=ph2]").val();
-    	 		var agreeEmail = $("input[name=agreeEmail]").val();	
-    	 		var agreeSms = $("input[name=agreeSms]").val();
+    	 		var agreeEmail = $("input[name=agree_email]").is(":checked") ? 'agree_email' : 'none';
+    	 		var agreeSms = $("input[name=agree_sms]").is(":checked") ? 'agree_sms' : 'none';
     	 		var postalcode = $("input[name=postalcode]").val();
-    	 		var basicAddress = $("input[name=basicAddress]").val();
-    	 		var detailAddress = $("input[name=detailAddress]").val();
+    	 		var basicAddress = $("input[name=basic_address]").val();
+    	 		var detailAddress = $("input[name=detail_address]").val();
     	 		
     	 		var params = "nickname=" + encodeURIComponent(nickname) +  "&ph1=" + 
     	 			encodeURIComponent(ph1) + "&ph2=" + encodeURIComponent(ph2) + 
@@ -118,7 +119,7 @@
     	 		});
     	 		
     	 	
-    	 	})
+    	 	});
     	 	
     	});
     </script>
@@ -205,17 +206,17 @@
 				        	<th rowspan="3"><label class="cnm_subtitle">주소</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" 
+						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" readonly
 						    		value=${member.postalCode}>
 						        	<input type="button" id="find_adress_btn" value="주소찾기" onclick="find_address()">
 					        	</div>
 		                    </td>
 		                </tr>
 		                <tr>
-				        	<td><input type="text" id="cnm_mb_adress_basic" name="basic_adress" class="input_cnm" placeholder="주소" value="${member.basicAddress}"></td>
+				        	<td><input type="text" id="cnm_mb_adress_basic" name="basic_address" class="input_cnm" placeholder="주소" readonly value="${member.basicAddress}"></td>
 		                </tr>
 		                <tr>
-		                	<td><input type="text" id="cnm_mb_adress_detail" name="detail_adress" class="input_cnm" placeholder="상세주소" value="${member.detailAddress}"></td>
+		                	<td><input type="text" id="cnm_mb_adress_detail" name="detail_address" class="input_cnm" placeholder="상세주소" value="${member.detailAddress}"></td>
 		                </tr>
 		                <tr>
 				        	<th rowspan="2">소식 수신 동의</th>

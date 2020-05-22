@@ -734,7 +734,6 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	
-	
 	@RequestMapping(value="mypage_mb_update_proc.LF", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> memberMypageUpdateInfoProc(
@@ -747,29 +746,35 @@ public class MemberController {
 			@RequestParam(value="postalcode") int postalcode,
 			@RequestParam(value="basicAddress") String basicAddress,
 			@RequestParam(value="detailAddress") String detailAddress
-			) 
-	{
+			) {
 		System.out.println("memberMypageUpdateInfoProc()...");
-		MemberVO mb = (MemberVO)ses.getAttribute("member");
-		String template = 
+		String templateTop = 
 				"<div class=\"popup\">" + 
 		"<a class=\"close\" href=\"#\">x</a>" +
 		"<div class=\"mypage_mb_update_popup_content\">" +
-			"<h2 class=\"mypage_mb_isupdate\">'"+ mb.getName() +"'님 회원정보 수정 성공</h2>" +
-		"</div>" + 
-		"<input id=\"mypage_mb_update_popup_submitbtn\" type=\"button\" value=\"확인\" >" +
-		"</div>";
+			"<h2 class=\"mypage_mb_isupdate\">";
+		String templateMiddle = "";//mb.getName() +"'님 회원정보 수정 성공";
+		String templateBottom = "</h2></div>" + 
+				"<input id=\"mypage_mb_update_popup_submitbtn\" type=\"button\" value=\"확인\" onclick='goBack()'>" +
+				"</div>";
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		
-		
-		mpSvc.updateOneMemberInfo(mb, nickname, ph1, ph2, agreeEmail, 
-						agreeSms, postalcode, basicAddress, detailAddress);
-		
-		Map<String, Object> rMap = new HashMap<>();  
+		if(mb==null)
+			templateMiddle = "로그아웃되셨습니다. 재로그인이 필요합니다.";
+		else {
+			Map<String, Object>updateMap = 
+					mpSvc.updateOneMemberInfo(mb, nickname, ph1, ph2, agreeEmail, 
+					agreeSms, postalcode, basicAddress, detailAddress);
+			templateMiddle = (String)updateMap.get("update_info_msg");
+			ses.setAttribute("member", updateMap.get("update_member"));
+		}
+		System.out.println(templateMiddle);
+		String template = templateTop + templateMiddle + templateBottom;
 		rMap.put("temp", template);
 		
 		return rMap;
 	}
-	
 	
 	
 	
@@ -781,6 +786,42 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_pw_update";
 	}
 
+	@RequestMapping(value="mypage_pw_update_proc.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageUpdatePwProc(
+			HttpSession ses,
+			@RequestParam(value="oldPw") String oldPw,
+			@RequestParam(value="newPw") String newPw,
+			@RequestParam(value="confirmPw") String confirmPw
+			) {
+		System.out.println("memberMypageUpdateInfoProc()...");
+		String templateTop = 
+				"<div class=\"popup\">" + 
+		"<a class=\"close\" href=\"#\">x</a>" +
+		"<div class=\"mypage_pw_update_popup_content\">" +
+			"<h2 class=\"mypage_pw_isupdate\">";
+		String templateMiddle = "";//mb.getName() +"'님 비밀번호 수정 성공
+		String templateBottom = "</h2></div>" + 
+				"<input id=\"mypage_pw_update_popup_submitbtn\" type=\"button\" value=\"확인\" onclick='goBack()'>" +
+				"</div>";
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		
+		if(mb==null)
+			templateMiddle = "로그아웃되셨습니다. 재로그인이 필요합니다.";
+		else {
+			if(logSvc.loginProcess(mb.getEmail(),oldPw)==logSvc.MB_EMAIL_AUTH_OK)
+				templateMiddle = (String)mpSvc.updateOneMemberPw(mb.getEmail(), newPw, confirmPw).get("update_pw_msg");
+			else
+				templateMiddle = "비밀번호가 틀립니다!";
+		}
+
+		System.out.println(templateMiddle);
+		String template = templateTop + templateMiddle + templateBottom;
+		rMap.put("temp", template);
+		
+		return rMap;
+	}
 
 //////	 주문 / 배송관리
 	
