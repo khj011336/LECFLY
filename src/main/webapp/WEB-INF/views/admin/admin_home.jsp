@@ -49,7 +49,9 @@
 		checkAll();
 	}
 $(document).ready(function() {
-
+	var check = document.getElementById("checkAll");
+	check.onclick = checkAll;
+	//onclick="checkAll()"
 });	
 	
 </script>

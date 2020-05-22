@@ -153,11 +153,11 @@ public class AdminController {
 			return "redirect:admin_banner.LF";
 		}
 	}
-	// 관리자 추천강의 관리
-	@RequestMapping(value = "/admin_recommend.LF")
-	public String adminRecommend() {
-		return "admin/admin_recommend.ad";
-	}
+//	// 관리자 추천강의 관리
+//	@RequestMapping(value = "/admin_recommend.LF")
+//	public String adminRecommend() {
+//		return "admin/admin_recommend.ad";
+//	}
 	// 홈의 모든 목록 조회(배너, 추천강의, 일반강의)
 	@RequestMapping(value = "/home_show_all.LF")
 	public String homeShowAll(HttpSession ses, Model model) {
@@ -207,7 +207,7 @@ public class AdminController {
 
 		String pn = (String) condition.get("pn");
 		int pageNumber = Integer.parseInt(pn);
-
+		
 		Map<String, Object> jsonMap = new HashMap<String, Object>();
 		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumberSearchFilter(condition);
 		System.out.println("검색결과 수 : "+rMap);
@@ -221,18 +221,63 @@ public class AdminController {
 	}
 	
 	// 관리자 강의리스트(다중) 갱신 AJAX 호출
-		@RequestMapping(value = "/update_approve_lecture.LF", method = RequestMethod.POST)
-		public String adminLectureListUpdateProc(
-				@RequestBody Map<String, Object> params,
-				@RequestParam(value="checkList[]") List<Integer> checkList,
-				@RequestParam(value="status") String status) {
-			
-			List<Integer> ids = (List<Integer>) params.get("checkList");
-			for (Integer id : ids) {
-				System.out.println(id);
-			}
+	@ResponseBody
+	@RequestMapping(value = "/admin_update_approve_lecture.LF", method = RequestMethod.POST)
+	public String adminLectureListApprovalProc(
+			@RequestBody ArrayList<Integer> checkList) {
+		
+		for (Integer id : checkList) {
+			System.out.println(id); // 수정할 id 값들 전달
+		}
+		
+		boolean b = adLecSvc.updateLectureApprovalforIds(checkList);
+		if(b) {
+			System.out.println("승인완료");
+			return "redirect:admin_lecture.LF";
+		} else {
+			System.out.println("승인실패");
 			return "redirect:admin_lecture.LF";
 		}
+	}
+	// 관리자 강의리스트(다중) 승인거절 AJAX 호출
+	@ResponseBody
+	@RequestMapping(value = "/admin_update_disapprove_lecture.LF", method = RequestMethod.POST)
+	public String adminLectureListDisapprovalProc(
+			@RequestBody ArrayList<Integer> checkList) {
+		
+		for (Integer id : checkList) {
+			System.out.println(id); // 수정할 id 값들 전달
+		}
+		
+		boolean b = adLecSvc.updateLectureDisapprovalforIds(checkList);
+		if(b) {
+			System.out.println("승인거절완료");
+			return "redirect:admin_lecture.LF";
+		} else {
+			System.out.println("승인거절실패");
+			return "redirect:admin_lecture.LF";
+		}
+	}
+	// 관리자 강의리스트(다중) 삭제 AJAX 호출
+	@ResponseBody
+	@RequestMapping(value = "/admin_delete_lecture_list.LF", method = RequestMethod.POST)
+	public String adminDeleteLectureListProc(
+			@RequestBody ArrayList<Integer> checkList) {
+		
+		for (Integer id : checkList) {
+			System.out.println(id); // 수정할 id 값들 전달
+		}
+		
+		boolean b = adLecSvc.delectLectureforIds(checkList);
+		if(b) {
+			System.out.println("삭제완료");
+			return "redirect:admin_lecture.LF";
+		} else {
+			System.out.println("삭제실패");
+			return "redirect:admin_lecture.LF";
+		}
+	}
+	
 	// 관리자 영상관리
 	@RequestMapping(value = "/admin_video.LF")
 	public String adminVideo(Model model) {
@@ -255,26 +300,29 @@ public class AdminController {
 		}
 		return "admin/adminLecture/admin_video.ad";
 	}
-	// 관리자 키트관리
-	@RequestMapping(value = "/admin_kit.LF")
-	public String adminKit(Model model) {
-		List<KitVO> kitList = adLecSvc.selectKitList();
-		model.addAttribute("kitList", kitList);
-		return "admin/adminLecture/admin_kit.ad";
-	}
+	
 	// 관리자 결제내역관리
 	@RequestMapping(value = "/admin_payment.LF")
 	public String adminPayment() {
-		return "admin/adminLecture/admin_payment.ad";
+		return "admin/adminProduct/admin_payment.ad";
 	}
+	
 	// 관리자 쿠폰관리
 	@RequestMapping(value = "/admin_coupon.LF")
 	public String adminCoupon(Model model) {
 		List<CouponVO> cpList = adLecSvc.selectCouponList();
 		model.addAttribute("cpList", cpList);
-		return "admin/adminLecture/admin_coupon.ad";
+		return "admin/adminProduct/admin_coupon.ad";
 	}
 	
+	// 관리자 키트관리
+		@RequestMapping(value = "/admin_kit.LF")
+		public String adminKit(Model model) {
+			List<KitVO> kitList = adLecSvc.selectKitList();
+			model.addAttribute("kitList", kitList);
+			return "admin/adminProduct/admin_kit.ad";
+		}
+		
 	// 관리자 회원관리
 	@RequestMapping(value = "/admin_member.LF")
 	public String adminMember() {
@@ -341,7 +389,11 @@ public class AdminController {
 		}
 		return "redirect:admin_creator.LF";
 	}
-		
+	// 회원 통계 내역
+		@RequestMapping(value = "/admin_member_stat.LF")
+		public String adminMemberStat() {
+			return "admin/adminMember/admin_memberstat.ad";
+		}	
 	
 	// 관리자 공지내역
 	@RequestMapping(value = "/admin_board_notice.LF")

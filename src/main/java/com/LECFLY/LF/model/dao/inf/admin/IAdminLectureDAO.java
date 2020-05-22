@@ -1,5 +1,6 @@
 package com.LECFLY.LF.model.dao.inf.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,4 +74,7 @@ public interface IAdminLectureDAO {
 	int selectCreatorApprovalCnt();
 	int selectQnaCommentCnt();
 	List<CategoryLectureStatVO> selectCategoryLectureCnt();
+	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
+	boolean updateLectureDispprovalforIds(ArrayList<Integer> checkList);
+	boolean delectLectureforIds(ArrayList<Integer> checkList);
 }
