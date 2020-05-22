@@ -4,7 +4,9 @@ package com.LECFLY.LF.service.inf.member;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.ShowClassVideoVO;
+
+import com.LECFLY.LF.model.vo.LecAttendVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 
@@ -27,7 +29,7 @@ public interface IMypageSVC {
 
 	boolean updateMemberProfileImg(int mbId, String pic);
 	
-	List<ShowClassVideoVO> selectLecToStatusForMbIdStatus(int mbId, int status);
+	List<LecAttendVO> selectLecToStatusForMbIdStatus(int mbId, int status);
 	
 	Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status);
 
@@ -43,7 +45,9 @@ public interface IMypageSVC {
 
 	MemberVO selectOneMember(int mbId);
 
-	Map<String, Object> selectMyPageDeliveryInfoMap(int mbId); 
+	Map<String, Object> selectMyPageDeliveryInfoMap(int mbId);
+
+	Map<String, Object> selectMyPageContents(int mbId); 
 
 	
 //회원이 신청한 강의목록 표시하기							수강 관리

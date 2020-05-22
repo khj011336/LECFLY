@@ -1,6 +1,7 @@
 package com.LECFLY.LF.service.impl.member;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,20 +83,25 @@ public class loginSVCImpl implements ILoginSVC {
 	
 	@Override
 	public boolean check_dup_nick(String nickname) {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println("check_dup_nick");
+//		boolean r = mbDao.selectOneMemberByNicName(nickname) != null;
+//		return r;
+		return mbDao.dupCheckNickname(nickname);
+		
 	}
 	
 	@Override
 	public boolean check_dup_email(String email) {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println("이메일 중복체크");
+		int r = mbDao.memberEamil(email);
+		return r == 1;
 	}
 
 	@Override
 	public int findEmail(String phNumber, String name) {
-		mbDao.findEmailByPhNmuberAndName(phNumber, name);
-		return 1;
+		System.out.println("이메일 찾기");
+		int r = (mbDao.findEmailByPhNmuberAndName(phNumber, name) != null) ? 1: 0;
+		return r;
 	}
 
 	@Override
@@ -139,6 +145,48 @@ public class loginSVCImpl implements ILoginSVC {
 			result += c;
 		}
 		return result;
+	}
+
+	@Override
+	public String check_none(String name, String nickname, Date birthday, String gender, String email, String password,
+			String pw_confirm, String phNumber, String phNumber2) {
+		if( name.isEmpty() || name == null ) {
+			System.out.println("이름 x");
+			return "이름이 비었습니다";
+		}
+		if( !nickname.isEmpty() && nickname!=null  ) {
+			System.out.println("닉네임 x");
+			return "닉네임이 비었습니다";
+		}
+		if( birthday!=null ) {
+			System.out.println("생년월일 x");
+			return "생년월일이 비었습니다";
+		}
+		if( !gender.isEmpty()&&gender!=null ) {
+			System.out.println("성별 x");
+			return "성별이 비었습니다";
+		}
+		if( !email.isEmpty()&&email!=null ) {
+			System.out.println("이메일 x");
+			return "이메일이 비었습니다";
+		}
+		if( !password.isEmpty()&&password!=null ) {
+			System.out.println("비밀번호 x");
+			return "비밀번호가 비었습니다";
+		}
+		if( !pw_confirm.isEmpty()&&pw_confirm!=null ) {
+			System.out.println("비밀번호 확인 x");
+			return "비밀번호 확인이 안됬습니다";
+		}
+		if( !phNumber.isEmpty()&&phNumber!=null ) {
+			System.out.println("전화번호 앞자리 x");
+			return "전화번호가 비었습니다";
+		}
+		if( !phNumber2.isEmpty()&& phNumber2!=null ) {
+			System.out.println("전화번호 뒷자리 x");
+			return "전화번호가 비었습니다";
+		}
+		return null;
 	}
 
 }

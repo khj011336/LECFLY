@@ -19,7 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.LECFLY.LF.model.vo.ShowClassVideoVO;
+
+import com.LECFLY.LF.model.vo.LecAttendVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
+import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.service.impl.member.loginSVCImpl;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
@@ -38,10 +42,9 @@ public class MemberController {
 	
 	
 	// 로그인창 으로 이동했을때
-	
 	@RequestMapping(value="login.LF", method=RequestMethod.GET)
 	public String memberLoginPage(Model model, String msg) {
-		model.addAttribute("msg", msg);
+		model.addAttribute("login_msg", msg);
 		System.out.println("memberLoginPage()...");
 		return "member/login";
 	}
@@ -58,9 +61,11 @@ public class MemberController {
 			System.out.println(mb);
 			return "redirect:/";
 		} else {
-			ses.setAttribute("msg", logSvc.getMsg(r));
-//			return "member/login";
-			return "redirect:login.LF";
+			model.addAttribute("login_msg", logSvc.getMsg(r));
+			model.addAttribute("email", email);
+			model.addAttribute("pw", pw);
+			return "member/login";
+//			return "redirect:login.LF";
 		}
 	} 
 	
@@ -107,8 +112,6 @@ public class MemberController {
 			){
 		// 인자 테스트
 		System.out.println("join_member_proc....");
-		System.out.println(phNumber +"/"+ phNumber2 +"/"+ agree_receive_email +"/"+ agree_receive_sms +"/"
-				+ birthday);
 		if( !name.isEmpty() && name != null ) {
 			System.out.println("이름 있음");
 			model.addAttribute("name", name);
@@ -123,7 +126,10 @@ public class MemberController {
 		}
 		if( birthday!=null ) {
 			System.out.println("생년월일");
-			model.addAttribute("birthday", birthday);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+			Timestamp birth = Timestamp.valueOf(sdf.format(birthday));
+			model.addAttribute("birthday", birth);
+			System.out.println(birth);
 		}
 		if( !gender.isEmpty()&&gender!=null ) {
 			System.out.println("성별있음");
@@ -153,15 +159,31 @@ public class MemberController {
 			System.out.println("전화번호 뒷자리 있음");
 			model.addAttribute("phNumber2", phNumber2);
 		}
-		
+		if( !postalcode.isEmpty()&& postalcode!=null ) {
+			System.out.println("우편번호 있음");
+			model.addAttribute("postalcode", postalcode);
+		}
+		if( !basic_address.isEmpty()&& basic_address!=null ) {
+			System.out.println("기본 주소 있음");
+			System.out.println(basic_address);
+			model.addAttribute("basic_address", basic_address);
+		}
+		if( !detail_address.isEmpty()&& detail_address!=null ) {
+			System.out.println("상세주소 있음");
+			model.addAttribute("detail_address", detail_address);
+		}
+		model.addAttribute("msg", 
+				logSvc.check_none(name, nickname, birthday, gender, 
+				email, password, pw_confirm, phNumber, phNumber2));
 		if(!name.isEmpty()&&name!=null && !nickname.isEmpty()&&nickname!=null && birthday!=null && 
 				!gender.isEmpty()&&gender!=null && !email.isEmpty()&&email!=null && 
 				!password.isEmpty()&&password!=null && !pw_confirm.isEmpty()&&pw_confirm!=null && 
 				!phNumber.isEmpty()&&phNumber!=null && !phNumber2.isEmpty()&& phNumber2!=null) {
 			System.out.println("필수 인자값 모두 입력됨!");
 			// birthday 인자값 timestamp로 변환
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 			Timestamp birth = Timestamp.valueOf(sdf.format(birthday));
+			System.out.println("birthday check" + birthday);
 			// gender 변환
 			int gen = 0;
 			int code = 0;
@@ -171,14 +193,22 @@ public class MemberController {
 			} catch (NullPointerException e) {
 				System.out.println(e);
 			}
+			System.out.println("gen" + gen + "/code" +  code);
 			// ph 인자값 결합
 			String ph = "010"+ phNumber + phNumber2;
 			// agreeReceive 값 결합 및 변환
 			int agreeReceive = 0;
-			if( agree_receive_email.equals("agree_email"))
-				agreeReceive += 1;
-			if( agree_receive_sms.equals("agree_sms"))
-				agreeReceive += 2;
+			if( agree_receive_email==null || agree_receive_email.isEmpty() || agree_receive_sms==null || agree_receive_sms.isEmpty()) {
+				agreeReceive = 0;
+				System.out.println("agree없음");
+			}else {
+				if( agree_receive_email.equals("agree_email"))
+					agreeReceive += 1;
+				if( agree_receive_sms.equals("agree_sms"))
+					agreeReceive += 2;
+				System.out.println("agree있음");
+			}
+			System.out.println("agreeReceive " + agreeReceive);
 			
 			if(logSvc.joinMember(cnm_upload_pic, name, nickname, birth, gen, 
 					email, password, ph, agreeReceive, basic_address, 
@@ -188,7 +218,7 @@ public class MemberController {
 				System.out.println(name + "회원성공 실패");
 			}
 			
-			return "home";
+			return "member/login";
 			
 		}
 		return "member/create_new_member";
@@ -218,22 +248,50 @@ public class MemberController {
 		// UQ가 걸린 3개 항목 nickname/email/ph_number를 검색해서 사용가능한지 확인하는 서비스 단을 구성해야됨.
 	}
 	// 닉네임 중복체크
-	@RequestMapping(value="dup_nic_check_proc.LF", method=RequestMethod.GET)
-	public String test_proc(HttpSession ses, Model model,
-			@RequestParam(value = "nickname")String nickname
-			) {
-		System.out.println("들어옴"+nickname);
-		model.addAttribute("nickname", nickname);
-//		ses.setAttribute("nickname", nickname);
-		if(logSvc.check_dup_nick(nickname))
-//			ses.setAttribute("nick_msg", "중복된 닉네임입니다.");
-			model.addAttribute("nick_msg", "중복된 닉네임입니다.");
-		else
-//			ses.setAttribute("nick_msg", "사용가능한 닉네임입니다.");
-			model.addAttribute("nick_msg", "사용가능한 닉네임입니다.");
-		return "redirect:join_new_member.LF";
-//		return "member/create_new_member";
+	@RequestMapping(value="nic_dupcheck.LF", method=RequestMethod.GET)
+	@ResponseBody
+	public String nicknameDupCheck(String nickname) {
+		// req.getParam과 타입맵핑을 자동으로 해줌
+		System.out.println("nic_dupcheck.LF");
+		//String login = req.getParameter("login");
+		if( nickname != null && !nickname.isEmpty() ) {
+			if( logSvc.check_dup_nick(nickname) ) {
+				return "yes";
+			} else {
+				return "no";
+			}
+		} else {
+			return "error";
+		} 
 	}
+	// 이메일 중복체크
+	@RequestMapping(value="email_dupcheck.LF", method=RequestMethod.GET)
+	@ResponseBody
+	public String emailDupCheck(String email) {
+		// req.getParam과 타입맵핑을 자동으로 해줌
+		System.out.println("email_dupcheck.LF");
+		//String login = req.getParameter("login");
+		if( email != null && !email.isEmpty() ) {
+			if( logSvc.check_dup_email(email) ) {
+				return "yes";
+			} else {
+				return "no";
+			}
+		} else {
+			return "error";
+		} 
+	}
+//		System.out.println("들어옴"+nickname);
+//		ses.setAttribute("nickname", nickname);
+//		if(logSvc.check_dup_nick(nickname))
+//			ses.setAttribute("nick_msg", "중복된 닉네임입니다.");
+//			model.addAttribute("nick_msg", "중복된 닉네임입니다.");
+//		else
+//			ses.setAttribute("nick_msg", "사용가능한 닉네임입니다.");
+//			model.addAttribute("nick_msg", "사용가능한 닉네임입니다.");
+//		return "redirect:join_new_member.LF";
+//		return "member/create_new_member";
+//	}
 	//test_proc.LF
 //	@RequestMapping(value="test_proc.LF", method=RequestMethod.POST)
 //	public String test_proc(HttpSession ses, Model model, String cnm_upload_pic,
@@ -348,13 +406,18 @@ public class MemberController {
 		System.out.println("memberMyPage()");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
+			//마이페이지에 필요한거 카테고리 이용권개수(무엇을이용하는지(카테고리) + 종료날짜) + 쿠폰 개수 + 강의신청 목록 개수
+			int mbId = mb.getId();
+			Map<String, Object> pMap = mpSvc.selectMyPageContents(mbId);
+			
 			model.addAttribute("mb", mb);
 			model.addAttribute("mbLoginNicname", mb.getNicname());
+			model.addAttribute("mpNone", "");
 			System.out.println("mb = " + mb);
 			return "member/mypage.ho";
 		} else {
 			// 실패시 로그인창으로~
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}		
@@ -400,30 +463,80 @@ public class MemberController {
 		return null;
 	}
 	
-//회원이 신청한 강의목록 표시하기							수강 관리
-//	수강중인강의
-//	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
-	@RequestMapping(value="mypage_attending_lec.LF", method=RequestMethod.POST)
+	/**
+	 * 마이페이지 상단에 내가 수강중인 클래스 (이미지 클릭시 보여주는것)
+	 * 
+	 * 
+	 */
+	@RequestMapping(value="mypage_attending_lec.LF", method={RequestMethod.GET, RequestMethod.POST})
 	public String memberMypageAttendingLec(HttpSession ses,
 			@RequestParam(value="status", defaultValue ="0") int status, Model model) {
-		System.out.println("memberMypageAttendingLec()...");
+		System.out.println("memberMypageAttendingVideo()...");
 		// 내가 수강한 비디오 목록을 리스트로 받으려함
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		System.out.println("mb = " + mb);
 		if(mb != null) { 
 			int mbId = mb.getId();
-			List<ShowClassVideoVO> scvList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
-			if(scvList != null) {
-				System.out.println("scvList = " + scvList + " / scvList.size() = " + scvList.size());
-				model.addAttribute("scvList", scvList);
+			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
+			if(listMap != null) {
+				List<Integer> idList = (List<Integer>)listMap.get("idList");
+				List<String> strCateList = (List<String>)listMap.get("cateList");
+				List<String> subTitleList = (List<String>)listMap.get("titleList");
+				List<String> imgPathList = (List<String>)listMap.get("imgPathList");
+				List<String> nickNameList = (List<String>)listMap.get("nicList");
+				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
+				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
+				
+				model.addAttribute("msg_status", "수강중인 강의");
+				model.addAttribute("idList", idList);
+				model.addAttribute("cateList", strCateList);
+				model.addAttribute("titleList", subTitleList);
+				model.addAttribute("imgPathList", imgPathList);
+				model.addAttribute("nicNameList", nickNameList);
+				model.addAttribute("likeCountList", likeCountList );
+				model.addAttribute("creImgList", creImgList);
+				
+				
 			} else {
-				System.out.println("scvList = null");
+				System.out.println("laList = null");
+				model.addAttribute("msg_status", "강의 신청 목록");
+				model.addAttribute("mp_msg", "수강중인 강의 신청 목록 내역이 없습니다.");
+			}
+			return "member/mypage/attend_lec_manager/mypage_lec_type";
+		} else {
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
+			return "member/login";
+		}
+	}
+	
+	
+	
+	
+//회원이 신청한 강의목록 표시하기							수강 관리
+//	수강중인강의
+//	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴
+	@RequestMapping(value="mypage_attending_vd.LF", method=RequestMethod.POST)
+	public String memberMypageAttendingVideo(HttpSession ses,
+			@RequestParam(value="status", defaultValue ="0") int status, Model model) {
+		System.out.println("memberMypageAttendingVideo()...");
+		// 내가 수강한 비디오 목록을 리스트로 받으려함
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		System.out.println("mb = " + mb);
+		if(mb != null) { 
+			int mbId = mb.getId();
+			List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
+			if(laList != null) {
+				System.out.println("laList = " + laList + " / laList.size() = " + laList.size());
+				model.addAttribute("msg_status", "수강중인 강의");
+				model.addAttribute("laList", laList);
+			} else {
+				System.out.println("laList = null");
 				model.addAttribute("msg_status", "수강중인 강의");
 				model.addAttribute("mp_msg", "수강중인 강의 내역이 없습니다.");
 			}
 			return "member/mypage/attend_lec_manager/mypage_attending_lec";
 		} else {
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}
@@ -439,24 +552,29 @@ public class MemberController {
 			int mbId = mb.getId();
 			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
 			if(listMap != null) {
-				List<VideoVO> vdList = (List<VideoVO>)listMap.get("vdList");
-				List<String> creImgPathList = (List<String>)listMap.get("creImgPathList");
-				List<String> creNickNameList = (List<String>)listMap.get("nickNameList");
-				System.out.println("vdList = " + vdList + " / creImgPathList = " + creImgPathList +
-						  " / creNickNameList" + creNickNameList);
-				model.addAttribute("vdList", vdList);
-				model.addAttribute("creImgPathList", creImgPathList);
-				model.addAttribute("creNickNameList", creNickNameList);
-		
+				List<Integer> idList = (List<Integer>)listMap.get("idList");
+				List<String> strCateList = (List<String>)listMap.get("cateList");
+				List<String> subTitleList = (List<String>)listMap.get("titleList");
+				List<String> imgPathList = (List<String>)listMap.get("imgPathList");
+				List<String> nickNameList = (List<String>)listMap.get("nicList");
+				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
+				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
+				model.addAttribute("msg_status", "찜하기한 강의");
+				model.addAttribute("idList", idList);
+				model.addAttribute("cateList", strCateList);
+				model.addAttribute("titleList", subTitleList);
+				model.addAttribute("imgPathList", imgPathList);
+				model.addAttribute("nicNameList", nickNameList);
+				model.addAttribute("likeCountList", likeCountList );
+				model.addAttribute("creImgList", creImgList);
 			} else {
-				
 				model.addAttribute("msg_status", "찜하기한 강의");
 				model.addAttribute("mp_msg", "찜하기한 강의 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_will_attend";
+			return "member/mypage/attend_lec_manager/mypage_lec_type";
 		} else {
 			System.out.println("mb = null");
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}
@@ -473,23 +591,29 @@ public class MemberController {
 			Map<String, Object> listMap = mpSvc.selectVideoAndCreImgPathAndCreNicname(mbId, status);
 			System.out.println("listMap = " + listMap);
 			if(listMap != null) {
-				List<VideoVO> vdList = (List<VideoVO>)listMap.get("vdList");
-				List<String> vdCateList = (List<String>)listMap.get("vdCateList");
-				List<String> creImgPathList = (List<String>)listMap.get("creImgPathList");
-				List<String> creNickNameList = (List<String>)listMap.get("nickNameList");
-				System.out.println("vdList = " + vdList + " / creImgPathList = " + creImgPathList +
-						  " / creNickNameList" + creNickNameList);
-				model.addAttribute("vdList", vdList);
-				model.addAttribute("vdCateList", vdCateList);
-				model.addAttribute("creImgPathList", creImgPathList);
-				model.addAttribute("creNickNameList", creNickNameList);
+				List<Integer> idList = (List<Integer>)listMap.get("idList");
+				List<String> strCateList = (List<String>)listMap.get("cateList");
+				List<String> subTitleList = (List<String>)listMap.get("titleList");
+				List<String> imgPathList = (List<String>)listMap.get("imgPathList");
+				List<String> nickNameList = (List<String>)listMap.get("nicList");
+				List<Integer> likeCountList = (List<Integer>)listMap.get("likeCountList");
+				List<String> creImgList = (List<String>)listMap.get("creatorImgList");
+				
+				model.addAttribute("msg_status", "좋아요한  강의");
+				model.addAttribute("idList", idList);
+				model.addAttribute("cateList", strCateList);
+				model.addAttribute("titleList", subTitleList);
+				model.addAttribute("imgPathList", imgPathList);
+				model.addAttribute("nicNameList", nickNameList);
+				model.addAttribute("likeCountList", likeCountList );
+				model.addAttribute("creImgList", creImgList);
 			} else {
 				model.addAttribute("msg_status", "좋아요한  강의");
 				model.addAttribute("mp_msg", "좋아요한 강의 내역이 없습니다.");
 			}
-			return "member/mypage/attend_lec_manager/mypage_like";
+			return "member/mypage/attend_lec_manager/mypage_lec_type";
 		} else {
-			model.addAttribute("msg", "로그인후 이용가능합니다.");
+			model.addAttribute("login_msg", "로그인후 이용가능합니다.");
 			return "member/login";
 		}
 	}

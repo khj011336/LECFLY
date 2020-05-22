@@ -636,3 +636,7 @@ input[name=register_coupon] {
 		width: 400px;
 	}
 }
+
+.mypage_tabs_none {
+	display: none;
+}
