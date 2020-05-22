@@ -46,6 +46,8 @@ public class CreatorController {
 	public static String imgPath = "";
 	public static String videoPath = "";
 	public static int isCreator = 0;
+	public static String[] CATEGORIRES = {"","미술","음악","요리","라이프스타일","운동","커리어","여행"}; 
+	public static String[] GRANTSTATUS = {"","거절","요청중","승인","작성중"};
 	@Autowired
 	LectureSVCImpl LecSVC;
 	@Autowired
@@ -86,21 +88,15 @@ public class CreatorController {
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-//		lectures fid = member id ; 
-//		status 4= 작성중 3= 승인 , 2 = 요청중 , 1 = 거절  
-//		(MemberVO) ses.getAttribute("member");
 		MemberVO mb = new MemberVO(30325, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
 				"dd", 1111, null, null);
-//		MemberVO mb =(MemberVO) ses.getAttribute("member");
-		String[] grant = {"","거절","요청중","승인","작성중"};
-		model.addAttribute("grant",grant);
+		model.addAttribute("grant",GRANTSTATUS);
 		if (mb != null) {
 			memberId = mb.getId();
 			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
 			USERNAME = mb.getName();
 			imgPath = "/images/2020/" + USERNAME + "/Img";
 			videoPath = "/images/2020/" + USERNAME + "/video";
-			
 			CreatorVO creVO = CreDAO.selectOneCreator(memberId);
 			if (creVO != null) {
 				if (creVO.getStatus() == GRANT) {
@@ -116,6 +112,7 @@ public class CreatorController {
 		} else {
 			return "member/login";
 		}
+		
 		if (mb != null && page == 1) {
 			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
 			model.addAttribute("crPath", imgPath);
@@ -138,6 +135,7 @@ public class CreatorController {
 	public String createProfileWriting(Model model,
 			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id,
 			HttpSession ses, @ModelAttribute(value = "creator") CreatorVO cr) {
+		model.addAttribute("isUpdate",5);
 		model.addAttribute("LecId",id);
 		model.addAttribute("p", 1);
 		model.addAttribute("isCreator", isCreator);
@@ -157,6 +155,7 @@ public class CreatorController {
 			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id,
 			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up
 			) {
+		model.addAttribute("isUpdate",up);
 		model.addAttribute("update",up);
 		model.addAttribute("p", 2);
 		model.addAttribute("isCreator", isCreator);
@@ -192,6 +191,34 @@ public class CreatorController {
 		return "creator/cre_href";
 	}
 	
+	
+	
+	
+	@RequestMapping(value = "creator_update_profile.LF", method = RequestMethod.GET)
+	public String createProfileUpdate(Model model,
+			HttpSession ses, @ModelAttribute(value = "creator") CreatorVO cr
+			 ) {
+		model.addAttribute("p", 5);
+		model.addAttribute("isCreator", isCreator);
+		model.addAttribute("crPath",imgPath);
+		System.out.println("도착 뉴프로필 update");
+		if(cr.getId() == 0) {
+			CreatorVO creVO= CreDAO.selectOneCreator(memberId);
+			model.addAttribute("creator",creVO);
+		}
+		 
+		return "creator/cre_profile.page";
+	}
+	
+	@RequestMapping(value = "creator_update_store.LF", method = RequestMethod.GET)
+	public String createUpdateStore(Model model, HttpSession ses ,SessionStatus sesStatus,
+			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up) {
+		System.out.println("크리에이터 업데이트 ");
+		CreatorVO creVO = (CreatorVO) ses.getAttribute("creator");
+		 CreDAO.updateCreator(creVO, memberId);
+		sesStatus.setComplete();
+		return "creator/cre_href";
+	}
 	
 	
 	@RequestMapping(value = "creator_new_profile.LF", method = RequestMethod.GET)
@@ -285,6 +312,7 @@ public class CreatorController {
 		if (CFID != 0) {
 			vio.setCFId(CFID);
 			vio.setfId(memberId);
+			model.addAttribute("categ",CATEGORIRES);
 			model.addAttribute(vio);
 			model.addAttribute("crPath", imgPath);
 			model.addAttribute("viPath", videoPath);
@@ -301,9 +329,12 @@ public class CreatorController {
 
 	@RequestMapping(value = "video_img_proc.LF", method = RequestMethod.POST)
 	@ResponseBody
-	public String imgUploadProc(@ModelAttribute(value = "video") VideoVO vio, Model model,
+	public Map<String, String> imgUploadProc(@ModelAttribute(value = "video") VideoVO vio, Model model,
 			@RequestParam(value = "addimgFile", required = false) MultipartFile addimgfile) {
-		return VdoSVC.imgProc(vio, addimgfile, model, USERNAME);
+		model.addAttribute("crPath",imgPath);
+		Map<String, String> imgMap = VdoSVC.imgProc(vio, addimgfile, model, USERNAME);
+		imgMap.put("crPath", imgPath);
+		return imgMap;
 	}
 
 	@RequestMapping(value = "video_upload_proc.LF", method = RequestMethod.POST)
@@ -362,24 +393,33 @@ public class CreatorController {
 	
 	
 	@RequestMapping(value = "kit_upload.LF", method = RequestMethod.GET)
-	public String KitUpload(@RequestParam(value = "CFID", required = false) int CF,
+	public String KitUpload(@RequestParam(value = "CFID", required = false ,defaultValue = "0") int CF,
 			@RequestParam(value = "category") int category, Model model,
 			@ModelAttribute(value = "creatorKit") KitVO kit) {
 		KitVO kitCheck = kitDAO.selectOneKit(CF);
+		System.out.println(CF+"cf");
+		System.out.println(category+"cate");
+		model.addAttribute("CATEGORIRES",CATEGORIRES);
+		model.addAttribute("CFID",CF);
+		model.addAttribute("category",category);
 		if (kitCheck != null) {
 			kitCheck.setAttribute("update");
 			model.addAttribute("creatorKit", kitCheck);
-
+			model.addAttribute("crPath",imgPath);
 		}
 		return "creator/cre_kit.page";
 	}
 
 	@RequestMapping(value = "kit_upload_proc.LF", method = RequestMethod.POST)
-	public String KitUploadProc(@RequestParam(value = "CFID", required = false) int CF,
+	public String KitUploadProc(@RequestParam(value = "CFID", required = false ,defaultValue = "0") int CF,
 			@RequestParam(value = "category") int category, Model model,
-			@ModelAttribute(value = "creatorKit") KitVO kit, HttpSession ses) {
-
-		if (kit.getAttribute().equals("update")) {
+			@ModelAttribute(value = "creatorKit") KitVO kit, HttpSession ses,
+			SessionStatus sesstatus) {
+		boolean kitxo = false;
+		if(kit.getAttribute() != null && !kit.getAttribute().isEmpty()) {
+			kitxo = kit.getAttribute().equals("update");
+		}
+		if (kitxo) {
 			if (new File(FileSVCImpl.getPath(USERNAME, 1) + kit.getImgPath()).delete()) {
 				System.out.println("기존 키트 이미지 삭제");
 				Map<String, String> file = fileSVC.writeFile(kit.getKitImg(), CF, USERNAME);
@@ -388,11 +428,15 @@ public class CreatorController {
 			}
 		} else {
 			System.out.println(kit);
-
+			System.out.println(CF+"cf");
+			System.out.println(category+"cate");
 			Map<String, String> filea = fileSVC.writeFile(kit.getKitImg(), CF, USERNAME);
+			kit.setCFId(CF);
+			kit.setCategory(category);
 			kit.setImgPath(filea.get("file"));
 			kit.setfId(memberId);
 			kitDAO.insertKit(kit);
+			sesstatus.setComplete();
 		}
 		return "creator/cre_href";
 	}

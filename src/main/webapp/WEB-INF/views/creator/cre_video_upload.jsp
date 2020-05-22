@@ -14,14 +14,12 @@
 		<div id="uplT" class="uplflex">
 			<div id="uplL" class="uplPa">
 				<div id="uplmar" class='uplshadow'>
-					<input type="text" value="${video.title }" size="85" name="title"
+					<input type="text" value="${video.title}" size="85" name="title"
 						placeholder="영상제목을 입력해주세요">
 				</div>
 				<div class='uplshadow'>
 					<textarea class="uplnotes" cols="83" rows="6"
-						placeholder="영상 내용을 입력해주세요." name="info">
-				
-                </textarea>
+						placeholder="영상 내용을 입력해주세요." name="info"></textarea>
 				</div>
 			</div>
 			<div id="uplR">
@@ -64,7 +62,7 @@
 					<div>
 						<p>저장 카테고리</p>
 						<select name="category">
-							<option value="${video.category}">${video.category}</option>
+							<option value="${video.category}">${categ[video.category]}</option>
 						</select>
 					</div>
 					<div>
@@ -80,9 +78,7 @@
 		<div id='uplend' class="uplPa">
 			<div id="upltextarea">
 				<h3>진행순서 기입</h3>
-				<textarea class="uplnotes uplshadow " name="orderInfo">
-                    
-                </textarea>
+				<textarea class="uplnotes uplshadow " name="orderInfo" placeholder="강의진행순서를 순서대로 나열해주세요"></textarea>
 			</div>
 		</div>
 		<div>

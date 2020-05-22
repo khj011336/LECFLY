@@ -7,6 +7,9 @@
 var lt = new selectList("#offset", ${maxPage} ,"#CRcontent","get",'creator.LF');
 lt.List();
 $().ready(function(){
+	$("#CRHT3").on("click",function(){
+		 location.href = "creator_update_profile.LF";
+	});
 $("#CRHT2").on("click",function(){
 	if(${isCreator} == 2){
 	alert("현재 크리에이터 승인요청중입니다.승인후 정상적인 등록이가능합니다!");
@@ -24,7 +27,7 @@ $("#CRHT2").on("click",function(){
 	<div id="CRmain" class="CRwidth">
 		<div id="CRcontent">
 			<div id="CRhead">
-				<span class="CRHT">온라인 클래스</span><a href=""><span id="CRHT3">+기본정보수정</span></a>
+				<span class="CRHT">온라인 클래스</span><span id="CRHT3">+기본정보수정</span>
 				 <span id="CRHT2">+새로운 클래스</span> 
 			</div>
 			<%@include file="_cre_class.jsp"%>

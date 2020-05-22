@@ -80,6 +80,11 @@ function LectureUpdate(creId) {
 	hiddenField.setAttribute('name', "LecId");
 	hiddenField.setAttribute('value', creId);
 	form.appendChild(hiddenField);
+	var hiddenField = document.createElement('input');
+	hiddenField.setAttribute('type', "hidden");
+	hiddenField.setAttribute('name', "isUpdate");
+	hiddenField.setAttribute('value', "5");
+	form.appendChild(hiddenField);
 	document.body.appendChild(form);
 	form.submit();
 }
