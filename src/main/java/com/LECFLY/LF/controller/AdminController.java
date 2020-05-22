@@ -30,6 +30,7 @@ import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO;
+import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
 import com.LECFLY.LF.service.inf.admin.IAdminBoardSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminFileSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminLectureSVC;
@@ -81,6 +82,30 @@ public class AdminController {
 		model.addAttribute("cmQnaCnt", cmQnaCnt);// 문의 답변하기 수
 		return "admin/admin_main.ad";
 	}
+	
+	// 관리자 메인 통계 - 달 기준 멤버가입수 (최근 1년)
+		@RequestMapping(value = "/stat_monthlyMember.LF", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String,Object> stat_monthlyMember() {
+			Map<String,Object> jsonMap = new HashMap<String, Object>();
+			System.out.println("최근 1년 달 기준 멤버 가입 수 검색");
+			List<MemberStatVO> monthlyMemberList = adMbSvc.statCountMemberByMonth();
+			List<String> monthName = new ArrayList<>();
+			List<Integer> memberCnt = new ArrayList<>();
+			for (MemberStatVO ms : monthlyMemberList) {
+				ms.setMonthName(ms.getMonthName());
+				System.out.println(ms.toString());
+				 monthName.add(ms.getMonthName());
+				 memberCnt.add(ms.getMsCount());
+			}
+			jsonMap.put("monthName",monthName);
+			jsonMap.put("memberCnt", memberCnt);
+			return jsonMap;
+		}
+	
+	
+	
+	
 	// 관리자 메인 통계 - 카테고리별 강의수
 	@RequestMapping(value = "/stat_categoryLecture.LF", method = RequestMethod.POST)
 	@ResponseBody

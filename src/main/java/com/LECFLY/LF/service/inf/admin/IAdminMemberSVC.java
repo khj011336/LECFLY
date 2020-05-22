@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
+import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
 
 public interface IAdminMemberSVC {
 	public static int AD_PAGE_SIZE = 30;
@@ -37,4 +38,7 @@ public interface IAdminMemberSVC {
 	Map<String, Integer> checkMaxPageNumber();
 	List<CreatorVO> selectAllCreator(int pageNumber);
 	List<MemberVO> selectAllMember(int pageNumber);	
+	
+	//통계파트
+	List<MemberStatVO>statCountMemberByMonth();
 }
