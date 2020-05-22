@@ -75,9 +75,10 @@ public class LecTypeMySqlDAOImpl implements ILecTypeDAO {
 	
 	@Override
 	public List<LecTypeVO> selectAllLecTypeByMbIdStatus(int mbId, int status) {
-		System.out.println("selectAllLecTypeByMbIdStatus()..");
+		System.out.println("dao : selectAllLecTypeByMbIdStatus()..");
+		System.out.println(" / mbId = " + mbId + "/ status = " + status);
 		try {
-			System.out.println(SQL_SELECT_ALL_LEC_TYPE_BY_MBID_STATUS + 
+			System.out.println(SQL_SELECT_ALL_LEC_TYPE_BY_MBID_STATUS +  // 이게오히려하나짜리여야되네
 							" / mbId = " + mbId + "/ status = " + status );
 			return jtem.query(SQL_SELECT_ALL_LEC_TYPE_BY_MBID_STATUS, 
 					BeanPropertyRowMapper.newInstance(LecTypeVO.class), mbId, status);

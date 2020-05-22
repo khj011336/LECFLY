@@ -735,6 +735,43 @@ public class MemberController {
 	}
 	
 	
+	@RequestMapping(value="mypage_mb_update_proc.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageUpdateInfoProc(
+			HttpSession ses,
+			@RequestParam(value="nickname") String nickname,
+			@RequestParam(value="ph1") String ph1,
+			@RequestParam(value="ph2") String ph2,
+			@RequestParam(value="agreeEmail") String agreeEmail,
+			@RequestParam(value="agreeSms") String agreeSms,
+			@RequestParam(value="postalcode") int postalcode,
+			@RequestParam(value="basicAddress") String basicAddress,
+			@RequestParam(value="detailAddress") String detailAddress
+			) 
+	{
+		System.out.println("memberMypageUpdateInfoProc()...");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		String template = 
+				"<div class=\"popup\">" + 
+		"<a class=\"close\" href=\"#\">x</a>" +
+		"<div class=\"mypage_mb_update_popup_content\">" +
+			"<h2 class=\"mypage_mb_isupdate\">'"+ mb.getName() +"'님 회원정보 수정 성공</h2>" +
+		"</div>" + 
+		"<input id=\"mypage_mb_update_popup_submitbtn\" type=\"button\" value=\"확인\" >" +
+		"</div>";
+		
+		
+		mpSvc.updateOneMemberInfo(mb, nickname, ph1, ph2, agreeEmail, 
+						agreeSms, postalcode, basicAddress, detailAddress);
+		
+		Map<String, Object> rMap = new HashMap<>();  
+		rMap.put("temp", template);
+		
+		return rMap;
+	}
+	
+	
+	
 	
 //회원의 비밀번호 변경하기								비밀번호 변경
 //	mypage_update_pw.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴

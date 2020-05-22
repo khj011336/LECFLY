@@ -13,12 +13,12 @@
 				</c:if>		
 				<div class="list_video_block nav_video_list">
 					<div class="list_video_thumb">
-					<a href="#"> <img src="<c:out value='${imgPathList.get(vs.index)}' />" alt="lecfly lecture"></a>
+					<a href="#"> <img src="<c:out value='${imgPathList.get(vs.index)}' default='resources/imges/unknown/xbox_img.PNG' />" alt="lecfly lecture"></a>
 					</div>
 					<div class="list_video_info">
 						<p class="video_info_category"><c:out value="${cateList.get(vs.index)}" /></p>
-						<p class="video_info_title"><c:out value="${titleList.get(vs.title)}"/></p>
-						<img src="<c:out value='${creImgList.get(vs.index)}' />" class="video_info_creator_img">
+						<p class="video_info_title"><c:out value="${titleList.get(vs.index)}"/></p>
+						<img src="<c:out value='${creImgList.get(vs.index)}' default='resources/imges/unknown/xbox_img.PNG' />" class="video_info_creator_img">
 						<p class="video_info_creator_name"><c:out value="${nickNameList.get(vs.index)}" /></p>
 						<div class="main_video_like">
 						<i class="fas fa-heart fa-lg"></i><c:out value="${lc}" /> &nbsp;
