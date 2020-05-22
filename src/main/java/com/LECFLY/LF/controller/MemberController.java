@@ -525,6 +525,7 @@ public class MemberController {
 			List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
 			if(laList != null) {
 				System.out.println("laList = " + laList + " / laList.size() = " + laList.size());
+				model.addAttribute("msg_status", "수강중인 강의");
 				model.addAttribute("laList", laList);
 			} else {
 				System.out.println("laList = null");
