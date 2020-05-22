@@ -23,10 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.admin.FaqVO;
-import com.LECFLY.LF.model.vo.admin.NoticeVO;
-import com.LECFLY.LF.model.vo.admin.QnaVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.cscenter.ICscenterFileSVC;
 import com.LECFLY.LF.service.inf.cscenter.IFaqSVC;

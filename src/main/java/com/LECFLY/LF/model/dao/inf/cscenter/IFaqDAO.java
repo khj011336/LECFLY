@@ -2,7 +2,7 @@ package com.LECFLY.LF.model.dao.inf.cscenter;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.admin.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
 
 
 public interface IFaqDAO {
