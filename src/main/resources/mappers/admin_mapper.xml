@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IAdminDAO">
+
+	<resultMap type="lectureVO" id="lecResultMap">
+		<id property="id" column="id"/>	
+		<result property="fid" column="fid"/>	
+		<result property="category" column="category"/>	
+		<result property="subTitle" column="subTitle"/>	
+		<result property="title" column="title"/>	
+		<result property="titleImg" column="title_Img"/>	
+		<result property="infoImg" column="info_Img"/>	
+		<result property="infoImgb" column="info_Imgb"/>	
+		<result property="info" column="info"/>	
+		<result property="status" column="status"/>	
+		<result property="MBofLikes" column="mb_of_likes"/>	
+		<result property="likeCount" column="like_count"/>	
+		<result property="videoTrack" column="video_track"/>	
+		<result property="nickname" column="nickname"/>	
+		<result property="imgPath" column="img_path"/>	
+		<result property="createdAt" column="created_at"/>	
+		<result property="updatedAt" column="updated_at"/>	
+	</resultMap>
+	<resultMap type="categoryLectureStatVO" id="cateResultMap">
+		<id property="id" column="id"/>	
+		<result property="category" column="category"/>
+		<result property="name" column="fid"/>
+		<result property="lectureCnt" column="lecture_cnt"/>
+	</resultMap>
+
+	<!-- 전체 강의목록 조회(페이지네이션) -->
+	<select id="SQL_SELECT_LECTURE_ALL_PG" parameterType="map" resultType="lectureVO">
+		<![CDATA[
+		SELECT * FROM LECTURES ORDER BY ID DESC LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	
+	<!-- 전체 강의수 조회 -->
+	<select id="SQL_SELECT_LECTURE_NUMBER" resultType="int">
+		<![CDATA[
+		SELECT COUNT(ID) FROM LECTURES
+		]]>
+	</select>
+	
+	<!-- 전체 동영상목록 조회(페이지네이션)  -->
+	<select id="SQL_SELECT_VIDEO_ALL_PG" parameterType="map" resultType="videoVO">
+		<![CDATA[
+		SELECT * FROM VIDEO ORDER BY ID DESC LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	
+	<!-- 전체 동영상수 조회 -->
+	<select id="SQL_SELECT_VIDEO_NUMBER" resultType="int">
+		<![CDATA[
+		SELECT COUNT(ID) FROM VIDEO
+		]]>
+	</select>
+	
+	<!-- 검색필터 사용하여 강의목록 조회 & 페이지네이션 -->
+	<select id="SQL_SELECT_LECTURE_BY_FILTER_PG" parameterType="map" resultType="lectureVO">
+		SELECT * FROM LECTURES WHERE 1 = 1
+		<if test="start_date != null and end_date != null">
+		AND created_at between #{start_date} and #{end_date}
+		</if>
+		<if test="category != 0">
+		AND category = #{category}
+		</if>
+		<if test="search != 'all' and keyword != null">
+		AND #{search} like concat('%',#{keyword},'%')
+		</if>
+		<if test="search = 'all' and keyword != null">
+		AND title like concat('%',#{keyword},'%') or 
+		id like concat('%',#{keyword},'%') or 
+		nickname like concat('%',#{keyword},'%')
+		</if>
+		<if test="status != 3">
+		AND status = #{status}
+		</if>
+		ORDER BY ID DESC LIMIT #{offset},#{limit}
+	</select>
+	
+	<!-- 검색필터 사용하여 강의수 조회-->
+	<select id="SQL_SELECT_LECTURE_NUMBER_BY_FILTER" parameterType="map" resultType="int">
+		SELECT COUNT(ID) FROM LECTURES WHERE 1 = 1
+		<if test="start_date != null and end_date != null">
+		AND created_at between #{start_date} and #{end_date}
+		</if>
+		<if test="category != 0">
+		AND category = #{category}
+		</if>
+		<if test="search != 'all' and keyword != null">
+		AND #{search} like concat('%',#{keyword},'%')
+		</if>
+		<if test="search = 'all' and keyword != null">
+		AND title like concat('%',#{keyword},'%') or 
+		id like concat('%',#{keyword},'%') or 
+		nickname like concat('%',#{keyword},'%')
+		</if>
+		<if test="status != 3">
+		AND status = #{status}
+		</if>
+	</select>
+	
+	<!-- Lecture 테이블 - 요청중 강의 승인처리 -->
+	<!-- 승인거절1 승인요청 2 승인완료 3-->
+	<update id="SQL_UPDATE_LECTURE_APPROVAL_IDS" parameterType="map">
+	update lectures set status = 3 
+	<if test="ids != null">
+	where id in
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</if>
+	</update>
+	
+	<!-- 크리에이터 테이블 - 상태 변경처리 -->
+	<!-- 승인거절1 승인요청 2 승인완료 3-->
+	<update id="SQL_UPDATE_CREATOR_APPROVAL_IDS" parameterType="map">
+	update creator set status = 3 
+	<if test="ids != null">
+	where id in
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</if>
+	</update>
+	
+	<!-- 회원 테이블  - 크리에이터 상태로 변경 처리 -->
+	<!-- 일반 0 크리에이터승인1 -->
+	<update id="SQL_UPDATE_LECTURE_DISAPPROVAL_IDS" parameterType="map">
+	update members set check_creator = 1 
+	<if test="ids != null">
+	where id in
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</if>
+	</update>
+	
+	<!-- 관리자 메인 > 통계에 필요한 데이터 추출 -->
+	<!-- 방문자수 -->
+	<select id="SQL_SELECT_TODAY_IN_CNT" resultType="int">
+	select count(id) from members where logined_at > date_sub(now(), interval 1 day);
+	</select>
+	
+	<!-- 회원수 -->
+	<select id="SQL_SELECT_MEMBER_CNT" resultType="int">
+	select count(id) from members;
+	</select>
+	
+	<!-- 업로더수 -->
+	<select id="SQL_SELECT_CREATOR_CNT" resultType="int">
+	select count(id) from members where check_creator = 3;
+	</select>
+	
+	<!-- 전체강의수 -->
+	<select id="SQL_SELECT_LECTURE_CNT_ALL" resultType="int">
+	select count(id) from lectures;
+	</select>
+	
+	<!-- 신규회원수(일주일) -->
+	<select id="SQL_SELECT_NEW_MEMBER_CNT" resultType="int">
+	select count(id) from members where joined_at >=(CURDATE()-interval 7 day);
+	</select>
+	
+	<!-- 업로더 승인대기수 -->
+	<select id="SQL_SELECT_CREATOR_APPROVAL_CNT" resultType="int">
+	select count(id) from members where check_creator = 1;
+	</select>
+	
+	<!-- 강의 승인대기수 -->
+	<select id="SQL_SELECT_LECTURE_APPROVAL_CNT" resultType="int">
+	select count(id) from lectures where status = 0;
+	</select>
+	
+	<!-- 문의 답변하기 수 -->
+	<select id="SQL_SELECT_QNA_COMMENT_CNT" resultType="int">
+	select count(id) from qnas where comment = 0;
+	</select>
+	
+	<!-- 카테고리별 강의수 -->
+	<select id="SQL_SELECT_CATEGORY_LECTURE" resultType="categoryLectureStatVO">
+	select category, count(id) as lecture_cnt from lectures group by category
+	</select>
+	
+</mapper>

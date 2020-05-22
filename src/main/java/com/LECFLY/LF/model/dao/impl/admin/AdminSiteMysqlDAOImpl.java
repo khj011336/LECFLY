@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminSiteDAO;
-import com.LECFLY.LF.model.vo.HomeFileManagerVO;
+import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 
 @Repository
