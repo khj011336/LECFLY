@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 
-<h4>강의 관리</h4>
+<h4>쿠폰 관리</h4>
 
 <div class="admin_table_filter">
 	<table>

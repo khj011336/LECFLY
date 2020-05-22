@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<h4>비디오영상 관리</h4>
+<h4>강의 영상 관리</h4>
 
 <div class="admin_table_filter">
 	<table>
