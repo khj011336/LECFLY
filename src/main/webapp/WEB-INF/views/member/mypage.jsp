@@ -5,6 +5,7 @@
 
 	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage.css">
 	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage_list.css">
+	<link type="text/css" rel="stylesheet" href="resources/css/member/create_new_member.css">
 	
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

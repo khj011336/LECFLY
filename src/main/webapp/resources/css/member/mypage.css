@@ -500,9 +500,7 @@ a {
 	background-color: darkgrey;
 	color: white;
 	font-size: 14px;
-	margin-top: 30px;
-	/* margin-left: auto;
-	margin-right: 300px; */
+	margin: 30px auto 0px auto;
 	float: center;
 	text-align: center;
 	padding-top: 24px;
@@ -640,3 +638,5 @@ input[name=register_coupon] {
 .mypage_tabs_none {
 	display: none;
 }
+
+
