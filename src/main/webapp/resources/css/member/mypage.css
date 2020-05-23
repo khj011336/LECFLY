@@ -406,6 +406,35 @@ a {
 	font-size: 20px;
 }
 
+
+#mypage_info_control_table { /* mypage info control_ 테이블 */
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	text-align: left;
+}
+
+#mypage_info_control_table table { /* mypage pw 수정_ 테이블 */
+	margin: 30px 0 30px 50px;
+	width: 500px;
+	height: 200px;
+	border-collapse: collapse;
+	text-align: left;
+}
+
+#mypage_info_control_table table td {
+	text-align: left;
+	padding-left: 60px;
+}
+
+#mypage_info_control_table>input {
+	font-size: 20px;
+}
+
+
+
+
+
+
 /* .mypage_bottom_contents>button { */
 /* 	width: 240px; */
 /* 	height: 60px; */
@@ -471,9 +500,7 @@ a {
 	background-color: darkgrey;
 	color: white;
 	font-size: 14px;
-	margin-top: 30px;
-	/* margin-left: auto;
-	margin-right: 300px; */
+	margin: 30px auto 0px auto;
 	float: center;
 	text-align: center;
 	padding-top: 24px;
@@ -607,3 +634,9 @@ input[name=register_coupon] {
 		width: 400px;
 	}
 }
+
+.mypage_tabs_none {
+	display: none;
+}
+
+

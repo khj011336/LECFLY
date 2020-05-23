@@ -1,11 +1,13 @@
 package com.LECFLY.LF.service.inf.member;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 @Service
 public interface ILoginSVC {
@@ -49,4 +51,8 @@ public interface ILoginSVC {
 	// 임시비밀번호 생성
 	boolean makeTempPwIn(String email, String password);
 	String makeTemptPw();
+
+	String check_none(String name, String nickname, Date birthday,
+			String gender, String email, String password,
+			String pw_confirm, String phNumber, String phNumber2);
 }

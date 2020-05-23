@@ -16,6 +16,9 @@ var pagea = 1 ;
 		location.href ="kit_upload.LF?CFID="+CFID+"&category="+category;
 	});
 });
+function updateClass(){
+	location.href = "creator_writing_lecture.LF?LecId="+CFID+"&isUpdate=2";
+}
 function nationforVideo(pagea , max){
 	var nate = "";
 	 if(pagea >1 ){
@@ -38,11 +41,12 @@ function nationforVideo(pagea , max){
 		location.href ="video_upload.LF?CFID="+CFID+"&category="+category;
 	}
 	
-function updateVideo(pk){
+function updateVideo(ID ,CFID){
 	if($("option").val()== 1){
 // 		location.href ="video_upload.LF?CFID="+pk;
 	} 
 }
+var status = {"","","","수정하기","미완성"};
 function pagenate(page){
 	var patha = '${crPath}';
 	$.ajax({
@@ -59,7 +63,7 @@ function pagenate(page){
 				"<div id='countor'> <span style='width: 500px'>"+item.title +"</span> <span><a href='##' class='sellerTitle'>"+item.createdAt+"</a></span>"+
 				" <span> <select name='test1'> <option value='1'>동영상 수정</option> </select> </span> </div></td>"+
 				"<td class='count'></td> <td class='count'></td><td class='count'></td> <td class='subtotal'>"+
-				"<p><i class='fas fa-comment-dots'></i><span>"+item.status+"</span></p>"+
+				"<p><i class='fas fa-comment-dots'></i><span>"+status[item.status]+"</span></p>"+
 				"<p><i class='fas fa-heart'></i><span></span>"+item.likeCount+"</p>"+
 				"<p><i class='fas fa-eye'></i><span>"+item.views+"</span></p>"+
 				"</td> <td> </td> <td class='opration'><span onclick='updateVideo("+item.id+")' class='deleteOne'>수정</span></td> </tr>"
@@ -94,7 +98,7 @@ function pagenate(page){
 							<th colspan="2"></th>
 							<th id="forfixs"></th>
 							<th class="crinf" id = "kit">판매킷 등록</th>
-							<th class="crinf">클래스 정보수정</th>
+							<th class="crinf" onclick ="updateClass()">클래스 정보수정</th>
 							<th class="listup" onclick="videoUpload(CFID,category)">+영상업로드</th>
 							<th id="listdel">삭제</th>
 							<th style="width: 150px;">정렬&nbsp;<select>
@@ -136,8 +140,7 @@ function pagenate(page){
 								</td>
 								<td></td>
 								<td class="opration"><span
-									onclick='updateVideo(${lecList[vs.current].id})'
-									class="deleteOne">수정</span></td>
+									onclick='updateVideo(${lecList[vs.current].id},${lecList[vs.current].CFId})' class="deleteOne">수정</span></td>
 							</tr>
 						</c:forEach>
 						</c:if>

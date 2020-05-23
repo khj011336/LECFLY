@@ -9,21 +9,27 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.InvalidTimeoutException;
 
 import com.LECFLY.LF.model.dao.impl.Test;
 
-import com.LECFLY.LF.model.dao.inf.IShowClassVideoDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
+import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
+import com.LECFLY.LF.model.dao.inf.member.ILecAttendDAO;
+import com.LECFLY.LF.model.dao.inf.member.ILecTypeDAO;
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
-import com.LECFLY.LF.model.vo.CouponVO;
-import com.LECFLY.LF.model.vo.MemberVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
-import com.LECFLY.LF.model.vo.ShowClassVideoVO;
+import com.LECFLY.LF.model.vo.LecAttendVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
+import com.LECFLY.LF.model.vo.creator.LectureVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
 
@@ -37,10 +43,10 @@ public class MyPageSVCImpl implements IMypageSVC {
 	private IVideoDAO vdDao;
 	
 	@Autowired
-	private IShowClassVideoDAO scvDao;
+	private ICreatorDAO creDao;
 	
-//	@Autowired
-//	private ICreatorDAO creDao;
+	@Autowired
+	private ILectureDAO lecDao;
 	
 //	@Autowired
 //	private IQnaCommentDAO qnacomDao;		// 디버그용 잠시닫음
@@ -54,6 +60,15 @@ public class MyPageSVCImpl implements IMypageSVC {
 //	@Autowired
 //	private ICouponDAO couponDao;			// 디버그용 잠시닫음
 	
+	@Autowired
+	private ILecTypeDAO ltDao;
+	
+	@Autowired
+	private ILecAttendDAO laDao;
+	
+//	@Autowired
+//	private ITiketDAO tiketDao;
+	
 	private static final int PAGE_SIZE = 10;
 	
 	public static final int ERR_CONT_PARAM = 20;
@@ -66,6 +81,55 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 	};
 	
+	
+	
+	/**
+	 *	마이페이지 들어올시 필요한 것들
+	 *	Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수 + 
+	 *	뷰단하단에 아무것도안보여주려고함(ResponseBody json map으로 데이터리턴해야될거같은데) 
+	 */
+	@Override
+	public Map<String, Object> selectMyPageContents(int mbId) {
+		System.out.println("selectMyPageContents()..");
+		Map<String, Object> rMap = new HashMap<>(); 
+		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
+		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
+				 testDao.selectOneTiketByMbId(mbId);
+		if(ticket != null) {
+			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
+			//쿠폰
+			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
+					testDao.checkNumberOfCouponseByMbId(mbId);
+			if(cntCoupon >= 0) {
+				int cntLecture = testDao.checkNumberOfLectureByMbId(mbId); // 회원이듣는강의개수
+				if(cntLecture >= 0) {
+					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
+					int rtCnt = (cntUseCategory == 1 ? 
+								1 : cntUseCategory == 2 ? 
+										3 : cntUseCategory == 3 ? 
+												7 : -1); // 1 아니면 3 아니면 7 아니면 -1 이나옴
+					
+					rMap.put("cntUseCategory", rtCnt); // 티켓 이용권 이름? 가지고 몇개의 카테고리를 인지 확인해야되고 // 들을수있는 개수
+					
+					/* 개수가지고 카테고리를 어떻게? 하는지 확인이필요함 
+					 티켓을 가지고 있다가 강의볼떄마다 하나씩사용하는지 애초에 살떄 3개짜리를사게되는 
+					순간 정해져서 오는지 오게되면은 번호로 하는데 스플릿을 나타나는지 알아야한다 */
+					rMap.put("strCateList", ""); 
+					rMap.put("tiketEndDay", ""); // 티켓의 종류날짜
+					rMap.put("cntCoupon", cntCoupon);
+					rMap.put("cntLecture", cntLecture);
+					return rMap;
+				} else {
+					System.out.println("cntLecture = 음수");
+				}
+			} else {
+				System.out.println("cntCoupon = 음수 ");
+			}
+		} else {
+			System.out.println("ticket = null");
+		} 	
+		return null;
+	}
 	
 	
 	@Override // 마이페이지 멤버가 사진업데이트 하려면..~~~
@@ -82,89 +146,152 @@ public class MyPageSVCImpl implements IMypageSVC {
 	}
 
 	
-	@Override //회원이 신청한 강의목록 표시하기
-	public List<ShowClassVideoVO> selectLecToStatusForMbIdStatus(int mbId, int status){
-		System.out.println("MyPageSVCImpl: selectLecToStatusForMbIdStatus()");
-		if( mbId > 0 && status >= ShowClassVideoVO.STATUS_ATTENDING && 
-								status <= ShowClassVideoVO.STATUS_LIKE ) {
-			List<ShowClassVideoVO> scvList = 
-					scvDao.selectLecToStatusForMbId(mbId, status); 
+	/**
+	 *	mbId 랑 status 회원이 강의를 수강한건지 or 찜하기한건지 or 좋아요 한건지 구분을하고
+	 *	mbId status 를 넣어 해당하는 lectureId를 가지고있는 LecTypeVO List를 뽑고
+	 *	LecTypeVOList안에서 classId 를 뽑았으며
+	 *	그 classId로 LecAttendVO 를 뽑아서 리스트로담아
+	 *	리턴하였음
+	 */
+	@Override //회원이 신청한수강중인 강의목록(비디오) 표시하기
+	public List<LecAttendVO> selectLecToStatusForMbIdStatus(int mbId, int status){
+		System.out.println("mpSvc : selectLecToStatusForMbIdStatus()");
+		if( mbId > 0 && 
+			status >= LecTypeVO.STATUS_ATTENDING &&
+			status <= LecTypeVO.STATUS_LIKE ) 
+		{
+			// 멤버아이디랑 저걸로 판달수있는거 lecType
+			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
 			
-			// 디버그 테스트 
-//			List<ShowClassVideoVO> scvList = new ArrayList<>();
-//			for (int i = 0; i < 10; i++) {
-//	
-//				ShowClassVideoVO scv = new ShowClassVideoVO((i+1), 4, (i % 3 == 1 ? 0 : (i % 3 == 2 ? 1 : 2)), 
-//						5, 12, "첫번째강의", "firstclass.jpg", 142114, 14.f, new Timestamp(120000) );
-//				scvList.add(scv);
-//			} 
-		
-			if(scvList.size() > 0) {
-				return scvList;
+			//여기서 클래스아이디를 통해 내가 수강중인 비디로들을 뽑아야됨 얼마만큼 저거리스트만큼 돌아야되
+			if(ltList != null) {
+				List<LecAttendVO> rtLaList = new ArrayList<>();
+				final int LT_LIST_SIZE = ltList.size();
+				for (int i = 0; i < LT_LIST_SIZE; i++) {
+					int classId = ltList.get(i).getClassId();
+					List<LecAttendVO> laList = laDao.selectAllLecAttendByMbIdClassId(mbId, classId);
+					if(laList.size() >= 0) {
+						final int LA_LIST_SIZE = laList.size();
+						for (int j = 0; j < LA_LIST_SIZE; j++) {
+							LecAttendVO la = laList.get(j);
+							rtLaList.add(la);
+						}
+						
+					} else {
+						System.out.println("laList < 0 ::  음수");
+					}
+				}
+				
+				return rtLaList;
+			} else {
+				System.out.println("ltList == null ");
 			}
 		} else {
-			System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
-			System.out.println("mbId = " + mbId + "/ status = " + status);
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) + 
+							" / mbId = " + mbId  + " / status = " + status);
 		}
 		return null;
 	}
 
 
-	@Override // video id 를찾고 그 비디오 아이디로 VideoVO를 찾은후  creatorId로 creator를 찾은후 creator닉네임 이미지패스만뺌
+	/**
+	 *	mbId 랑 status 회원이 강의를 수강한건지 or 찜하기한건지 or 좋아요 한건지 구분을하고
+	 *	mbId status 를 넣어 해당하는 lectureId를 가지고있는 LecTypeVO List를 뽑고
+	 *	리스트의 갯수만큼 LectureVO 의 파람 7개를 맵으로 뽑아서
+	 *	각각의 파람들을 리스트로 만들어서
+	 *	맵에담아리턴 Map<"ListName", ListValue>
+	 */
+	@Override
 	public Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status){
 		System.out.println("MyPageSVCImpl / selectVideoAndCreImgPathAndCreNicname()..");
-		if( mbId > 0 && status >= ShowClassVideoVO.STATUS_ATTENDING && 
-				status <= ShowClassVideoVO.STATUS_LIKE ) {
-			
-			List<Integer> vdIdList = scvDao.selectLecToStatusForMbIdRtVdPk(mbId, status);
-			if(vdIdList != null) {
-				final int VDIDLIST_SIZE = vdIdList.size();
-				List<VideoVO> vdList = new ArrayList<>();
-				List<String> vdCateList = new ArrayList<>();
-				List<String> creImgPathList = new ArrayList<>();
-				List<String> nicNameList = new ArrayList<>();
-				Map<String, Object> rtMap = new HashMap<>();
-				for (int i = 0; i < VDIDLIST_SIZE; i++) {
-					VideoVO vd = //vdDao.selectOneVideoById(vdIdList.get(i));
-							testDao.selectOneVideoById(vdIdList.get(i));
-					if(vd != null) {
-						Map<String, Object> creImgPathAndNicnameMap = 
-								//creDao.selectOneCreatorByIdRtImgPathAndNicname(vd.getfId()); // creator id = fid
-								testDao.selectOneCreatorByIdRtImgPathAndNicname(vd.getfId());
-						if(creImgPathAndNicnameMap != null) { // 인코딩??
-							String imgPath = (String)creImgPathAndNicnameMap.get("img_path");
-							String nicName = (String)creImgPathAndNicnameMap.get("nickname");
-							vdCateList.add(ShowClassVideoVO.STR_CATEGORY[vd.getCategory()]);
-							vdList.add(vd);
-							creImgPathList.add(imgPath);
-							nicNameList.add(nicName);
-						} else {
-							System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-							System.out.println("creImgPathAndNicnameMap = null");
-							break;
-						}
+		if(mbId > 0 && status >= LecTypeVO.STATUS_ATTENDING 
+								&& status <= LecTypeVO.STATUS_LIKE) {
+			// 판단하는게 있어야되 회원을기준으로  찜하기/좋아요 한
+			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
+			if(ltList != null) {
+				List<Integer> idList = new ArrayList<>();
+				List<String> strCateList = new ArrayList<>();
+				List<String> subTitleList = new ArrayList<>();
+				List<String> imgPathList = new ArrayList<>();
+				List<String> nickNameList = new ArrayList<>();
+				List<Integer> likeCountList = new ArrayList<>();
+				List<String> creatorImgPathList = new ArrayList<>();
+				final int LTLIST_SIZE = ltList.size();
+				for (int i = 0; i < LTLIST_SIZE; i++) {
+					LecTypeVO lecType = ltList.get(i);
+					int classId = lecType.getClassId();
+					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId); 
+							testDao.selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId);
+					if(lecParamMap != null) {
+						int id = (int)lecParamMap.get("id");
+						idList.add(id);
+						
+						int cate = (int)lecParamMap.get("category");
+						String strCate = LecTypeVO.STR_CATEGORY[cate];
+						strCateList.add(strCate);
+						
+						String subTitle = (String)lecParamMap.get("subtitle");
+						subTitleList.add(subTitle);
+						
+						String titleImgPath = (String)lecParamMap.get("title_img");
+						imgPathList.add(titleImgPath);
+						
+						String nickName = (String)lecParamMap.get("nickname");
+						nickNameList.add(nickName);
+						
+						int likeCount = (int)lecParamMap.get("like_count");
+						likeCountList.add(likeCount);
+						
+						/* 	크리에이터 프로필 이미지? 뽑는방법
+						 * LectureVO 타입의 객체를 뽑는다. 그곳의 LectureVO.getImgPath() 
+						 * 	를 하면 제일마지막 이미지 이름이나옴.<1>
+						 * LectureVO.getImgPath().split("_")[1] 하면 크리에이터의 이름이나옴 <2>
+						 * creatorDao.get 경로하면 폴더경로가나옴.    ...<3>
+						 * <3> + <2> + img + <1> 하면 해당 이미지 사진의 경로가 완성이됨. 
+						 * 	(경로니까 사이에 / 없으면 추가해주자)
+						*/
+						String localPath = "";// creDao.
+						String creImgPath = (String)lecParamMap.get("img_path");
+						String creNickName = creImgPath.split("_")[1];
+						System.out.println("creNickName = " + creNickName);
+						String creatorImgPath = localPath + creNickName + "img" + creImgPath;
+						creatorImgPathList.add(creatorImgPath);
+						System.out.printf("%d회차 id = %d, strCate = %s, subTitle =  %s," + 
+						" titleImgPath = %s, nickName = %s, likeCount = %d, creatorImgPath =  %s\r\n" ,
+						i, id, strCate, subTitle, titleImgPath, nickName, likeCount, creatorImgPath);
 					} else {
-						System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-						System.out.println("vd = null");
-						break;
+						System.out.println("lecParamMap == null");
 					}
 				}
-				if(vdList != null && creImgPathList !=null && nicNameList != null) {
-					rtMap.put("vdList", vdList);
-					rtMap.put("vdCateList", vdCateList);
-					rtMap.put("creImgPathList", creImgPathList);
-					rtMap.put("nicNameList", nicNameList);
-					return rtMap;
+				if( 	idList.size() > 0  && strCateList.size() > 0 && 
+						subTitleList.size() > 0 && imgPathList.size() > 0 && 
+						nickNameList.size() > 0 && likeCountList.size() > 0 &&
+						creatorImgPathList.size() > 0 &&
+						idList.size() == strCateList.size() &&
+						idList.size() == subTitleList.size() && 
+						idList.size() == imgPathList.size() &&
+						idList.size() == nickNameList.size() && 
+						idList.size() == likeCountList.size() &&
+						idList.size() == creatorImgPathList.size() ) 
+				{ // 위조건이 참일때.
+					Map<String, Object> rMap = new HashMap<>();
+					rMap.put("idList", idList);
+					rMap.put("cateList", strCateList);
+					rMap.put("titleList", subTitleList);
+					rMap.put("imgPathList", imgPathList);
+					rMap.put("nicList", nickNameList);
+					rMap.put("likeCountList", likeCountList);
+					rMap.put("creatorImgList", creatorImgPathList);
+					return rMap;
 				} else {
-					System.out.println("vdList or creImgPathList or nicNameList = null");
+					System.out.println("list들의 사이즈가 0 이하거나 사이즈가 동일하지않음");
 				}
 			} else {
-				System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-				System.out.println("rtMap = null");
+				System.out.println("ltList == null");
 			}
 		} else {
-			System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
-			System.out.println("mbId = " + mbId + "/ status = " + status);
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) + 
+					" / mbId = " + mbId  + " / status = " + status);
 		}
 		return null;
 	}
@@ -184,6 +311,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 			int totalRecords = //qnacomDao.checkNumberOfQnaCommentsForMember(mbId);
 					testDao.checkNumberOfQnaCommentsForMember(mbId);
 			int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
+			System.out.println("totalRecorde = " + totalRecords + 
+					" / maxPG = " + maxPG);
 			if(pn > 0 && pn <= maxPG) {
 				Map<String, Object> rMap = new HashMap<>();
 				int offset = (pn-1) * 10;
@@ -193,7 +322,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 						//qnacomDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
 						testDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
 				System.out.println("qnacomList = " + qnacomList);
-				if(qnacomList.size() > 0) {
+				if(qnacomList.size() >= 0) {
 					final int QNACOM_LIST_SIZE = qnacomList.size();
 					List<QnaVO> qnaList = new ArrayList<>(QNACOM_LIST_SIZE);
 					for (int i = 0; i < QNACOM_LIST_SIZE; i++) {
@@ -214,7 +343,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 					rMap.put("qnaList", qnaList);
 					return rMap;
 				} else {
-					System.out.println("qnacomList.size()는 0 이거나 음수");
+					System.out.println("qnacomList.size() <0 :: 음수");
 				}
 			} else {
 				System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
@@ -341,6 +470,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 		return null;
 	}
+
+
+	
 	
 
 	

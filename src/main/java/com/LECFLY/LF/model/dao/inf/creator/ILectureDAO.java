@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 
 public interface ILectureDAO {
@@ -29,8 +30,10 @@ public interface ILectureDAO {
 	boolean insertNewLecture(int category, String subTitle, String title, String titleImg, String infoImg,
 			String info );
  boolean insertNewLecture(int fid , int category , String subTitle, String title , String titleImg, String infoImg , String infoImgb,
-			String info , String nickname , String imgpath ) ;
-	boolean updateLecture();
+			String info ,int status, String nickname , String imgpath ) ;
+ LectureVO selectOneLectureForUpdate(int fid);
+	boolean updateLecture(LectureVO lecVO ,CreatorVO crVO, int id);
+	boolean updateOnlyLecuture(LectureVO lecVO , int id);
 	boolean updateLectureStatus(int id);
 	boolean deleteLecture();
 	

@@ -4,11 +4,13 @@ package com.LECFLY.LF.model.dao.impl.creator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
+import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 @Repository
 public class LectureMysqlDAOImpl implements ILectureDAO {
@@ -16,8 +18,14 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	JdbcTemplate jtem;
 	final String SELECT_LECTURES_limit = "select * from lectures where fid = ? order by created_at desc  limit ?,? ";
 	final String SELECT_LECTURES = "select * from lectures order by blank where fid = ?";
+	final String SELECT_ONE_LECTURE ="select * from lectures where id = ?";
 	final String CHECK_NUMBER_LECTURES = "select count(*) as cp_mb from lectures where fid =? ";
-	final String INSERT_NEW_LECTURE = "insert into lectures values(null , ? , ?, ? , ? ,? ,?,?,?,1,null,0,0,?,?,now(),now());";
+	final String INSERT_NEW_LECTURE = "insert into lectures values(null , ? , ?, ? , ? ,? ,?,?,?,?,null,0,0,?,?,now(),now());";
+	final String UPDATE_NEW_LECTURE = "update lectures set category = ?, subtitle = ?, title = ?, title_img = ? ,info_img = ? , info_imgb = ? ,"+ 
+			"info = ? , status = ? , updated_at = now() , img_path  =  ? , nickname = ? where id = ?";
+	final String UPDATE_ONLY_LECTURE = "update lectures set category = ?, subtitle = ?, title = ?, title_img = ? ,info_img = ? , info_imgb = ? ,"+ 
+			"info = ? , status = ? , updated_at = now()  where id = ?";
+
 	@Override
 	public boolean isCreator(int id) {
 		// TODO Auto-generated method stub
@@ -26,17 +34,25 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 
 	@Override
 	public boolean insertNewLecture(LectureVO Lvo) {
-		int r = jtem.update(INSERT_NEW_LECTURE, Lvo.getFid(),Lvo.getSubTitle(),Lvo.getTitle(),Lvo.getTitleImg(),Lvo.getInfoImg(),Lvo.getInfo(),
-				Lvo.getNickname(),Lvo.getImgPath());
+		int r = jtem.update(INSERT_NEW_LECTURE, Lvo.getFid(),Lvo.getSubTitle(),Lvo.getTitle(),Lvo.getTitleImg(),Lvo.getInfoImg(),Lvo.getInfoImg(),
+				Lvo.getInfoImgb(),Lvo.getInfo(),Lvo.getStatus(),Lvo.getNickname(),Lvo.getImgPath());
 		return r ==1;
 	}
 	public boolean insertNewLecture(int fid , int category , String subTitle, String title , String titleImg, String infoImg , String infoImgb,
-			String info , String nickname , String imgpath ) {
-		int r = jtem.update(INSERT_NEW_LECTURE, fid,category,subTitle,title,titleImg,infoImg,infoImgb,info,
+			String info ,int status, String nickname , String imgpath ) {
+		int r = jtem.update(INSERT_NEW_LECTURE, fid,category,subTitle,title,titleImg,infoImg,infoImgb,info,status,
 				nickname,imgpath);
 		return r==1;
 	}
-
+	public LectureVO selectOneLectureForUpdate(int Lectureid) {
+		try {
+		return  jtem.queryForObject(SELECT_ONE_LECTURE, BeanPropertyRowMapper.newInstance(LectureVO.class),Lectureid);
+		}catch (DataAccessException e) {
+			System.out.println("셀렉트 렉쳐 에러");
+			System.out.println(e);
+			return null;
+		}
+	}
 	@Override
 	public boolean insertNewLecture(int category, String subTitle, String title, String titleImg, String infoImg,
 			String info) {
@@ -45,9 +61,16 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	}
 
 	@Override
-	public boolean updateLecture() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateLecture(LectureVO lecVO ,CreatorVO crVO, int id) {
+		int r = jtem.update(UPDATE_NEW_LECTURE,lecVO.getCategory(),lecVO.getSubTitle(),lecVO.getTitle(),lecVO.getTitleImg(),lecVO.getInfoImg(),lecVO.getInfoImgb()
+				,lecVO.getInfo(),lecVO.getStatus(),crVO.getImgPath(),crVO.getNickname(),id);
+		return r ==1;
+	}
+	@Override
+	public boolean updateOnlyLecuture(LectureVO lecVO , int id) {
+		int r = jtem.update(UPDATE_ONLY_LECTURE,lecVO.getCategory(),lecVO.getSubTitle(),lecVO.getTitle(),lecVO.getTitleImg(),lecVO.getInfoImg(),lecVO.getInfoImgb()
+				,lecVO.getInfo(),lecVO.getStatus(),id);
+		return r ==1;
 	}
 
 	@Override

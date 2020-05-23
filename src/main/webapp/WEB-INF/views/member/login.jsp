@@ -44,8 +44,8 @@
 	        <h2 id="login_subtitle">LOGIN</h2>
 	    </div>
 	    <div id="login_middle">
-	    	<input type="text" placeholder="E-mail" name="email" id="login_email" >
-	        <input type="password" placeholder="Password" name="pw" id="login_pw" maxlength="16" >
+	    	<input type="text" placeholder="E-mail" name="email" id="login_email" value="${!empty email ? email : ''}">
+	        <input type="password" placeholder="Password" name="pw" id="login_pw" maxlength="16" value="${!empty pw ? pw : ''}">
 	        <div id="login_etc">
 <!-- 	        	<a id="find_id" class="login_linked login_a" href="find_mb_login.LF">아이디찾기</a> -->
 <!-- 	        	<span id="find_idpw_sl">&nbsp;/&nbsp;</span> -->
@@ -53,7 +53,7 @@
 	            <a id="register" class="login_linked login_a" href="clause.LF">회원가입</a>
 	        </div>
 	    </div>
-	    <div id="login_msg" name="msg">${!empty msg ? msg : ''}</div>
+	    <div id="login_msg" name="login_msg">${!empty login_msg ? login_msg : ''}</div>
 	    <div id="login_bottom">
 	        <div id="login_btn">
 	        	<a href="#" onclick="javascript:document.login.submit();" class="login_a">로그인</a> <!-- 임시 아래꺼써야됨 -->

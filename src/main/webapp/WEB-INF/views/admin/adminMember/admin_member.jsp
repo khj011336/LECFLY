@@ -133,14 +133,14 @@
 				<td>${mb.id }</td> 
 				<td>${mb.name }</td> 
 				<td>${mb.nicname }</td> 
-				<td>${mb.birthday }</td>
+				<td><fmt:formatDate value="${mb.birthday}" pattern="yyyy.MM.dd" /></td>
 				<td>${mb.gender }</td> 
 				<td>${mb.email }</td> 
 				<td>${mb.phNumber }</td> 
-				<td>${mb.joinedAt }</td> 
+				<td><fmt:formatDate value="${mb.joinedAt}" pattern="yyyy.MM.dd" /></td>
 				<td>${mb.useTicket }</td> 
 				<td>${mb.checkCreator }</td> 
-				<td>${mb.loginedAt }</td> 
+				<td><fmt:formatDate value="${mb.loginedAt}" pattern="yyyy.MM.dd" /></td> 
 			</tr>
 		</c:forEach>
 	</table>

@@ -1,6 +1,7 @@
 package com.LECFLY.LF.model.dao.impl.creator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,13 @@ public class KitMysqlDAOImpl {
 		return r== 1;
 	}
 	public KitVO selectOneKit(int CFid) {
+		try {
 		return jtem.queryForObject(SELECT_ONE_KIT, BeanPropertyRowMapper.newInstance(KitVO.class), CFid);
+		}catch (DataAccessException e) {
+			System.out.println("셀렉 키트 에러");
+		System.out.println(e);
+		return null;
+		}
 	}
 	public boolean insertKit(int fid , int cfid , int cate , String attr, String title , int price , int remain , String imgPath,
 			String deliver , int deliverPrice , String fromTO , String info , String detail) {

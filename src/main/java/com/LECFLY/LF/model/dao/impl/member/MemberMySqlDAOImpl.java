@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
-import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 @Repository
 public class MemberMySqlDAOImpl implements IMemberDAO {
@@ -48,7 +48,6 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 		
 	}
 	
-	
 	//sql 정의부
 	public static final String SQL_INSERT_NEW_MEMBER = 
 			"insert into members values(null,?,?,?,?,?,?,hex(aes_encrypt(?,?)), " 
@@ -56,6 +55,8 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 //			"insert into members values(null,?,?,?,?,?,?,"
 //			+ "hex(aes_encrypt(?,?)),?,now(),?,0,0,0,now(),?,?,?,null,null)";
 	private static final String SQL_SELECT_MEMBER_ID_BY_EMAIL = "select id from members where email=?";
+	private static final String SQL_SELECT_MEMBER_COUNT_BY_NIC = "select count(id) from members where nicname=?";
+	private static final String SQL_SELECT_MEMBER_BY_NIC = "select * from members where nicname=?";
 	private static final String SQL_SELECT_MEMBER_PW_CHECK = "select * from members where password = hex(aes_encrypt(?,?))";
 	private static final String SQL_FIND_MB_EMAIL = "select email from members where ph_number=? and name=?";
 	private static final String SQL_FIND_MB_EMAIL_IN_DB = "select * from members where email=?";
@@ -63,13 +64,8 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 			"update members set password=hex(aes_encrypt(?,?)) where email=?";
 //	public static final String SQL_="";
 	
-	
-
 	@Autowired
 	private JdbcTemplate jtem;
-	
-	
-	
 	
 	@Override
 	public boolean insertNewMember(MemberVO mb) {
@@ -121,8 +117,9 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 
 	@Override
 	public MemberVO selectOneMemberByNicName(String nicname) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("jtem selectOneMemberByNicName");
+		return jtem.queryForObject(SQL_SELECT_MEMBER_BY_NIC, 
+				BeanPropertyRowMapper.newInstance(MemberVO.class), nicname);
 	}
 
 	@Override
@@ -283,5 +280,13 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 		int r = this.jtem.update(SQL_UPDATE_MEMBER_PW_BY_EMAIL, password, 
 				new PwSecurityEncoding(email).getEmail(), email);
 		return r == 1;
+	}
+
+	@Override
+	public boolean dupCheckNickname(String nickname) {
+		System.out.println("jdbc: dupCheckNickname");
+		int r = jtem.queryForObject(SQL_SELECT_MEMBER_COUNT_BY_NIC, Integer.class, nickname);
+		System.out.println(r);
+		return r>=1;
 	}
 }

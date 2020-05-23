@@ -11,17 +11,16 @@
 		<import resource="aop/aop_conf.xml"/>
 		<!-- DBCP 풀링 데이터소스 빈 등록 (Apache Commons) -->
 		<import resource="dataSource/dbcp_ds.xml"/>
-		<!-- JdbcTemplate 등록 -->
 		<bean class="org.springframework.jdbc.core.JdbcTemplate" id="jtemplete" p:dataSource-ref="ds"></bean>
 		
 		<!-- Mybatis 관련 빈 등록 -->
-<!-- 		<bean id="mybatisFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
-<!-- 		<property name="dataSource" ref="ds" /> -->
-<!-- 		<property name="configLocation" -->
-<!-- 			 value="classpath:mybatis-config.xml"/> -->
-<!-- 		</bean> -->
+	<bean id="mybatisFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds" />
+		<property name="configLocation"
+			 value="classpath:mybatis-config.xml"/>
+	</bean>
 	
-<!-- 		<bean id="sstem" class="org.mybatis.spring.SqlSessionTemplate"> -->
-<!-- 		<constructor-arg ref="mybatisFactory" /> -->
-<!-- 		</bean> -->
+	<bean id="sstem" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="mybatisFactory" />
+	</bean>
 </beans>

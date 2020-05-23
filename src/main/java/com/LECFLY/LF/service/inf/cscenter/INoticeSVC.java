@@ -2,7 +2,7 @@ package com.LECFLY.LF.service.inf.cscenter;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
 
 
 

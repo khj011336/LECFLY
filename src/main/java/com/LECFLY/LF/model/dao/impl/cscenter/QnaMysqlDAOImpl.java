@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 
 @Repository
 public class QnaMysqlDAOImpl implements IQnaDAO{

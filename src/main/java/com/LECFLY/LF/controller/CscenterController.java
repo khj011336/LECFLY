@@ -23,11 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.MemberVO;
-import com.LECFLY.LF.model.vo.NoticeVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.cscenter.ICscenterFileSVC;
 import com.LECFLY.LF.service.inf.cscenter.IFaqSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
@@ -90,7 +90,7 @@ public class CscenterController {
 	
 	// 회원이 QnA 글쓰기 + 파일
 		@RequestMapping(value = "cs_post_new_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-		public String cscenterPostNewQna(HttpSession ses, Model model) {
+		public String cscenterPostNewQna(HttpSession ses, Model model ) {
 			System.out.println("cscenterPostNewQna()...");
 			MemberVO mb = (MemberVO)ses.getAttribute("member");			
 			model.addAttribute("mb", mb);
@@ -126,7 +126,7 @@ public class CscenterController {
 	
 	// QnA 글 상세보기
 	@RequestMapping(value = "/qna_receive.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterReceiveQna(HttpSession ses, int id, Model model) {
+	public String cscenterReceiveQna(HttpSession ses, int id, Model model , @RequestParam(value = "mbId", defaultValue = "1") int memberId) {
 		QnaVO qa = this.qaSvc.selectOneQna(id);
 		int pn = this.qaSvc.checkPageNumber(id);
 			System.out.println("pn은?" + pn);
@@ -169,8 +169,11 @@ public class CscenterController {
 	}
 	// QnA 글 수정하기
 	@RequestMapping(value = "/cs_edit_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterEditQna(HttpSession ses, Model model, int id){
+	public String cscenterEditQna(HttpSession ses, Model model, int id,  @RequestParam(value = "mbId", defaultValue = "1") int memberId){
 //			@RequestParam(value = "qaId", defaultValue = "0") int id){
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		model.addAttribute("mb", mb);
+		System.out.println("mb = " + mb);
 		if(id == 0 ) {
 			System.out.println("qna update: id=0");
 			return "redirect:cs_qna.LF";
@@ -210,7 +213,7 @@ public class CscenterController {
 	
 	// QnA 글 삭제하기
 	@RequestMapping(value = "/qna_delete.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterDeleteQna(int id, HttpSession ses) {
+	public String cscenterDeleteQna(int id, HttpSession ses,  @RequestParam(value = "mbId", defaultValue = "1") int memberId) {
 		System.out.println("cscenterDeleteQna()"+ id);
 		int commentCheck = this.qcSvc.checkNumberOfCommentsForQna(id);
 		if(commentCheck >= 1) {

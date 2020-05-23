@@ -2,10 +2,9 @@ package com.LECFLY.LF.service.inf.cart;
 
 import java.util.List;
 import java.util.Map;
+import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 
-import com.LECFLY.LF.model.vo.CartVO;
-import com.LECFLY.LF.model.vo.CommentVO;
-import com.LECFLY.LF.model.vo.TicketVO;
 
 public interface ICartSVC {
 //	// 회원이 로그인 시, 상품 상세페이지로 이동할 수 있다.
