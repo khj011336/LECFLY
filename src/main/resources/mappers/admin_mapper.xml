@@ -104,9 +104,31 @@
 	</select>
 	
 	<!-- Lecture 테이블 - 요청중 강의 승인처리 -->
-	<!-- 승인거절1 승인요청 2 승인완료 3-->
+	<!-- 승인거절1 승인요청 2 *승인완료 3*-->
 	<update id="SQL_UPDATE_LECTURE_APPROVAL_IDS" parameterType="map">
 	update lectures set status = 3 
+	<if test="ids != null">
+	where id inS
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</if>
+	</update>
+	
+	<!-- *승인거절1* 승인요청 2 승인완료 3-->
+	<update id="SQL_UPDATE_LECTURE_DISAPPROVAL_IDS" parameterType="map">
+	update lectures set status = 1 
+	<if test="ids != null">
+	where id in
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</if>
+	</update>
+	
+	<!-- 강의리스트 삭제 -->
+	<update id="SQL_DELETE_LECTURE_IDS" parameterType="map">
+	delete from lectures 
 	<if test="ids != null">
 	where id in
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
@@ -129,7 +151,7 @@
 	
 	<!-- 회원 테이블  - 크리에이터 상태로 변경 처리 -->
 	<!-- 일반 0 크리에이터승인1 -->
-	<update id="SQL_UPDATE_LECTURE_DISAPPROVAL_IDS" parameterType="map">
+	<update id="SQL_UPDATE_MEMBER_APPROVAL_IDS" parameterType="map">
 	update members set check_creator = 1 
 	<if test="ids != null">
 	where id in

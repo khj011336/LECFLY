@@ -1,5 +1,6 @@
 package com.LECFLY.LF.service.impl.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -246,6 +247,21 @@ public class AdminLectureSVCImpl implements IAdminLectureSVC {
 	@Override
 	public List<CategoryLectureStatVO> selectCategoryLectureCnt() {
 		return adDAO.selectCategoryLectureCnt();
+	}
+
+	@Override
+	public boolean updateLectureApprovalforIds(ArrayList<Integer> ids) {
+		return adDAO.updateLectureApprovalforIds(ids);
+	}
+
+	@Override
+	public boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList) {
+		return adDAO.updateLectureDispprovalforIds(checkList);
+	}
+
+	@Override
+	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
+		return adDAO.delectLectureforIds(checkList);
 	}
 
 }
