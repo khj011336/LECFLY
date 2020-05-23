@@ -2,12 +2,34 @@
 	pageEncoding="UTF-8"%>
 
 <script src="resources/js/creator/video.js"></script>
-
+<script>
+var isUpdate = "${isUpdate}";
+$(window).on("unload",function(e){
+	 var nodename = false;
+	 $("#unloadz").val("1");
+	 var formdata = new FormData($('#viform')[0]);
+	 if(e.target.activeElement.nodeName.toLowerCase() == "body"||e.target.activeElement.nodeName.toLowerCase() == "input"){
+		   nodename = true;
+		 }else{
+			 nodename = false;
+		 }
+	 if(nodename == false && videoChange()   && upbutton != 1 && isUpdate !=5){
+		 $("#uplUP").attr("disabled","disabled");
+		 navigator.sendBeacon("video_upload_proc.LF", formdata);
+	 }
+});
+	
+</script>
 <div id='uplwrap'>
 
 	<div class="uplPa" id="uplz">동영상 업로드 -</div>
 	<div class="uplPa" id='uply'>동영상 정보</div>
-	<form action="video_upload_proc.LF" method="post"
+	
+	<c:set var="action" value="video_upload_proc.LF"/>
+	<c:if test="${isUpdate == 5}">
+	<c:set var="action" value="video_update_proc.LF"/>
+	</c:if>
+	<form action="${action}" method="post"
 		enctype="multipart/form-data" id="viform">
 		<input type="hidden" value="0" name = "unloadz" id = "unloadz">
 		<input type="hidden" value="${video.CFId}" name="CFId">
@@ -19,7 +41,7 @@
 				</div>
 				<div class='uplshadow'>
 					<textarea class="uplnotes" cols="83" rows="6"
-						placeholder="영상 내용을 입력해주세요." name="info"></textarea>
+						placeholder="영상 내용을 입력해주세요." name="info">${video.info}</textarea>
 				</div>
 			</div>
 			<div id="uplR">
@@ -78,7 +100,7 @@
 		<div id='uplend' class="uplPa">
 			<div id="upltextarea">
 				<h3>진행순서 기입</h3>
-				<textarea class="uplnotes uplshadow " name="orderInfo" placeholder="강의진행순서를 순서대로 나열해주세요"></textarea>
+				<textarea class="uplnotes uplshadow " name="orderInfo" placeholder="강의진행순서를 순서대로 나열해주세요">${video.orderInfo}</textarea>
 			</div>
 		</div>
 		<div>

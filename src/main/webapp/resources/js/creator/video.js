@@ -27,21 +27,6 @@ function ispty(){
     		return false;
     	}
   }
-$(window).on("unload",function(e){
-	 var nodename = false;
-	 $("#unloadz").val("1");
-	 var formdata = new FormData($('#viform')[0]);
-	 if(e.target.activeElement.nodeName.toLowerCase() == "body"||e.target.activeElement.nodeName.toLowerCase() == "input"){
-		   nodename = true;
-		 }else{
-			 nodename = false;
-		 }
-	 if(nodename == false && videoChange()   && upbutton != 1){
-		 $("#uplUP").attr("disabled","disabled");
-		 navigator.sendBeacon("video_upload_proc.LF", formdata);
-	 }
-});
-	
 $(".upl_bt").on("click",function(){
 	if(videoUP != '1'){
 		if(!ispty()){
@@ -59,6 +44,7 @@ $(".upl_bt").on("click",function(){
 		location.href= "video_update_proc.LF";	
 	}
 });
+
 	$("#imgProc").change(function () {
 		if(!videoChange()){
 			alert("비디오를 먼저 추가해주세요");

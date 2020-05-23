@@ -37,34 +37,35 @@ function nationforVideo(pagea , max){
 	 }
 	 
 	function videoUpload(CFID){
-		location.href ="video_upload.LF?CFID="+CFID;
+		location.href ="video_upload.LF?CFID="+CFID+"&category="+category;
 	}
 	
 function updateVideo(id,CFID){
-	if($("option").val()== 1){
 		location.href ="video_update.LF?VID="+id+"&CFID="+CFID;
-	} 
+	 
 }
 function pagenate(page){
-	var patha = '${crPath}';
+	var commentxo  = ["허용","불가"];
 	$.ajax({
 	    type : 'get',  
 	    dataType : 'json', 
 	    data : {"page" : page ,"CFID" : CFID},
 	    url : 'creator_video_show_proc.LF',
 	    success : function(returnData) {
+	    	var patha = returnData.crPath;
 	    	pagea = returnData.page;
 	    	$("#appendList").find(".videoTR").remove();
 	    	 $.each(returnData.jsonText,function(index,item){
+	    		 var img = item.imgPath.split('-');
 	    		$("#appendList").append("<tr class = 'bottomlineaa videoTR'> <td class='checkbox'><input type='checkbox' class='check-one check' /></td>"+
-				"<td colspan='2' class='goods'><img src='"+patha+item.imgPath+"' alt='홈트레이닝' />"+
+				"<td colspan='2' class='goods'><img src='"+patha+img[0]+"' alt='홈트레이닝' />"+
 				"<div id='countor'> <span style='width: 500px'>"+item.title +"</span> <span><a href='##' class='sellerTitle'>"+item.createdAt+"</a></span>"+
 				" <span> <select name='test1'> <option value='1'>동영상 수정</option> </select> </span> </div></td>"+
 				"<td class='count'></td> <td class='count'></td><td class='count'></td> <td class='subtotal'>"+
-				"<p><i class='fas fa-comment-dots'></i><span>"+status[item.status]+"</span></p>"+
+				"<p><i class='fas fa-comment-dots'></i><span>"+commentxo[item.commentYorN]+"</span></p>"+
 				"<p><i class='fas fa-heart'></i><span></span>"+item.likeCount+"</p>"+
 				"<p><i class='fas fa-eye'></i><span>"+item.views+"</span></p>"+
-				"</td> <td> </td> <td class='opration'><span onclick='updateVideo("+item.id,item.CFId+")' class='deleteOne'>수정</span></td> </tr>"
+				"</td> <td> </td> <td class='opration'><span onclick=updateVideo("+item.id+','+returnData.CFID+") class='deleteOne'>수정</span></td> </tr>"
 				);
 	    	});	
 	    	 $("#paginate").html(nationforVideo(pagea , max));
@@ -132,7 +133,7 @@ function pagenate(page){
 								<td class="count"></td>
 								<td class="count"></td>
 								<td class="subtotal">
-									<p> <i class="fas fa-comment-dots"></i><span>${lecList[vs.current].status}</span> </p>
+									<p> <i class="fas fa-comment-dots"></i><span>${commentxo[lecList[vs.current].commentYorN]}</span> </p>
 									<p> <i class="fas fa-heart"></i><span>${lecList[vs.current].likeCount}</span> </p>
 									<p> <i class="fas fa-eye"></i><span>${lecList[vs.current].views}</span> </p>
 								</td>

@@ -88,7 +88,7 @@ public class CreatorController {
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-		MemberVO mb = new MemberVO(30325, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
+		MemberVO mb = new MemberVO(303252, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
 				"dd", 1111, null, null);
 		model.addAttribute("grant",GRANTSTATUS);
 		if (mb != null) {
@@ -98,6 +98,7 @@ public class CreatorController {
 			imgPath = "/images/2020/" + USERNAME + "/Img";
 			videoPath = "/images/2020/" + USERNAME + "/video";
 			CreatorVO creVO = CreDAO.selectOneCreator(memberId);
+			System.out.println(creVO);
 			if (creVO != null) {
 				if (creVO.getStatus() == GRANT) {
 					isCreator = GRANT;
@@ -190,10 +191,7 @@ public class CreatorController {
 		sesStatus.setComplete();
 		return "creator/cre_href";
 	}
-	
-	
-	
-	
+	 
 	@RequestMapping(value = "creator_update_profile.LF", method = RequestMethod.GET)
 	public String createProfileUpdate(Model model,
 			HttpSession ses, @ModelAttribute(value = "creator") CreatorVO cr
@@ -204,7 +202,9 @@ public class CreatorController {
 		System.out.println("도착 뉴프로필 update");
 		if(cr.getId() == 0) {
 			CreatorVO creVO= CreDAO.selectOneCreator(memberId);
+			if(creVO != null) {
 			model.addAttribute("creator",creVO);
+			}
 		}
 		 
 		return "creator/cre_profile.page";
@@ -286,7 +286,9 @@ public class CreatorController {
 			@RequestParam(value = "category") int category) {
 
 		int CFID = CF;
+		String xo[] = {"허용","불가"};
 		model.addAttribute("crPath", imgPath);
+		model.addAttribute("commentxo",xo);
 		MAXPAGE = VdoSVC.checkOfLectureNumber(CFID);
 		if (page == 1) {
 			return VdoSVC.showVideoList(category, CFID, MAXPAGE, page, model);
@@ -300,6 +302,8 @@ public class CreatorController {
 	public Map<String, Object> showVideoListProc(@RequestParam(value = "CFID", required = false) int CF,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 		Map<String, Object> jso = new HashMap<String, Object>();
+		jso.put("crPath", imgPath);
+		jso.put("CFID", CF);
 		jso.put("jsonText", VdoSVC.showLectureList(CF, page));
 		jso.put("page", page);
 		return jso;
@@ -307,9 +311,12 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "video_upload.LF", method = RequestMethod.GET)
-	public String videoUpload(@RequestParam(value = "CFID", defaultValue = "0") int CFID, Model model, HttpSession ses,
+	public String videoUpload(@RequestParam(value = "CFID", defaultValue = "0") int CFID,
+			@RequestParam(value = "category", defaultValue = "0") int category,
+			Model model, HttpSession ses,
 			@ModelAttribute(value = "video") VideoVO vio) {
 		if (CFID != 0) {
+			vio.setCategory(category);
 			vio.setCFId(CFID);
 			vio.setfId(memberId);
 			model.addAttribute("categ",CATEGORIRES);
@@ -351,46 +358,37 @@ public class CreatorController {
 		sesStatus.setComplete();
 		return "creator/cre_href";
 	}
-	
-	
-	
-	
-	
-	
-	
+	 
 	@RequestMapping(value = "video_update.LF", method = RequestMethod.GET)
 	public String videoUpdate(@RequestParam(value = "CFID", defaultValue = "0") int CFID,
 			@RequestParam(value = "VID", defaultValue = "0") int id,
 			Model model, HttpSession ses,
 			@ModelAttribute(value = "video") VideoVO vio) {
-		if (CFID != 0 && id != 0) {
 			VideoVO viVO = ViDAO.selectOneVideo(CFID, id);
-			model.addAttribute(viVO);
+			System.out.println(viVO);
+			if(viVO != null) {
+			model.addAttribute("categ",CATEGORIRES);
+			model.addAttribute("isUpdate","5");
+			model.addAttribute("video",viVO);
 			model.addAttribute("videoUP","1");
 			model.addAttribute("crPath", imgPath);
 			model.addAttribute("viPath", videoPath);
-		}
+			}
 		return "creator/cre_video_upload.page";
 	}
-	@RequestMapping(value = "video_update_proc.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "video_update_proc.LF", method = RequestMethod.POST)
 	public String videoUpdateProc(
 			 HttpSession ses,
-			@ModelAttribute(value = "video") VideoVO vio) {
-	 System.out.println(vio);
+			@ModelAttribute(value = "video") VideoVO vio , SessionStatus sesstatus) {
+	 System.out.println("비디오 업데이트 진입");
 	 if(vio.getCFId() != 0 && vio.getId() != 0) {
+		 System.out.println(vio+"업데이트");
 	 ViDAO.updateVideo(vio, vio.getCFId(), vio.getId());
+	 sesstatus.setComplete();
 	 }
 	 
 		return "creator/cre_href";
 	}
-
-	
-	
-	
-	
-	
-	
-	
 	
 	@RequestMapping(value = "kit_upload.LF", method = RequestMethod.GET)
 	public String KitUpload(@RequestParam(value = "CFID", required = false ,defaultValue = "0") int CF,
