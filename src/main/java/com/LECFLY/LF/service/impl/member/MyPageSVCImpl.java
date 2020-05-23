@@ -181,6 +181,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 						System.out.println("laList < 0 ::  음수");
 					}
 				}
+				
 				return rtLaList;
 			} else {
 				System.out.println("ltList == null ");
