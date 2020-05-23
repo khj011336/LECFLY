@@ -11,7 +11,6 @@ import com.LECFLY.LF.model.dao.inf.admin.IAdminMemberDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
-import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
 import com.LECFLY.LF.service.inf.admin.IAdminMemberSVC;
 
 @Service
@@ -113,11 +112,6 @@ public class AdminMemberSVCImpl implements IAdminMemberSVC {
 		int offset = (pageNumber -1)*AD_PAGE_SIZE;
 		List<CreatorVO> crList = amDao.searchCreatorForAll(offset, AD_PAGE_SIZE);
 		return crList;
-	}
-
-	@Override
-	public List<MemberStatVO> statCountMemberByMonth() {
-		return amDao.statCountMemberByMonth();
 	}
 
 }

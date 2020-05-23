@@ -1,6 +1,5 @@
 package com.LECFLY.LF.service.inf.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +75,4 @@ public interface IAdminLectureSVC {
 	int selectCreatorApprovalCnt();
 	int selectQnaCommentCnt();
 	List<CategoryLectureStatVO> selectCategoryLectureCnt();
-	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
-	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
-	boolean delectLectureforIds(ArrayList<Integer> checkList);
 }

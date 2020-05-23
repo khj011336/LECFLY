@@ -1,7 +1,224 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<script type="text/javascript">
 
+function checkCheckbox() {
+	if ( $('input[name="checked"]:checked').length == 0 ){
+		alert("대상을 선택해주세요.");
+		return false;
+	} else {
+		alert("확인을 누르면 진행됩니다.");
+		return true;
+	}
+};
+function formatTable(list) {
+	var fmt = '<tr class="admin_table_head" style="text-align: center">'+
+		'<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th> '+
+		'<th>번호</th> '+
+		'<th>강의번호</th> '+
+		'<th>업로더 ID</th>' +
+		'<th>업로더 닉네임</th> '+
+		'<th>카테고리</th> '+
+		'<th>강의명</th>'+
+		'<th>승인 상태</th>'+
+		'<th>좋아요 수</th>'+
+		'<th>강의 영상 수</th>'+
+		'<th>생성일</th>'+
+		'<th>업데이트</th>'+
+	'</tr>';
+	$.each(list, function(i) {
+		fmt += '<tr style="text-align: center">';
+		fmt += '<td><input type="checkbox" name="checked" value="'+ list[i].id  +'"/></td>';
+		fmt += '<td>'+ (i+1) +'</td>';
+		fmt += '<td>'+ list[i].id +'</td>';
+		fmt += '<td>'+ list[i].fid +'</td>';
+		fmt += '<td>'+ list[i].nickname +'</td>';
+		switch(list[i].category){
+			case 1: fmt += '<td>'+ '미술' +'</td>'; break;
+			case 2: fmt += '<td>'+ '음악' +'</td>'; break;
+			case 3: fmt += '<td>'+ '요리' +'</td>'; break;
+			case 4: fmt += '<td>'+ '라이프스타일' +'</td>'; break;
+			case 5: fmt += '<td>'+ '운동' +'</td>'; break;
+			case 6: fmt += '<td>'+ '커리어' +'</td>'; break;
+			case 7: fmt += '<td>'+ '여행' +'</td>'; break;
+			default: fmt += '<td>'+ '없음' +'</td>';
+		}
+		
+		fmt += '<td>'+ list[i].title +'</td>';
+		switch(list[i].status){
+			case 0: fmt += '<td name="status" value="0">'+ '승인 대기' +'</td>'; break;
+			case 1: fmt += '<td name="status" value="1">'+ '승인 완료' +'</td>'; break;
+		default: fmt += '<td name="status" value="3">'+ '없음' +'</td>';
+		}
+		
+		fmt += '<td>'+ list[i].likeCount +'</td>';
+		fmt += '<td>'+ list[i].videoTrack +'</td>';
+		fmt += '<td>'+ longToDate(list[i].createdAt) +'</td>';
+		fmt += '<td>'+ longToDate(list[i].updatedAt) +'</td>';
+		fmt += '</tr>';
+	});
+	return fmt;
+};
+function longToDate(val){  // long 시간 -> date 출력형식변경
+	  var date = new Date(val); 
+	  var yyyy=date.getFullYear().toString(); 
+	  var mm = (date.getMonth()+1).toString();
+	  var dd = date.getDate().toString(); 
+
+	  var Str = '';
+	  Str += yyyy + '-' + (mm[1] ? mm : '0' + mm[0]) + '-' +(dd[1] ? dd : '0' + dd[0]);
+	  return Str;
+};
+function makePaginate(maxPn){
+	var fmt = '';
+	for (var i = 0; i < maxPn; i++) {
+		fmt += '<a href="#" onclick="movePage(pn)">'+(i+1)+'</a>';
+		fmt += '<input type="hidden" name="pn" value="'+ (i+1) +'">';
+		if(i < maxPn-1){
+			fmt += " | ";
+		}
+	}
+	return fmt;
+}
+function movePage(pn){
+	$(this).on("click", function(){
+		$("#search_filter_btn").click();
+	});
+};
+
+$(document).ready(function() {
+	$("#search_filter_btn").on("click", function() {
+		
+		var URLHD = '${pageContext.request.contextPath}/';
+		var url = URLHD+'admin_lecture_list_search.LF';
+	
+		var pn = $('input[name=pn]').val();
+		if(!pn || pn == "" || pn == null || pn == undefined){
+			pn = "1";
+		}
+		var start_date = $('input[name=start_date]').val();
+		var end_date = $('input[name=end_date]').val();
+		var category = $('select[name=category]').val();
+		var search = $('select[name=search]').val();
+		var keyword = $('input[name=keyword]').val();
+		var status = $('input[name=status]').val();
+		
+		var params = {
+			"pn": pn,	
+			"start_date": start_date,
+			"end_date": end_date,
+			"category": category,
+			"search": search,
+			"keyword": keyword,
+			"status": status
+		};
+		
+		console.log(params);
+
+		$.ajax({
+			type:'post',
+			contentType: 'application/json',
+			data : JSON.stringify(params),
+			url:url,
+			dataType:'json',
+			success:function(res, status, xhr){
+				console.log(">> 검색결과");
+				console.log(res);
+				// 결과 가져오기
+				var results = res.lecList;
+				var listSize = res.listSize;
+				var maxPn = res.maxPn;	
+				var totalRecords = res.totalRecords;
+				var pn = res.pn;
+				// 결과 출력
+				$('#page_result_cnt').html(listSize);
+				$('#all_result_cnt').html(totalRecords);
+				var resultTable = formatTable(results);
+				$('#resultTable').html(resultTable);
+				var paginate = makePaginate(maxPn);
+				$('#paginate').html(paginate);
+			},
+			error: function(xhr,status){
+				console.log(xhr);
+				console.log(xhr.status);
+				console.log(status);
+			}
+		});
+		
+	});
+	
+	
+	$("#update_lecture_list").click(function() {
+		if(checkCheckbox() == false){
+			return;
+		}
+		
+		// 배열 선언 및 체크된 리스트 저장 
+		var checkArray = [];
+		
+		$('input[name="checked"]:checked').each(function(i) {
+			checkArray.push($(this).val());
+		});
+		
+		// 파람으로 보낼 정보들 저장
+		var params = {
+				"checkList" : checkArray
+		}
+		
+		// ajax 호출
+		$.ajax({
+			url : "${pageContext.request.contextPath}/admin_update_lecture_list.LF",
+			dataType: "json",
+			type: "post",
+			data: params, 
+			success: function(res) {
+				console.log(res);
+			},
+			error: function(request, status, error) {
+				console.log("send checkedlist error");
+			}
+		});
+	});
+	// 강의 승인 다중처리
+	$("#update_approve_lecture").on("click", function() {
+		if(checkCheckbox() == false){
+			return;
+		}
+		var status = $('td[name=status]').val();
+		console.log(status);
+		return;
+		// 배열 선언 및 체크된 리스트 저장 
+		var checkArray = [];
+		
+		$('input[name="checked"]:checked').each(function(i) {
+			checkArray.push($(this).val());
+		});
+		
+		// 파람으로 보낼 정보들 저장
+		var params = {
+				"checkList" : checkArray,
+				"status": status
+		}
+		
+		// ajax 호출
+		$.ajax({
+			url : "${pageContext.request.contextPath}/update_approve_lecture.LF",
+			type: "post",
+			contentType: 'application/json',
+			data : JSON.stringify(params),
+			success: function(res) {
+				console.log(res);
+			},
+			error: function(request, status, error) {
+				console.log("send checkedlist error");
+			}
+		});
+	});
+	
+});
+
+</script>
 <h4>강의 관리</h4>
 
 <div class="admin_table_filter">
@@ -69,8 +286,8 @@
 			<span class="date_filter"><a href="#" onclick="clickAllCheckBtn()">| 전체선택</a></span>
 			<span class="date_filter"><a href="#" onclick="unclickAllCheckBtn()">선택취소 |</a></span>
 			<span class="date_filter"><a href="#" id="update_approve_lecture"> 승인처리</a></span>
-			<span class="date_filter"><a href="#" id="update_disapproval_lecture">승인취소 |</a></span>
-			<span class="date_filter"><a href="#" id="delete_lecture_list">삭제</a></span>
+			<span class="date_filter"><a href="#" id="disapproval_lecture_list">승인취소 |</a></span>
+			<span class="date_filter"><a href="#" id="update_lecture_list">삭제</a></span>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	
@@ -118,21 +335,17 @@
 					<c:when test="${lec.category==7}">여행</c:when>
 				</c:choose>
 			</td>
-			<td>${lec.title }</td> 
+			<td><input type="text" value="${lec.title }" name="title" size="90"></input></td> 
 			<td>
 				<select name="status">
 				<c:choose>
+					<c:when test="${lec.status == 0}">
+						<option value="0" selected="selected">승인 대기</option>
+						<option value="1">승인 완료</option>
+					</c:when>
 					<c:when test="${lec.status == 1}">
-						<option value="1" selected="selected">승인 거절</option>
-						<option value="1">승인 거절</option>
-					</c:when>
-					<c:when test="${lec.status == 2 || lec.status == 0}">
-						<option value="2" selected="selected">승인 요청</option>
-						<option value="2">승인 요청</option>
-					</c:when>
-					<c:when test="${lec.status == 3}">
-						<option value="3" selected="selected">승인 완료</option>
-						<option value="3">승인 완료</option>
+						<option value="1" selected="selected">승인 완료</option>
+						<option value="0">승인 대기</option>
 					</c:when>
 				</c:choose>
 				</select>
@@ -168,251 +381,3 @@
 		</c:if>
 	</div>
 </div>
-
-<script type="text/javascript">
-
-function checkCheckbox() {
-	if ( $('input[name="checked"]:checked').length == 0 ){
-		alert("대상을 선택해주세요.");
-		return false;
-	} else {
-		alert("확인을 누르면 진행됩니다.");
-		return true;
-	}
-};
-function formatTable(list) {
-	var fmt = '<tr class="admin_table_head" style="text-align: center">'+
-		'<th width=2%><input type="checkbox" id="checkAll" /></th> '+
-		'<th>번호</th> '+
-		'<th>강의번호</th> '+
-		'<th>업로더 ID</th>' +
-		'<th>업로더 닉네임</th> '+
-		'<th>카테고리</th> '+
-		'<th>강의명</th>'+
-		'<th>승인 상태</th>'+
-		'<th>좋아요 수</th>'+
-		'<th>강의 영상 수</th>'+
-		'<th>생성일</th>'+
-		'<th>업데이트</th>'+
-	'</tr>';
-	$.each(list, function(i) {
-		fmt += '<tr style="text-align: center">';
-		fmt += '<td><input type="checkbox" name="checked" value="'+ list[i].id  +'"/></td>';
-		fmt += '<td>'+ (i+1) +'</td>';
-		fmt += '<td>'+ list[i].id +'</td>';
-		fmt += '<td>'+ list[i].fid +'</td>';
-		fmt += '<td>'+ list[i].nickname +'</td>';
-		switch(list[i].category){
-			case 1: fmt += '<td>'+ '미술' +'</td>'; break;
-			case 2: fmt += '<td>'+ '음악' +'</td>'; break;
-			case 3: fmt += '<td>'+ '요리' +'</td>'; break;
-			case 4: fmt += '<td>'+ '라이프스타일' +'</td>'; break;
-			case 5: fmt += '<td>'+ '운동' +'</td>'; break;
-			case 6: fmt += '<td>'+ '커리어' +'</td>'; break;
-			case 7: fmt += '<td>'+ '여행' +'</td>'; break;
-			default: fmt += '<td>'+ '없음' +'</td>';
-		}
-		
-		fmt += '<td>'+ list[i].title +'</td>';
-		switch(list[i].status){
-			case 0: fmt += '<td name="status" value="1">'+ '승인 요청' +'</td>'; break;
-			case 1: fmt += '<td name="status" value="1">'+ '승인 거절' +'</td>'; break;
-			case 2: fmt += '<td name="status" value="2">'+ '승인 요청' +'</td>'; break;
-			case 3: fmt += '<td name="status" value="3">'+ '승인 완료' +'</td>'; break;
-			
-		}
-		
-		fmt += '<td>'+ list[i].likeCount +'</td>';
-		fmt += '<td>'+ list[i].videoTrack +'</td>';
-		fmt += '<td>'+ longToDate(list[i].createdAt) +'</td>';
-		fmt += '<td>'+ longToDate(list[i].updatedAt) +'</td>';
-		fmt += '</tr>';
-	});
-	return fmt;
-};
-function longToDate(val){  // long 시간 -> date 출력형식변경
-	  var date = new Date(val); 
-	  var yyyy=date.getFullYear().toString(); 
-	  var mm = (date.getMonth()+1).toString();
-	  var dd = date.getDate().toString(); 
-
-	  var Str = '';
-	  Str += yyyy + '-' + (mm[1] ? mm : '0' + mm[0]) + '-' +(dd[1] ? dd : '0' + dd[0]);
-	  return Str;
-};
-function makePaginate(maxPn){
-	var fmt = '';
-	for (var i = 0; i < maxPn; i++) {
-		fmt += '<a href="#" onclick="movePage(pn)">'+(i+1)+'</a>';
-		fmt += '<input type="hidden" name="pn" value="'+ (i+1) +'">';
-		if(i < maxPn-1){
-			fmt += " | ";
-		}
-	}
-	return fmt;
-}
-function movePage(pn){
-	$(this).on("click", function(){
-		$("#search_filter_btn").click();
-	});
-};
-
-$(document).ready(function() {
-	
-	$("#search_filter_btn").on("click", function() {
-		
-		var URLHD = '${pageContext.request.contextPath}/';
-		var url = URLHD+'admin_lecture_list_search.LF';
-	
-		var pn = $('input[name=pn]').val();
-		if(!pn || pn == "" || pn == null || pn == undefined){
-			pn = 1;
-		}
-		var start_date = $('input[name=start_date]').val();
-		var end_date = $('input[name=end_date]').val();
-		var category = $('select[name=category]').val();
-		var search = $('select[name=search]').val();
-		var keyword = $('input[name=keyword]').val();
-		var status = $('input[name=status]').val();
-		
-		var params = {
-			"pn": pn,	
-			"start_date": start_date,
-			"end_date": end_date,
-			"category": category,
-			"search": search,
-			"keyword": keyword,
-			"status": status
-		};
-		
-		console.log(params);
-
-		$.ajax({
-			type:'post',
-			contentType: 'application/json',
-			data : JSON.stringify(params),
-			url:url,
-			dataType:'json',
-			success:function(res, status, xhr){
-				console.log(">> 검색결과");
-				console.log(res);
-				// 결과 가져오기
-				var results = res.lecList;
-				var listSize = res.listSize;
-				var maxPn = res.maxPn;	
-				var totalRecords = res.totalRecords;
-				var pn = res.pn;
-				// 결과 출력
-				$('#page_result_cnt').html(listSize);
-				$('#all_result_cnt').html(totalRecords);
-				var resultTable = formatTable(results);
-				$('#resultTable').html(resultTable);
-				var paginate = makePaginate(maxPn);
-				$('#paginate').html(paginate);
-			},
-			error: function(xhr,status){
-				console.log(xhr);
-				console.log(xhr.status);
-				console.log(status);
-			}
-		});
-		
-	});
-	
-	
-	$("#update_approve_lecture").click(function() {
-		if(checkCheckbox() == false){
-			return;
-		}
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// 파람으로 보낼 정보들 저장
-// 		var params = {
-// 				"checkList" : checkArray
-// 		}
-		
-		// ajax 호출
-		$.ajax({
-			url : "${pageContext.request.contextPath}/admin_update_approve_lecture.LF",
-			contentType: 'application/json',
-			dataType: "json",
-			type: "post",
-			data: JSON.stringify(checkArray), 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-	});
-	$("#update_disapprove_lecture").click(function() {
-		if(checkCheckbox() == false){
-			return;
-		}
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// 파람으로 보낼 정보들 저장
-// 		var params = {
-// 				"checkList" : checkArray
-// 		}
-		
-		// ajax 호출
-		$.ajax({
-			url : "${pageContext.request.contextPath}/admin_update_disapprove_lecture.LF",
-			contentType: 'application/json',
-			dataType: "json",
-			type: "post",
-			data: JSON.stringify(checkArray), 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-	});
-	$("#delete_lecture_list").click(function() {
-		if(checkCheckbox() == false){
-			return;
-		}
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// 파람으로 보낼 정보들 저장
-// 		var params = {
-// 				"checkList" : checkArray
-// 		}
-		
-		// ajax 호출
-		$.ajax({
-			url : "${pageContext.request.contextPath}/admin_delete_lecture_list.LF",
-			contentType: 'application/json',
-			dataType: "json",
-			type: "post",
-			data: JSON.stringify(checkArray), 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-	});
-});
-
-</script>

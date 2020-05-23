@@ -1,6 +1,5 @@
 package com.LECFLY.LF.model.dao.impl.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -241,24 +240,6 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	public List<CategoryLectureStatVO> selectCategoryLectureCnt() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public boolean updateLectureApprovalforIds(ArrayList<Integer> checkList) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean updateLectureDispprovalforIds(ArrayList<Integer> checkList) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

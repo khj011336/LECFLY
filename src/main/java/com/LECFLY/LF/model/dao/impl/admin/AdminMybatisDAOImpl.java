@@ -1,6 +1,5 @@
 package com.LECFLY.LF.model.dao.impl.admin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,26 +223,5 @@ public class AdminMybatisDAOImpl implements IAdminLectureDAO{
 	@Override
 	public List<CategoryLectureStatVO> selectCategoryLectureCnt() {
 		return sstem.selectList("IAdminDAO.SQL_SELECT_CATEGORY_LECTURE");
-	}
-
-	@Override
-	public boolean updateLectureApprovalforIds(ArrayList<Integer> checkList) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("ids", checkList);
-		return sstem.update("IAdminDAO.SQL_UPDATE_LECTURE_APPROVAL_IDS", map) == 1;
-	}
-
-	@Override
-	public boolean updateLectureDispprovalforIds(ArrayList<Integer> checkList) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("ids", checkList);
-		return sstem.update("IAdminDAO.SQL_UPDATE_LECTURE_DISAPPROVAL_IDS", map) == 1;
-	}
-
-	@Override
-	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("ids", checkList);
-		return sstem.update("IAdminDAO.SQL_DELETE_LECTURE_IDS", map) == 1;
 	}
 }
