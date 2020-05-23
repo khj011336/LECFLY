@@ -9,8 +9,8 @@ public class TicketVO {
 	int mbId;       
 	/** 이용권 명칭    FK / TicketList_ID  (1: 1카테고리이용권  2: 3카테고리이용권  3:전체이용권)*/
 	int name;       
-	/** 선택한 카테고리  (0:전체 1:미술 2:음악 3:요리 4:라이프스타일 5:운동 6:커리어 7:여행)*/
-	int category;   
+	/** 선택한 카테고리  (전체, 미술, 음악, 요리, 라이프스타일, 운동, 커리어, 여행)*/
+	String category;   
 	/** 이용권 가격*/
 	int price;       
 	/** 이용권 시작일 CURRENT_TIMESTAMP*/
@@ -34,7 +34,7 @@ public class TicketVO {
 	 * @param startDay
 	 * @param endDay
 	 */
-	public TicketVO(int id, int mbId, int name, int category, int price, Timestamp startDay, Timestamp endDay) {
+	public TicketVO(int id, int mbId, int name, String category, int price, Timestamp startDay, Timestamp endDay) {
 		super();
 		this.id = id;
 		this.mbId = mbId;
@@ -63,10 +63,10 @@ public class TicketVO {
 	public void setName(int name) {
 		this.name = name;
 	}
-	public int getCategory() {
+	public String getCategory() {
 		return category;
 	}
-	public void setCategory(int category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 	public int getPrice() {

@@ -24,5 +24,6 @@ public interface ICartSVC {
 	public List<TicketVO> selectOneTicket(int ticId);
 	public int insertNewCartRtKey(int mbId, int kitId);
 	public Map<String, Object> showCartProc(int mbId, int kitId);
+
 	
 }

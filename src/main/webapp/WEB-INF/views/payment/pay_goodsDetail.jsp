@@ -3,18 +3,17 @@
 <title>상품 상세페이지</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_goodsDetail.css">
 <script type="text/javascript">
-
 	$(document).ready(function() {
 		$("#moveCart").on("click", function() {
 			var URLHD = '${pageContext.request.contextPath}/';
 			var url = URLHD+'pay_cart.LF';
 			var kitId = $("input[name=kit_id]").val();
 			console.log("kitId = " + kitId);
-			var parmas = "kitId=" + kitId;
+			var params = "kitId=" + kitId;
 			$.ajax({
 				type: 'POST',
 				url : url,
-				data: "kitId=" + kitId,
+				data: params,
 				success: function(res, status ,xhr){
 					alert("성공");
 					console.log(res);
@@ -25,9 +24,33 @@
 				}
 			});
 		});
+// 		var cfid = ${lec.CFId}, id = ${lec.id}, xor isBuyMember 
+// 		$("").on("click", function() {
+// 			var form = document.createElement('form');
+// 			form.setAttribute('method', 'get');
+// 			form.setAttribute('action', 'creator_video_show.LF');
+// 			document.charset = "utf-8";
+// 					var hiddenField = document.createElement('input');
+// 					hiddenField.setAttribute('type', "hidden");
+// 					hiddenField.setAttribute('name', "CFId");
+// 					hiddenField.setAttribute('value', cfid);
+// 					form.appendChild(hiddenField);
+// 					var hiddenField = document.createElement('input');
+// 					hiddenField.setAttribute('type', "hidden");
+// 					hiddenField.setAttribute('name',"Id");
+// 					hiddenField.setAttribute('value', id);
+// 					form.appendChild(hiddenField);
+// 					var hiddenField = document.createElement('input');
+// 					hiddenField.setAttribute('type', "hidden");
+// 					hiddenField.setAttribute('name',"category");
+// 					hiddenField.setAttribute('value', category);
+// 					form.appendChild(hiddenField);
+// 			document.body.appendChild(form);
+// 			form.submit();	
+// 		});
 	});
 
-
+	
 	// 별점 추가
 	$('#register_review a').click(function() {
 		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */

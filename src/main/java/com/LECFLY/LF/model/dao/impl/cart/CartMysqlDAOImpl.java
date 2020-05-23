@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -25,7 +26,7 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	JdbcTemplate jtem;
 	
 	// SQL 정의문
-	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, 1, now() )";
+	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, 1, ?, now() )";
 	private static final String SQL_SELECT_CART_LIST = "select * from cart where member_id = ? and goods_id = ?"; 
 			//"insert into cart(member_id, goods_id) values(?, ?)";
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
@@ -38,12 +39,21 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	private static final String SQL_INSERT_IN_CART = "insert into cart values(null, ?, 1, ?, 1, now())";
 	
+	/**
+	 * @param categoryId // 0이면 이용권  1이면 키트
+	 * @param mbId
+	 * @param kitOrTicId // 이용권 or 키트 아이디 
+	 * 
+	 */
 	@Override
-	public int insertNewCartByMbIdKitId(int mbId, int kitId) {
-		System.out.println(SQL_INSERT_NEW_CART + " / mbId = " + mbId + " / kitId = " + kitId);
-		int r = jtem.update(SQL_INSERT_NEW_CART, mbId, kitId);
+	public int insertNewCartByMbIdTicId(int categoryId, int mbId, int kitOrTicId, String uuid) {
+		System.out.println("insertNewCartByMbIdTicId().");
+		int r = jtem.update(SQL_INSERT_NEW_CART, mbId, categoryId, kitOrTicId, uuid);
 		return r;
 	}
+	// 0 이용권 1 키트*/ 이게 카테고리아이디      키트나 티켓의 아이디 갯수 1 uuid  now()
+	// id null mb_id 받아 caterory_id  gds_id gd_cnt check_same_order created_at
+
 	
 	
 	@Override
@@ -111,5 +121,14 @@ public class CartMysqlDAOImpl implements ICartDAO {
 		Number r = kh.getKey(); // PK
 		return r.intValue();
 	}
+
+
+	private static final String SQL_ONE_CART_BY_UUID = "select * from cart where check_same_order = ?";
+	@Override
+	public CartVO selectOneCartByUUId(int mbId, String uuid) {
+		return jtem.queryForObject(SQL_ONE_CART_BY_UUID,BeanPropertyRowMapper.newInstance(CartVO.class), uuid);
+	}
+
+	
 
 }

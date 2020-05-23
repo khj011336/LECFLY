@@ -27,7 +27,6 @@
 						</thead>
 						<tbody>
 						<c:forEach var="gd" items="${kitList}" varStatus="vs">
-							<c:if test="${kitList eq 1 and kitList lt 0}">
 							<tr>
 								<td id="shoppingCart_td" class="checkbox">
 									<input type="checkbox" class="check-one check">
@@ -35,8 +34,9 @@
 								<td id="shoppingCart_td" colspan="2" class="goods">
 								<img src="${gd.imgPath}" alt="홈트레이닝"> 
 									<span>
+										<input type="hidden" name="tic_id" value="${gd.title}">
 										<a id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;&lt;${gd.category}&gt;${gd.title}</a>
-									</span> 
+									</span>
 									<span>
 										<a id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;${creList.get(vs.index).nickname}</a>
 									</span>
@@ -54,7 +54,6 @@
 									<span class="deleteOne">삭 제</span>
 								</td>
 							</tr>
-							</c:if>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -70,7 +69,9 @@
 					</div>
 					<a href="#" id="multiDelete" class="fl delete">삭제</a>
 					 <a href="#" id="allDelete" class="fl delete">전체삭제</a>
-					<div class="fr closing">주문하기</div>
+					<div class="fr closing">
+						<input id="moveOrder" type="button" value="주문하기"> 
+					</div>
 					<div class="fr total">
 						<c:forEach var="gd" items="${kitList}" varStatus="vs">
 						전체 주문금액: <span id="priceTotal">${gd.price}</span>
@@ -90,6 +91,28 @@
 			</div>
 		</div>
 	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#moveOrder").on("click", function() {
+				var URLHD = '${pageContext.request.contextPath}';
+				var url = URLHD + 'pay_order.LF';
+				var ticId = $('input=[name=tic_id]').val();
+				console.log("ticId = " + ticId);
+				var params = "ticId = " + ticId;
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: params,
+					success: function(res, status, xhr) {
+						alert("성공");
+						console.log(res);
+						$('#homemain').html(res);
+					},
+					error: function(status, xhr) {
+						alert("실패");
+					}
+				});
+			});
+		});
 		// javaScript의 html 내의 요소들을 움직일 수 있는 dom 객체를 조작하는 방법.
 	// 	window.onload = function() {
 			//호환document.getElementsByClassName 방법；
@@ -131,7 +154,7 @@
 			//박스 이벤트 선택；
 			for (var i = 0; i < checkInputs.length; i++) {
 				checkInputs[i].onclick = function() {
-					if (this.className === 'check-all check') { //全选；
+					if (this.className === 'check-all check') {
 						for (var j = 0; j < checkInputs.length; j++) {
 							checkInputs[j].checked = this.checked;
 						}

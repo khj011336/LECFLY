@@ -1,6 +1,7 @@
 package com.LECFLY.LF.model.dao.inf.cart;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.dao.DataAccessException;
 
@@ -9,7 +10,7 @@ import com.LECFLY.LF.model.vo.TicketVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 
 public interface ICartDAO {
-	int insertNewCartByMbIdKitId(int mbId, int kitId);
+	int insertNewCartByMbIdTicId(int categoryId, int mbId, int kitOrTicId, String uuid);
 	// 회원이 장바구니의 목록을 조회할 수 있다.
 	public List<CartVO> selectCartList(int mbId, int kitId) throws DataAccessException;
 	public List<TicketVO> selectTicketList(int ticId) throws DataAccessException;
@@ -23,4 +24,6 @@ public interface ICartDAO {
 	// 회원이 장바구니 안에 있는 상품을 삭제 할 수 있다.
 	public void deleteCartGoods(int id) throws DataAccessException;
 	public int insertNewCartRtKey(CartVO cart);
+	CartVO selectOneCartByUUId(int mbId, String uuid);
+	
 }

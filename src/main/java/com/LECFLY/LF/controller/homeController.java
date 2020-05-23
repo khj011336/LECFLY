@@ -112,7 +112,7 @@ public class homeController {
 	// LecFly 이용안내
 	@RequestMapping(value = "lecfly_guide.LF", method = RequestMethod.GET)
 	public String lecflyGuide() {
-		System.out.println("lecflyGuide()...MJ");	
+		System.out.println("lecflyGuide()...세현");
 		return "payment/ticket_guide/lecfly_guide.ho";
 	}	
 	// LecFly TICKET

@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.LECFLY.LF.model.vo.CartVO;
 import com.LECFLY.LF.model.vo.CommentClassVO;
 import com.LECFLY.LF.model.vo.CommentVO;
@@ -24,9 +23,12 @@ import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.inf.cart.ICartSVC;
+import com.LECFLY.LF.service.inf.payhistory.IPayHistorySVC;
 
 @Controller
 public class PaymentController {
+	@Autowired
+	IPayHistorySVC paySvc;
 	@Autowired
 	ICartSVC cartSvc;
 	@Autowired
@@ -35,6 +37,32 @@ public class PaymentController {
 	MemberVO memberVO;
 	
 	final String[] STR_CATE = {"전체", "미술", "음악", "요리", "라이프스타일", "운동", "커리어", "여행"};
+	
+	// 회원이 티켓구매 안내 페이지로 이동할 수 있다.
+	@RequestMapping(value = "lecfly_ticket.LF", method = RequestMethod.GET)
+	public String showTicketProc() {
+		System.out.println("티켓 안내 페이지로 이동!");
+		return "payment/ticket_guide/lecfly_ticket.pay";
+	}
+	
+	// 회원이 선택한 티켓을 주문페이지로 이동할 수 있다.
+	@RequestMapping(value = "pay_order.LF", method = RequestMethod.POST)
+	public String showOrderProc(HttpSession ses,
+								@RequestParam("ticName") int ticName,
+								Model model) {
+		System.out.println("왔서왔어");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		if(mbId > 0) {
+			System.out.println("결제 페이지로 이동! ticName = " + ticName);
+			Map<String, Object> pMap = paySvc.showOrderProc(mbId, ticName);
+			return "payment/pay_order.pays";
+		} else {
+			System.out.println("멤버 로그인 페이지로 이동!");
+			return "member/login";
+		}
+		
+	}
 	
 	// 회원이 세션 로그인 후, 상품 상세페이지로 이동 할 수 있다.
 	@RequestMapping(value = "pay_goodsDetail.LF", method = RequestMethod.GET)
@@ -89,8 +117,8 @@ public class PaymentController {
 			System.out.println("비회원으로 장바구니 이동!");
 			Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
 		}
-		System.out.println("payment/pay_cart.pay");
-		return "payment/pay_cart.pay";
+		System.out.println("payment/pay_cart.pays");
+		return "payment/pay_cart.pays";
 	}
 	
 	

@@ -22,15 +22,9 @@ public class TestGeon2 {
 	@Autowired
 	private JdbcTemplate jtem;
 	
-	// SQL 정의문
 	private final String SQL_SELECT_LECTURE_ID = "select * from lectures where id = ?";
-	// kitsVO와 mysql 컬럼명들의 동기화 필요.
-	private final String SQL_SELECT_KIT_CFID = "select * from kit where CFId = ?";
-	private final String SQL_SELECT_VIDEO_CFID = "select * from videos where play_c_f_id = ?";
-	private final String SQL_SELECT_CREATOR = "select name, nickname, info from creator where id = ?";
-	
 	public LectureVO selectOneLecture(int lecId) {
-		System.out.println("selectOneLecture()");
+		System.out.println(SQL_SELECT_LECTURE_ID + "lecId = " + lecId);
 		try {
 			return jtem.queryForObject(SQL_SELECT_LECTURE_ID, BeanPropertyRowMapper.newInstance(LectureVO.class), lecId);
 		} catch (DataAccessException e) {
@@ -40,8 +34,9 @@ public class TestGeon2 {
 		return null;
 	}
 
+	private final String SQL_SELECT_KIT_CFID = "select * from kit where CFId = ?";
 	public KitVO selectOneKit(int CFId) {
-		System.out.println("selectOneKit()");
+		System.out.println(SQL_SELECT_KIT_CFID + "CFId = " + CFId);
 		try {
 			System.out.println(CFId);
 			return jtem.queryForObject(SQL_SELECT_KIT_CFID, BeanPropertyRowMapper.newInstance(KitVO.class), CFId);
@@ -51,10 +46,10 @@ public class TestGeon2 {
 		}
 		return null;
 	}
-
+	
+	private final String SQL_SELECT_VIDEO_CFID = "select * from videos where play_c_f_id = ?";
 	public List<VideoVO> selectOneVideo(int CFId) {
-		System.out.println("selectOneVideo()");
-		System.out.println("cfId = " +CFId);
+		System.out.println(SQL_SELECT_VIDEO_CFID + "CFId =" + CFId);
 		try {
 		return jtem.query(SQL_SELECT_VIDEO_CFID, 
 				BeanPropertyRowMapper.newInstance(VideoVO.class), CFId);
@@ -65,9 +60,9 @@ public class TestGeon2 {
 		return null;
 	}
 
+	private final String SQL_SELECT_CREATOR = "select name, nickname, info from creator where id = ?";
 	public Map<String, Object> selectOneCreator(int Id) {
-		System.out.println("selectOneCreator()");
-		System.out.println("id =" + Id);
+		System.out.println(SQL_SELECT_CREATOR + "id = " + Id);
 		try {
 		return jtem.queryForMap(SQL_SELECT_CREATOR, Id);
 		} catch (DataAccessException e) {
@@ -78,27 +73,16 @@ public class TestGeon2 {
 	} 
 	
 	private final String SQL_SELECT_KIT_ID = "select * from kit where id = ?";
-	
 	public KitVO selectOneKitbyId(int kitId) {
-		
 		System.out.println(SQL_SELECT_KIT_ID + "kitId = " + kitId);
-		
 		return jtem.queryForObject(SQL_SELECT_KIT_ID, 
 				BeanPropertyRowMapper.newInstance(KitVO.class), kitId);
 	}
 	
 	private final String SQL_SELECT_CREATOR_FID ="select * from creator where fId = ?";
 	public CreatorVO selectOneCreByfId(int getfId) {
-		
 		System.out.println(SQL_SELECT_CREATOR_FID + "getfId = " + getfId);
 		return jtem.queryForObject(SQL_SELECT_CREATOR_FID, BeanPropertyRowMapper.newInstance(CreatorVO.class), getfId);
 	}
 
-	
-	
-	
-	
-	
-	
-	
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,8 @@ public class CartSVCImpl implements ICartSVC {
 	@Override
 	public boolean modifyCartCnt(int id) throws Exception {
 		// TODO Auto-generated method stub
+		
+		
 		return false;
 	}
 
@@ -71,9 +74,10 @@ public class CartSVCImpl implements ICartSVC {
 		System.out.println("cartSVC :: showGoodsProc");
 		if ( lecId > 0) {
 			LectureVO lec = testDAO2.selectOneLecture(lecId); // lecDAO.selectOneLecture(lecId);
+			//5 5
 			int fId = lec.getFid(); // creator Foreign key
 			int cFId = lec.getId(); // class lecture Foreign Key
-			KitVO kit = testDAO2.selectOneKit(cFId); // KitDAO.selectOneKit(cFId);
+			KitVO kit = testDAO2.selectOneKit(cFId); // KitDAO.selectOneKit(cFId); 
 			List<VideoVO> vid = testDAO2.selectOneVideo(cFId); // vidDAO.selectOneKit(cFId);
 			
 			Map<String,Object> cMap = testDAO2.selectOneCreator(fId); //creDAO.selectOneCreator(fId);
@@ -104,12 +108,12 @@ public class CartSVCImpl implements ICartSVC {
 		return null;
 	}
 
-	@Override
-	public int insertNewCartRtKey(int mbId, int kitId) {
-		CartVO cart = new CartVO(mbId, 1, kitId, 1);
-		int rtKey = cartDAO.insertNewCartRtKey(cart);
-		return rtKey;
-	}
+//	@Override
+//	public int insertNewCartRtKey(int mbId, int kitId) {
+//		CartVO cart = new CartVO(mbId, 1, kitId, 1);
+//		int rtKey = cartDAO.insertNewCartRtKey(cart);
+//		return rtKey;
+//	}
 
 	@Override
 	public Map<String, Object> showCartProc(int mbId, int kitId) {
@@ -121,10 +125,12 @@ public class CartSVCImpl implements ICartSVC {
 		// 장바구니의 리스트를 뽑는다. gdsId랑 kitId랑 같은 걸로.
 		// 키트의 리스트를 뽑는다.
 		// 크리에이터의 리스트를 뽑느다. <FK랑 참조>
-		int r = cartDAO.insertNewCartByMbIdKitId(mbId, kitId);
+		int categoryId = CartVO.CATEGORY_ID_KIT;
+		UUID uuid = UUID.randomUUID();
+		String strUuid = uuid.toString();
+		int r = cartDAO.insertNewCartByMbIdTicId(categoryId, mbId, kitId, strUuid);
 		if(r == 1) {
 			List<CartVO> ctList = cartDAO.selectCartList(mbId, kitId);
-			
 			List<CreatorVO> creList = new ArrayList<>();
 			List<KitVO> kitList = new ArrayList<>();	
 			for (int i = 0; i < ctList.size(); i++) {
@@ -147,6 +153,12 @@ public class CartSVCImpl implements ICartSVC {
 		
 		
 		
+	}
+
+	@Override
+	public int insertNewCartRtKey(int mbId, int kitId) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	
