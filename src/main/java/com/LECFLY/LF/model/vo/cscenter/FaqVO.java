@@ -1,4 +1,4 @@
-package com.LECFLY.LF.model.vo;
+package com.LECFLY.LF.model.vo.cscenter;
 
 import java.util.HashMap;
 import java.util.Map;

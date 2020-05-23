@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
-import com.LECFLY.LF.model.vo.CartVO;
-import com.LECFLY.LF.model.vo.TicketVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 
 public interface ICartDAO {

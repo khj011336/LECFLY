@@ -8,9 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminMemberDAO;
-import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
+import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
 
 @Repository
 public class AdminMemberMysqlDAO implements IAdminMemberDAO {
@@ -74,6 +75,10 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 	public static String SQL_ADMIN_CREATOR__SELECT_ALL_PG=
 			"SELECT * FROM CREATOR ORDER BY ID DESC LIMIT ?,?";
 
+	/** 통계파트 최근 1년 월별 회원가입 인원 조회 */
+	public static String SQL_COUNT_MEMBER_BY_MONTH = 
+			"SELECT MONTH(JOINED_AT) AS month, count(id) as ms_count FROM members where JOINED_AT between date_add(now(), interval -1 year) AND now() GROUP BY month";
+	
 //	public static final String SQL_ADMIN_MEMBER_SELECT_SHOW = 
 //		"select * from member where 1=1";
 //	
@@ -166,6 +171,11 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 	@Override
 	public int checkNumberOfCreators() {
 		return jtem.queryForObject(SQL_SELECT_CREATOR_NUMBER, Integer.class);
+	}
+
+	@Override
+	public List<MemberStatVO> statCountMemberByMonth() {
+		return jtem.query(SQL_COUNT_MEMBER_BY_MONTH, BeanPropertyRowMapper.newInstance(MemberStatVO.class));
 	}
 	
 }

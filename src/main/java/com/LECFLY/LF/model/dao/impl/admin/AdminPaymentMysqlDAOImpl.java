@@ -8,9 +8,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminPaymentDAO;
-import com.LECFLY.LF.model.vo.CouponVO;
-import com.LECFLY.LF.model.vo.PayHistoryVO;
 import com.LECFLY.LF.model.vo.ProfitHistoryVO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
 
 
 public class AdminPaymentMysqlDAOImpl implements IAdminPaymentDAO{

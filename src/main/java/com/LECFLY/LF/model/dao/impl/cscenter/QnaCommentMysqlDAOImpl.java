@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 
 
 @Repository

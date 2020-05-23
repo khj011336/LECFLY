@@ -19,14 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.LECFLY.LF.model.vo.CouponVO;
+
 import com.LECFLY.LF.model.vo.LecAttendVO;
-import com.LECFLY.LF.model.vo.MemberVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
 import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.service.impl.member.loginSVCImpl;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
+import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -525,6 +527,7 @@ public class MemberController {
 			List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, status);
 			if(laList != null) {
 				System.out.println("laList = " + laList + " / laList.size() = " + laList.size());
+				model.addAttribute("msg_status", "수강중인 강의");
 				model.addAttribute("laList", laList);
 			} else {
 				System.out.println("laList = null");

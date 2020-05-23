@@ -153,7 +153,7 @@
 	 		    </c:choose>
 			</td>
 			<td>${cr.status }</td> 
-			<td>${cr.grantDate }</td> 
+			<td><fmt:formatDate value="${cr.grantDate}" pattern="yyyy.MM.dd" /></td> 
 		</tr>
 		</c:forEach>
 	</table>

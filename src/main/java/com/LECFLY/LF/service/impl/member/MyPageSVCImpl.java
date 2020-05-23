@@ -21,15 +21,15 @@ import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
 import com.LECFLY.LF.model.dao.inf.member.ILecAttendDAO;
 import com.LECFLY.LF.model.dao.inf.member.ILecTypeDAO;
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
-import com.LECFLY.LF.model.vo.CouponVO;
 import com.LECFLY.LF.model.vo.LecAttendVO;
-import com.LECFLY.LF.model.vo.MemberVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
-import com.LECFLY.LF.model.vo.TicketVO;
 import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
 
@@ -181,6 +181,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 						System.out.println("laList < 0 ::  음수");
 					}
 				}
+				
 				return rtLaList;
 			} else {
 				System.out.println("ltList == null ");

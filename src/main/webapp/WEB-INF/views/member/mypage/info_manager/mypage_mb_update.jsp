@@ -182,7 +182,7 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_nick">닉네임</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_nick" name="nickname" class="input_cnm" placeholder="닉네임" value=${member.nicname}>
+		                    		<input type="text" id="cnm_mb_nick" name="cnm_mb_nick" placeholder="닉네임">
 		                    		<input type="button" id="cnm_mb_nick_check_btn" value="중복확인">
 		                    	</div>
 		                    </td>

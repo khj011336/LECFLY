@@ -2,8 +2,9 @@ package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.MemberVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
+import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
 
 public interface IAdminMemberDAO {
 	// 일반 회원 관리
@@ -35,4 +36,6 @@ public interface IAdminMemberDAO {
 	
 	List<CreatorVO> searchCreatorForAll(int offset, int limit);
 	List<MemberVO> searchMemberForAll(int offset, int limit);
+	
+	List<MemberStatVO> statCountMemberByMonth();
 }

@@ -2,10 +2,6 @@
 	pageEncoding="UTF-8"%>
 
 <script src="resources/js/creator/video.js"></script>
-<script>
-
-</script>
-
 
 <div id='uplwrap'>
 

@@ -1,4 +1,7 @@
- $().ready(function() {
+
+
+ var videoUP = '${videoUP}';
+$().ready(function() {
  function videoChange(){
 	var video = $("#viosrc").attr("src");
 	if(video == undefined || video == null || video == ""){
@@ -43,6 +46,7 @@ $(window).on("unload",function(e){
 });
 	
 		$(".upl_bt").on("click",function(){
+			if(videoUP == ''){
 			if(!ispty()){
 				if(videoChange() == false){
 					alert("동영상을 등록해주세요");
@@ -53,6 +57,9 @@ $(window).on("unload",function(e){
 			$("#imgProc").attr("disabled","disabled");
 			form.submit();
 			}
+			}
+			}else{
+			location.href= "video_update_proc.LF";	
 			}
 		});
 	$("#imgProc").change(function () {
