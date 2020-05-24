@@ -8,8 +8,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
+import com.LECFLY.LF.model.vo.creator.CreatorVO;
+import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
@@ -23,7 +27,7 @@ public class Test {
 	
 	// 『  VideoMysqlDAOImpl 가져가세요
 
-	final String SQL_SELECT_ONE_VIDEO_BY_ID = "select * from video where id = ?";
+	public static final String SQL_SELECT_ONE_VIDEO_BY_ID = "select * from video where id = ?";
 
 	//@Override /** 세현 추가 0515 */
 	public VideoVO selectOneVideoById(int id) {
@@ -46,8 +50,14 @@ public class Test {
 	
 	// 『  CreatorMysqlDAOImpl 가져가세요
 
-	final String SQL_SELECT_IMG_PATH_BY_ID = "select img_path, nickname from creator where id = ?"; // 세현추가
-
+	public static final String SQL_SELECT_IMG_PATH_BY_ID = 
+			"select img_path, nickname from creator where id = ?"; // 세현추가
+	
+	public static final String SQL_SELECT_FID_BY_ID = "select fid from creator where id = ?";
+	
+	public static final String SQL_SELECT_ONE_CREATOR_BY_ID = 
+			"select * from creator where id = ?";
+	
 		//@Override/** 세현추가0515 */
 	public Map<String, Object> selectOneCreatorByIdRtImgPathAndNicname(int fId) {
 		try {
@@ -60,8 +70,6 @@ public class Test {
 		return null;
 	}
 
-	final String SQL_SELECT_FID_BY_ID = "select fid from creator where id = ?";
-	
 	public int selectFidById(int creatorId) {
 		try {
 			System.out.println(SQL_SELECT_FID_BY_ID + " / id = " + creatorId);
@@ -73,11 +81,19 @@ public class Test {
 		return 0;
 	}
 	
-	
+	public CreatorVO selectOneCreatorById(int id) {
+		try {
+			System.out.println(SQL_SELECT_ONE_CREATOR_BY_ID + " / id = " + id);
+			jtem.queryForObject(SQL_SELECT_ONE_CREATOR_BY_ID, 
+					BeanPropertyRowMapper.newInstance(CreatorVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	////////////////////            』
-	
-	
 	
 	/** */
 	
@@ -284,7 +300,7 @@ public class Test {
 		System.out.println("checkNumberOfLectureByMbId()");
 		try {
 			System.out.println(SQL_SELECT_COUNT_LECTURES_BY_MBID + " / fId = " + fId);
-			jtem.queryForObject(SQL_SELECT_COUNT_LECTURES_BY_MBID, Integer.class, fId);
+			return jtem.queryForObject(SQL_SELECT_COUNT_LECTURES_BY_MBID, Integer.class, fId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();
@@ -313,7 +329,7 @@ public class Test {
 	
 	/** */
 	
-	////////// TiketDAOImpl 에서 사용하세요~
+	////////// 『 TiketDAOImpl 에서 사용하세요~
 	
 	public static final String SQL_SELECT_ONE_TIKET_BY_MBID = 
 			"SELECT * FROM TICKETS WHERE MB_ID = ?";
@@ -330,6 +346,48 @@ public class Test {
 		return null;
 	}
 	
+	////////////////////////////////// 』
 	
+	/** */
+	
+	//////// 『 PayHistoryImpl 에서 사용하세요
+	
+	public static final String SQL_SELECT_PAY_HISTORIES_BY_BUYMBID = 
+			"select * from pay_histories where sell_mb_id = ?";
+	
+	public List<PayHistoryVO> selectAllPayHistoriesByMbId(int buyMbId) {
+		try {
+			System.out.println( SQL_SELECT_PAY_HISTORIES_BY_BUYMBID + " / buymbId = " + buyMbId);
+			return jtem.query(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID, 
+					BeanPropertyRowMapper.newInstance(PayHistoryVO.class), buyMbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
+	
+	////////    』
+	
+	/** */
+	
+	///////// 『  KitImpl 에서 사용하세요~~
+	
+	public static final String SQL_SELECT_ONE_KIT_BY_ID = 
+			"select * from kits where id = ?"; 
+	public KitVO selectOneKitById(int id) {
+		try {
+			return jtem.queryForObject(SQL_SELECT_ONE_KIT_BY_ID, 
+					BeanPropertyRowMapper.newInstance(KitVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/////// 』
 	
 }

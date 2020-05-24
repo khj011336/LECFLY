@@ -301,7 +301,6 @@
  				url: "mypage_delivery_info.LF",
 	 			cache: true,
 				datatype: "text",
-				data: "",
 				success:function(res){
 					$("#mypage_bottom").html(res);
 				},
@@ -333,6 +332,84 @@
  		
  		
  		
+
+ 		
+ 		// 마이페이지 결제내역 보기 
+		$("#mypage_dilivery_status_1").click(function() {
+			console.log("status_1");
+			var url = 'delivery_stat1.LF';
+			$ajax({
+				type: "POST",
+				url: url,
+				params: "",
+				data: "",
+				dataType: "",
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("결제대기 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});			
+		}); // 배송 정보 결제대기
+		
+		$("#mypage_dilivery_status_2").click(function() {
+			console.log("status_2");
+			var url = 'delivery_stat2.LF';
+			$ajax({
+				type: "POST",
+				url: url,
+				params: "",
+				data: "",
+				dataType: "",
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("배송준비 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 배송 정보 배송준비
+		
+		$("#mypage_dilivery_status_3").click(function() {
+			console.log("status_3");
+			var url = 'delivery_stat3.LF';
+			$ajax({
+				type: "POST",
+				url: url,
+				params: "",
+				data: "",
+				dataType: "",
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("배송중 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 배송 정보 배송중
+		
+		$("#mypage_dilivery_status_4").click(function() {
+			console.log("status_4");
+			var url = 'delivery_stat4.LF';
+			$ajax({
+				type: "POST",
+				url: url,
+				params: "",
+				data: "",
+				dataType: "",
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("배송완료 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 배송 정보 배송완료
  		
  	}); // $(document).ready 끝;
  	
