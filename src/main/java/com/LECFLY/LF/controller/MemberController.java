@@ -251,7 +251,7 @@ public class MemberController {
 	@ResponseBody
 	public String nicknameDupCheck(String nickname) {
 		// req.getParam과 타입맵핑을 자동으로 해줌
-		System.out.println("nic_dupcheck.LF");
+		System.out.println("nic_dupcheck.LF" + nickname);
 		//String login = req.getParameter("login");
 		if( nickname != null && !nickname.isEmpty() ) {
 			if( logSvc.check_dup_nick(nickname) ) {
@@ -736,6 +736,50 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	
+	@RequestMapping(value="mypage_mb_update_proc.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageUpdateInfoProc(
+			HttpSession ses,
+			@RequestParam(value="nickname") String nickname,
+			@RequestParam(value="ph1") String ph1,
+			@RequestParam(value="ph2") String ph2,
+			@RequestParam(value="agreeEmail") String agreeEmail,
+			@RequestParam(value="agreeSms") String agreeSms,
+			@RequestParam(value="postalcode") int postalcode,
+			@RequestParam(value="basicAddress") String basicAddress,
+			@RequestParam(value="detailAddress") String detailAddress
+			) {
+		System.out.println("memberMypageUpdateInfoProc()...");
+		String templateTop = 
+				"<div class=\"popup\">" + 
+		"<a class=\"close\" href=\"#\">x</a>" +
+		"<div class=\"mypage_mb_update_popup_content\">" +
+			"<h2 class=\"mypage_mb_isupdate\">";
+		String templateMiddle = "";//mb.getName() +"'님 회원정보 수정 성공";
+		String templateBottom = "</h2></div>" + 
+				"<input id=\"mypage_mb_update_popup_submitbtn\" type=\"button\" value=\"확인\" onclick='goBack()'>" +
+				"</div>";
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		
+		if(mb==null)
+			templateMiddle = "로그아웃되셨습니다. 재로그인이 필요합니다.";
+		else {
+			Map<String, Object>updateMap = 
+					mpSvc.updateOneMemberInfo(mb, nickname, ph1, ph2, agreeEmail, 
+					agreeSms, postalcode, basicAddress, detailAddress);
+			templateMiddle = (String)updateMap.get("update_info_msg");
+			ses.setAttribute("member", updateMap.get("update_member"));
+		}
+		System.out.println(templateMiddle);
+		String template = templateTop + templateMiddle + templateBottom;
+		rMap.put("temp", template);
+		
+		return rMap;
+	}
+	
+	
+	
 //회원의 비밀번호 변경하기								비밀번호 변경
 //	mypage_update_pw.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_pw_update.LF", method=RequestMethod.POST)
@@ -744,6 +788,42 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_pw_update";
 	}
 
+	@RequestMapping(value="mypage_pw_update_proc.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageUpdatePwProc(
+			HttpSession ses,
+			@RequestParam(value="oldPw") String oldPw,
+			@RequestParam(value="newPw") String newPw,
+			@RequestParam(value="confirmPw") String confirmPw
+			) {
+		System.out.println("memberMypageUpdateInfoProc()...");
+		String templateTop = 
+				"<div class=\"popup\">" + 
+		"<a class=\"close\" href=\"#\">x</a>" +
+		"<div class=\"mypage_pw_update_popup_content\">" +
+			"<h2 class=\"mypage_pw_isupdate\">";
+		String templateMiddle = "";//mb.getName() +"'님 비밀번호 수정 성공
+		String templateBottom = "</h2></div>" + 
+				"<input id=\"mypage_pw_update_popup_submitbtn\" type=\"button\" value=\"확인\" onclick='goBack()'>" +
+				"</div>";
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		
+		if(mb==null)
+			templateMiddle = "로그아웃되셨습니다. 재로그인이 필요합니다.";
+		else {
+			if(logSvc.loginProcess(mb.getEmail(),oldPw)==logSvc.MB_EMAIL_AUTH_OK)
+				templateMiddle = (String)mpSvc.updateOneMemberPw(mb.getEmail(), newPw, confirmPw).get("update_pw_msg");
+			else
+				templateMiddle = "비밀번호가 틀립니다!";
+		}
+
+		System.out.println(templateMiddle);
+		String template = templateTop + templateMiddle + templateBottom;
+		rMap.put("temp", template);
+		
+		return rMap;
+	}
 
 //////	 주문 / 배송관리
 	

@@ -33,6 +33,21 @@
 			<div class="dilivery_status_chart">
 				<%@ include file="delivery_stat1.jsp"%>
 			</div>
+			<div id="mypage_dilivery_status_point"><i class="fas fa-chevron-right fa-5x"></i></div>
+			<div id="mypage_dilivery_status">
+				<a href="#" id="mypage_dilivery_status_3">배송중
+				<br><br>
+				<span style="color:orange">2</span></a>
+			</div>
+			<div id="mypage_dilivery_status_point"><i class="fas fa-chevron-right fa-5x"></i></div>
+			<div id="mypage_dilivery_status">
+				<a href="#" id="mypage_dilivery_status_4">배송완료
+				<br><br>
+				<span style="color:orange">3</span></a>
+			</div>
+		</div>
+		<div class="dilivery_status_chart">
+			<%@ include file="delivery_stat1.jsp"%>
 		</div>
 	</div>
 <%-- </c:if> --%>

@@ -553,10 +553,84 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 		return null;
 	}
+	
+	@Override
+	public Map<String, Object> updateOneMemberInfo(MemberVO mb, String nickname, String ph1, String ph2, String agreeEmail, String agreeSms,
+			int postalcode, String basicAddress, String detailAddress) {
+		System.out.println("svc: updateOneMemberInfo");
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		if(!nickname.isEmpty() && nickname!=null)
+			mb.setNicname(nickname);
+		if(!ph1.isEmpty() && ph1!=null && !ph2.isEmpty() && ph2!=null) {
+			String ph="010"+ph1+ph2;
+			mb.setPhNumber(ph);
+		}
+//		if(agreeEmail!=null && !agreeEmail.isEmpty() && agreeSms!=null && !agreeSms.isEmpty()) {
+//			int agreeReceive = 0;
+//			if( agreeEmail.equals("agree_email"))
+//				agreeReceive += 1;
+//			if( agreeSms.equals("agree_sms"))
+//				agreeReceive += 2;
+//			mb.setAgreeReceive(agreeReceive);
+//		}
+		if(agreeEmail==null || agreeEmail.isEmpty() || agreeSms==null || agreeSms.isEmpty()) {
+			rMap.put("update_info_msg", "체크박스 오류 발생!");
+			return rMap;
+		} else{
+			int agreeReceive = 0;
+			if( agreeEmail.equals("agree_email"))
+				agreeReceive += 1;
+			if( agreeSms.equals("agree_sms"))
+				agreeReceive += 2;
+			System.out.println("agree있음");
+			mb.setAgreeReceive(agreeReceive);
+			System.out.println(mb.getAgreeReceive());
+		}
+			
+		
+		if(postalcode!=0)
+			mb.setPostalCode(postalcode);
+		if(!basicAddress.isEmpty() && basicAddress!=null)
+			mb.setbasicAddress(basicAddress);
+		if(!detailAddress.isEmpty() && detailAddress!=null)
+			mb.setDetailAddress(detailAddress);
+		if(updateOneMember(mb)) {
+			rMap.put("update_info_msg", "회원정보 수정 성공");
+			rMap.put("update_member", mb);
+		}else
+			rMap.put("update_info_msg", "회원정보 수정 실패");
+		return rMap;
+	}
 
-
+	@Override
+	public boolean updateOneMember(MemberVO mb) {
+		System.out.println("svc: updateOneMember");
+		return mbDao.updateOneMemberInfo(mb);
+	}
 	
 	
-
+	@Override
+	public Map<String, Object> updateOneMemberPw(String email, String newPw, String newPwConfirm) {
+		System.out.println("svc: updateOneMemberPw");
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		if(newPw.isEmpty() || newPw==null)
+			rMap.put("update_pw_msg","새 비밀번호를 입력하세요");
+		if(newPwConfirm.isEmpty() || newPwConfirm==null)
+			rMap.put("update_pw_msg","새 비밀번호를 다시 입력하세요");
+		if(newPw.equals(newPwConfirm)) {
+			if(updateOneMember(email, newPw))
+				rMap.put("update_pw_msg","비밀번호 변경 성공");
+			else
+				rMap.put("update_pw_msg","비밀번호 변경 실패");
+		} else {
+			rMap.put("update_pw_msg","같은 비밀번호를 입력하세요");
+		}
+		return rMap;
+	}
 	
+	@Override
+	public boolean updateOneMember(String email, String pw) {
+		System.out.println("svc: updateOneMemberPw");
+		return mbDao.updateMemberPasswordToEmail(email, pw);
+	}
 }
