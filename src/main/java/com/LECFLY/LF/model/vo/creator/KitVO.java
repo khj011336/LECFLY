@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class KitVO {
 private int id ;		//PK AI
 private int fId;		//FK
-private int CFId;		//FK
+private int cFId;		//FK
 private int category;   // 상품 해당 카테고리
 private String attribute;	// 상퓸속성
 private String title;	// 상품이름
@@ -39,10 +39,10 @@ public void setfId(int fId) {
 	this.fId = fId;
 }
 public int getCFId() {
-	return CFId;
+	return cFId;
 }
 public void setCFId(int cFId) {
-	CFId = cFId;
+	this.cFId = cFId;
 }
 public int getCategory() {
 	return category;
@@ -114,7 +114,7 @@ public void setImgPath(String imgPath) {
  
 @Override
 public String toString() {
-	return "KitVO [id=" + id + ", fId=" + fId + ", CFId=" + CFId + ", category=" + category + ", attribute=" + attribute
+	return "KitVO [id=" + id + ", fId=" + fId + ", CFId=" + cFId + ", category=" + category + ", attribute=" + attribute
 			+ ", title=" + title + ", price=" + price + ", remain=" + remain + ", imgPath=" + imgPath + ", deliver="
 			+ deliver + ", deliveryPrice=" + deliveryPrice + ", fromTo=" + fromTo + ", info=" + info + ", DetailInfo="
 			+ detailInfo + "]";
@@ -130,7 +130,7 @@ public KitVO(int id, int fId, int cFId, int category, String attribute, String t
 	super();
 	this.id = id;
 	this.fId = fId;
-	CFId = cFId;
+	this.cFId = cFId;
 	this.category = category;
 	this.attribute = attribute;
 	this.title = title;

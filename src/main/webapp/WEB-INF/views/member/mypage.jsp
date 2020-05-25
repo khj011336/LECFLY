@@ -30,7 +30,7 @@
 			        		<h1><u>크리에이터 회원</u> 입니다.</h1>
 			        	</c:if>
 			        	<br><br>
-			        	<a href="Creator/_classdes.jsp"><h3>크리에이터 신청하기</h3></a>
+			        	<a href="creator.LF"><h3>크리에이터 신청하기</h3></a>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_attendlec">
 			        	<img src="resources/imges/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">

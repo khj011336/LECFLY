@@ -155,7 +155,8 @@
 		                    <td>
 <!-- 		                    	<input type="radio" id="cnm_mb_f" name="cnm_mb_gender" value="여" disabled><label for="cnm_mb_f" class="gender_sub_title">여성</label> -->
 <!-- 	    						<input type="radio" id="cnm_mb_m" name="cnm_mb_gender" value="남" disabled><label for="cnm_mb_m" class="gender_sub_title">남성</label> -->
-								<input type="text" id="cnm_mb_m" name="cnm_mb_gender" readonly value="${member.gender==1?'여성':'남성'}">
+								<label id="cnm_mb_m" name="cnm_mb_gender" class="gender_sub_title">${member.gender==1?'여성':'남성'}</label>
+<%-- 								<input type="text" id="cnm_mb_m" name="cnm_mb_gender" readonly value="${member.gender==1?'여성':'남성'}"> --%>
 	    					</td>
 		                </tr>
 		                <tr>

@@ -283,7 +283,7 @@ public class CreatorController {
 	public String videoUpload(@RequestParam(value = "CFID", defaultValue = "0") int CFID, Model model, HttpSession ses,
 			@ModelAttribute(value = "video") VideoVO vio) {
 		if (CFID != 0) {
-			vio.setCFId(CFID);
+			vio.setcFId(CFID);
 			vio.setfId(memberId);
 			model.addAttribute(vio);
 			model.addAttribute("crPath", imgPath);
@@ -346,8 +346,8 @@ public class CreatorController {
 			 HttpSession ses,
 			@ModelAttribute(value = "video") VideoVO vio) {
 	 System.out.println(vio);
-	 if(vio.getCFId() != 0 && vio.getId() != 0) {
-	 ViDAO.updateVideo(vio, vio.getCFId(), vio.getId());
+	 if(vio.getcFId() != 0 && vio.getId() != 0) {
+	 ViDAO.updateVideo(vio, vio.getcFId(), vio.getId());
 	 }
 	 
 		return "creator/cre_href";
