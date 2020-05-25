@@ -44,23 +44,35 @@ public class PaymentController {
 		return "payment/ticket_guide/lecfly_ticket.pay";
 	}
 	
-	// 회원이 선택한 티켓을 주문페이지로 이동할 수 있다.
+	// 회원이 한개의 선택한 티켓을 주문페이지로 이동할 수 있다.
 	@RequestMapping(value = "pay_order.LF", method = RequestMethod.POST)
 	public String showOrderProc(HttpSession ses,
 								@RequestParam("ticName") int ticName,
 								Model model) {
-		System.out.println("왔서왔어");
+		System.out.println("티켓 안내 페이지로 이동!");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
-		int mbId = mb.getId();
-		if(mbId > 0) {
+		
+		if(mb != null) {
+			int mbId = mb.getId();
 			System.out.println("결제 페이지로 이동! ticName = " + ticName);
 			Map<String, Object> pMap = paySvc.showOrderProc(mbId, ticName);
-			return "payment/pay_order.pays";
+			if( pMap != null) {
+				int ticMap = (Integer)pMap.get("r");
+				CartVO ct = (CartVO)pMap.get("cart");
+				List<CartVO> ctList = new ArrayList<CartVO>();
+				ctList.add(ct);
+				if ( ticMap == 1 )
+				model.addAttribute("ctSize", ctList.size());		
+				model.addAttribute("ticMap", ticMap);
+				model.addAttribute("ctList", ctList);
+			} else {
+				System.out.println("이미 티켓이 존재하고 있습니다.");
+			}
 		} else {
 			System.out.println("멤버 로그인 페이지로 이동!");
 			return "member/login";
 		}
-		
+		return "payment/pay_order.pays";
 	}
 	
 	// 회원이 세션 로그인 후, 상품 상세페이지로 이동 할 수 있다.
@@ -93,30 +105,69 @@ public class PaymentController {
 				return "lecture/main.ho";
 			}
 	}
+	
+	
+	@RequestMapping(value = "check_pay_cart.LF", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> CheckOrderProc(HttpSession ses, @RequestParam("kitId") int kitId) {
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		Map<String, Object> rMap = new HashMap<>(); 
+		if( mb != null ) {
+			int mbId = mb.getId();
+			boolean r = cartSvc.checkCartForKitMb(mbId, kitId); 
+			if ( r ) {
+				System.out.println("1개가 있어서 만들필요없어");
+				int c = 1;
+				rMap.put("c", c);
+			}else {
+				System.out.println("1개가 없어서 만들어야되");
+				int c = 0;
+				rMap.put("c", c);
+				cartSvc.insertNewCartByMbIdTicId(mbId, kitId);
+			}
+			
+		} else {
+			System.out.println("mb 없음");
+			System.out.println("왜일로온지모르겠어.");
+			int c = 0;
+			rMap.put("c", c);
+		}
+		return rMap;
+	}
+	
+	
+	
 //	 회원과 비회원이 장바구니페이지로 들어 갈 때, 세션으로 물건들을 넣을 수 있다.
 	@RequestMapping(value = "pay_cart.LF", method = RequestMethod.POST)
 	public String showCartProc(HttpSession ses,
 							   @RequestParam("kitId") int kitId,
 							   Model model){
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
-		int mbId = mb.getId(); 
-		if( mbId > 0 ) {
-			System.out.println("회원으로 장바구니 이동!");
-			Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
-			if(cMap != null) {
-				List<KitVO> kitList = (List<KitVO>)cMap.get("kitList");
-				model.addAttribute("kitList", kitList);
-				List<CreatorVO> creList = (List<CreatorVO>)cMap.get("creList");
-				model.addAttribute("creList", creList);
-			} else { 
-				System.out.println("payment/pay_goodsDetail.pay");
-				return "payment/pay_goodsDetail.pay";
+		if(mb != null) {
+			int mbId = mb.getId();
+			if( mbId > 0 ) {
+				System.out.println("회원으로 장바구니 이동!");
+				System.out.println("kitId = " + kitId);
+				//카트에서 해당 mb가 저키트를 가지고있는지 체크하는 함수 select 하는함수	
+				Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
+				if(cMap != null) {
+					List<KitVO> kitList = (List<KitVO>)cMap.get("kitList");
+					model.addAttribute("kitList", kitList);
+					List<CreatorVO> creList = (List<CreatorVO>)cMap.get("creList");
+					model.addAttribute("creList", creList);
+				}
+			} else {
+				System.out.println("비회원으로 장바구니 이동!");
+				Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
+				
 			}
+			System.out.println("payment/pay_cart.pays");
+			
 		} else {
-			System.out.println("비회원으로 장바구니 이동!");
-			Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
+			// 여유생기면 구현예정
+			//Map<String, Object> pMap = cartSvc.showCartByNoMbProc(kitId); // 카트아이디가 리턴되애되
+			System.out.println("mb 가없음");
 		}
-		System.out.println("payment/pay_cart.pays");
 		return "payment/pay_cart.pays";
 	}
 	

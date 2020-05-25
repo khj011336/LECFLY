@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
 import com.LECFLY.LF.model.dao.inf.payHistory.IPayHistoryDAO;
-import com.LECFLY.LF.model.vo.CartVO;
-import com.LECFLY.LF.model.vo.TicketVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.service.inf.payhistory.IPayHistorySVC;
 @Service
 public class PayHistorySVCImpl implements IPayHistorySVC {
@@ -23,7 +22,6 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 	// 바로 결제를 위한 폼 준비하기.
 	@Override
 	public Map<String, Object> showOrderProc(int mbId, int ticName) {
-		
 		int categoryId = CartVO.CATEGORY_ID_TICKET;
 		UUID uuid = UUID.randomUUID();
 		String strUuid = uuid.toString();

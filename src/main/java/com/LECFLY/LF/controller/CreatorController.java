@@ -346,8 +346,8 @@ public class CreatorController {
 			 HttpSession ses,
 			@ModelAttribute(value = "video") VideoVO vio) {
 	 System.out.println(vio);
-	 if(vio.getCFId() != 0 && vio.getId() != 0) {
-	 ViDAO.updateVideo(vio, vio.getCFId(), vio.getId());
+	 if(vio.getcFId() != 0 && vio.getId() != 0) {
+	 ViDAO.updateVideo(vio, vio.getcFId(), vio.getId());
 	 }
 	 
 		return "creator/cre_href";

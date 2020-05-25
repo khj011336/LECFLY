@@ -7,9 +7,12 @@ import org.springframework.stereotype.Component;
 @Component("cartVO")
 public class CartVO {
 	
-	public static final String[] STR_CATEGORY_ID = {"이용권", "키트"};
+	public static final String[] STR_CATEGORY_ID = {"회원권", "키트"};
 	public static final int CATEGORY_ID_TICKET = 0;
 	public static final int CATEGORY_ID_KIT = 1;
+	
+	public static final String[] STR_CATEGORY_NAME = {"1카테고리 회원권", "3카테고리 회원권", "무제한 회원권"};
+	
 	/** 순서번호*/
 	int id;
 	/** 회원의 PK          		/fk/*/

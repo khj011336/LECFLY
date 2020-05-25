@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.payHistory.IPayHistoryDAO;
-import com.LECFLY.LF.model.vo.TicketVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 
 @Repository
 public class PayHistoryMySqlImpl implements IPayHistoryDAO {
@@ -23,4 +23,6 @@ public class PayHistoryMySqlImpl implements IPayHistoryDAO {
 		return jtem.query(SQL_INSERT_ONE_CATEGORY_BY_NAME, BeanPropertyRowMapper.newInstance(TicketVO.class), ticName);
 	}
 
+	
+	
 }

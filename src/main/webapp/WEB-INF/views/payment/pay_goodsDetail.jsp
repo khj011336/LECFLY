@@ -6,9 +6,41 @@
 	$(document).ready(function() {
 		$("#moveCart").on("click", function() {
 			var URLHD = '${pageContext.request.contextPath}/';
+ 			var url = URLHD+'check_pay_cart.LF';
+ 			var kitId = $("input[name=kit_id]").val();
+ 			var params = "kitId=" + kitId;
+ 			$.ajax({
+				type: 'POST',
+				url : url,
+				data: params,
+				dataType: "JSON",
+				success: function(res, status ,xhr){
+					console.log("res = " + res  ); 
+					// res 가 1이면 해당회원의 키트가 장바구니에 존재  0이면 존재하지않음
+					var r = res.c;
+					console.log("r = " + r);
+					if(r == 1){
+						console.log("알은 1");
+						location.href = "#goods_detail_modal";
+					} else {
+						console.log("알은 1이아님");
+						location.href = "#goods_detail_modal_popup_submitbtn";
+					}
+				},
+				error: function(status, xhr){
+					console.log("실패");
+				}
+			});
+
+			
+		});
+		
+		
+		$("#goods_detail_modal_popup_submitbtn").on("click", function() {
+			var URLHD = '${pageContext.request.contextPath}/';
 			var url = URLHD+'pay_cart.LF';
 			var kitId = $("input[name=kit_id]").val();
-			console.log("kitId = " + kitId);
+			console.log("goods_detail 눌렀을때 kitId = " + kitId);
 			var params = "kitId=" + kitId;
 			$.ajax({
 				type: 'POST',
@@ -24,30 +56,6 @@
 				}
 			});
 		});
-// 		var cfid = ${lec.CFId}, id = ${lec.id}, xor isBuyMember 
-// 		$("").on("click", function() {
-// 			var form = document.createElement('form');
-// 			form.setAttribute('method', 'get');
-// 			form.setAttribute('action', 'creator_video_show.LF');
-// 			document.charset = "utf-8";
-// 					var hiddenField = document.createElement('input');
-// 					hiddenField.setAttribute('type', "hidden");
-// 					hiddenField.setAttribute('name', "CFId");
-// 					hiddenField.setAttribute('value', cfid);
-// 					form.appendChild(hiddenField);
-// 					var hiddenField = document.createElement('input');
-// 					hiddenField.setAttribute('type', "hidden");
-// 					hiddenField.setAttribute('name',"Id");
-// 					hiddenField.setAttribute('value', id);
-// 					form.appendChild(hiddenField);
-// 					var hiddenField = document.createElement('input');
-// 					hiddenField.setAttribute('type', "hidden");
-// 					hiddenField.setAttribute('name',"category");
-// 					hiddenField.setAttribute('value', category);
-// 					form.appendChild(hiddenField);
-// 			document.body.appendChild(form);
-// 			form.submit();	
-// 		});
 	});
 
 	
@@ -165,8 +173,18 @@
 	<select class = "register_kit_select">
 		<option selected="selected">선택안함</option>
 		<option>스타터를 위한 KIT (${kit.price})</option>
-	</select>  
+	</select>
 	<input id="moveCart" type="button" value="장바구니 담기">
+	<div id="goods_detail_modal" class="overlay">
+		<div class="popup">
+			
+			<a class="close" href="#">x</a>
+			<div class="goods_detail_modal_popup_content">
+				<h2 class="mypage_mb_isupdate">이미 등록되어있는 상품입니다.</h2>
+			</div>
+			<input id="goods_detail_modal_popup_submitbtn" type="button" value="확인">
+		</div>
+	</div>
 	<br> <br> <span class="register_like_num"><i
 		class="fas fa-heart"></i> ${lec.likeCount} </span> &nbsp; &nbsp; &nbsp; <span
 		class="register_lec_pick"> 강의 찜하기 </span> <br> <br> <br>

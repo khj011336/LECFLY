@@ -14,7 +14,7 @@ public class PayHistoryVO {
 	/**  판매회원아이디*/
 	private int sellMbId;            
 	/** 구매한종류                        (1:이용권 2:키트 3:펀딩...)*/
-	private int	goodsType;          
+	private int goodsType;          
 	/** 구매 품목 id       fk는 없지만 윗 컬럼으로 테이블 판별 후 해당 테이블에서 데이터를 가져와야됨*/
 	private String goodsId;          
 	/** 결제수단                          (1:신용카드 2:카카오페이)*/
@@ -28,7 +28,7 @@ public class PayHistoryVO {
 	/** 결제날자 CURRENT_TIMESTAMP*/
 	private Timestamp dealDay;
 	/** 주문시 같이 했을경우 고유 id (주문주문 시 같이 구매한 내역일 경우 같은 번호로 표시번호)*/
-	private String checkSameOrder;
+	private String checkSameOrder; 
 	/** 배송상태                               0: 주문서 확인 1:상품준비중 2: 배송중 3: 배송완료*/
 	private int deliveryStatus;
 	/** 배송요청 사항*/

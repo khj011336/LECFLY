@@ -3,7 +3,6 @@ package com.LECFLY.LF.service.inf.payhistory;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.TicketVO;
 
 public interface IPayHistorySVC {
 

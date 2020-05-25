@@ -27,7 +27,7 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	
 	// SQL 정의문
 	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, 1, ?, now() )";
-	private static final String SQL_SELECT_CART_LIST = "select * from cart where member_id = ? and goods_id = ?"; 
+	private static final String SQL_SELECT_CART_LIST = "select * from cart where mb_id = ?"; 
 			//"insert into cart(member_id, goods_id) values(?, ?)";
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
 	private static final String SQL_SELECT_KIT_LIST = "";
@@ -57,9 +57,9 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	
 	
 	@Override
-	public List<CartVO> selectCartList(int mbId, int kitId) throws DataAccessException {
-		System.out.println(SQL_SELECT_CART_LIST + "mbId = " + mbId + "kitId = " + kitId);
-		List<CartVO> cartList = jtem.query(SQL_SELECT_CART_LIST, BeanPropertyRowMapper.newInstance(CartVO.class), mbId, kitId);
+	public List<CartVO> selectCartListByMbId(int mbId) throws DataAccessException {
+		System.out.println(SQL_SELECT_CART_LIST + "mbId = " + mbId);
+		List<CartVO> cartList = jtem.query(SQL_SELECT_CART_LIST, BeanPropertyRowMapper.newInstance(CartVO.class), mbId);
 		return cartList;
 	}
 
@@ -129,6 +129,13 @@ public class CartMysqlDAOImpl implements ICartDAO {
 		return jtem.queryForObject(SQL_ONE_CART_BY_UUID,BeanPropertyRowMapper.newInstance(CartVO.class), uuid);
 	}
 
+
+	private static final String SQL_ONE_CART_BY_MBID_KITID = "select count(*) from cart where mb_id = ? and gds_id = ?";
 	
+	@Override
+	public int checkCartByMbIdKitId(int mbId, int kitId) {
+		System.out.println("checkCartByMbIdKitId 왔어");
+		return jtem.queryForObject(SQL_ONE_CART_BY_MBID_KITID, Integer.class, mbId, kitId);
+	}
 
 }

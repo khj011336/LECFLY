@@ -121,40 +121,51 @@ public class CartSVCImpl implements ICartSVC {
 		// 장바구니의 리스트를 뽑는다. gdsId랑 kitId랑 같은 걸로.
 		// 키트의 리스트를 뽑는다.
 		// 크리에이터의 리스트를 뽑느다. <FK랑 참조>
-		int categoryId = CartVO.CATEGORY_ID_KIT;
-		UUID uuid = UUID.randomUUID();
-		String strUuid = uuid.toString();
-		int r = cartDAO.insertNewCartByMbIdTicId(categoryId, mbId, kitId, strUuid);
-		if(r == 1) {
-			List<CartVO> ctList = cartDAO.selectCartList(mbId, kitId);
-			List<CreatorVO> creList = new ArrayList<>();
-			List<KitVO> kitList = new ArrayList<>();	
-			for (int i = 0; i < ctList.size(); i++) {
-				KitVO kit = testDAO2.selectOneKitbyId(kitId);
-				CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId()); 
-				creList.add(cre);
-				kitList.add(kit);
-			}
-			
-			Map<String, Object> rMap = new HashMap<>();
-			rMap.put("cartList", ctList);
-			rMap.put("kitList", kitList);
-			rMap.put("creList", creList);
-			
-			return rMap;
-		} else {
-			return null;
+		List<CartVO> ctList = cartDAO.selectCartListByMbId(mbId);
+		List<CreatorVO> creList = new ArrayList<>();
+		List<KitVO> kitList = new ArrayList<>();	
+		for (int i = 0; i < ctList.size(); i++) {
+			KitVO kit = testDAO2.selectOneKitbyId( ctList.get(i).getGdsId() );
+			System.out.println("kit.get.Title()" + kit.getTitle());
+			CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId());
+			System.out.println("cre.getName()" + cre.getName());
+			creList.add(cre);
+			kitList.add(kit);
 		}
 		
+		Map<String, Object> rMap = new HashMap<>();
+		rMap.put("cartList", ctList);
+		rMap.put("kitList", kitList);
+		rMap.put("creList", creList);
 		
-		
-		
+		return rMap;		
 	}
 
 	@Override
-	public int insertNewCartRtKey(int mbId, int kitId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertNewCartByMbIdTicId(int mbId, int kitId) {
+		int categoryId = CartVO.CATEGORY_ID_KIT;
+		int r = cartDAO.insertNewCartByMbIdTicId(categoryId, mbId, kitId, null);
+		return r;
+	}
+
+	@Override
+	public Map<String, Object> showCartByNoMbProc(int kitId) {
+		// 비회원이 등록시 하려고함 
+		//int r = cartDAO.insertNewCartForNoMb();
+		return null;
+	}
+
+	@Override
+	public boolean checkCartForKitMb(int mbId, int kitId) {
+		int r = cartDAO.checkCartByMbIdKitId(mbId, kitId);
+		System.out.println("r = " + r);
+		if( r == 1 ) {
+			System.out.println("1개있음 더이만만들필요없음");
+			return true;
+		} else if (r > 1) {
+			System.out.println("r  == 2개이상 확인필요 무저건 한개만있어야됨");
+		}
+		return false;
 	}
 
 	

@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.vo.CommentClassVO;
-import com.LECFLY.LF.model.vo.CommentVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -34,7 +33,7 @@ public class TestGeon2 {
 		return null;
 	}
 
-	private final String SQL_SELECT_KIT_CFID = "select * from kit where CFId = ?";
+	private final String SQL_SELECT_KIT_CFID = "select * from kit where cFId = ?";
 	public KitVO selectOneKit(int CFId) {
 		System.out.println(SQL_SELECT_KIT_CFID + "CFId = " + CFId);
 		try {

@@ -21,8 +21,10 @@ public interface ICartSVC {
 	// 회원이 로그인 시 , 강의 상세페이지로 이동 할 수 있다.
 	public Map<String, Object> showLectureProc(int lecId);
 	public List<TicketVO> selectOneTicket(int ticId);
-	public int insertNewCartRtKey(int mbId, int kitId);
+	public int insertNewCartByMbIdTicId(int mbId, int kitId);
 	public Map<String, Object> showCartProc(int mbId, int kitId);
+	public Map<String, Object> showCartByNoMbProc(int kitId);
+	public boolean checkCartForKitMb(int mbId, int kitId);
 
 	
 }
