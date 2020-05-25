@@ -475,7 +475,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		if(mbId > 0) {
 			List<PayHistoryVO> phisList =  //phisDao.
 											testDao.selectAllPayHistoriesByMbId(mbId);
-			if(phisList != null && phisList.size() >= 0) {
+			if(phisList != null) {
 				List<CreatorVO> creList = new ArrayList<>();
 				List<KitVO> kitList = new ArrayList<>();
 				
@@ -531,7 +531,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 					} else {
 						System.out.println("arrayCreatorIds.length 는 음수 ");
 					}
-				} // 반복문 끝
+				}
 				Map<String, Object> rMap = new HashMap<>();
 				int[] deliveryStatus = { deliveryStatusPaymentWaiting,  
 						deliveryStatusDeliveryPreparation, 
@@ -544,8 +544,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 				rMap.put("deliveryStatusArray", deliveryStatus);
 				return rMap;
 			} else {
-				System.out.println("phisList == null 이거나  phisList.size() 는 음수");
-				
+				System.out.println("phisList == null");
 			}
 		} else {
 			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
@@ -632,5 +631,96 @@ public class MyPageSVCImpl implements IMypageSVC {
 	public boolean updateOneMember(String email, String pw) {
 		System.out.println("svc: updateOneMemberPw");
 		return mbDao.updateMemberPasswordToEmail(email, pw);
+	}
+
+
+	@Override
+	public Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat) {
+		System.out.println("mpSvc : selectMyPageDeliveryStatMap()..");
+		System.out.println("mbId = " + mbId + " / deliveryStat = " + deliveryStat);
+		if(mbId > 0 && deliveryStat > 0 && deliveryStat < 5) {
+			List<PayHistoryVO> phisList = //phisDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+											testDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+			List<CreatorVO> creList = new ArrayList<>();
+			List<KitVO> kitList = new ArrayList<>();
+			if(phisList != null) {
+				final int PHIS_LIST_SIZE = phisList.size();
+				for (int i = 0; i < PHIS_LIST_SIZE; i++) {
+					String creatorIds = phisList.get(i).getSellMbId();
+					String kitIds = phisList.get(i).getGoodsId();
+					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
+					String[] arrayCreatorIds = creatorIds.split(",");
+					String[] arrayKitIds = kitIds.split(",");
+					
+					if(arrayCreatorIds.length >= 0 ) {
+						for (int j = 0; j < arrayKitIds.length; j++) {
+							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
+							int intKitId = Integer.parseInt(arrayKitIds[j]);
+							
+							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
+							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
+											testDao.selectOneCreatorById(intCreatorId);
+							KitVO kit = //kitDao.selectOneKitById(intKitId);
+										testDao.selectOneKitById(intKitId);
+							creList.add(cre);
+							kitList.add(kit);
+						}
+					} else {
+						System.out.println("arrayCreatorIds.length 는 음수 ");
+					}
+				} // for 문끝
+				Map<String, Object> rMap = new HashMap<>();
+				rMap.put("phisList", phisList);
+				rMap.put("creList", creList);
+				rMap.put("kitList", kitList);
+				return rMap;
+			} else {
+				System.out.println("phisList == null");
+			}
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+		}
+		return null;
+	}
+
+
+	@Override
+	public Map<String, Object> selectMemberPayHistoriesByPayStatusMbId
+												(String payStatus, int mbId) {
+		System.out.println("mpSvc :: selectMemberPayHistoriesByPayStatusMbId()");
+		if(mbId > 0 && payStatus != null && !payStatus.isEmpty()) {
+			int payStat = 0;
+			switch(payStatus) {
+				case "all" : payStat = 3; break;
+				case "tickets" : payStat = 1; break;
+				case "kits" : payStat = 2; break;
+			}
+			// PayHistoryVO 에서 1:이용권 2:키트
+			// 상품명 결제금액 구매일 배송상태 카드종류
+			List<Map<String,Object>> phisMapList = //phisDao.selectMemberPayHistoryByBuyMbIdgdsType(mbId, payStat);
+												testDao.selectMemberPayHistoryByBuyMbIdgdsType(mbId, payStat);
+			if(phisMapList != null) {
+				final int PHIS_MAP_LIST_SIZE = phisMapList.size(); 
+				for (int i = 0; i < PHIS_MAP_LIST_SIZE; i++) {
+					Map<String, Object> pMap = phisMapList.get(i);
+					int phisId = (int)pMap.get("id");
+					String phisGdsId = (String)pMap.get("gds_id"); // split 해서 잘라서 구분해야함 이미위에서 이용권이냐 키트냐로 뽑음 
+					int phisPayWay = (int)pMap.get("pay_way"); // 1 이면 신용카드 2면 카카오페이 
+					Timestamp phisDealDay = (Timestamp)pMap.get("deal_day");
+					String phisCheckSameOrder = (String)pMap.get("check_same_order"); // uuid String ver
+					int phisDeliveryStatus = (int)pMap.get("delivery_status"); // 0주문서확인 1상품준비중 2배송중 3 배송완료
+					int phisHistorySum = (int)pMap.get("pay_history_sum");
+				}
+				
+				
+			} else {
+				System.out.println("phisListMap ==  null");
+			}
+			
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+			System.out.println("payStatus = " + payStatus + " / mbId = " + mbId );
+		}
+		return null;
 	}
 }

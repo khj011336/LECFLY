@@ -353,7 +353,10 @@ public class Test {
 	//////// 『 PayHistoryImpl 에서 사용하세요
 	
 	public static final String SQL_SELECT_PAY_HISTORIES_BY_BUYMBID = 
-			"select * from pay_histories where sell_mb_id = ?";
+			"select * from pay_histories where buy_mb_id = ?";
+	
+	public static final String SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_DELIVERYSTATUS = 
+			"select * from pay_histories where buy_mb_id = ? and delivery_status = ?";
 	
 	public List<PayHistoryVO> selectAllPayHistoriesByMbId(int buyMbId) {
 		try {
@@ -366,7 +369,64 @@ public class Test {
 		}
 		return null;
 	}
+	
+	
+	public List<PayHistoryVO> selectAllPayHistoriesByMbIdDeliveryStatus
+											(int buyMbId, int deliveryStatus) {
+		try {
+			System.out.println(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_DELIVERYSTATUS + 
+					" / buy_mb_id = " + buyMbId + " / deliveryStatus = " + deliveryStatus);
+			return jtem.query(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_DELIVERYSTATUS, 
+					BeanPropertyRowMapper.newInstance(PayHistoryVO.class), buyMbId, deliveryStatus);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
+	// 문장이름이랑 문장 sql에서 확인한번필요함   
+	// 문장이름 1안 
+	public static final String SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_GDSTYPE_RT_ID_GDSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM 
+		= "select id, gds_id, pay_way, deal_day, check_same_order, delivery_status, pay_history_sum from pay_histories where buy_mb_id = ? and gds_type = ?";
+	// 문장이름 2안
+//	public static final String SQL_SELECT_MYPAGE_PAY_STATUS_DATA_MAP_BY_MBID_GDSTYPE = 
+//			"select id, gds_id, pay_way, deal_day, check_same_order, delivery_status, pay_history_sum from pay_histories where buy_mb_id = ? and gds_type = ?";
+	// 상품명(id) 결제금액 구매일 배송상태 카드종류
+	
+	// 구매한회원으로만 검색 1안
+	public static final String SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_RT_ID_GOODSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM 
+		= "select id, gds_id, pay_way, deal_day, check_same_order, delivery_status, pay_history_sum from pay_histories where buy_mb_id = ?";
+	// 검색 2안
+//	public static final String SQL_SELECT_MYPAGE_PAY_STATUS_DATA_MAP_BY_MBID 
+//		= "select id, gds_id, pay_way, deal_day, check_same_order, delivery_status, pay_history_sum from pay_histories where buy_mb_id = ?";
+	
+	public List<Map<String, Object>> selectMemberPayHistoryByBuyMbIdgdsType(int buyMbId, int gdsType) {
+		System.out.println("dao selectMemberPayHistoryByBuyMbIdgdsType()..");
+		if(gdsType == 3) {
+			try {
+				System.out.println("전체검색");
+				System.out.println(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_RT_ID_GOODSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM + "buyMbId = " + buyMbId);
+				jtem.queryForList(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_RT_ID_GOODSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM,
+						buyMbId);
+			} catch(DataAccessException e) {
+				System.out.println("DataAccessException..");
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				System.out.println("이용권이나 키트검색");
+				System.out.println(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_GDSTYPE_RT_ID_GDSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM 
+						+ " / buyMbId = " + buyMbId + " / gsType = " + gdsType);
+				return jtem.queryForList(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_GDSTYPE_RT_ID_GDSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM, 
+						buyMbId, gdsType);
+			} catch(DataAccessException e) {
+				System.out.println("DataAccessException");
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 	
 	
 	////////    』
