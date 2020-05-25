@@ -31,6 +31,8 @@ public interface ILoginSVC {
 	//log_in.lf (proc; post; 암호화; 세션; 회원)			로그인proc실행(selectOneMember(email,pw) )	
 	int loginProcess(String email, String pw);
 	MemberVO login(String email, String pw);
+	// 로그인 시 로그인 횟수 증가
+	boolean incLoginCnt(int id);
 	//회원가입
 	//member_join.lf (proc; post; dao; 비회원)			회원가입proc 실행(createNewMember)
 	boolean joinMember(

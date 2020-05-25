@@ -65,7 +65,8 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 			"update members set password=hex(aes_encrypt(?,?)) where email=?";
 	private static final String SQL_UPDATE_ONE_MEMBER_BY_INFO = 
 			"update members set nicname=?,ph_number=?,agree_receive=?,basic_address=?,detail_address=?,postalcode=? where id=?";
-//	public static final String SQL_="";
+	private static final String SQL_INC_MEMBER_LOGIN_CNT="update members set login_count=login_count+1 where id=?";
+//	private static final String SQL_="";
 	
 	@Autowired
 	private JdbcTemplate jtem;
@@ -301,5 +302,11 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 				mb.getNicname(), mb.getPhNumber(), mb.getAgreeReceive(), 
 				mb.getbasicAddress(), mb.getDetailAddress(), mb.getPostalCode(), mb.getId());
 		return r==1;
+	}
+
+	@Override
+	public boolean incLoginCnt(int id) {
+		System.out.println("DAO: incLoginCnt 로그인 횟수 증가");
+		return jtem.update(SQL_INC_MEMBER_LOGIN_CNT, id) == 1;
 	}
 }

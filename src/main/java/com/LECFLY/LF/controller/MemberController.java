@@ -57,6 +57,10 @@ public class MemberController {
 		int r = logSvc.loginProcess(email, pw);
 		if( r == logSvc.MB_EMAIL_AUTH_OK ) {
 			mb = logSvc.login(email, pw);
+			if(logSvc.incLoginCnt(mb.getId())) {
+				mb.setLoginCount(mb.getLoginCount()+1);
+				System.out.println("로그인횟수 증가 / 현재:"+mb.getLoginCount()+"회");
+			}
 			ses.setAttribute("member", mb);
 			System.out.println(mb);
 			return "redirect:/";
