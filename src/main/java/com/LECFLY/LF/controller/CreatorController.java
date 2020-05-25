@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.LECFLY.LF.model.dao.impl.creator.KitMysqlDAOImpl;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
@@ -27,12 +28,14 @@ import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.impl.comment.CommentSVCImpl;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
 import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.impl.creator.LectureSVCImpl;
 import com.LECFLY.LF.service.inf.creator.IVideoSVC;
+import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
 
 @Controller
 @SessionAttributes({ "creator", "Lecture", "video", "creatorKit" })
@@ -67,6 +70,10 @@ public class CreatorController {
 	KitMysqlDAOImpl kitDAO;
 	@Autowired
 	CommentSVCImpl commentSVC;
+	@Autowired
+	private INoticeSVC ntSvc;
+	
+
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -477,10 +484,27 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "creator_CS.LF", method = RequestMethod.GET)
-	public String showCreCSList() {
-		return "creator/cre_cs_1.page";
+	public ModelAndView creatorNotice( @RequestParam(value = "pn",required = false,defaultValue = "1") int pageNumber) {
+		System.out.println("creatorNotice(PN)..");
+		int ntmaxPG = ntSvc.checkMaxCreatorPageNumber();
+		if( pageNumber > ntmaxPG || pageNumber <= 0 ) {
+			System.out.println("잘못된 페이지 번호: " + pageNumber);
+		}
+		List<NoticeVO> ntList = ntSvc.showAllCreatorNotices(pageNumber);
+		ModelAndView mav = new ModelAndView("creator/cre_cs_1.page");
+		if( ntList != null ) {
+			mav.addObject("ntSize", ntList.size());
+			mav.addObject("notice", ntList);
+			mav.addObject("maxPn", ntmaxPG);
+			mav.addObject("pn", pageNumber); // 활성페이지 
+				
+			System.out.println("게시글리스트 조회 성공: " + ntList.size());
+		} else {
+			mav.addObject("msg", "게시글리스트 조회 실패!");
+		}
+		return mav;
 	}
-
+	
 	@RequestMapping(value = "creator_statistics.LF", method = RequestMethod.GET)
 	public String showstatisticsList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			Model model ) {

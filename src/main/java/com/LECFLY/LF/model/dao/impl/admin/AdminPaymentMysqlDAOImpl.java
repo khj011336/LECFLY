@@ -3,6 +3,8 @@ package com.LECFLY.LF.model.dao.impl.admin;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -11,11 +13,13 @@ import com.LECFLY.LF.model.dao.inf.admin.IAdminPaymentDAO;
 import com.LECFLY.LF.model.vo.ProfitHistoryVO;
 import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
+import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
+import com.LECFLY.LF.model.vo.virtual.PaymentStatVO;
 
-
+@Repository
 public class AdminPaymentMysqlDAOImpl implements IAdminPaymentDAO{
 
-	//@Autowired
+	@Autowired
 	private JdbcTemplate jtem;	
 	
 	// 결제내역 Part
@@ -87,6 +91,19 @@ public class AdminPaymentMysqlDAOImpl implements IAdminPaymentDAO{
 	// 수익분배내역 갯수 카운트
 	public static final String SQL_CHECK_PROFITHISTORY_NUMBERS
 	= "select count(id) as cnt from profit_histories";	
+	
+	
+	//통계 파트
+	// 통계파트 최근 1년 월별 키트구매 매출 조회 
+	public static String SQL_SUM_KIT_SALE_BY_MONTH = 
+			"SELECT MONTH(deal_day) AS month, sum(pay_history_sum) as kit_sum FROM pay_histories where goods_type like '2' and deal_day between date_add(now(), interval -1 year) AND now() GROUP BY month order by date_add(now(), interval -1 year)";
+	
+	// 통계파트 최근 1년 월별 이용권구매 매출 조회
+	public static String SQL_SUM_TICKET_SALE_BY_MONTH = 
+			"SELECT MONTH(deal_day) AS month, sum(pay_history_sum) as ticket_sum FROM pay_histories where goods_type like '1' and deal_day between date_add(now(), interval -1 year) AND now() GROUP BY month order by date_add(now(), interval -1 year)";
+	// 통계파트 최근 1년 월별 전체 매출 조회 
+	public static String SQL_SUM_TOTAL_SALE_BY_MONTH = 
+			"SELECT MONTH(deal_day) AS month, sum(pay_history_sum) as total_sum FROM pay_histories where deal_day between date_add(now(), interval -1 year) AND now() GROUP BY month order by date_add(now(), interval -1 year)";
 	
 	@Override
 	public boolean updatePayHistory(PayHistoryVO ph) {
@@ -188,6 +205,21 @@ public class AdminPaymentMysqlDAOImpl implements IAdminPaymentDAO{
 	public int checkNumberOfProfits() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<PaymentStatVO> statSumKitSaleByMonth() {
+		return jtem.query(SQL_SUM_KIT_SALE_BY_MONTH, BeanPropertyRowMapper.newInstance(PaymentStatVO.class));
+	}
+
+	@Override
+	public List<PaymentStatVO> statSumTicketSaleByMonth() {
+		return jtem.query(SQL_SUM_TICKET_SALE_BY_MONTH, BeanPropertyRowMapper.newInstance(PaymentStatVO.class));
+	}
+
+	@Override
+	public List<PaymentStatVO> statSumTotalSaleByMonth() {
+		return jtem.query(SQL_SUM_TOTAL_SALE_BY_MONTH, BeanPropertyRowMapper.newInstance(PaymentStatVO.class));
 	}
 
 }
