@@ -732,8 +732,17 @@ public class MemberController {
 // 회원이 가입시 입력한 정보 수정하기							회원정보 수정
 //	mypage_update_info.lf(proc,post,dao)		해당 조각페이지 불러오게 리턴			
 	@RequestMapping(value="mypage_mb_update.LF", method=RequestMethod.POST)
-	public String memberMypageUpdateInfo() {
-		System.out.println("memberMypageUpdateInfo()...");	
+	public String memberMypageUpdateInfo(HttpSession ses) {
+		System.out.println("memberMypageUpdateInfo()...");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		String postalcode = mb.getPostalCode()+"";
+		if (postalcode.length()!=5) {
+			System.out.println("우편번호 길이 오류상태");
+			for (int i=postalcode.length(); i<5; i++) {
+				postalcode = "0"+postalcode;
+			}
+		}
+		ses.setAttribute("postalcode", postalcode);
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	

@@ -182,7 +182,7 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_nick">닉네임</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_nick" name="cnm_mb_nick" placeholder="닉네임">
+		                    		<input type="text" id="cnm_mb_nick" name="nickname" placeholder="닉네임">
 		                    		<input type="button" id="cnm_mb_nick_check_btn" value="중복확인">
 		                    	</div>
 		                    </td>
@@ -207,7 +207,7 @@
 		                    <td>
 		                    	<div style="display: inline-block">
 						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" readonly
-						    		value=${member.postalCode}>
+						    		value=${postalcode}>
 						        	<input type="button" id="find_adress_btn" value="주소찾기" onclick="find_address()">
 					        	</div>
 		                    </td>
