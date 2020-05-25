@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+ 
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -19,47 +20,9 @@
     </div>
    
      <div class ="CreAvere CreSD">
-        <div class="CreavIner">
-            <div><p>누적만족도</p></div>
-            <div><p>0%</p></div>
-            <div><p>따봉(그림):22 싫어요(그림):14</p></div>
-        </div>
-        <div class="Cregraphaa">
-            <div><p>월별 평균</p></div>
-            <div><img src="../resource/img/creator/cregraph.jpg"></div>
-        </div>
+        <%@include file="_cre_statistics.jsp" %>
     </div>
-     <div class ="CreAvere CreSD">
-        <div class="CreavIner">
-            <div><p>누적만족도</p></div>
-            <div><p>0%</p></div>
-            <div><p></p></div>
-        </div>
-        <div class="Cregraphaa">
-            <div><p>월별 평균</p></div>
-            <div><img src="../resource/img/creator/cregraph.jpg"></div>
-        </div>
-    </div> <div class ="CreAvere CreSD">
-        <div class="CreavIner">
-            <div><p>누적만족도</p></div>
-            <div><p>0%</p></div>
-            <div><p></p></div>
-        </div>
-        <div class="Cregraphaa">
-            <div><p>월별 평균</p></div>
-            <div><img src="../resource/img/creator/cregraph.jpg"></div>
-        </div>
-    </div> <div class ="CreAvere CreSD">
-        <div class="CreavIner">
-            <div><p>누적만족도</p></div>
-            <div><p>0%</p></div>
-            <div><p></p></div>
-        </div>
-        <div class="Cregraphaa">
-            <div><p>월별 평균</p></div>
-            <div><img src="../resource/img/creator/cregraph.jpg"></div>
-        </div>
-    </div>
+  
 </div>
 </body>
 </html>

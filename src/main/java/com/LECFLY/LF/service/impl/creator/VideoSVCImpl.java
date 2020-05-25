@@ -62,15 +62,15 @@ public class VideoSVCImpl implements IVideoSVC {
 	public boolean insertNewVideo(VideoVO vo) {
 		return viDAO.insertNewVideo(vo);
 	}
-	public String imgProc(VideoVO vio,MultipartFile addimgfile,Model model,String username) {
+	public Map<String, String> imgProc(VideoVO vio,MultipartFile addimgfile,Model model,String username) {
 		 VideoVO video = vio;
 		 String png = video.getImgPath();
-		 
+		 Map<String, String> pngmap = new HashMap<String, String>();
 		if(addimgfile != null && !addimgfile.isEmpty()) {
 //			TODO 이름관리
 			String userpath = FileSVCImpl.getPath(username, 1);
 //			TODO 이름관리
-			Map<String, String> changeimg = fileSVC.writeFile(addimgfile  ,1,"hongil");
+			Map<String, String> changeimg = fileSVC.writeFile(addimgfile  ,1,username);
 			String splitImg[] = png.split("-");
 			if(new File(userpath+splitImg[0]).delete()) {
 				System.out.println("img1가 지워졌습니다");
@@ -78,9 +78,12 @@ public class VideoSVCImpl implements IVideoSVC {
 				System.out.println("추가 png 확인"+png);
 				vio.setImgPath(png);
 				model.addAttribute(vio);
+				 pngmap.put("png", png);	
 			}
+			 
+			
 		}
-		return png;
+		return pngmap;
 	}
 	
 	public String showVideoList(int cagtegory, int CFID,int MAXPAGE , int page , Model model ) {
