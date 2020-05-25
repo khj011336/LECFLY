@@ -21,7 +21,7 @@ public interface ILectureDAO {
 		df.put(5, "운동");df.put(6, "커리어");df.put(1, "여행");
 		return df.get(category);
 	}
-	List<LectureVO> selectLectureList(int Fid , boolean order);
+	List<LectureVO> selectLectureList(int Fid  );
 	List<LectureVO> selectLectureList(int Fid , int offset,  int limit);
 	List<LectureVO> selectLectureList(int Fid , int offset, int limit,int order);
 	int checkNumberOfLectures(int fid);

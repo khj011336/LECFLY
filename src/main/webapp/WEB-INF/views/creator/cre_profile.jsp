@@ -28,7 +28,7 @@
 	            <!-- 크리에이터 연락처 인데 주소 넣는건지(address)or 폰번호 넣는건지 모르겠음(PH)-->
 	            <div class="Crpf_text1"><label for="Crpf_creator_ph" class="creator_h3">연락처</label></div>
 	            
-	            <div><input type="text" id="cCrpf_ph"  value="${creator.cellPhone }" pattern ="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="010-1234-1234"
+	            <div><input type="tel" id="cCrpf_ph"  value="${creator.cellPhone }" pattern ="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="010-1234-1234"
 	            	name="cellPhone" class="Crpf_bar1" placeholder="내용을 입력해주세요"></div>
 	            	
 	            

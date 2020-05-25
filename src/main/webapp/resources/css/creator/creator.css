@@ -136,8 +136,24 @@ color:#ffa500;
 	font-size: 0.67em;
 	font-weigth: bold;
 }
+/* 댓글 css */
+#cre_answer{
+	text-align: left;
 
-
+	}
+#cre_answer{
+    width: 1000px;
+    margin: 0px auto;
+}
+#commentte{
+    height: 30px;
+}
+#answercomment{
+    width: 100px;
+    text-align: right;
+    
+}
+/* 댓글 css */
 /* _sellkitregistration _cratorprofile _classdes 에서쓰는 아래쪽에있는 버튼*/
 .creator_next_btn {
 	margin-bottom: 50px;
@@ -176,7 +192,7 @@ margin-top: 19px;
 }
 .Cregraphaa{
       width: 900px;
-    height: 210px;
+    height: 410px;
     margin-top: 30px;
 }
 .Cregraphaa p{
@@ -191,7 +207,7 @@ margin-top: 19px;
 .CreAvere{
     width: 900px;
     padding: 25px;
-    height: 500px;
+     
 }
 #Creaver{
       width: 900px;
@@ -223,7 +239,7 @@ margin-top: 19px;
 /* ----------------------크리에이터 통계--------------------------------------- */
 
 
-/* 					 myclass.jsp 동현이가 한부분 */
+/* 					 myclass.jsp   */
 .CRsend{
     position: absolute;
     width: 100%;
@@ -297,7 +313,7 @@ margin-top: 19px;
     cursor: pointer;
     color: orange;
 }
-	/* 세현추가 새로만들기 호버시 */
+	 
 #CRHT2:hover {
 	color: white;
 	background-color: orange;
@@ -405,7 +421,7 @@ margin-top: 19px;
     position: absolute;
     bottom: 10px;
     font-size: 16px;
-    color: yellow;
+    color: orange;
     cursor: pointer;
 }
 .CRsize{
@@ -414,12 +430,13 @@ margin-top: 19px;
     text-overflow: ellipsis;
     overflow: hidden;
      font-weight: bold;
+     line-height: 30px;
 }
 
 /* 					 myclass.jsp 끝 */
 
 
-/*					_videoupload.jsp 동현이가 한부분 */
+/*					_videoupload.jsp   */
 #uplwrap{
     
     padding: 0px 125px;
@@ -594,11 +611,9 @@ border: none;
 #cls_part1 {
 	width: 950px;
 }
-/* 타이틀 (클래스 카테고리, 클래스 난이도 .. 등등등 간격)*/
 .cls_text1 {
 	margin: 30px 0px 10px 0px;
 }
-/* 클래스 카테고리, 클래스 난이도, 클래스주제, 클래스타이틀 에 있는 input bar */
 .cls_bar1 {
 	width: 530px;
 	height: 40px;
