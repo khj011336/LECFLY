@@ -895,11 +895,11 @@ public class MemberController {
 ////////////////////////////////////////////////////
 	
 	// 네비 장바구니 클릭
-	@RequestMapping(value="shopping_cart.LF", method=RequestMethod.GET)
-	public String memberShoppingCart() {
-		System.out.println("memberShoppingCart()...");	
-		return "payment/shoppingCart";
-	}
+//	@RequestMapping(value="shopping_cart.LF", method=RequestMethod.GET)
+//	public String memberShoppingCart() {
+//		System.out.println("memberShoppingCart()...");	
+//		return "payment/shoppingCart";
+//	}
 	
 	
 	
