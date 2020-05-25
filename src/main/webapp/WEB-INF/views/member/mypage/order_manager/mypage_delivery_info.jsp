@@ -7,25 +7,25 @@
 		<div class="mypage_bottom_contents">
 			<div class="dilivery_status">
 				<div id="mypage_dilivery_status">
-					<a href="#" id="mypage_dilivery_status_1">결제대기
+					<a id="mypage_dilivery_status_1">결제대기
 					<br><br>
 					<span style="color:orange"><c:out value="${deliveryStatusArray[0]}" default="0"/></span></a>
 				</div>
 				<div id="mypage_dilivery_status_point"><i class="fas fa-chevron-right fa-5x"></i></div>
 				<div id="mypage_dilivery_status">
-					<a href="#" id="mypage_dilivery_status_2">배송준비
+					<a id="mypage_dilivery_status_2">배송준비
 					<br><br>
 					<span style="color:orange"><c:out value="${deliveryStatusArray[1]}" default="0"/></span></a>
 				</div>
 				<div id="mypage_dilivery_status_point"><i class="fas fa-chevron-right fa-5x"></i></div>
 				<div id="mypage_dilivery_status">
-					<a href="#" id="mypage_dilivery_status_3">배송중
+					<a id="mypage_dilivery_status_3">배송중
 					<br><br>
 					<span style="color:orange"><c:out value="${deliveryStatusArray[2]}" default="0"/></span></a>
 				</div>
 				<div id="mypage_dilivery_status_point"><i class="fas fa-chevron-right fa-5x"></i></div>
 				<div id="mypage_dilivery_status">
-					<a href="#" id="mypage_dilivery_status_4">배송완료
+					<a id="mypage_dilivery_status_4">배송완료
 					<br><br>
 					<span style="color:orange"><c:out value="${deliveryStatusArray[3]}" default="0"/></span></a>
 				</div>

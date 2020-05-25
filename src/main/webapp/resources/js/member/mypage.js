@@ -163,7 +163,6 @@
 				datatype: "text",
 				data: rtPn,
 				success:function(res){
-					console.log(res);
 					$("#mypage_bottom").html(res);
 				},
 				error:function(request,status,error){	
@@ -308,6 +307,7 @@
 				}
  			});			
  		}); // 배송정보
+ 		
  		$("#mypage_payment_info").click(function() {
  			$.ajax({
  				type: "POST",
@@ -335,15 +335,13 @@
 
  		
  		// 마이페이지 결제내역 보기 
-		$("#mypage_dilivery_status_1").click(function() {
+		$(document).on("click", "#mypage_dilivery_status_1", function(e) {
 			console.log("status_1");
 			var url = 'delivery_stat1.LF';
-			$ajax({
+			$.ajax({
 				type: "POST",
 				url: url,
-				params: "",
-				data: "",
-				dataType: "",
+				dataType: "text",
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
 					console.log("결제대기 로딩완료");
@@ -354,15 +352,13 @@
 			});			
 		}); // 배송 정보 결제대기
 		
-		$("#mypage_dilivery_status_2").click(function() {
+		$(document).on("click", "#mypage_dilivery_status_2", function() {
 			console.log("status_2");
 			var url = 'delivery_stat2.LF';
-			$ajax({
+			$.ajax({
 				type: "POST",
 				url: url,
-				params: "",
-				data: "",
-				dataType: "",
+				dataType: "text",
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
 					console.log("배송준비 로딩완료");
@@ -373,15 +369,13 @@
 			});
 		}); // 배송 정보 배송준비
 		
-		$("#mypage_dilivery_status_3").click(function() {
+		$(document).on("click", "#mypage_dilivery_status_3", function() {
 			console.log("status_3");
 			var url = 'delivery_stat3.LF';
-			$ajax({
+			$.ajax({
 				type: "POST",
 				url: url,
-				params: "",
-				data: "",
-				dataType: "",
+				dataType: "text",
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
 					console.log("배송중 로딩완료");
@@ -392,15 +386,13 @@
 			});
 		}); // 배송 정보 배송중
 		
-		$("#mypage_dilivery_status_4").click(function() {
+		$(document).on("click", "#mypage_dilivery_status_4", function() {
 			console.log("status_4");
 			var url = 'delivery_stat4.LF';
-			$ajax({
+			$.ajax({
 				type: "POST",
 				url: url,
-				params: "",
-				data: "",
-				dataType: "",
+				dataType: "text",
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
 					console.log("배송완료 로딩완료");
@@ -472,4 +464,15 @@
 	 		});
  		}
  	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
  	

@@ -4,9 +4,12 @@
 <div class="mypage_bottom_info">
 	<h2 class="mypage_bottom_title">결제대기</h2>
 	<div class="mypage_bottom_contents">
+	<c:if test="${not empty phisList}">
 		<div class="mypage_table">
-			<table border="0">
+		
 <%-- 			<c:forEach var="phis" items="phisList" varStatus="vs"> --%>
+			<table border="0">
+
 				<tr>
 <%-- 					<th rowspan="3" style='width: 250px;'><img src="<c:out value="${kitList.get(vs.index).imgPath}" />" width="240px" height="125px"></th> --%>
 <%-- 					<td colspan="2"><b><c:out value="${kitList.get(vs.index).title}" /></b></td><td></td><td><button>주문상세조회</button></td> --%>
@@ -20,7 +23,10 @@
 				<tr>
 					<td></td>
 				</tr>
-<%-- 			</c:forEach>	 --%>
 			</table>
+<%-- 			</c:forEach> --%>
+		
+		</div>
+	</c:if>
 	</div>
 </div>

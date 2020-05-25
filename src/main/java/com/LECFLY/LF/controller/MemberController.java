@@ -907,25 +907,49 @@ public class MemberController {
 	Shipping in progress 배송중
 	Delivery completed 	배송완료		*/
 	@RequestMapping(value="delivery_stat1.LF", method=RequestMethod.POST)
-	public String memberMyPageDeliveryStatPaymentWaiting() {
+	public String memberMyPageDeliveryStatPaymentWaiting(HttpSession ses,
+			Model model) {
 		System.out.println("delivery_stat1.LF 컨트롤러도착");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) {
+			int mbId = mb.getId(); 
+			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryInfoMap(mbId);
+			// phisList kitList creList kitCount
+			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+			int kitCount = (int)rMap.get("kitCount");
+			
+			model.addAttribute("phisList", phisList);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			model.addAttribute("kitCount", kitCount);
+			
+		} else { // mb == null 로그인페이지로 보내야됨
+			
+		}
+		
+		
 		return "member/mypage/order_manager/delivery_stat1";
 	}
 	
 	@RequestMapping(value="delivery_stat2.LF", method=RequestMethod.POST)
-	public String memberMyPageDeliveryStatDeliveryPreparation() {
+	public String memberMyPageDeliveryStatDeliveryPreparation(HttpSession ses,
+			Model model) {
 		System.out.println("delivery_stat2.LF 컨트롤러도착");
 		return "member/mypage/order_manager/delivery_stat2";
 	}
 	
 	@RequestMapping(value="delivery_stat3.LF", method=RequestMethod.POST)
-	public String memberMyPageDeliveryStatShippingInProgress() {
+	public String memberMyPageDeliveryStatShippingInProgress(HttpSession ses,
+			Model model) {
 		System.out.println("delivery_stat3.LF 컨트롤러도착");
 		return "member/mypage/order_manager/delivery_stat3";
 	}
 	
 	@RequestMapping(value="delivery_stat4.LF", method=RequestMethod.POST)
-	public String memberMyPgeDeliveryStatDeliveryCompleted() {
+	public String memberMyPgeDeliveryStatDeliveryCompleted(HttpSession ses,
+			Model model) {
 		System.out.println("delivery_stat4.LF 컨트롤러도착");
 		return "member/mypage/order_manager/delivery_stat4";
 	}
