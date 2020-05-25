@@ -37,5 +37,6 @@ public interface IAdminMemberDAO {
 	List<CreatorVO> searchCreatorForAll(int offset, int limit);
 	List<MemberVO> searchMemberForAll(int offset, int limit);
 	
+	//통계
 	List<MemberStatVO> statCountMemberByMonth();
 }

@@ -40,4 +40,6 @@ public interface ICommentDAO {
 	boolean deleteOneCommentByVO(CommentVO ct);
 	
 	boolean increaseOrderNumComment(CommentVO ct);
+	
+	int checkNumberOfComments(int cate, int atId);
 }

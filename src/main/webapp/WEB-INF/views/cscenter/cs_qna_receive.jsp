@@ -89,11 +89,7 @@
             </div>
             <div class="titleRight">
 	            <span class="file">첨부파일:
-	            	<c:if test="${fpsCount gt 0}">
-						<c:forEach var="fp" items="${fps}" varStatus="vs">
-							<%@ include file="cs_file.jsp" %>						
-						</c:forEach>
-					</c:if>
+	            	<a href="C:\fusion11\spring_ws\LECFILE\2020\cscenter\Img${qna.file}">첨부파일</a>
 				</span>
             </div>
         </div>
@@ -101,26 +97,40 @@
         <div id="receiveBoard_articleBody">
          <textarea  readonly >${qna.content}</textarea>
         </div>
-        <div id="reply_count">댓글 <c:out value="${qcSize}" default="0"/>개</div>
+        <div class="counter" id="reply_count">댓글 <c:out value="${qcSize}" default="0"/>개</div>
         <div id="receiveBoard_bottom">
-	      
+	      	<div id="input_comment">
+	      	<form action="${pageContext.request.contextPath}/qna_receive.LF?id=${qna.id}" method="post" enctype="multipart/form-data">
+	      		<input type="hidden" name="mbId" value="${mb.id}">
+	      		<input type="hidden" name="mbNic" value="${mb.nicname}">
+	      		<input type="hidden" name="tableCate" value=2>
+	      		<input type="hidden" name="atId" value="${qna.id}">
+	      		<label><b>'${mb.nicname}'님 댓글달기</b></label>
+	      		<input type="text" class="input input_comment" name="comment" placeholder="댓글을 입력해주세요" size="80px">
+				<input type="submit" class="btn_comment" value="댓글달기">	      	
+	      	</form>
+	      	</div>
 	        <div id="comment_list">
-			<c:choose>
-				<c:when test="${!empty qcSize}">
-					<ul>
-						<c:forEach var="qc" items="${qnaComment}">
-						<li> ${qc.mbLogin}회원 
-							 ${qc.content} - 
-							 <fmt:formatDate value="${qc.writedDay}" pattern="yyyy년MM월dd일 (HH시mm분ss초)"/> / 
-							 <fmt:formatDate value="${qc.updatedDay}" pattern="yyyy년MM월dd일 (HH시mm분ss초)"/>
+				<ul>
+					<c:if test="${!empty qcSize}">
+					<c:forEach var="qc" items="${qnaComment}">
+						<li> <b>'${qc.mbNic}'회원</b>
+							 | <Strong style="font-size: 17px">${qc.comment}</Strong> - 
+							 <fmt:formatDate value="${qc.createdAt}" pattern="yyyy년MM월dd일 (HH시mm분ss초)"/> 
 						</li>
-						</c:forEach>
-					</ul>
-				</c:when>
-				<c:when test="${empty qcSize}">
-					<i>"작성된 댓글이 없습니다!"</i>
-				</c:when>
-			</c:choose>
+						<form action="${pageContext.request.contextPath}/qna_receive.LF?id=${qna.id}" method="post" enctype="multipart/form-data">
+				      		<input type="hidden">
+				      		&nbsp;&nbsp;>답글남기기<input type="text" class="input input_comment" name="comment" placeholder="답글을 입력해주세요" size="80px">
+							<input type="submit" class="btn_reply" value="답글달기">	      	
+				      	</form>
+				      	
+					</c:forEach>
+				</c:if>
+				<c:if test="${empty qcSize}">
+					<li><P>작성된 댓글이 없습니다!</P></li>
+				</c:if>
+			</ul>
+		
 			</div>
             </div>
         </div>

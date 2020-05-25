@@ -351,29 +351,28 @@
 	height: 100px;
 	text-align: center;
 	font-size: 24px;
-	margin: -50px auto 50px auto;
+	margin: 40px auto 50px auto;
 	color: grey;
-	background: url(../img/logo/LecFly_LOGO_B_W.png) center no-repeat;
+	background: url(../../imges/logo/LecFly_LOGO_B_W.png) center no-repeat;
 	opacity: 0.7;
 	padding-top: 180px;
 }
-#cre_notice_p >h4 {
+/* #cre_notice_p >h4 {
 	box-sizing: border-box;
 	color: black;
 	font-size: 24px;
-}
-#cre_notice_p >p {
+} */
+/* #cre_notice_p >p {
 	box-sizing: border-box;
 	color: black;
 	font-size: 15px;
-}
+} */
 #cre_notice_table table{ /* 공지사항_ 테이블*/
     margin-left: auto;
     margin-right: auto;
-    margin-top: -40px;
+    margin-top: 30px;
     margin-bottom: 15px;
     width: 900px;
-    height: 500px;
     border-top: 1px solid darkgray;
     border-bottom: 1px solid darkgray;
     text-align: center;
@@ -386,7 +385,6 @@
 #cre_notice_numbering { /*공지사항 _ 테이블_ 페이지넘버링*/
     text-align: center;
     font-size: 15px;
-    padding-bottom : 30px;
 }
 #cre_notice_numbering b{
     color: orange;

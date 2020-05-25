@@ -22,8 +22,10 @@ public class CommentMysqlDAOImpl implements ICommentDAO {
 			"SELECT * FROM comments where table_cate=? AND at_id=? ORDER BY order_num DESC";
 	public static final String SQL_INCREASE_ORDER_NUM = 
 			"UPDATE comments SET order_num = ? WHERE id = ?"; 
-	public static final String SQL_UPDATE_COMMENT = "update comments set comment=? where id=?";
-	
+	public static final String SQL_UPDATE_COMMENT = 
+			"update comments set comment=? where id=?";
+	public static final String SQL_COUNT_COMMENT = 
+			"select count(*) from comments where table_cate =? and at_id = ?";
 	@Autowired
 	private JdbcTemplate jtem;
 	
@@ -126,5 +128,10 @@ public class CommentMysqlDAOImpl implements ICommentDAO {
 		int r = jtem.update(SQL_INCREASE_ORDER_NUM, ct.getOrderNum()+1, ct.getId());
 		return r==1;
 	}
-
+	
+	@Override
+	public int checkNumberOfComments(int cate, int atId) {
+		return jtem.queryForObject(SQL_COUNT_COMMENT,
+				Integer.class, cate, atId);
+	}
 }
