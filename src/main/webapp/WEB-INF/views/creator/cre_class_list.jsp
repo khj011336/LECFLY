@@ -7,6 +7,9 @@
 var lt = new selectList("#offset", ${maxPage} ,"#CRcontent","get",'creator.LF');
 lt.List();
 $().ready(function(){
+	$("#CRHT3").on("click",function(){
+		 location.href = "creator_update_profile.LF";
+	});
 $("#CRHT2").on("click",function(){
 	if(${isCreator} == 2){
 	alert("현재 크리에이터 승인요청중입니다.승인후 정상적인 등록이가능합니다!");
@@ -24,8 +27,8 @@ $("#CRHT2").on("click",function(){
 	<div id="CRmain" class="CRwidth">
 		<div id="CRcontent">
 			<div id="CRhead">
-				<span class="CRHT">온라인 클래스</span><a href=""><span id="CRHT3">+기본정보수정</span></a>
-				 <span id="CRHT2">+새로운 클래스</span> 
+				<span class="CRHT">온라인 렉쳐</span><span id="CRHT3">+기본정보수정</span>
+				 <span id="CRHT2">+새로운 렉쳐</span> 
 			</div>
 			<%@include file="_cre_class.jsp"%>
 		</div>
@@ -33,18 +36,20 @@ $("#CRHT2").on("click",function(){
 			<div id="CRhead2" class="CRHT">
 				<p>LEC 가이드</p>
 			</div>
-			<%
-				for (int i = 0; i < 3; i++) {
-			%>
+			 
 			<div class="CRguideCon">
 				<p class='CRfo'>강의 올리는방법</p>
 				<br>
-				<p class='CRsize'></p>
+				<p class='CRsize'>나의 강의 올리는방법과  개설과정이 궁금하시진 않은가요? 지금 궁금증을 풀어보세요</p>
+				<span class="CRbot">자세히 보기</span>
+			</div>
+			<div class="CRguideCon">
+				<p class='CRfo'>LECFLY 회사소개서</p>
+				<br>
+				<p class='CRsize'>우리 회사에 대한 궁금한점에 대해 알려드릴게요</p>
 				<span class="CRbot">자세히 보기..</span>
 			</div>
-			<%
-				}
-			%>
+		 
 		</div>
 	</div>
 </div>

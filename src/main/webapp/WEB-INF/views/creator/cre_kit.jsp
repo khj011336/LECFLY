@@ -35,17 +35,17 @@
                         extraAddr = ' (' + extraAddr + ')';
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
-                    document.getElementById("fundingPayment_extraAddress").value = extraAddr;
+                    document.getElementById("sellkitregistration_delivery_adress").value = extraAddr;
                 
                 } else {
-                    document.getElementById("fundingPayment_extraAddress").value = '';
+                    document.getElementById("sellkitregistration_delivery_adress").value = '';
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('fundingPayment_postcode').value = data.zonecode;
-                document.getElementById("fundingPayment_address").value = addr;
+                document.getElementById('sellkitregistration_delivery_adress').value += data.zonecode;
+                document.getElementById("sellkitregistration_delivery_adress").value += addr;
                 // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("fundingPayment_detailAddress").focus();
+                document.getElementById("sellkitregistration_delivery_adress").focus();
             }
         }).open();
     }
@@ -80,6 +80,14 @@
         	}
       }
 	$().ready(function(){
+		$("#kitbtna").on("click",function(){
+    		fundingPayment_execDaumPostcode()
+    	});
+		$("#kitImg").on("change",function(){
+			setImageFromFile(this,"#sellkitregistration_sub_img1","temp");
+				
+			
+		});
 		$(document).on("click","#upbutton",function(){
 		if(!ispty()){
 			var form = $("#kitform");
@@ -104,7 +112,8 @@
 	<div id="sellkitregistration_wrap">
 	<form action="kit_upload_proc.LF" method ="post" enctype="multipart/form-data" id = "kitform">
         <div id="sellkitregistration_head"><span class="creator_h1">판매키트 등록 </span></div>
-        
+        <input type = "hidden" value ="${category}" name = "category">
+        <input type = "hidden" value ="${CFID}" name = "CFID">
         <div id="sellkitregistration_content">
         	<div class="creator_h2">판매키트</div>
             <div id="sellkitregistration_main_top">
@@ -112,7 +121,7 @@
 <!--  										상품 카테고리                -->
                     <div class="sellkitregistration_mini_title_interval creator_h3">
                         <div class="sellkitregistration_inline sellkitregistration_nav1"><label for="sellkitregistration_item_category" class="">상품 카테고리</label></div>
-                        <div class="sellkitregistration_inline"><input type="text" id="sellkitregistration_item_category" name="category" class="sellkitregistration_bar1" value="${creatorKit.category}" readonly></div>
+                        <div class="sellkitregistration_inline"><input type="text" id="sellkitregistration_item_category" name="category" class="sellkitregistration_bar1" value="${CATEGORIRES[creatorKit.category]}" readonly></div>
                         <div class="sellkitregistration_inline"></div>
                     </div>
 <!--                     					상품명 -->
@@ -141,17 +150,17 @@
             </div>
             <div class="sellkitregistration_main_center">
                     <div id="sellkitregistration_sub_img_box3" class="sellkitregistration_inline">
-                        <div class="sellkitregistration_img"><img id="sellkitregistration_sub_img1" src="${creatorKit.imgPath}" class="sellkitregistration_img" alt="추가이미지"></div>
+                        <div class="sellkitregistration_img"><img id="sellkitregistration_sub_img1" src="${crPath}${creatorKit.imgPath}" class="sellkitregistration_img" alt="추가이미지"></div>
                         <div class="sellkitregistration_img_add_btn_div"><input type="file" name = "kitImg" id="kitImg"></div>
                     </div>
                 </div>
             </div>
             <div class="sellkitregistration_main_bottom">
                 <div class="sellkitregistration_main_bottom_part1">
-<!--                 					택배사 -->
+<!--                 					택배사 -->								 
                     <div id="sellkitregistration_delivery_companybox" class="sellkitregistration_mini_title_interval creator_h3">
                         <div class="sellkitregistration_inline sellkitregistration_nav1"><label for="sellkitregistration_delivery_company">택배사</label></div>
-                        <div class="sellkitregistration_inline"><input type="text" id="sellkitregistration_delivery_company" value="${creatorKit.deliver}" name="deliver" class="sellkitregistration_bar1"></div>
+                        <div class="sellkitregistration_inline"><input type="text" id="sellkitregistration_delivery_company" value="<c:out value='${creatorKit.deliver}' default ="대한통운택배" ></c:out>" name="deliver" class="sellkitregistration_bar1"></div>
                     </div>
 <!-- 								배송비 -->
                     <div id="sellkitregistration_pricebox" class="sellkitregistration_mini_title_interval creator_h3">
@@ -163,14 +172,14 @@
                     <div class="sellkitregistration_mini_title_interval creator_h3">
                         <div class="sellkitregistration_inline sellkitregistration_nav1"><label for="sellkitregistration_delivery_adress">발송지</label></div>
                         <div class="sellkitregistration_inline"><input type="text" value="${creatorKit.fromTo}" class="sellkitregistration_bar3" id="sellkitregistration_delivery_adress" name="fromTo"></div>
-                        <div class="sellkitregistration_inline"><input type="button" value="주소 검색" class="sellkitregistration_btn1"></div>
+                        <div class="sellkitregistration_inline"><input type="button" value="주소 검색" class="sellkitregistration_btn1" id ="kitbtna"></div>
                     </div>
                     <div class="sellkitregistration_mini_title_interval creator_h3">
                         <div class="sellkitregistration_inline sellkitregistration_nav1"><label for="sellkitregistration_delivery_guide_msg">배송안내문구</label></div>
                         <div class="sellkitregistration_inline"><select class="sellkitregistration_bar3" id="sellkitregistration_delivery_guide_msg" name="info">
-                            <option value="1"></option>
-                            <option value="2"></option>
-                            <option value="3"></option>
+                            <option value="1">신속 정확한 배달 해드리겠습니다.</option>
+                            <option value="2">물건 깨짐 주의!!</option>
+                            <option value="3">감사합니다.</option>
                         </select></div>
                     </div>
                 </div>
@@ -184,7 +193,7 @@
 	                    <div id="sellkitregistration_text_btn_box" class="sellkitregistration_inline"><input type="button" value="Text" class="sellkitregistration_btn2"></div>
 	                    <div id="sellkitregistration_html_btn_box" class="sellkitregistration_inline"><input type="button" value="HTML" class="sellkitregistration_btn2"></div>
 	                    <div id="sellkitregistration_help_btn_box" class="sellkitregistration_inline sellkitregistration_btn_interval1"></div>    
-	                    <div><textarea id="sellkitregistration_detail_info_registration" name="DetailInfo" class="sellkitregistration_bar4" placeholder="내용을 입력해주세요"></textarea>${creatorKit.detailInfo}"</div>
+	                    <div><textarea id="sellkitregistration_detail_info_registration" name="DetailInfo" class="sellkitregistration_bar4" placeholder="내용을 입력해주세요">${creatorKit.detailInfo}</textarea></div>
 	                    <div class="sellkitregistration_btn_interval2">
 	                     
                     	</div>

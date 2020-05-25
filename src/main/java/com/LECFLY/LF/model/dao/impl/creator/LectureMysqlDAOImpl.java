@@ -17,7 +17,7 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	@Autowired
 	JdbcTemplate jtem;
 	final String SELECT_LECTURES_limit = "select * from lectures where fid = ? order by created_at desc  limit ?,? ";
-	final String SELECT_LECTURES = "select * from lectures order by blank where fid = ?";
+	final String SELECT_LECTURES = "select * from lectures where id = ? order by id desc ";
 	final String SELECT_ONE_LECTURE ="select * from lectures where id = ?";
 	final String CHECK_NUMBER_LECTURES = "select count(*) as cp_mb from lectures where fid =? ";
 	final String INSERT_NEW_LECTURE = "insert into lectures values(null , ? , ?, ? , ? ,? ,?,?,?,?,null,0,0,?,?,now(),now());";
@@ -86,8 +86,8 @@ public class LectureMysqlDAOImpl implements ILectureDAO {
 	}
 
 	@Override
-	public List<LectureVO> selectLectureList(int id, boolean order) {
-		return jtem.query( SELECT_LECTURES, BeanPropertyRowMapper.newInstance(LectureVO.class),id,order);
+	public List<LectureVO> selectLectureList(int id) {
+		return jtem.query( SELECT_LECTURES, BeanPropertyRowMapper.newInstance(LectureVO.class),id);
 
 	}
 
