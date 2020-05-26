@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<title>TICKET/LECFLY</title>
+<title>GUIDE/LECFLY</title>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 <div class="CSsection">
@@ -13,13 +13,11 @@
 					<a href="lecfly_guide.LF" class="lecfly_info">이용안내</a>
 				</h4></li>
 			<li><h4>
-					<a href="lecfly_ticket.LF" style="background-color: orange"
-						class="lecfly_membership_info">회원권</a>
+					<a href="lecfly_ticket.LF"  style="background-color: orange" class="lecfly_membership_info">회원권</a>
 				</h4></li>
 		</ul>
 	</div>
-
-	<div class="lecflyticket">
+<div class="lecflyticket">
 		<div id="lecflyis_logo">
 			<br>
 			<br>
@@ -43,9 +41,7 @@
 			<div class="ticket_category">
 				<c:forEach items="${categoryMapTicket }" var="tc" varStatus="vs">
 					<div class="ticket_category_block">
-						<a
-							href="${pageContext.request.contextPath}/search_category.LF?category=${tc.key}"
-							onfocus>
+						<a href="${pageContext.request.contextPath}/search_category.LF?category=${tc.key}" onfocus>
 							<div id="category_icon">
 								<img src="resources/imges/category/카테고리_${tc.value}.png"
 									class="category_1" alt="${ctc.value}">
@@ -120,4 +116,5 @@
 			</div>
 		</div>
 	</div>
+	
 </div>
