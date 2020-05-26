@@ -12,6 +12,7 @@ import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaDAO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
 
 
@@ -21,6 +22,8 @@ public class QnaSVCImpl implements IQnaSVC{
 	private IQnaDAO qaDao;
 	@Autowired
 	private IQnaCommentDAO qcDao;
+	@Autowired
+	FileSVCImpl fileSVC;
 	
 	@Override
 	public boolean insertNewQna(QnaVO qa) {

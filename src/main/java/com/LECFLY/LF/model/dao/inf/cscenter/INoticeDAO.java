@@ -25,9 +25,13 @@ public interface INoticeDAO {
 	//게시글을 조회할 수 있다. (페이지네이션, 정렬)
 	
 	List<NoticeVO> showAllNotices();
+	List<NoticeVO> showAllCreatorNotices();
 	List<NoticeVO> showAllNotices(boolean order);	
 	List<NoticeVO> showAllNotices(int offset, int limit);
+	List<NoticeVO> showAllCreatorNotices(int offset, int limit);
 	List<NoticeVO> showAllNotices(int offset, int limit, boolean order);
 	int checkNumberOfNotices();
+	
+	int checkNumberOfCreatorNotices();
 	
 }

@@ -82,12 +82,53 @@ $(document).ready(function() {
 			  },
 			  series: [{
 			    name: '가입 인원',
-			    color: '#000000',
+			    color: '#F39C12',
 			  }]
 			};
 			
 			myChart2 = new Highcharts.chart(chartOptions2);
 			
+	 var myChart3;
+	var chartOptions3 = {
+			chart: {
+			    type: 'line',
+			    renderTo: 'container_monthlysales'
+			  },
+			  title: {
+			    text: '달 기준 매출'
+			  },
+			  subtitle: {
+			    text: '이번달 기준 최근 1년'
+			  },
+			  xAxis: {
+				  type: 'category'
+			  },
+			  yAxis: {
+			    title: {
+			      text: '금액(원)'
+			    }
+			  },
+			  plotOptions: {
+			    line: {
+			      dataLabels: {
+			        enabled: true
+			      },
+			      enableMouseTracking: false
+			    }
+			  },
+			  series: [{
+			     name: '키트매출',
+			    color: '#00C0EF'
+			  },{
+				name: '이용권매출',
+				color: '#00A65A'  
+			  },{
+				name: '토탈매출',
+				color: '#DD4B39'  
+			  }]
+			};
+			
+			myChart3 = new Highcharts.chart(chartOptions3);		
 			
 	$("#categorylecture").on("click", function(){
 		console.log("카테고리 차트 요청");
@@ -152,9 +193,47 @@ $(document).ready(function() {
 		});
 		
 	});
+	
+ 	$("#monthlysales").on("click", function(){
+		console.log("매출 차트 요청");
+		var URLHD = '${pageContext.request.contextPath}/';
+		var url = URLHD + "stat_monthlySale.LF";
+		$.ajax({
+			type: 'post',
+			data: 'start=1',
+			url: url,
+			dateType: 'json',
+			success: function(res, status, xhr) {
+				console.log(res);
+				myChart3.xAxis[0].setCategories(res.monthName, true);
+				
+				// graph
+				/* var totalSum = res.totalSum;// 총합 매출액
+				myChart3.series[0].setData(totalSum, true); */
+				
+				var KitSaleSum = res.KitSaleSum;// 키트 매출액
+				myChart3.series[0].setData(KitSaleSum, true);
+				 var TicketSaleSum = res.TicketSaleSum;// 이용권 매출액
+				myChart3.series[1].setData(TicketSaleSum, true);
+				var totalSum = res.totalSum;// 총합 매출액
+				myChart3.series[2].setData(totalSum, true);
+			
+			},
+			error: function(xhr, status) {
+				console.log(xhr);
+				console.log(xhr.status);
+				console.log(status);
+			}
+		});
+		
+	}); 
+	
+	
 	// 통계 자동실행
 	$("#monthlymember").trigger("click");
 	$("#categorylecture").trigger("click");
+	$("#monthlysales").trigger("click");
+	
 });
 	
 </script>
@@ -268,6 +347,8 @@ $(document).ready(function() {
 </div> -->
 <input id="monthlymember" type="hidden" value="1통계보기">
 <input id="categorylecture" type="hidden" value="2통계보기">
+<input id="monthlysales" type="hidden" value="3통계보기">
+
 <!-- 차트 출력 부분 -->
 <div id="stat_result" style="display: flex; width: 1200px;">
 	<figure class="highcharts-figure">
@@ -277,6 +358,11 @@ $(document).ready(function() {
 	
 	<figure class="highcharts-figure">
 		<div id="container_categorylecture"></div>
+		<p class="highcharts-description"></p>
+	</figure>
+	
+	<figure class="highcharts-figure">
+		<div id="container_monthlysales"></div>
 		<p class="highcharts-description"></p>
 	</figure>
 	

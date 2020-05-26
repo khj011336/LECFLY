@@ -77,7 +77,7 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 
 	/** 통계파트 최근 1년 월별 회원가입 인원 조회 */
 	public static String SQL_COUNT_MEMBER_BY_MONTH = 
-			"SELECT MONTH(JOINED_AT) AS month, count(id) as ms_count FROM members where JOINED_AT between date_add(now(), interval -1 year) AND now() GROUP BY month";
+			"SELECT MONTH(JOINED_AT) AS month, count(id) as ms_count FROM members where JOINED_AT between date_add(now(), interval -1 year) AND now() GROUP BY month order by date_add(now(), interval -1 year)";
 	
 //	public static final String SQL_ADMIN_MEMBER_SELECT_SHOW = 
 //		"select * from member where 1=1";
