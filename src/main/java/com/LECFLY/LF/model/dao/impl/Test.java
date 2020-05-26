@@ -3,8 +3,11 @@ package com.LECFLY.LF.model.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -215,7 +218,7 @@ public class Test {
 	
 	/** 사용하지않은쿠폰(사용가능한 쿠폰의 갯수를 세어주는 함수) */
 	public static final String SQL_COUNT_NOT_USE_COUPONS_BY_MBID = 
-			"SELECT COUNT(*) FORM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
+			"SELECT COUNT(*) FROM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
 	
 	public CouponVO selectOneCouponByCode (String code) {
 		System.out.println("selectOneCouponByCode()");
@@ -374,7 +377,8 @@ public class Test {
 		System.out.println("dao : selectOneTiketByMbId()");
 		try {
 			System.out.println(SQL_SELECT_ONE_TIKET_BY_MBID + " / mb_id = " + mbId);
-			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, TicketVO.class, mbId);
+			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, 
+					BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();

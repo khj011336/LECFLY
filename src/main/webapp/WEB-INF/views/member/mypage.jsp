@@ -12,7 +12,6 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	<script src="resources/js/member/mypage.js"></script>
-
 			<div id="mypage_wrap"> 											<!-- 조각페이지 -->	
 				<div id="mypage_top"> 										<!-- 개인정보 영역 -->
 					<div id="mypage_pic">
@@ -35,22 +34,24 @@
 			        <div class="mypage_mb_t" id="mypage_mb_t_attendlec">
 			        	<img src="resources/imges/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">
 						<br><br><br>
-						<span>강의 신청 목록<b>6</b> 개</span>
+						<span>강의 신청 목록<b><c:out value="${cntLecture}" default ="0" /></b> 개</span>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_coupon">
 			        	<img src="resources/imges/mypage/mypage_coupon.png" class="mypage_1" alt="쿠폰" width="64px" height="64px">
 						<br><br><br>
-						<span>쿠폰 <b>4</b> 개</span>
+						<span>쿠폰 <b><c:out value="${cntCoupon}" default="0" /></b> 개</span>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_ticket">
 			        	<img src="resources/imges/mypage/mypage_ticket.png" class="mypage_1" alt="이용권" width="64px" height="64px">
 						<br><br><br>
-						<span><b>3</b> 카테고리 이용권</span>
+						<span><b><c:out value="${ticketFrontName}" default="" /></b> <c:out value="${ticketName}" default="보유중인 티켓 없음" /></span>
 						<br>
 						<p>
-						<!--  여기서 포문 -->
-							<a>미술</a> / <a>요리</a> / <a>라이프스타일</a> 
-							<!--  여기서 포문 끝 마지막에는 / 없어야됨 -->
+							<c:forEach var="strCate" items="${strCateList}" varStatus="vs">
+								<a><c:out value="${strCateList.get(vs.index)}"/></a>
+								<c:if test="${vs.index ne vs.last}"> / </c:if>
+								<c:if test="${vs.index eq vs.last}"> </c:if>
+							</c:forEach>
 						</p>
 			        </div>
 			    </div>
@@ -101,3 +102,4 @@
 						
 					</c:if>
 				</div>
+			</div>

@@ -108,6 +108,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
 		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
 				 testDao.selectOneTiketByMbId(mbId);
+		System.out.println("svc:: ticket = " + ticket);
 		if(ticket != null) {
 			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
 			//쿠폰
@@ -117,18 +118,45 @@ public class MyPageSVCImpl implements IMypageSVC {
 				int cntLecture = testDao.checkNumberOfLectureByMbId(mbId); // 회원이듣는강의개수
 				if(cntLecture >= 0) {
 					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
-					int rtCnt = (cntUseCategory == 1 ? 
-								1 : cntUseCategory == 2 ? 
-										3 : cntUseCategory == 3 ? 
-												7 : -1); // 1 아니면 3 아니면 7 아니면 -1 이나옴
+					String ticketFrontName = "";
+					String ticketName = "";
+					List<String> strCateList = new ArrayList<>(); 
+
+					if(cntUseCategory == 1) {
+						ticketFrontName = "1";
+						ticketName = "카테고리 이용권";
+						String strCate = 
+								LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
+						strCateList.add(strCate);
+					} else if(cntUseCategory == 2) {
+						ticketFrontName = "3";
+						ticketName = "카테고리 이용권";
+						String[] arrayCategories = ticket.getCategory().split("_");
+						for (int i = 0; i < arrayCategories.length; i++) {
+							String strCate = "무제한 이용권"; 
+							strCateList.add(strCate);
+						}
+						
+					} else if(cntUseCategory == 3) {
+						ticketFrontName = "∞";
+						ticketName = TicketVO.STR_TICKET_NAME_MAP.get(cntUseCategory);
+						String strCate = "전체"; 
+						strCateList.add(strCate);
+					}
 					
-					rMap.put("cntUseCategory", rtCnt); // 티켓 이용권 이름? 가지고 몇개의 카테고리를 인지 확인해야되고 // 들을수있는 개수
+					System.out.println("mpSvc : strCateList.size() = " + strCateList.size());
+					for (int i = 0; i < strCateList.size(); i++) {
+						System.out.println("mpSvc : strCateList.get(i) = " + strCateList.get(i));
+					}
+					
 					
 					/* 개수가지고 카테고리를 어떻게? 하는지 확인이필요함 
 					 티켓을 가지고 있다가 강의볼떄마다 하나씩사용하는지 애초에 살떄 3개짜리를사게되는 
 					순간 정해져서 오는지 오게되면은 번호로 하는데 스플릿을 나타나는지 알아야한다 */
-					rMap.put("strCateList", ""); 
-					rMap.put("tiketEndDay", ""); // 티켓의 종류날짜
+					rMap.put("ticketFrontName", ticketFrontName);
+					rMap.put("ticketName", ticketName);
+					rMap.put("strCateList", strCateList);
+					rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
 					rMap.put("cntCoupon", cntCoupon);
 					rMap.put("cntLecture", cntLecture);
 					return rMap;
