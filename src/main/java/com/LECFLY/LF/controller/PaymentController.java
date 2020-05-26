@@ -43,12 +43,12 @@ public class PaymentController {
 	
 	final String[] STR_CATE = {"전체", "미술", "음악", "요리", "라이프스타일", "운동", "커리어", "여행"};
 	
-	// 회원이 티켓구매 안내 페이지로 이동할 수 있다.
-	@RequestMapping(value = "lecfly_ticket.LF", method = RequestMethod.GET)
-	public String showTicketProc() {
-		System.out.println("티켓 안내 페이지로 이동!");
-		return "payment/ticket_guide/lecfly_ticket.pay";
-	}
+//	// 회원이 티켓구매 안내 페이지로 이동할 수 있다.
+//	@RequestMapping(value = "lecfly_ticket.LF", method = RequestMethod.GET)
+//	public String showTicketProc() {
+//		System.out.println("티켓 안내 페이지로 이동!");
+//		return "payment/ticket_guide/lecfly_ticket.pay";
+//	}
 	
 	// 회원이 한개의 선택한 티켓을 주문페이지로 이동할 수 있다.
 	@RequestMapping(value = "pay_order.LF", method = RequestMethod.POST)
