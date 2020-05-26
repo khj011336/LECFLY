@@ -15,8 +15,8 @@ import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
-import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 
 @Repository
 public class Test {
@@ -41,6 +41,21 @@ public class Test {
 		}
 		return null;
 	}
+	
+	public static final String SQL_SELECT_VIDEO_TITLE_BY_ID = 
+			"select title from video where id = ?";
+	
+	public String selectVideoTitleById(int id) {
+		try {
+			System.out.println(SQL_SELECT_VIDEO_TITLE_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_VIDEO_TITLE_BY_ID, String.class, id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	//                            』
 	
@@ -97,21 +112,20 @@ public class Test {
 	
 	/** */
 	
-	//    『     QnaCommentMysqlDAOImpl 가져가세요
+	//    『     CommentMysqlDAOImpl 가져가세요
 
 	// 세현추가 0515
-	public static final String SQL_CHECK_NUMBER_OF_QNA_COMMENTS_FOR_MEMBER = 
-			"select count(*) from qna_comment where mb_id = ?";
+	public static final String SQL_CHECK_NUMBER_OF_COMMENTS_FOR_MEMBER = 
+			"select count(*) from comments where mb_id = ? and table_cate = 0 or table_cate = 1";
 	// 세현추가 0515
-	public static final String SQL_SELECT_ALL_QNA_COMMENT_FOR_ID_OFFSET_LIMIT = 
-			"select * from qna_comment where mb_id = ? order by writed_day desc limit ?, ?";
-
+	public static final String SQL_SELECT_ALL_COMMENT_FOR_ID_OFFSET_LIMIT = 
+			"select * from comments where mb_id = ? and table_cate = 0 or table_cate = 1 order by created_at desc limit ?, ?";
+	
 	//@Override /** 세현 추가*/
-	public int checkNumberOfQnaCommentsForMember(int mbId) {
-		System.out.println("checkNumberOfQnaCommentsForMember()");
-		try {
-			System.out.println(SQL_CHECK_NUMBER_OF_QNA_COMMENTS_FOR_MEMBER + " / mb_id = " + mbId );
-			return jtem.queryForObject(SQL_CHECK_NUMBER_OF_QNA_COMMENTS_FOR_MEMBER,
+	public int checkNumberOfCommentsForMember(int mbId) {
+		System.out.println("checkNumberOfCommentsForMember()");
+		try {			System.out.println(SQL_CHECK_NUMBER_OF_COMMENTS_FOR_MEMBER + " / mb_id = " + mbId );
+			return jtem.queryForObject(SQL_CHECK_NUMBER_OF_COMMENTS_FOR_MEMBER,
 						Integer.class, mbId);
 		}catch (DataAccessException e) {
 			System.out.println("DataAccessException");
@@ -122,13 +136,13 @@ public class Test {
 	}
 	
 	//@Override/** 세현추가 */
-	public List<QnaCommentVO> selectAllMyComment(int mbId, int offset, int limit) {
+	public List<CommentVO> selectAllMyComment(int mbId, int offset, int limit) {
 		System.out.println("selectAllMyComment()");
 		try {
-			System.out.println(SQL_SELECT_ALL_QNA_COMMENT_FOR_ID_OFFSET_LIMIT + 
+			System.out.println(SQL_SELECT_ALL_COMMENT_FOR_ID_OFFSET_LIMIT + 
 					" / mb_id = " + mbId + " / offset = " + offset + " / limit = " + limit);
-			return  jtem.query(SQL_SELECT_ALL_QNA_COMMENT_FOR_ID_OFFSET_LIMIT, 
-					BeanPropertyRowMapper.newInstance(QnaCommentVO.class), mbId, offset, limit);
+			return  jtem.query(SQL_SELECT_ALL_COMMENT_FOR_ID_OFFSET_LIMIT, 
+					BeanPropertyRowMapper.newInstance(CommentVO.class), mbId, offset, limit);
 		}catch (DataAccessException e) {
 			System.out.println("DataAccessException");
 			e.printStackTrace();
@@ -136,32 +150,40 @@ public class Test {
 		return null;
 	}		
 	
+	public static final String SQL_SELECT_COMMENTS_COMMENT_BY_ID = 
+			"select comment from comments where id = ?";
 	
-	///////////////////////       』
+	public String selectCommentCommentById(int id) {
+		try {
+			System.out.println(SQL_SELECT_COMMENTS_COMMENT_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_COMMENTS_COMMENT_BY_ID, String.class, id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
-	/** */
 	
-	//   『 QnaMysqlDAOImpl 가져가세요
-
-
-	public static final String SQL_SELECT_ALL_QNAS_BY_MEMBER_ID = 
-				"select * from qnas where mb_id = ? order by writed_day desc";
+	public static final String SQL_SELECT_ALL_COMMENTS_QNAS_BY_MEMBER_ID = 
+			"select * from comments where mb_id = ? and table_cate = 2 order by created_at desc";
 
 
 	//@Override/** 0515 세현추가 mb_id가있는 모든 qna 문장을 찾음  */
-	public List<QnaVO> showAllQnasByMemberId(int mbId) {
+	public List<CommentVO> showAllCommentsQnasByMemberId(int mbId) {
 		try{
-			return jtem.query(SQL_SELECT_ALL_QNAS_BY_MEMBER_ID, 
-				BeanPropertyRowMapper.newInstance(QnaVO.class), mbId);
+			return jtem.query(SQL_SELECT_ALL_COMMENTS_QNAS_BY_MEMBER_ID, 
+				BeanPropertyRowMapper.newInstance(CommentVO.class), mbId);
 		} catch (DataAccessException e) {
 			System.out.println("DataAccessException");
 			e.printStackTrace();
 		}
 		return null;
 	}
-
-	/////////////////////////////////	 』
 	
+	
+	
+	///////////////////////       』
 	
 	/** */
 	
@@ -269,21 +291,21 @@ public class Test {
 	
 	/////////////// ILectureDAO
 	
-	public static final String SQL_SELECT_ONE_ID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
-			= "select id, category, subtitle, title_img nickname, like_count, img_path from lectures where id = ?";
+	public static final String SQL_SELECT_ONE_ID_CATEGOTY_TITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
+			= "select id, category, title, title_img nickname, like_count, img_path from lectures where id = ?";
 	
 	public static final String SQL_SELECT_COUNT_LECTURES_BY_MBID = 
 			"select count(*) from lectures where fid = ?";	
 	
-	public Map<String, Object> selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById(int lecId) {
-		System.out.println("selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById()");
+	public Map<String, Object> selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById(int lecId) {
+		System.out.println("selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById()");
 		try {
 			System.out.println(
-					SQL_SELECT_ONE_ID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID + 
+					SQL_SELECT_ONE_ID_CATEGOTY_TITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID + 
 						" / id = " + lecId);
 			Map<String, Object> rMap = 
 					jtem.queryForMap(
-							SQL_SELECT_ONE_ID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID, lecId);
+							SQL_SELECT_ONE_ID_CATEGOTY_TITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID, lecId);
 			return rMap;
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
@@ -292,6 +314,20 @@ public class Test {
 		return null;
 	}
 
+	public static final String SQL_SELECT_LECTURE_TITLE_BY_ID = 
+			"select title from lectures where id = ?";
+	
+	public String selectLectureTitleById(int id) {
+		try {
+			System.out.println(SQL_SELECT_LECTURE_TITLE_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_LECTURE_TITLE_BY_ID, String.class, id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * 회원의 아이디로 검색할경우 그회원이 듣고있는 lectuer 의개수
@@ -447,6 +483,10 @@ public class Test {
 		}
 		return null;
 	}
+
+
+
+
 	
 	/////// 』
 	

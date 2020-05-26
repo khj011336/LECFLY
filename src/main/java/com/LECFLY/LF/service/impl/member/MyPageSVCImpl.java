@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.InvalidTimeoutException;
 
 import com.LECFLY.LF.model.dao.impl.Test;
-
+import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IKITDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
@@ -33,6 +33,7 @@ import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -52,8 +53,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Autowired
 	private ILectureDAO lecDao;
 	
-//	@Autowired
-//	private IQnaCommentDAO qnacomDao;		// 디버그용 잠시닫음
+	@Autowired
+	private ICommentDAO comDao;
 	
 	@Autowired
 	private IQnaDAO qnaDao;
@@ -233,7 +234,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 					LecTypeVO lecType = ltList.get(i);
 					int classId = lecType.getClassId();
 					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId); 
-							testDao.selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId);
+							testDao.selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById(classId);
 					if(lecParamMap != null) {
 						int id = (int)lecParamMap.get("id");
 						idList.add(id);
@@ -320,8 +321,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 	public Map<String, Object> selectAllMyComment(int mbId, int pn) {
 		System.out.println("mpSvc selectAllMyComment().");
 		if(mbId > 0) {
-			int totalRecords = //qnacomDao.checkNumberOfQnaCommentsForMember(mbId);
-					testDao.checkNumberOfQnaCommentsForMember(mbId);
+			int totalRecords = //comDao.checkNumberOfCommentsForMember(mbId);
+					testDao.checkNumberOfCommentsForMember(mbId);
 			int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 			System.out.println("totalRecorde = " + totalRecords + 
 					" / maxPG = " + maxPG);
@@ -330,29 +331,31 @@ public class MyPageSVCImpl implements IMypageSVC {
 				int offset = (pn-1) * 10;
 				System.out.println("pn = " + pn + ", mbId = " + mbId + 
 							", offset = " + offset +" ,PAGE_SIZE = " + PAGE_SIZE);
-				List<QnaCommentVO> qnacomList = 
-						//qnacomDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
+				List<CommentVO> comList = 
+						//comDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
 						testDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
-				System.out.println("qnacomList = " + qnacomList);
-				if(qnacomList.size() >= 0) {
-					final int QNACOM_LIST_SIZE = qnacomList.size();
-					List<QnaVO> qnaList = new ArrayList<>(QNACOM_LIST_SIZE);
-					for (int i = 0; i < QNACOM_LIST_SIZE; i++) {
-						QnaVO qna = qnaDao.selectOneQna(qnacomList.get(i).getQnaId());
-						if(qna != null)
-							qnaList.add(qna);
-						else {
-							System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-							System.out.println("qnacomList.get(i).getQnaId() = " + 
-															qnacomList.get(i).getQnaId());
-							rMap.put("err", MYPAGE_ERR_MAP.get(ERR_DB_PARAM));
-							break;
+				System.out.println("comList = " + comList);
+				if(comList.size() >= 0) {
+					
+					// 원글제목필요함
+					List<String> titleList = new ArrayList<>();
+					final int COM_LIST_SIZE = comList.size();
+					for (int i = 0; i < COM_LIST_SIZE; i++) {
+						int id = comList.get(i).getAtId();
+						if(comList.get(i).getTableCate() == 0) { //  0:클래스
+							String title = //lecDao.selectLectureSubTitleById(id);
+											 testDao.selectLectureTitleById(id);
+							titleList.add(title);
+						} else if(comList.get(i).getTableCate() == 1) { // 1:비디오 
+							String title = //vdDao.selectVideoTitleById(id);
+											 testDao.selectVideoTitleById(id);
+							titleList.add(title);
 						}
 					}
 					rMap.put("totalRecords", totalRecords);
 					rMap.put("maxPG", maxPG);
-					rMap.put("qnacomList", qnacomList);
-					rMap.put("qnaList", qnaList);
+					rMap.put("comList", comList);
+					rMap.put("titleList", titleList);
 					return rMap;
 				} else {
 					System.out.println("qnacomList.size() <0 :: 음수");
@@ -366,16 +369,16 @@ public class MyPageSVCImpl implements IMypageSVC {
 	}
 
 	@Override
-	public Map<String, Object> selectAllMyQna(int mbId, int pn) {
+	public Map<String, Object> selectAllMyCommentQna(int mbId, int pn) {
 		System.out.println("selectAllMyQna()");
 		Map<String, Object> rMap = new HashMap<>();
 		if(mbId > 0) {
 			System.out.println("mbId = " + mbId);
-			List<QnaVO> qnaList = //qnaDao.showAllQnasByMemberId(mbId);
-									testDao.showAllQnasByMemberId(mbId);
-			if(qnaList != null) {
-				System.out.println( "qnaList.size() = " + qnaList.size() );
-				int totalRecords = qnaList.size();
+			List<CommentVO> comList = //comDao.showAllCommentsQnasByMemberId(mbId);
+									testDao.showAllCommentsQnasByMemberId(mbId);
+			if(comList != null) {
+				System.out.println( "comList.size() = " + comList.size() );
+				int totalRecords = comList.size();
 				int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 				System.out.println("maxPG = " + maxPG);
 				System.out.println("totalRecords = " + totalRecords + " / PAGE_SIZE = " + 
@@ -384,16 +387,20 @@ public class MyPageSVCImpl implements IMypageSVC {
 					List<QnaVO> rtQnaList = new ArrayList<>();
 					if(totalRecords > 0 && totalRecords <= PAGE_SIZE) {
 						for (int i = 0; i < totalRecords; i++) {
-							rtQnaList.add(qnaList.get( ((pn-1)*10) + i));
+							CommentVO com = comList.get( ((pn-1)*10) + i);
+							QnaVO qna = qnaDao.selectOneQna(com.getAtId());
+							rtQnaList.add(qna);
 						}
 					}
 					else {
 						for (int i = 0; i < PAGE_SIZE; i++) {
-							rtQnaList.add(qnaList.get( ((pn-1)*10) + i));
+							CommentVO com = comList.get( ((pn-1)*10) + i);
+							QnaVO qna = qnaDao.selectOneQna(com.getAtId());
+							rtQnaList.add(qna);
 						}
 					}
 					System.out.println("totalRecords = " + totalRecords + 
-								", maxPG = " + maxPG + ", qnaList = " + qnaList );
+								", maxPG = " + maxPG + ", comList = " + comList );
 					rMap.put("totalRecords", totalRecords);
 					rMap.put("maxPG", maxPG);
 					rMap.put("qnaList", rtQnaList);

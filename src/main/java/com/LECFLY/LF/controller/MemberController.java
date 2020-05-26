@@ -28,6 +28,7 @@ import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
@@ -650,17 +651,18 @@ public class MemberController {
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		System.out.println("mb = " + mb);
-		Map<String, Object> qnaComMap = mpSvc.selectAllMyComment(mbId, pageNumber);
-		System.out.println("qnaComMap = " + qnaComMap);
-		if( qnaComMap != null ) {
-			int totalRecords = (int)qnaComMap.get("totalRecords");
-			int maxPG = (int)qnaComMap.get("maxPG");
-			List<QnaCommentVO> qnacomList = (List<QnaCommentVO>)qnaComMap.get("qnacomList");
-			List<QnaVO> qnaList = (List<QnaVO>)qnaComMap.get("qnaList");
+		Map<String, Object> comMap = mpSvc.selectAllMyComment(mbId, pageNumber);
+		System.out.println("comMap = " + comMap);
+		if( comMap != null ) {
+			int totalRecords = (int)comMap.get("totalRecords");
+			int maxPG = (int)comMap.get("maxPG");
+			List<CommentVO> comList = (List<CommentVO>)comMap.get("comList");
+			List<String> titleList = (List<String>)comMap.get("titleList");
+			
 			model.addAttribute("totalRecords", totalRecords);
 			model.addAttribute("maxPG", maxPG);
-			model.addAttribute("qnacomList", qnacomList);
-			model.addAttribute("qnaList", qnaList);
+			model.addAttribute("comList", comList);
+			model.addAttribute("titleList", titleList);
 			model.addAttribute("pn", pageNumber);
 		} else {
 			model.addAttribute("msg_status", "댓글 내역");
@@ -679,12 +681,13 @@ public class MemberController {
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		System.out.println("mb = " + mb);
-		Map<String, Object> qnaMap = mpSvc.selectAllMyQna(mbId, pageNumber);
+		Map<String, Object> comqnaMap = mpSvc.selectAllMyCommentQna(mbId, pageNumber);
 		
-		if( qnaMap != null ) {
-			int totalRecords = (int)qnaMap.get("totalRecords");
-			int maxPG = (int)qnaMap.get("maxPG");
-			List<QnaVO> qnaList = (List<QnaVO>)qnaMap.get("qnaList");
+		if( comqnaMap != null ) {
+			int totalRecords = (int)comqnaMap.get("totalRecords");
+			int maxPG = (int)comqnaMap.get("maxPG");
+			List<QnaVO> qnaList = (List<QnaVO>)comqnaMap.get("qnaList");
+			
 			model.addAttribute("totalRecords", totalRecords);
 			model.addAttribute("maxPG", maxPG);
 			model.addAttribute("qnaList", qnaList);
@@ -1036,14 +1039,6 @@ public class MemberController {
 	
 	
 ////////////////////////////////////////////////////
-	
-	// 네비 장바구니 클릭
-	@RequestMapping(value="shopping_cart.LF", method=RequestMethod.GET)
-	public String memberShoppingCart() {
-		System.out.println("memberShoppingCart()...");	
-		return "payment/shoppingCart";
-	}
-	
 	
 	
 	
