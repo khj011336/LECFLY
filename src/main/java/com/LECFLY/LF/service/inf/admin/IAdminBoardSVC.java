@@ -8,6 +8,7 @@ import com.LECFLY.LF.model.vo.cscenter.FaqVO;
 import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 
 public interface IAdminBoardSVC {
 	public static int AD_PAGE_SIZE = 30;
@@ -66,16 +67,16 @@ public interface IAdminBoardSVC {
 	// COMMENT 게시판 관리
 	
 	// comment를 등록할 수 있다.
-	boolean insertNewComment(QnaCommentVO cm);
+	boolean insertNewComment(CommentVO cm);
 	// comment를 편집 할 수 있다.
-	boolean updateComment(QnaCommentVO cm);
+	boolean updateComment(CommentVO cm);
 	// comment를 삭제 할 수 있다.
-	boolean deleteComment(QnaCommentVO cm);
+	boolean deleteComment(CommentVO cm);
 	// comment를 전체 조회할수 있다.
-	List<QnaCommentVO> showAllComments(int offset, int limit);
+	List<CommentVO> showAllComments(int offset, int limit);
 	int checkNumberOfComments();
 	
 	Map<String, Integer> checkMaxPageNumberOfComment();
-	List<QnaCommentVO> selectAllComment(int pageNumber);
+	List<CommentVO> selectAllComment(int pageNumber);
 	
 }

@@ -13,9 +13,6 @@
 			window.location.href = 'logout_proc.LF';
 		}
 	}
-// 	function test() {
-// 		window.location.href = 'test.LF';
-// 	}
 	
 </script>
 
@@ -24,9 +21,6 @@
 	<span class="info_color">LECFLY</span> 이용안내 </a></div>
 </div>
 <div class="header_wrapper" style="z-index:30;">
-<!-- 삭제필수 -->
-<!-- <input type="button" value="test" onclick="test()"> -->
-
 	
 	<div class="header_column_logo">
 		<a href="${pageContext.request.contextPath}/home.LF"><img src="resources/imges/logo/LecFly_LOGO_B_C.png"/></a>
