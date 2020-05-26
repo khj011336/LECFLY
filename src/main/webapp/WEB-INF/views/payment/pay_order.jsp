@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <title>주문페이지</title>
-<link type="text/css" rel="stylesheet"
-	href="resources/css/payment/pay_order.css">
+<link type="text/css" rel="stylesheet" href="resources/css/payment/pay_order.css">
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <div id="wrapper">
 	<div id="fundingPayment_wrapper">
 		<div id="fundingPayment_main_title">
@@ -47,9 +47,12 @@
 				<table class="deliveryPlaceInfo_table">
 					<tbody>
 						<tr>
-							<td class="deliveryPlaceInfo_table_td"><input
-								type="checkbox" name="new_deliveryPlaceInfo_check" checked>
-								새로운 배송지</td>
+						<td class="deliveryPlaceInfo_table_td">
+							<input type="checkbox" name="default_deliveryInfo_save" checked> 기본 배송지로 저장
+						</td>
+						<td class="deliveryPlaceInfo_table_td">
+							<input type="checkbox" name="new_deliveryPlaceInfo_check"> 새로운 배송지
+						</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">배송지명</th>
@@ -119,24 +122,23 @@
 			</div>
 		</div>
 		<div id="fundingPayment_sidebar">
-			<div id="orderfundingInfo_title">주문할 펀딩</div>
+			<div id="orderfundingInfo_title">주문 상품</div>
 			<div class="orderfundingInfo_set">
-				<a class="orderfunding_img" target="_self"
-					href="javascript:void(0);"
-					onclick="pageContext.request.contextPath/payment"> <img
-					src="resource/img/payment/working out.jpg" width="85" height="85"
-					alt="다이어트 패키지">
+			<c:forEach var="ct" items="${ctList}" varStatus="vs">
+				<a class="orderfunding_img" target="_target" href="javascript:void(0);" onclick="pageContext.request.contextPath/payment">
+					<img src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
 				</a>
 				<div class="orderfunding_imgInfo">
-					<a class="orderfunding_a"> <strong>운동</strong><br> <strong>다이어트
-							패키지&lt;홈트의 재정의&gt; 다이어트 패키지</strong>
+					<a class="orderfunding_a"> 
+						<strong><c:out value="${ct.categoryId[STR_CATEGORY_ID]}"  default="회원권"/></strong><br>
+					 	<strong>${ct.gdsName}</strong>
 					</a>
-					<div class="orderfunding_cnt">구매수량 1 개</div>
+					<div class="orderfunding_cnt">구매수량 <c:out value="${ct.gdsCnt}" default="1"/> 개</div>
 					<div>
-						<span class="orderfunding_price">30,000<em
-							class="orderfunding_won">원</em></span>
+						<span class="orderfunding_price">${ct.gdsPrice}<em class="orderfunding_won">원</em></span>
 					</div>
 				</div>
+			</c:forEach>
 			</div>
 			<div id="paymentInfo_title">결제 정보</div>
 			<div class="paymentInfo_box">
