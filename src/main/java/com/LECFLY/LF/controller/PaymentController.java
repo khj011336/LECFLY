@@ -27,6 +27,7 @@ import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.cart.ICartSVC;
 import com.LECFLY.LF.service.inf.payhistory.IPayHistorySVC;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
 @Controller
 public class PaymentController {
@@ -40,13 +41,6 @@ public class PaymentController {
 	MemberVO memberVO;
 	
 	final String[] STR_CATE = {"전체", "미술", "음악", "요리", "라이프스타일", "운동", "커리어", "여행"};
-	
-//	// 회원이 티켓구매 안내 페이지로 이동할 수 있다.
-//	@RequestMapping(value = "lecfly_ticket.LF", method = RequestMethod.GET)
-//	public String showTicketProc() {
-//		System.out.println("티켓 안내 페이지로 이동!");
-//		return "payment/ticket_guide/lecfly_ticket.pay";
-//	}
 	
 	// 회원이 한개의 선택한 티켓을 주문페이지로 이동할 수 있다.
 	@RequestMapping(value = "pay_order.LF", method = RequestMethod.POST)
@@ -81,7 +75,7 @@ public class PaymentController {
 		return "payment/pay_order.pays";
 	}
 	
-	// 회원이 세션 로그인 후, 상품 상세페이지로 이동 할 수 있다.
+	// 회원이 세션 로그인 후, 강의 상세페이지로 이동 할 수 있다.
 	@RequestMapping(value = "pay_goodsDetail.LF", method = RequestMethod.GET)
 	public String showLectureProc(@RequestParam("lecId") int lecId, Model model) {
 		System.out.println("payController :: showLectureProc()");
@@ -112,7 +106,7 @@ public class PaymentController {
 			}
 	}
 	
-	
+	// 회원이 키트를 장바구니에 담을 수 있다.
 	@RequestMapping(value = "check_pay_cart.LF", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> CheckOrderProc(HttpSession ses, 
@@ -151,9 +145,9 @@ public class PaymentController {
 	
 	
 //	 회원과 비회원이 장바구니페이지로 들어 갈 때, 세션으로 물건들을 넣을 수 있다.
-	@RequestMapping(value = "pay_cart.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "pay_cart.LF", method = {RequestMethod.POST, RequestMethod.GET})
 	public String showCartProc(HttpSession ses,
-							   @RequestParam("kitId") int kitId,
+							   @RequestParam(value="kitId", defaultValue="0") int kitId,
 							   Model model){
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
@@ -166,7 +160,6 @@ public class PaymentController {
 				if(cMap != null) {
 					List<KitVO> kitList = (List<KitVO>)cMap.get("kitList");
 					List<CreatorVO> creList = (List<CreatorVO>)cMap.get("creList");
-			
 					model.addAttribute("kitList", kitList);
 					model.addAttribute("creList", creList);
 					
@@ -175,14 +168,14 @@ public class PaymentController {
 				System.out.println("비회원으로 장바구니 이동!");
 				Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
 			}
-			System.out.println("payment/pay_cart.pays");
+			System.out.println("payment/pay_cart.pay");
 			
 		} else {
 			// 여유 생기면 구현예정
 			Map<String, Object> pMap = cartSvc.showCartByNoMbProc(kitId); // 카트아이디가 리턴되야함
 			System.out.println("mb 가없음");
 		}
-		return "payment/pay_cart.pays";
+		return "payment/pay_cart.pay";
 	}
 	
 	

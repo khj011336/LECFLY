@@ -542,6 +542,7 @@
     vertical-align: middle;
     background-color: black;
     color: white;
+    cursor: pointer;
 }
 #lecflyticket_gopay a {
     color: white;

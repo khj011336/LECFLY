@@ -1,8 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<title>GUIDE/LECFLY</title>
+<title>TICKET/LECFLY</title>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+	function goPayOrder(intName) { // 카테고리 이용권 1개인지 3개인지 전체인지 1 2 3 들어올예정
+		console.log("intName = " + intName);
+		var param = "ticName=" + intName + "&gdType=ticket";
+	
+		$.ajax({
+			type: "POST",
+			url: "pay_order.LF",
+			data: param,
+			success:function(res, status, xhr) {
+				console.log("성공");
+				$('#homemain').html(res);
+			},
+			error: function(staus, xhr) {
+				console.log("실패");
+			}
+		});
+		
+	}
+</script>
 <div class="CSsection">
 	<div id="CSsec_title">
 		<h2>홈페이지 안내</h2>
@@ -13,11 +36,13 @@
 					<a href="lecfly_guide.LF" class="lecfly_info">이용안내</a>
 				</h4></li>
 			<li><h4>
-					<a href="lecfly_ticket.LF"  style="background-color: orange" class="lecfly_membership_info">회원권</a>
+					<a href="lecfly_ticket.LF" style="background-color: orange"
+						class="lecfly_membership_info">회원권</a>
 				</h4></li>
 		</ul>
 	</div>
-<div class="lecflyticket">
+
+	<div class="lecflyticket">
 		<div id="lecflyis_logo">
 			<br>
 			<br>
@@ -72,7 +97,8 @@
 			이용 가능합니다.<br>
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a class="lecflyticket" href="#">바로가기&nbsp;&gt;</a>
+					<a class="lecflyticket" onclick="goPayOrder(1)">바로가기&nbsp;&gt;</a>
+
 				</h4>
 			</div>
 		</div>
@@ -93,7 +119,7 @@
 			이용 가능합니다.
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a href="#" class="nav_mypage">바로가기&nbsp;&gt;</a>
+					<a class="nav_mypage" onclick="goPayOrder(2)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
 		</div>
@@ -113,10 +139,9 @@
 			<br> Lecfly에 업로드된<br>모든 카테고리 강의를<br>무제한으로 이용 가능합니다.<br>&nbsp;
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a href="#">바로가기&nbsp;&gt;</a>
+					<a onclick="goPayOrder(3)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
 		</div>
 	</div>
-	
 </div>

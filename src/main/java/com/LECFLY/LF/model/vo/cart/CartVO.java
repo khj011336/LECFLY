@@ -28,13 +28,15 @@ public class CartVO {
 	String checkSameOrder;
 	/** 추가한 날짜*/
 	Timestamp createdAt;
+	/** 주문/결제 기록용 상태 (1.결제 전 2.성공 3.실패 4.기타 오류)*/
+	int state;
+	
 	public CartVO() {}
-	public CartVO(int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, int gdsCnt,
-			String checkSameOrder) {
-		this(0, mbId, categoryId, gdsId, gdsName, gdsPrice, gdsCnt, checkSameOrder, null);
+	public CartVO(int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, String checkSameOrder, int state) {
+		this(0, mbId, categoryId, gdsId, gdsName, gdsPrice, 1, checkSameOrder, null, state);
 	}
 	public CartVO(int id, int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, int gdsCnt,
-			String checkSameOrder, Timestamp createdAt) {
+			String checkSameOrder, Timestamp createdAt, int state) {
 		super();
 		this.id = id;
 		this.mbId = mbId;
@@ -45,6 +47,7 @@ public class CartVO {
 		this.gdsCnt = gdsCnt;
 		this.checkSameOrder = checkSameOrder;
 		this.createdAt = createdAt;
+		this.state = state;
 	}
 	
 	public int getId() {
@@ -101,6 +104,12 @@ public class CartVO {
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
+	}
 	public static String[] getStrCategoryId() {
 		return STR_CATEGORY_ID;
 	}
@@ -115,7 +124,7 @@ public class CartVO {
 	public String toString() {
 		return "CartVO [id=" + id + ", mbId=" + mbId + ", categoryId=" + categoryId + ", gdsId=" + gdsId + ", gdsName="
 				+ gdsName + ", gdsPrice=" + gdsPrice + ", gdsCnt=" + gdsCnt + ", checkSameOrder=" + checkSameOrder
-				+ ", createdAt=" + createdAt + "]";
+				+ ", createdAt=" + createdAt + ", state=" + state + "]";
 	}
-	
+
 }                           
