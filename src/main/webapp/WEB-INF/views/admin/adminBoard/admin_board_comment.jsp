@@ -102,7 +102,8 @@
 			<th>원글 위치</th>
 			<th>원글번호</th> 
 			<th>내용</th> 
-			<th>작성자</th> 
+			<th>작성자</th>
+			<th>작성날짜</th> 
 			<th>미리보기</th> 
 		</tr>
 		<c:forEach items="${qcList}" var="comment" varStatus="vs">
@@ -110,10 +111,11 @@
 			<td><input type="checkbox" name="checked" value="${comment.id }"/></td> 
 			<td>${vs.count}</td> 
 			<td>${comment.id}</td> 
-			<td>원글 위치</td>
-			<td>${comment.qnaId}</td>
-			<td>${comment.content}</td>
-			<td>${comment.mbLogin}</td>
+			<td>${comment.tableCate}</td>
+			<td>${comment.atId}</td>
+			<td>${comment.comment}</td>
+			<td>${comment.mbNic}</td>
+			<td>${comment.createdAt}</td>
 			<td><button value="미리보기"></button></td>
 		</tr>
 		</c:forEach>

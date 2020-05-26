@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.LECFLY.LF.model.vo.CommentClassVO;
 import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
@@ -28,6 +29,7 @@ import com.LECFLY.LF.model.vo.cscenter.FaqVO;
 import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO;
 import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
@@ -577,7 +579,7 @@ public class AdminController {
 			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
 		System.out.println("PN? "+ pageNumber);
 		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfComment();
-		List<QnaCommentVO> qcList = adBdSvc.selectAllComment(pageNumber);
+		List<CommentVO> qcList = adBdSvc.selectAllComment(pageNumber);
 		if(qcList != null && rMap != null) {
 			model.addAttribute("listSize", qcList.size());
 			model.addAttribute("qcList", qcList);
