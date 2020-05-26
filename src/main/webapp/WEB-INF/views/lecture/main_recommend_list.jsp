@@ -25,7 +25,7 @@
 					<img
 						src="resources/imges/dummy_lec_img/life_style/life_style_0.jpg">
 				</div>
-				<div class="main_video_info">
+				<div class="main_video_info_lec">
 					<p class="main_video_info_category">
 						<c:set var="i">${lec.category }</c:set>
 						<c:out value="${categoryMap[i]}" />
