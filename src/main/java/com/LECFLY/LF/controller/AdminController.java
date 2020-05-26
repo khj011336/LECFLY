@@ -31,10 +31,12 @@ import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO;
 import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
+import com.LECFLY.LF.model.vo.virtual.PaymentStatVO;
 import com.LECFLY.LF.service.inf.admin.IAdminBoardSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminFileSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminLectureSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminMemberSVC;
+import com.LECFLY.LF.service.inf.admin.IAdminPaymentSVC;
 import com.LECFLY.LF.service.inf.admin.IAdminSiteSVC;
 
 @Controller
@@ -48,6 +50,9 @@ public class AdminController {
 	private IAdminMemberSVC adMbSvc;
 	@Autowired
 	private IAdminBoardSVC adBdSvc;
+	@Autowired
+	private IAdminPaymentSVC adPmSvc;
+	
 
 	@Autowired
 	private IAdminFileSVC adFileSvc;
@@ -84,24 +89,24 @@ public class AdminController {
 	}
 	
 	// 관리자 메인 통계 - 달 기준 멤버가입수 (최근 1년)
-		@RequestMapping(value = "/stat_monthlyMember.LF", method = RequestMethod.POST)
-		@ResponseBody
-		public Map<String,Object> stat_monthlyMember() {
-			Map<String,Object> jsonMap = new HashMap<String, Object>();
-			System.out.println("최근 1년 달 기준 멤버 가입 수 검색");
-			List<MemberStatVO> monthlyMemberList = adMbSvc.statCountMemberByMonth();
-			List<String> monthName = new ArrayList<>();
-			List<Integer> memberCnt = new ArrayList<>();
-			for (MemberStatVO ms : monthlyMemberList) {
-				ms.setMonthName(ms.getMonthName());
-				System.out.println(ms.toString());
-				 monthName.add(ms.getMonthName());
-				 memberCnt.add(ms.getMsCount());
-			}
-			jsonMap.put("monthName",monthName);
-			jsonMap.put("memberCnt", memberCnt);
-			return jsonMap;
+	@RequestMapping(value = "/stat_monthlyMember.LF", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> stat_monthlyMember() {
+		Map<String,Object> jsonMap = new HashMap<String, Object>();
+		System.out.println("최근 1년 달 기준 멤버 가입 수 검색");
+		List<MemberStatVO> monthlyMemberList = adMbSvc.statCountMemberByMonth();
+		List<String> monthName = new ArrayList<>();
+		List<Integer> memberCnt = new ArrayList<>();
+		for (MemberStatVO ms : monthlyMemberList) {
+			ms.setMonthName(ms.getMonthName());
+			System.out.println(ms.toString());
+			 monthName.add(ms.getMonthName());
+			 memberCnt.add(ms.getMsCount());
 		}
+		jsonMap.put("monthName",monthName);
+		jsonMap.put("memberCnt", memberCnt);
+		return jsonMap;
+	}
 	
 	
 	
@@ -123,6 +128,49 @@ public class AdminController {
 		}
 		jsonMap.put("cateName",cateName);
 		jsonMap.put("lectureCnt", lectureCnt);
+		return jsonMap;
+	}
+	
+	// 관리자 메인 통계 - 달 기준 매출액 (최근 1년)
+	@RequestMapping(value = "/stat_monthlySale.LF", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> stat_monthlySale() {
+		Map<String,Object> jsonMap = new HashMap<String, Object>();
+		System.out.println("최근 1년 달 기준 매출 검색");
+		List<PaymentStatVO> monthlyKitSaleList = adPmSvc.statSumKitSaleByMonth();
+		List<PaymentStatVO> monthlyTicketSaleList = adPmSvc.statSumTicketSaleByMonth();
+		List<PaymentStatVO> monthlyTotalSaleList = adPmSvc.statSumTotalSaleByMonth();
+		
+		List<String> monthName = new ArrayList<>();
+		List<Integer> KitSaleSum = new ArrayList<>();
+		List<Integer> TicketSaleSum = new ArrayList<>();
+		List<Integer> totalSum = new ArrayList<>();
+		for (PaymentStatVO ps : monthlyTotalSaleList) {
+			System.out.println("최근 1년 달 기준 매출 검색3-1");
+			ps.setMonthName(ps.getMonthName());
+			System.out.println(ps.toString());
+			 monthName.add(ps.getMonthName());
+			 totalSum.add(ps.getTotalSum());
+		}
+		for (PaymentStatVO ps : monthlyTicketSaleList) {
+			System.out.println("최근 1년 달 기준 매출 검색3-2");
+			ps.setMonthName(ps.getMonthName());
+			System.out.println(ps.toString());
+			 monthName.add(ps.getMonthName());
+			 TicketSaleSum.add(ps.getTicketSum());
+		}
+		for (PaymentStatVO ps : monthlyKitSaleList) {
+			System.out.println("최근 1년 달 기준 매출 검색3-3");
+			ps.setMonthName(ps.getMonthName());
+			System.out.println(ps.toString());
+			 monthName.add(ps.getMonthName());
+			 KitSaleSum.add(ps.getKitSum());
+		}
+		jsonMap.put("monthName",monthName);
+		jsonMap.put("KitSaleSum", KitSaleSum);
+		jsonMap.put("TicketSaleSum", TicketSaleSum);
+		jsonMap.put("totalSum",  totalSum);
+		
 		return jsonMap;
 	}
 	

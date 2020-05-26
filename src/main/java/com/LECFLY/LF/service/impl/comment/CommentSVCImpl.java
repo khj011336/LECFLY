@@ -200,4 +200,8 @@ public class CommentSVCImpl implements ICommentSVC {
 		System.out.println(inc+"' order증가");
 		return inc;
 	}
+	
+	public int checkNumberOfComments(int cate, int atId) {
+		return ctDao.checkNumberOfComments(cate, atId);
+	};
 }

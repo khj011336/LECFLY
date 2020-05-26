@@ -92,7 +92,7 @@
 						<c:out value="${qa.title}" default="제목없음"/>
 						<span class="qc_cnt">
 							<small style="color: red">
-							 (${cntQnaComments[vs.index]}) 
+							 (${cntComments[vs.index]}) 
 							</small>
 						</span>
 					</td>

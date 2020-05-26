@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class QnaVO {
 	public static final String QNA_TYPE_0 = "회원관련";
 	public static final String QNA_TYPE_1 = "결제/배송관련";
@@ -31,6 +33,7 @@ public class QnaVO {
 	String content;
 	/** 첨부파일	 (다수인 경우 ,등 구분용 문자 삽입) */
 	String file; 
+	
 	/** 공개 여부	0: 공개 1: 비공개 0 */
 	int showPrivate;
 	/** 공개 여부 */
@@ -43,7 +46,17 @@ public class QnaVO {
 	int hits; 
 	/** 댓글 수 */
 	int comment; 
+	/** 다중파일*/
+	MultipartFile multiFile;
 	
+	public MultipartFile getMultiFile() {
+		return multiFile;
+	}
+
+	public void setMultiFile(MultipartFile multiFile) {
+		this.multiFile = multiFile;
+	}
+
 	/**
 	 * 더미
 	 */
