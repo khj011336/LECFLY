@@ -1,36 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
- $(document).ready(function() {
-	$("#update_member_list").click(function() {
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// 파람으로 보낼 정보들 저장
-		var params = {
-				"checkList" : checkArray
-		}
-		
-		// ajax 호출
-		$.ajax({
-			url : "${pageContext.request.contextPath}/admin_update_member_list.LF",
-			dataType: "json",
-			type: "post",
-			data: params, 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-	});
-});
-
-</script>
 
 <h4>회원 통계</h4>
 

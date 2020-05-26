@@ -1,50 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
- $(document).ready(function() {
-	$("#update_faq_list").click(function() {
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// 파람으로 보낼 정보들 저장
-		var params = {
-				"checkList" : checkArray
-		}
-		
-		// ajax 호출
-		$.ajax({
-			url : "${pageContext.request.contextPath}/admin_update_faq_list.LF",
-			dataType: "json",
-			type: "post",
-			data: params, 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-	});
-});
-
-</script>
 
 <h4>자주묻는질문 관리</h4>
 
 <div class="admin_table_filter">
 	<table>
 		<caption>검색조건설정</caption>
-		<tr>
-			<th>기간검색</th>
+		<tr class="date_filter">
+			<th>작성일 기준 검색</th>
+				<input type="hidden" name="pn" value="${(empty param.p)? 1: param.p}"/>
 			<td>
-				<span class="date_filter"><a href="#">오늘</a></span> |
-				<span class="date_filter"><a href="#">3일</a></span> |
-				<span class="date_filter"><a href="#">7일</a></span> |
-				<span class="date_filter"><a href="#">1개월</a></span>
-				<input type="date"/> ~ <input type="date"/>
+				<a href="#" class="day1">오늘</a> |<a href="#" class="day3">3일</a> |
+				<a href="#" class="day7">7일</a> |<a href="#" class="month1">1개월</a>&nbsp; 직접설정 
+				<input type="date" name="start_date" value="2020-05-01"/> ~ <input type="date" name="end_date" value="2020-05-19"/>
 			</td>
 		</tr>
 		<tr>
@@ -69,7 +37,8 @@
   					<option value="">제목</option>
     				<option value="">내용</option>
     			</select>
-			<input type="text" size="40"></td>
+				<input type="text" name="keyword" size="40">
+			</td>
 		</tr>
 	</table>
 	<div class="admin_search_btns">

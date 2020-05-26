@@ -6,14 +6,13 @@
 <div class="admin_table_filter">
 	<table>
 		<caption>검색조건설정</caption>
-		<tr>
-			<th>날짜 검색</th>
+		<tr class="date_filter">
+			<th>등록일 기준 검색</th>
+				<input type="hidden" name="pn" value="${(empty param.p)? 1: param.p}"/>
 			<td>
-				<span class="date_filter"><a href="#">오늘</a></span> |
-				<span class="date_filter"><a href="#">3일</a></span> |
-				<span class="date_filter"><a href="#">7일</a></span> |
-				<span class="date_filter"><a href="#">1개월</a></span>
-				<input type="date"/> ~ <input type="date"/>
+				<a href="#" class="day1">오늘</a> |<a href="#" class="day3">3일</a> |
+				<a href="#" class="day7">7일</a> |<a href="#" class="month1">1개월</a>&nbsp; 직접설정 
+				<input type="date" name="start_date" value="2020-05-01"/> ~ <input type="date" name="end_date" value="2020-05-19"/>
 			</td>
 		</tr>
 		<tr>
@@ -46,7 +45,8 @@
   					<option value="">판매자</option>
   					<option value="">구매자</option>
     			</select>
-			<input type="text" size="40"></td>
+				<input type="text" name="keyword" size="40">
+			</td>
 		</tr>
 		<tr>
 			<th>신청상태</th>

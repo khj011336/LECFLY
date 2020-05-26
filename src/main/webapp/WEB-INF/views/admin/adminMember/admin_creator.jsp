@@ -1,83 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
- $(document).ready(function() {
-	$("#update_creator_list").click(function() {
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// 파람으로 보낼 정보들 저장
-		var params = {
-				"checkList" : checkArray
-		}
-		
-		// ajax 호출
-		$.ajax({
-			url : "${pageContext.request.contextPath}/admin_update_creator_list.LF",
-			dataType: "json",
-			type: "post",
-			data: params, 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-	});
-});
 
-</script>  
 <h4>크리에이터 관리</h4>
 
 <div class="admin_table_filter">
 	<table>
 		<caption>검색조건설정</caption>
-		<tr>
-			<th>기간검색</th>
+		<tr class="date_filter">
+			<th>승인일 기준 검색</th>
+				<input type="hidden" name="pn" value="${(empty param.p)? 1: param.p}"/>
 			<td>
-				<span class="date_filter"><a href="#">오늘</a></span> |
-				<span class="date_filter"><a href="#">3일</a></span> |
-				<span class="date_filter"><a href="#">7일</a></span> |
-				<span class="date_filter"><a href="#">1개월</a></span>
-				<input type="date"/> ~ <input type="date"/>
-			</td>
-		</tr>
-		<tr>
-			<th>분류 선택</th>
-			<td>
-				<select name="">
-<!--    					<option value="">전체</option> -->
-<!--   					<option value="">회원</option> -->
-    				<option value="" selected="selected">크리에이터</option>
-				</select>
+				<a href="#" class="day1">오늘</a> |<a href="#" class="day3">3일</a> |
+				<a href="#" class="day7">7일</a> |<a href="#" class="month1">1개월</a>&nbsp; 직접설정 
+				<input type="date" name="start_date" value="2020-05-01"/> ~ <input type="date" name="end_date" value="2020-05-19"/>
 			</td>
 		</tr>
 		<tr>
 			<th>키워드 검색</th>
 			<td>
-				<select name="">
-   					<option value="">전체</option>
-    				<option value="">크리에이터번호</option>
-    				<option value="">닉네임</option>
-    				<option value="">상태</option>
+				<select name="target">
+					<option value="name" ${(param.t== "name")? " selected":""}>회원명</option>
+					<option value="nickname" ${(param.t== "nickname")? " selected":""} >크리에이터 닉네임</option>
 				</select>
-			<input type="text" size="40"></td>
+			<input type="text" name="keyword" size="40">
 		</tr>
 		<tr>
 			<th>신청상태</th>
 			<td>
-				<lable><input name="board_con" type="radio" value="">전체보기</lable>
-				<lable><input name="board_con" type="radio" value="">승인미완료</lable>
-				<lable><input name="board_con" type="radio" value="">승인완료</lable>
+				<label><input name="status" type="radio" value="4" checked="checked">전체보기</label>
+				<label><input name="status" type="radio" value="0">심사중</label>
+				<label><input name="status" type="radio" value="1">승인거절</label>
+				<label><input name="status" type="radio" value="2">승인요청</label>
+				<label><input name="status" type="radio" value="3">승인완료</label>
 			</td><td></td>
 		</tr>
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" onclick="location.href='admin_creator_list.LF'">상세조회</button>
+		<button type="button" id="search_filter_btn_creator">상세조회</button>
 		<button type="button" onclick="location.href='admin_creator_list.LF'">전체조회</button>
 	</div>
 </div>
@@ -90,27 +49,26 @@
 	
 	<ul class="admin_search_edit">	
 		<li>
-			<span class="date_filter"><a href="#">전체선택</a></span>
-			<span class="date_filter"><a href="#">수정</a></span>
-			<span class="date_filter"><a href="#">삭제</a></span>
-			<span class="date_filter"><a href="#">저장</a></span>
+			<button class="date_filter" onclick="clickAllCheckBtn()">전체 선택</button>
+			<button class="date_filter" onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="date_filter" id="update_approval_creator"> 승인 완료</button>
+			<button class="date_filter" id="update_disapproval_creator">승인거절</button> |
+			<button class="date_filter" id="delete_creator_list">삭제</button>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	
-		<li><a href="#">정확도순</a></li>
-		<li><a href="#">승인일순</a></li>
-		<li><a href="#">최근방문순</a></li>
-		
+		<li><a href="?p=${pn}&o=1">강의많은순</a></li>
+		<li><a href="?p=${pn}&o=2">승인대기순</a></li>
+		<li><a href="?p=${pn}&o=3">승인완료순</a></li>
 	</ul>
 </div>    
-
 
 
 <div class="admin_table_wrap">
 	<table>
 		<tr class="admin_table_head">
 			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th> 
-			<th>번호</th> 
+			<th>순서</th> 
 			<th>크리에이터번호</th> 
 			<th>프로필이미지</th> 
 			<th>이름</th> 
@@ -118,7 +76,7 @@
 			<th>연락처</th> 
 			<th>SNS 계정</th> 
 			<th>소개</th>
-			<th>상태</th>
+			<th>요청 상태</th>
 			<th>승인일</th>
 		</tr>
 		<c:forEach items="${crList}" var="cr" varStatus="vs">
@@ -152,7 +110,14 @@
 		 		    </c:out></c:otherwise>
 	 		    </c:choose>
 			</td>
-			<td>${cr.status }</td> 
+			<td>
+			<c:choose>
+					<c:when test="${cr.status==0}">미신청</c:when>
+					<c:when test="${cr.status==1}">요청 취소</c:when>
+					<c:when test="${cr.status==2}">신규 요청</c:when>
+					<c:when test="${cr.status==3}">크리에이터</c:when>
+				</c:choose>
+			</td> 
 			<td><fmt:formatDate value="${cr.grantDate}" pattern="yyyy.MM.dd" /></td> 
 		</tr>
 		</c:forEach>
