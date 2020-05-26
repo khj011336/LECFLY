@@ -107,13 +107,6 @@ public class CartSVCImpl implements ICartSVC {
 		return null;
 	}
 
-//	@Override
-//	public int insertNewCartRtKey(int mbId, int kitId) {
-//		CartVO cart = new CartVO(mbId, 1, kitId, 1);
-//		int rtKey = cartDAO.insertNewCartRtKey(cart);
-//		return rtKey;
-//	}
-
 	@Override
 	public Map<String, Object> showCartProc(int mbId, int kitId) {
 		System.out.println("cartSvc :: showCartProc()");
@@ -145,15 +138,6 @@ public class CartSVCImpl implements ICartSVC {
 		return rMap;		
 	}
 
-//	@Override
-//	public int insertNewCartByMbIdTicId(int mbId, int kitId, String kitName, int kitPrice) {
-//		int categoryId = CartVO.CATEGORY_ID_KIT;
-//		Map<String, Object> rMap = new HashMap<>();
-//		
-//		int r = cartDAO.insertNewCartByMbIdTicId( categoryId, mbId, kitId, null, kitName, kitPrice);
-//		return r;
-//	}
-
 	@Override
 	public Map<String, Object> showCartByNoMbProc(int kitId) {
 		// 비회원이 등록시 하려고함 
@@ -175,23 +159,26 @@ public class CartSVCImpl implements ICartSVC {
 	}
 
 	@Override
-	public int insertNewCartByMbIdTicId(int mbId, int kitId,  String gdType) {
+	public int insertNewCartByTicId(int mbId, int kitId, String gdType) {
 		String gdName = "";
 		int gdPrice = 0;
 		int categoryId = 0; // ticket
+		int state = 0;
 		
 		if( gdType.equals("kit") == true ) {
 			KitVO kv = gdDao.getOneKitById(kitId);
 			gdName = kv.getTitle();
 			gdPrice = kv.getPrice();
 			categoryId = 1;
+			state = 1;
 		} else { // ticket
 			TicketListVO tv = gdDao.getOneTicketById(kitId);
 			gdName = tv.getName();
 			gdPrice = tv.getPrice();
+			state = 1;
 		}
 		
-		return cartDAO.insertNewCartByMbIdTicId(categoryId, mbId, kitId, "", gdName, gdPrice);
+		return cartDAO.insertNewCartByTicId(mbId, categoryId, kitId, "", gdName, gdPrice, state);
 
 	}
 

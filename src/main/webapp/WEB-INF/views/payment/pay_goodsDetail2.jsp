@@ -35,7 +35,28 @@
 
 			
 		});
-		 $("#goods_detail_modal_popup_submitbtn").onclick()
+		$("#goods_detail_modal_popup_submitbtn").on("click", function() {
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'pay_cart.LF';
+			var kitId = $("input[name=kit_id]").val();
+			console.log("goods_detail 눌렀을때 kitId = " + kitId);
+			var params = "kitId=" + kitId;
+			console.log("kitId = " + kitId);
+			$.ajax({
+				type: 'POST',
+				url : url,
+				data: params,
+				success: function(res, status ,xhr){
+// 					alert("성공");
+					console.log(res);
+					window.location.href = '${pageContext.request.contextPath}' + res;
+					/* $('#homemain').html(res); */
+				},
+				error: function(status, xhr){
+					alert("실패");
+				}
+			});
+		});
 	});
 
 	

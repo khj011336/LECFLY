@@ -28,10 +28,11 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 		String strUuid = uuid.toString();
 		String ticketName = TicketVO.STR_TICKET_NAME_MAP.get(ticName);
 		int ticketPrice = TicketVO.TICKET_PRICE_MAP.get(ticName);
-		System.out.println("mbId = " + mbId + "ticName = " + ticName + "categoryId = " 
+		int state = CartVO.CATEGORY_STATE_WAIT;
+		System.out.println("ticName = " + ticName + "categoryId = " 
 				+ categoryId + "strUuid = " + strUuid + "ticketName = " + ticketName + "ticketPrice = " + ticketPrice );
-		int r = ctDao.insertNewCartByMbIdTicId(categoryId, mbId, ticName, strUuid, ticketName, ticketPrice);
-		CartVO cart = ctDao.selectOneCartByUUId(mbId, strUuid);
+		int r = ctDao.insertNewCartByTicId(mbId, categoryId, ticName, strUuid, ticketName, ticketPrice, state);
+		CartVO cart = ctDao.selectOneCartByUUId(strUuid);
 		System.out.println("svc . cart = " + cart);
 		
 		Map<String, Object> rMap = new HashMap<>();

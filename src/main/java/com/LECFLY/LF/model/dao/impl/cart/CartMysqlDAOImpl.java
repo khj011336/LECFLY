@@ -26,15 +26,13 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	JdbcTemplate jtem;
 	
 	// SQL 정의문
-	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, ?, ?, 1, ?, now() )";
+	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, ?, ?, 1, ?, now(), ?)";
 	private static final String SQL_SELECT_CART_LIST = "select * from cart where mb_id = ?"; 
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
-	private static final String SQL_SELECT_KIT_LIST = "";
 	private static final String SQL_SELECT_COUNT_IN_CART = "select if(count(*)=0, 'false', 'true) from cart where gdsId = ? and mbId = ? ";
 	private static final String SQL_INSERT_GOODS_IN_CART = "insert into cart(id, mbId, gdsId) values(?, ?, ?)";
 	private static final String SQL_UPDATE_CART_GOODS_CNT = "update cart set gdsCnt = ? where mbid = ? and gdsId = ?";
 	private static final String SQL_DELETE_CART_GOODS = "delete from cart where id = ?";
-	private static final String SQL_SELECT_MAX_CART_ID = "select ifnull(max(id), 0) +1 from cart";
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	private static final String SQL_INSERT_IN_CART = "insert into cart values(null, ?, 1, ?, 1, now())";
 	
@@ -45,15 +43,11 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	 * 
 	 */
 	@Override
-	public int insertNewCartByMbIdTicId(int categoryId, int mbId, int kitOrTicId, String uuid, String ticketName, int ticketPrice) {
+	public int insertNewCartByTicId(int mbId, int categoryId, int kitOrTicId, String uuid, String ticketName, int ticketPrice, int state) {
 		System.out.println("insertNewCartByMbIdTicId().");
-		int r = jtem.update(SQL_INSERT_NEW_CART, mbId, categoryId, kitOrTicId, ticketName, ticketPrice, uuid);
+		int r = jtem.update(SQL_INSERT_NEW_CART, mbId, categoryId, kitOrTicId, ticketName, ticketPrice, uuid, state);
 		return r;
 	}
-	// 0 이용권 1 키트*/ 이게 카테고리아이디      키트나 티켓의 아이디 갯수 1 uuid  now()
-	// id null mb_id 받아 caterory_id  gds_id gd_cnt check_same_order created_at
-
-	
 	
 	@Override
 	public List<CartVO> selectCartListByMbId(int mbId) throws DataAccessException {
@@ -124,8 +118,8 @@ public class CartMysqlDAOImpl implements ICartDAO {
 
 	private static final String SQL_ONE_CART_BY_UUID = "select * from cart where check_same_order = ?";
 	@Override
-	public CartVO selectOneCartByUUId(int mbId, String uuid) {
-		System.out.println("mbId = " + mbId + "문제의 uuid = " + uuid);
+	public CartVO selectOneCartByUUId(String uuid) {
+		System.out.println("uuid = " + uuid);
 		return jtem.queryForObject(SQL_ONE_CART_BY_UUID,BeanPropertyRowMapper.newInstance(CartVO.class), uuid);
 	}
 
