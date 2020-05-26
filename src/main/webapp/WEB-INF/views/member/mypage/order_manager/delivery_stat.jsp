@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <div class="mypage_bottom_info">
-	<h2 class="mypage_bottom_title">결제대기</h2>
+	<h2 class="mypage_bottom_title"><c:out value="${delStatHead}"/></h2>
 	<div class="mypage_bottom_contents">
 	<c:if test="${not empty phisList}">
 		<div class="mypage_table">
@@ -33,7 +33,7 @@
 		<div class="mypage_table">
 			<table border="0">
 				<tr>
-					<th>현재 배송준비중인 상품이 없습니다.</th>
+					<th>현재 <c:out value="${delStat}"/>인 상품이 없습니다.</th>
 				</tr>
 			</table>
 		</div>

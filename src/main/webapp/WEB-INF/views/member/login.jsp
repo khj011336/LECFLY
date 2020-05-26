@@ -12,28 +12,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-<%-- 		var ROOTCP = '<%= application.getContextPath()%>'; --%>
-// 		$(document).ready(function() {
-// 			$("#find_id").click(function() {
-// 				var url = ROOTCP+'/ETC/find_mb_login.jsp';
-// 				$("#login_wrap").load(url, function(){
-// 				});			
-// 			}); // #find_id
-// 			$("#find_pw").click(function() {
-// 				var url = ROOTCP+'/ETC/find_mb_pw.jsp';
-// 				$("#login_wrap").load(url, function(){
-// 				});			
-// 			}); // #find_pw
-// 		});
-		
-		
-		
-// 		function clickMbLogin(){
-// 			var loginEmail = document.getElementById("login_email");
-// 			var loginPw = document.getElementById("login_pw");
-// 			location.href = "log_in.LF";
-// 		}
-		
+    //jquery
+	    $(document).ready( function() {
+		    $("#login_wrap").keydown(function(key) {
+		    	if (key.keyCode == 13) {
+		    		document.login.submit();
+		    	}
+	    	});
+	    });
     </script>
 </head>
 <div id="emtpy_space"></div>

@@ -108,7 +108,7 @@ public interface IMemberDAO {
 	// 5.20 닉네임이 중복체크
 	boolean dupCheckNickname(String nickname);
 	
-
+	boolean updateOneMemberInfo(MemberVO mb);
 	
 	
 	

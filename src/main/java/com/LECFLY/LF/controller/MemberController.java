@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,11 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.LECFLY.LF.model.vo.LecAttendVO;
-import com.LECFLY.LF.model.vo.LecTypeVO;
-import com.LECFLY.LF.model.vo.creator.VideoVO;
-import com.LECFLY.LF.service.impl.member.loginSVCImpl;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.creator.CreatorVO;
+import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
-import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
@@ -252,7 +252,7 @@ public class MemberController {
 	@ResponseBody
 	public String nicknameDupCheck(String nickname) {
 		// req.getParam과 타입맵핑을 자동으로 해줌
-		System.out.println("nic_dupcheck.LF");
+		System.out.println("nic_dupcheck.LF" + nickname);
 		//String login = req.getParameter("login");
 		if( nickname != null && !nickname.isEmpty() ) {
 			if( logSvc.check_dup_nick(nickname) ) {
@@ -737,6 +737,50 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	
+	@RequestMapping(value="mypage_mb_update_proc.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageUpdateInfoProc(
+			HttpSession ses,
+			@RequestParam(value="nickname") String nickname,
+			@RequestParam(value="ph1") String ph1,
+			@RequestParam(value="ph2") String ph2,
+			@RequestParam(value="agreeEmail") String agreeEmail,
+			@RequestParam(value="agreeSms") String agreeSms,
+			@RequestParam(value="postalcode") int postalcode,
+			@RequestParam(value="basicAddress") String basicAddress,
+			@RequestParam(value="detailAddress") String detailAddress
+			) {
+		System.out.println("memberMypageUpdateInfoProc()...");
+		String templateTop = 
+				"<div class=\"popup\">" + 
+		"<a class=\"close\" href=\"#\">x</a>" +
+		"<div class=\"mypage_mb_update_popup_content\">" +
+			"<h2 class=\"mypage_mb_isupdate\">";
+		String templateMiddle = "";//mb.getName() +"'님 회원정보 수정 성공";
+		String templateBottom = "</h2></div>" + 
+				"<input id=\"mypage_mb_update_popup_submitbtn\" type=\"button\" value=\"확인\" onclick='goBack()'>" +
+				"</div>";
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		
+		if(mb==null)
+			templateMiddle = "로그아웃되셨습니다. 재로그인이 필요합니다.";
+		else {
+			Map<String, Object>updateMap = 
+					mpSvc.updateOneMemberInfo(mb, nickname, ph1, ph2, agreeEmail, 
+					agreeSms, postalcode, basicAddress, detailAddress);
+			templateMiddle = (String)updateMap.get("update_info_msg");
+			ses.setAttribute("member", updateMap.get("update_member"));
+		}
+		System.out.println(templateMiddle);
+		String template = templateTop + templateMiddle + templateBottom;
+		rMap.put("temp", template);
+		
+		return rMap;
+	}
+	
+	
+	
 //회원의 비밀번호 변경하기								비밀번호 변경
 //	mypage_update_pw.lf(proc,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_pw_update.LF", method=RequestMethod.POST)
@@ -745,6 +789,42 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_pw_update";
 	}
 
+	@RequestMapping(value="mypage_pw_update_proc.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageUpdatePwProc(
+			HttpSession ses,
+			@RequestParam(value="oldPw") String oldPw,
+			@RequestParam(value="newPw") String newPw,
+			@RequestParam(value="confirmPw") String confirmPw
+			) {
+		System.out.println("memberMypageUpdateInfoProc()...");
+		String templateTop = 
+				"<div class=\"popup\">" + 
+		"<a class=\"close\" href=\"#\">x</a>" +
+		"<div class=\"mypage_pw_update_popup_content\">" +
+			"<h2 class=\"mypage_pw_isupdate\">";
+		String templateMiddle = "";//mb.getName() +"'님 비밀번호 수정 성공
+		String templateBottom = "</h2></div>" + 
+				"<input id=\"mypage_pw_update_popup_submitbtn\" type=\"button\" value=\"확인\" onclick='goBack()'>" +
+				"</div>";
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		
+		if(mb==null)
+			templateMiddle = "로그아웃되셨습니다. 재로그인이 필요합니다.";
+		else {
+			if(logSvc.loginProcess(mb.getEmail(),oldPw)==logSvc.MB_EMAIL_AUTH_OK)
+				templateMiddle = (String)mpSvc.updateOneMemberPw(mb.getEmail(), newPw, confirmPw).get("update_pw_msg");
+			else
+				templateMiddle = "비밀번호가 틀립니다!";
+		}
+
+		System.out.println(templateMiddle);
+		String template = templateTop + templateMiddle + templateBottom;
+		rMap.put("temp", template);
+		
+		return rMap;
+	}
 
 //////	 주문 / 배송관리
 	
@@ -792,17 +872,160 @@ public class MemberController {
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
 	
-	@RequestMapping(value="mypage_delivery_info.LF", method=RequestMethod.GET)
-	public String memberMypageDeliveryInfo(HttpSession ses
-			) 
+	@RequestMapping(value="mypage_delivery_info.LF", method=RequestMethod.POST)
+	public String memberMypageDeliveryInfo(HttpSession ses,
+			Model model ) 
 	{
+		
+		// payHistory 에서 deliveryStatus 체크해야됨 
 		System.out.println("memberMypageDeliveryInfo()...");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		System.out.println("mbId = " + mbId);
 		Map<String, Object> rMap = mpSvc.selectMyPageDeliveryInfoMap(mbId);
+		if(rMap != null) {
+			List<PayHistoryVO> phisList = 
+					(List<PayHistoryVO>)rMap.get("phisList");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+			int[] deliveryStatusArray = (int[])rMap.get("deliveryStatusArray");
+			int kitCount = (int)rMap.get("kitCount");
+			
+			model.addAttribute("phisList", phisList);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			model.addAttribute("deliveryStatusArray", deliveryStatusArray);
+			model.addAttribute("kitCount", kitCount);
+		} else {
+			
+		}
+		
 		return "member/mypage/order_manager/mypage_delivery_info";
 	}
+	
+	/* Order confirmation 주문서확인   == Payment waiting 결제 대기중  
+	Preparing product 상품준비중 == Delivery Preparation 배송준비
+	Shipping in progress 배송중
+	Delivery completed 	배송완료		*/
+	@RequestMapping(value="delivery_stat1.LF", method=RequestMethod.POST)
+	public String memberMyPageDeliveryStatPaymentWaiting(HttpSession ses,
+			@RequestParam(value="deliveryStat", defaultValue="1") int deliveryStat,
+			Model model) {
+		System.out.println("delivery_stat1.LF 컨트롤러도착");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) {
+			int mbId = mb.getId(); 
+			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
+			// phisList kitList creList kitCount
+			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+			
+			model.addAttribute("delStatHead", "결제대기");
+			model.addAttribute("phisList", phisList);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			
+		} else { // mb == null 로그인페이지로 보내야됨
+			model.addAttribute("delStatHead", "결제대기");
+			model.addAttribute("delStat", "결제대기중인");
+		}
+		return "member/mypage/order_manager/delivery_stat";
+	}
+	
+	@RequestMapping(value="delivery_stat2.LF", method=RequestMethod.POST)
+	public String memberMyPageDeliveryStatDeliveryPreparation(HttpSession ses,
+			@RequestParam(value="deliveryStat", defaultValue="2") int deliveryStat,
+			Model model) {
+		System.out.println("delivery_stat2.LF 컨트롤러도착");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) {
+			int mbId = mb.getId(); 
+			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
+			// phisList kitList creList kitCount
+			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+			
+			model.addAttribute("delStatHead", "배송준비");
+			model.addAttribute("phisList", phisList);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			
+		} else { // mb == null 로그인페이지로 보내야됨
+			model.addAttribute("delStatHead", "결제대기");
+			model.addAttribute("delStat", "배송준비중인");
+		}
+		return "member/mypage/order_manager/delivery_stat";
+	}
+	
+	@RequestMapping(value="delivery_stat3.LF", method=RequestMethod.POST)
+	public String memberMyPageDeliveryStatShippingInProgress(HttpSession ses,
+			@RequestParam(value="deliveryStat", defaultValue="3") int deliveryStat,
+			Model model) {
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) {
+			int mbId = mb.getId(); 
+			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
+			// phisList kitList creList kitCount
+			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+			
+			model.addAttribute("delStatHead", "배송중");
+			model.addAttribute("phisList", phisList);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			
+		} else { // mb == null 로그인페이지로 보내야됨
+			model.addAttribute("delStatHead", "배송중");
+			model.addAttribute("delStat", "배송중인");
+		}
+		return "member/mypage/order_manager/delivery_stat";
+	}
+	
+	@RequestMapping(value="delivery_stat4.LF", method=RequestMethod.POST)
+	public String memberMyPgeDeliveryStatDeliveryCompleted(HttpSession ses,
+			@RequestParam(value="deliveryStat", defaultValue="4") int deliveryStat,
+			Model model) {
+		System.out.println("delivery_stat4.LF 컨트롤러도착");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null) {
+			int mbId = mb.getId(); 
+			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
+			// phisList kitList creList kitCount
+			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+			
+			model.addAttribute("delStatHead", "배송완료");
+			model.addAttribute("phisList", phisList);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			
+		} else { // mb == null 로그인페이지로 보내야됨
+			model.addAttribute("delStatHead", "배송완료");
+			model.addAttribute("delStat", "배송완료된");
+		}
+		return "member/mypage/order_manager/delivery_stat";
+	}
+	
+	@RequestMapping(value="mypage_pay_{payStatus}.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMyPageShowPayStatus(HttpSession ses,
+			@PathVariable(value="payStatus") String payStatus ){
+		System.out.println("controller :: memberMyPageShowPayStatus()..");
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb != null && payStatus != null && !payStatus.isEmpty()) {
+			int mbId = mb.getId();
+			Map<String, Object> pMap = 
+					mpSvc.selectMemberPayHistoriesByPayStatusMbId(payStatus, mbId); 
+		} else {
+			System.out.println("mb == null 이거나 payStatus == null 이거나 payStatus.isEmpty() == true");
+		}	
+		return null;
+	}
+	
 	
 	
 	@RequestMapping(value="mypage_recive_address.LF", method=RequestMethod.GET) // ???/

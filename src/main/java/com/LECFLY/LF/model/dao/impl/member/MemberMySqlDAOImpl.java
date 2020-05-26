@@ -56,12 +56,15 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 //			+ "hex(aes_encrypt(?,?)),?,now(),?,0,0,0,now(),?,?,?,null,null)";
 	private static final String SQL_SELECT_MEMBER_ID_BY_EMAIL = "select id from members where email=?";
 	private static final String SQL_SELECT_MEMBER_COUNT_BY_NIC = "select count(id) from members where nicname=?";
+	private static final String SQL_SELECT_MEMBER_BY_ID = "select * from members where id=?";
 	private static final String SQL_SELECT_MEMBER_BY_NIC = "select * from members where nicname=?";
 	private static final String SQL_SELECT_MEMBER_PW_CHECK = "select * from members where password = hex(aes_encrypt(?,?))";
 	private static final String SQL_FIND_MB_EMAIL = "select email from members where ph_number=? and name=?";
 	private static final String SQL_FIND_MB_EMAIL_IN_DB = "select * from members where email=?";
 	private static final String SQL_UPDATE_MEMBER_PW_BY_EMAIL = 
 			"update members set password=hex(aes_encrypt(?,?)) where email=?";
+	private static final String SQL_UPDATE_ONE_MEMBER_BY_INFO = 
+			"update members set nicname=?,ph_number=?,agree_receive=?,basic_address=?,detail_address=?,postalcode=? where id=?";
 //	public static final String SQL_="";
 	
 	@Autowired
@@ -111,8 +114,9 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 
 	@Override
 	public MemberVO selectOneMemberById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("jtem selectOneMemberById");
+		return jtem.queryForObject(SQL_SELECT_MEMBER_BY_ID, 
+				BeanPropertyRowMapper.newInstance(MemberVO.class), id);
 	}
 
 	@Override
@@ -288,5 +292,14 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 		int r = jtem.queryForObject(SQL_SELECT_MEMBER_COUNT_BY_NIC, Integer.class, nickname);
 		System.out.println(r);
 		return r>=1;
+	}
+
+	@Override
+	public boolean updateOneMemberInfo(MemberVO mb) {
+		System.out.println("updateOneMemberInfo");
+		int r = this.jtem.update(SQL_UPDATE_ONE_MEMBER_BY_INFO,
+				mb.getNicname(), mb.getPhNumber(), mb.getAgreeReceive(), 
+				mb.getbasicAddress(), mb.getDetailAddress(), mb.getPostalCode(), mb.getId());
+		return r==1;
 	}
 }
