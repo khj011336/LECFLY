@@ -63,7 +63,7 @@ public interface IAdminLectureDAO {
 	List<LectureVO> searchLectureForAll(int offset, int limit);
 	List<VideoVO> searchVideoForAll(int offset, int limit);
 	int checkNumberOfVideos();
-	int checkNumberOfLecturesSearchFilter(Map<String, Object> condition);
+	int checkNumberOfLecturesSearch(Map<String, Object> searchMap);
 	List<LectureVO> selectLectureListSearchFilter(Map<String, Object> condition);
 	int selectLectureApproval();
 	int selectLectureAll();
@@ -75,6 +75,10 @@ public interface IAdminLectureDAO {
 	int selectQnaCommentCnt();
 	List<CategoryLectureStatVO> selectCategoryLectureCnt();
 	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
-	boolean updateLectureDispprovalforIds(ArrayList<Integer> checkList);
+	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
 	boolean delectLectureforIds(ArrayList<Integer> checkList);
+	List<LectureVO> searchLectureByApproval(int offset, int limit);
+	List<LectureVO> searchLectureByLike(int offset, int limit);
+	List<LectureVO> searchLectureByApprovalDone(int offset, int limit);
+
 }

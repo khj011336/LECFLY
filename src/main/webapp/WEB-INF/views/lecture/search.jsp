@@ -12,7 +12,7 @@
 <div class="search_wrapper">
 	<div class="search_top">
 		<h2 class="search_title"><span class="search_word"></span>'${param.keyword }' 검색 결과</h2>
-		<span class="search_result_count">48</span>
+		<span class="search_result_count">${cateSize }</span>
 		<ul class="sort">
 			<li><select onchange="if(this.value) location.href=(this.value);">
 					<option>카테고리선택</option>
@@ -32,7 +32,14 @@
 			</select></li>
 		</ul>
 	</div>
+	<c:choose>
 	
+		<c:when test="${empty searchList }">
+		<div class="main_video_wrapper">
+			검색결과가 없습니다.
+		</div>
+		</c:when>
+		<c:when test="${not empty searchList }">
 		<div class="main_video_wrapper">
 		<c:forEach items="${searchList}" var="lec" varStatus="vs">
 			<c:if test="${vs.count % 4 == 1 }">
@@ -71,7 +78,11 @@
 			</div>
 			</c:if>
 		</c:forEach>		
+		</div>
+		</c:when>
+	</c:choose>
+	
+
 	</div>
-</div>
 </div>
 

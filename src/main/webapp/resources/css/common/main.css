@@ -295,6 +295,7 @@ input:focus {
 	height: 70vh;
 	display: table;
 	table-layout: fixed;
+
 }
 
 .main_video_thumb_rec { /* 비디오 리스트 강의 비디오블럭 */
@@ -303,6 +304,7 @@ input:focus {
 
 .main_video_thumb { /* 비디오 리스트 강의 비디오블럭 */
 	position: relative;
+
 }
 .main_video_thumb_btn i:hover{
 	color : orangered;
@@ -317,18 +319,21 @@ input:focus {
 	display: table-cell;
 	vertical-alighn: middle;
 	padding: 0 10px 45px 0px;
+	max-width: 282px;
 }
 
 .main_video_block:nth-child(4n+2) { /* 비디오 리스트_ 일반 강의 비디오블럭 */
 	display: table-cell;
 	vertical-alighn: middle;
 	padding: 0 10px 45px 10px;
+	max-width: 282px;
 }
 
 .main_video_block:nth-child(4n+3) { /* 비디오 리스트_ 일반 강의 비디오블럭 */
 	display: table-cell;
 	vertical-alighn: middle;
 	padding: 0 10px 45px 10px;
+	max-width: 282px;
 }
 
 .main_video_block:nth-child(4n) { /* 비디오 리스트_ 일반 강의 비디오블럭 4n */
@@ -341,38 +346,47 @@ input:focus {
 	display: table-cell;
 	vertical-alighn: middle;
 	padding: 0 60px 40px 0;
+
 }
 
 .main_video_block_rec:nth-child(2) { /* 비디오 리스트_ 추천 강의 비디오블럭 second */
 	display: table-cell;
 	vertical-alighn: middle;
 	padding: 0 30px 40px 30px;
+
 }
 
 .main_video_block_rec:last-child { /* 비디오 리스트_ 추천 강의 비디오블럭 last */
 	display: table-cell;
+	padding: 0px 0px 40px 60px;
 	vertical-alighn: middle;
-	padding: 0 0 40px 60px;
+
 }
 
 .main_video_block_row { /* 비디오 리스트_ 비디오 row */
 	display: table-row;
 	table-layout: fixed;
+	float: left;
 }
 
 .main_video_thumb_rec img { /* 비디오 리스트_추천강의 썸네일 */
 	width: 100%;
 	height: 450px;
+	max-width: 340px;
+	
 }
 
 .main_video_thumb img { /* 비디오 리스트_일반강의 썸네일 */
 	width: 100%;
 	height: 180px;
+	max-width: 300px;
 }
 
 .main_video_info { /* 비디오 리스트_정보창 래퍼 */
 	padding: 10px 0;
 	text-align: justify;
+	max-width: 350px;
+	margin: 0px;
 }
 
 .main_video_info_category { /* 비디오 리스트_카테고리 */
@@ -450,6 +464,7 @@ input:focus {
 	text-align: center;
 	background-color: lightgrey;
 	z-index: 999;
+	bottom: 0;
 }
 
 .footer_wrapper {
@@ -473,7 +488,7 @@ input:focus {
 
 /* 세현 추가 0521 헤더에 로그인 로그아웃 마우스 호버시 줄생기는거 */
 .header_menues:hover {
-	border-bottom: 2px solid orange;
+	border-bottom: 1px solid orange;
 	
 }
 
@@ -481,3 +496,8 @@ input:focus {
 	margin-right: -20px;
 }
 
+/* 검색파트 */
+
+.search_wrapper {
+	min-height: 700px;
+}

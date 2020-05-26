@@ -37,47 +37,35 @@
 <div class="admin_table_filter">
 	<table>
 		<caption>검색조건설정</caption>
-		<tr>
-			<th>기간검색</th>
+		<tr class="date_filter">
+			<th>계정 등록일 기준 검색</th>
+				<input type="hidden" name="pn" value="${(empty param.p)? 1: param.p}"/>
 			<td>
-				<span class="date_filter"><a href="#">오늘</a></span> |
-				<span class="date_filter"><a href="#">3일</a></span> |
-				<span class="date_filter"><a href="#">7일</a></span> |
-				<span class="date_filter"><a href="#">1개월</a></span>
-				<input type="date"/> ~ <input type="date"/>
-			</td>
-		</tr>
-		<tr>
-			<th>분류 선택</th>
-			<td>
-				<select name="">
-   					<option value="">전체</option>
-  					<option value="">회원</option>
-    				<option value="">크리에이터</option>
-    				<option value="">관리자</option>
-				</select>
+				<a href="#" class="day1">오늘</a> |<a href="#" class="day3">3일</a> |
+				<a href="#" class="day7">7일</a> |<a href="#" class="month1">1개월</a>
+				<input type="date" name="start_date" value="2020-05-01"/> ~ <input type="date" name="end_date" value="2020-05-19"/>
 			</td>
 		</tr>
 		<tr>
 			<th>키워드 검색</th>
 			<td>
-				<select name="">
+				<select name="target">
    					<option value="">전체</option>
   					<option value="">아이디</option>
     				<option value="">닉네임</option>
     				<option value="">연락처</option>
     				<option value="">회원번호</option>
 				</select>
-			<input type="text" size="40"></td>
+			<input name="keyword" type="text" size="40"></td>
 		</tr>
 		<tr>
-			<th>신청상태</th>
+			<th>크리에이터 신청 여부</th>
 			<td>
-				<lable><input name="board_con" type="radio" value="">전체보기</lable>
-				<lable><input name="board_con" type="radio" value="">미신청</lable>
-				<lable><input name="board_con" type="radio" value="">신청</lable>
-				<lable><input name="board_con" type="radio" value="">승인미완료</lable>
-				<lable><input name="board_con" type="radio" value="">승인완료</lable>
+				<lable><input name="check_creator" type="radio" value="4" checked="checked">전체보기</lable>
+				<lable><input name="check_creator" type="radio" value="0">미신청(일반회원)</lable>
+				<lable><input name="check_creator" type="radio" value="1">요청 반려</lable>
+				<lable><input name="check_creator" type="radio" value="2">신규 요청</lable>
+				<lable><input name="check_creator" type="radio" value="3">처리 완료(크리에이터)</lable>
 			</td><td></td>
 		</tr>
 	</table>
@@ -110,7 +98,7 @@
 </div>    
 
 <div class="admin_table_wrap">
-	<table>
+	<table style="text-align: center">
 		<tr class="admin_table_head">
 			<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th> 
 			<th>번호</th> 
@@ -134,7 +122,12 @@
 				<td>${mb.name }</td> 
 				<td>${mb.nicname }</td> 
 				<td><fmt:formatDate value="${mb.birthday}" pattern="yyyy.MM.dd" /></td>
-				<td>${mb.gender }</td> 
+				<td>
+					<c:choose>
+						<c:when test="${mb.gender==1}">여성</c:when>
+						<c:when test="${mb.gender==3}">남성</c:when>
+					</c:choose>
+				</td> 
 				<td>${mb.email }</td> 
 				<td>${mb.phNumber }</td> 
 				<td><fmt:formatDate value="${mb.joinedAt}" pattern="yyyy.MM.dd" /></td>
