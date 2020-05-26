@@ -38,8 +38,6 @@ public class PaymentController {
 	CartVO cartVO;
 	@Autowired
 	MemberVO memberVO;
-	@Autowired
-	IPayHistoryDAO payDao;
 	
 	final String[] STR_CATE = {"전체", "미술", "음악", "요리", "라이프스타일", "운동", "커리어", "여행"};
 	
