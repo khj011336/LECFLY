@@ -41,9 +41,7 @@
 			<div class="ticket_category">
 				<c:forEach items="${categoryMapTicket }" var="tc" varStatus="vs">
 					<div class="ticket_category_block">
-						<a
-							href="${pageContext.request.contextPath}/search_category.LF?category=${tc.key}"
-							onfocus>
+						<a href="${pageContext.request.contextPath}/search_category.LF?category=${tc.key}" onfocus>
 							<div id="category_icon">
 								<img src="resources/imges/category/카테고리_${tc.value}.png"
 									class="category_1" alt="${ctc.value}">

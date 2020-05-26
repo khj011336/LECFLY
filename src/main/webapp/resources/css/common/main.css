@@ -103,13 +103,18 @@ body {
 	text-align: center;
 	background-color: black;
 }
+/* .lecfly_header_info_wrapper:hover {헤더 홈페이지 이용안내 래퍼
+	background-color: purple;
+} */
 
 .lecfly_header_info {/* 헤더 홈페이지 이용안내 문구 */
 	padding: 10px;
 	cursor: pointer;
 }
+
 .info_color {
 	color:orange;
+	font-size: 1.2em;
 }
 .lecfly_header_info a {
 	color: white;
@@ -117,16 +122,16 @@ body {
 }
 
 .lecfly_header_info a:hover {
-	color: orange;
+	color: orangered;
 }
 
-.lecfly_header_info a:active {
+/* .lecfly_header_info a:active {
 	color: orange;
 }
 
 .lecfly_header_info a:visited {
-	color: orange;
-}
+	color: white;
+} */
 
 .header_wrapper {
 	width: 100%;
@@ -258,15 +263,19 @@ input:focus {
 	text-align: center;
 }
 
-.category_block i { /* 메인_카테고리블럭아이콘 */
-	margin-bottom: 15px;
+.category_block img { /* 메인_카테고리블럭아이콘 */
+	margin-bottom: 30px;
+	margin-top: 15px;
 }
-
+.category_block span {/* 메인_카테고리블럭아이콘명 */
+	padding-top: 30px;
+	color: black;
+}
 .category_block { /* 메인_카테고리블럭 */
 	display: inline-block;
 	text-align: center;
-	margin: 10px 20px 0px 20px;
-	padding: 20px 0px 0px 0px;
+	margin: 40px 20px 0px 20px;
+	padding: 0px 0px 0px 0px;
 	cursor: pointer;
 	width: 100px;
 	height: 100px;
