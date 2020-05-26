@@ -140,12 +140,12 @@ public class AdminMybatisDAOImpl implements IAdminLectureDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
+	
+	@Override 
 	public int checkNumberOfLectures() {
 		return sstem.selectOne("IAdminDAO.SQL_SELECT_LECTURE_NUMBER");
 	}
-
+	
 	@Override
 	public List<LectureVO> searchLectureForAll(int offset, int limit) {
 		Map<String,Object> map = new HashMap<>();
@@ -166,15 +166,11 @@ public class AdminMybatisDAOImpl implements IAdminLectureDAO{
 	public int checkNumberOfVideos() {
 		return sstem.selectOne("IAdminDAO.SQL_SELECT_VIDEO_NUMBER");
 	}
-
-	@Override
-	public int checkNumberOfLecturesSearchFilter(Map<String, Object> condition) {
-		return sstem.selectOne("IAdminDAO.SQL_SELECT_LECTURE_NUMBER_BY_FILTER", condition);
-	}
-
+	// 강의 상세 조회
 	@Override
 	public List<LectureVO> selectLectureListSearchFilter(Map<String, Object> condition) {
-		return sstem.selectList("IAdminDAO.SQL_SELECT_LECTURE_BY_FILTER_PG", condition);
+		List<LectureVO> list = sstem.selectList("IAdminDAO.SQL_SELECT_LECTURE_BY_FILTER_PG", condition);
+		return list;
 	}
 	
 	
@@ -225,25 +221,57 @@ public class AdminMybatisDAOImpl implements IAdminLectureDAO{
 	public List<CategoryLectureStatVO> selectCategoryLectureCnt() {
 		return sstem.selectList("IAdminDAO.SQL_SELECT_CATEGORY_LECTURE");
 	}
-
+	// 체크리스트 강의 승인
 	@Override
 	public boolean updateLectureApprovalforIds(ArrayList<Integer> checkList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", checkList);
 		return sstem.update("IAdminDAO.SQL_UPDATE_LECTURE_APPROVAL_IDS", map) == 1;
 	}
-
+	// 체크리스트 강의 승인 거절
 	@Override
-	public boolean updateLectureDispprovalforIds(ArrayList<Integer> checkList) {
+	public boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", checkList);
 		return sstem.update("IAdminDAO.SQL_UPDATE_LECTURE_DISAPPROVAL_IDS", map) == 1;
 	}
-
+	// 체크리스트 강의 삭제
 	@Override
 	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", checkList);
-		return sstem.update("IAdminDAO.SQL_DELETE_LECTURE_IDS", map) == 1;
+		return sstem.delete("IAdminDAO.SQL_DELETE_LECTURE_IDS", map) == 1;
+	}
+	// 상세 강의 수 검색 
+	@Override
+	public int checkNumberOfLecturesSearch(Map<String, Object> searchMap) {
+		int totalRecords = sstem.selectOne("IAdminDAO.SQL_SELECT_LECTURE_NUMBER_SEARCH", searchMap);
+		return totalRecords;
+	}
+
+	// 전체조회 승인대기순
+	@Override
+	public List<LectureVO> searchLectureByApproval(int offset, int limit) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("limit", limit);
+		return sstem.selectList("IAdminDAO.SQL_SELECT_LECTURE_ALL_PG_APPROVAL",map);
+	}
+	// 전체조회 인기순
+
+	@Override
+	public List<LectureVO> searchLectureByLike(int offset, int limit) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("limit", limit);
+		return sstem.selectList("IAdminDAO.SQL_SELECT_LECTURE_ALL_PG_LIKE",map);
+	}
+	// 전체조회 승인완료순
+	@Override
+	public List<LectureVO> searchLectureByApprovalDone(int offset, int limit) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("limit", limit);
+		return sstem.selectList("IAdminDAO.SQL_SELECT_LECTURE_ALL_PG_APPROVAL_DONE",map);
 	}
 }

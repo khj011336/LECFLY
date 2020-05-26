@@ -52,7 +52,6 @@ public class AdminController {
 	private IAdminBoardSVC adBdSvc;
 	@Autowired
 	private IAdminPaymentSVC adPmSvc;
-	
 
 	@Autowired
 	private IAdminFileSVC adFileSvc;
@@ -70,9 +69,9 @@ public class AdminController {
 		int allLecCnt = adLecSvc.selectLectureAll();
 		// 신규회원수 select count(id) from members where joined_at >=(CURDATE()-interval 7 day);
 		int newMbCnt = adLecSvc.selectNewMemberCnt();
-		// 업로더 승인대기수 select count(id) from members where check_creator = 1;
+		// 업로더 승인대기수 select count(id) from members where check_creator = 2;
 		int appCrCnt = adLecSvc.selectCreatorApprovalCnt();
-		// 강의 승인대기수 select count(id) from lectures where status = 0;
+		// 강의 승인대기수 select count(id) from lectures where status = 2;
 		int appLecCnt = adLecSvc.selectLectureApproval();
 		// 문의 답변하기 수  select count(id) from qnas where comment = 0;
 		int cmQnaCnt = adLecSvc.selectQnaCommentCnt();
@@ -107,9 +106,6 @@ public class AdminController {
 		jsonMap.put("memberCnt", memberCnt);
 		return jsonMap;
 	}
-	
-	
-	
 	
 	// 관리자 메인 통계 - 카테고리별 강의수
 	@RequestMapping(value = "/stat_categoryLecture.LF", method = RequestMethod.POST)
@@ -251,14 +247,7 @@ public class AdminController {
 	}
 	// 관리자 강의관리
 	@RequestMapping(value = "/admin_lecture.LF")
-	public String adminLecture(Model model) {
-		List<LectureVO> lecList = adLecSvc.selectLectureList();
-		model.addAttribute("lecList", lecList);
-		return "admin/adminLecture/admin_lecture.ad";
-	}
-	// 관리자 강의관리(전체조회)
-	@RequestMapping(value = "/admin_lecture_list.LF", method = RequestMethod.GET)
-	public String adminLectureListProc(Model model, 
+	public String adminLecture(Model model,
 			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
 		List<LectureVO> lecList = adLecSvc.selectAllLecture(pageNumber);
@@ -271,31 +260,68 @@ public class AdminController {
 		}
 		return "admin/adminLecture/admin_lecture.ad";
 	}
+	// 관리자 강의관리(전체조회)
+	@RequestMapping(value = "/admin_lecture_list.LF", method = RequestMethod.GET)
+	public String adminLectureListProc(Model model, 
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber,
+			@RequestParam(value = "o",required = false, defaultValue = "1") int order) {
+		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
+		List<LectureVO> lecList = new ArrayList<>();
+		switch (order) {
+		case 1: // 정렬 최신순
+			lecList = adLecSvc.selectAllLecture(pageNumber);
+			break;
+		case 2: // 정렬 승인대기순
+			lecList = adLecSvc.selectAllLectureByApproval(pageNumber);
+			break;	
+		case 3: // 정렬 승인완료
+			lecList = adLecSvc.selectAllLectureByApprovalDone(pageNumber);
+			break;
+		case 4: // 정렬 인기순
+			lecList = adLecSvc.selectAllLectureByLike(pageNumber);
+			break;	
+		default:
+			break;
+		}
+		if(lecList != null && rMap != null) {
+			model.addAttribute("listSize", lecList.size());
+			model.addAttribute("lecList", lecList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminLecture/admin_lecture.ad";
+	}
 	// 관리자 강의관리(상세조회) json
-	@RequestMapping(value = "/admin_lecture_list_search.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin_lecture_search.LF", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> adminLectureListSearch(
-			@RequestBody Map<String, Object> condition){
-		System.out.println(condition);
-
-		String pn = (String) condition.get("pn");
-		int pageNumber = Integer.parseInt(pn);
+	public Map<String,Object> adminLectureListSearch(
+			@RequestBody Map<String, Object> params){
+		// 검색 조건 취합
+		int pageNumber = Integer.parseInt((String) params.get("pn"));
+		int category = Integer.parseInt((String) params.get("category"));
+		params.put("category", category);
+		int status = Integer.parseInt((String) params.get("status"));
+		params.put("status", status);
 		
-		Map<String, Object> jsonMap = new HashMap<String, Object>();
-		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumberSearchFilter(condition);
-		System.out.println("검색결과 수 : "+rMap);
-		List<LectureVO> lecList = adLecSvc.selectLectureListSearchFilter(condition);
-		jsonMap.put("lecList", lecList);
-		jsonMap.put("listSize", lecList.size());
-		jsonMap.put("maxPn", rMap.get("maxPg"));
-		jsonMap.put("totalRecords", rMap.get("totalRecords"));
-		jsonMap.put("pn", pageNumber);
-		return jsonMap;
+		// 검색(page, data)
+		Map<String,Object> jsonMap = new HashMap<String, Object>();
+		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumberSearch(params);
+		List<LectureVO> lecList = adLecSvc.selectAllLectureSearch(params);
+		// 검색 결과 처리
+		if(lecList != null && rMap != null) {
+			jsonMap.put("listSize", lecList.size());
+			jsonMap.put("lecList", lecList);
+			jsonMap.put("maxPn", rMap.get("maxPg"));
+			jsonMap.put("totalRecords", rMap.get("totalRecords"));
+			jsonMap.put("pn", pageNumber);
+		}
+      return jsonMap;
 	}
 	
-	// 관리자 강의리스트(다중) 갱신 AJAX 호출
+	// 관리자 강의리스트(다중) 1승인완료 AJAX 호출(백업)
 	@ResponseBody
-	@RequestMapping(value = "/admin_update_approve_lecture.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin_update_approval_lecture.LF", method = RequestMethod.POST)
 	public String adminLectureListApprovalProc(
 			@RequestBody ArrayList<Integer> checkList) {
 		
@@ -312,7 +338,7 @@ public class AdminController {
 			return "redirect:admin_lecture.LF";
 		}
 	}
-	// 관리자 강의리스트(다중) 승인거절 AJAX 호출
+	// 관리자 강의리스트(다중) 2승인거절 AJAX 호출
 	@ResponseBody
 	@RequestMapping(value = "/admin_update_disapprove_lecture.LF", method = RequestMethod.POST)
 	public String adminLectureListDisapprovalProc(
@@ -324,14 +350,14 @@ public class AdminController {
 		
 		boolean b = adLecSvc.updateLectureDisapprovalforIds(checkList);
 		if(b) {
-			System.out.println("승인거절완료");
+			System.out.println("승인거절 완료");
 			return "redirect:admin_lecture.LF";
 		} else {
-			System.out.println("승인거절실패");
+			System.out.println("승인거절 실패");
 			return "redirect:admin_lecture.LF";
 		}
 	}
-	// 관리자 강의리스트(다중) 삭제 AJAX 호출
+	// 관리자 강의리스트(다중) 3삭제 AJAX 호출
 	@ResponseBody
 	@RequestMapping(value = "/admin_delete_lecture_list.LF", method = RequestMethod.POST)
 	public String adminDeleteLectureListProc(
@@ -498,12 +524,6 @@ public class AdminController {
 		return "redirect:admin_board_notice.LF";
 	}
 	
-	
-	
-	
-	
-	
-	
 	// 관리자 자주묻는질문
 	@RequestMapping(value = "/admin_board_faq.LF")
 	public String adminBoardFaq() {
@@ -534,7 +554,6 @@ public class AdminController {
 		return "redirect:admin_board_faq.LF";
 	}
 	
-	
 	// 관리자 문의내역
 	@RequestMapping(value = "/admin_board_qna.LF")
 	public String adminBoardQna() {
@@ -564,7 +583,6 @@ public class AdminController {
 		}
 		return "redirect:admin_board_qna.LF";
 	}
-	
 	
 	// 관리자 댓글내역
 	@RequestMapping(value = "/admin_board_comment.LF")
