@@ -375,7 +375,7 @@ input:focus {
 .main_video_block_row { /* 비디오 리스트_ 비디오 row */
 	display: table-row;
 	table-layout: fixed;
-	float: left;
+/* 	float: left; */
 }
 
 .main_video_thumb_rec img { /* 비디오 리스트_추천강의 썸네일 */
