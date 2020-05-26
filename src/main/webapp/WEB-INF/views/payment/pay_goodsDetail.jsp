@@ -50,7 +50,8 @@
 				success: function(res, status ,xhr){
 					alert("성공");
 					console.log(res);
-					$('#homemain').html(res);
+					window.location.href = '${pageContext.request.contextPath}' + '/pay_cart.LF';
+					/* $('#homemain').html(res); */
 				},
 				error: function(status, xhr){
 					alert("실패");
