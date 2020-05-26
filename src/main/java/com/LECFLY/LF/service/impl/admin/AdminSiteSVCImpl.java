@@ -17,7 +17,6 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 
 	@Override
 	public boolean insertBanner(HomeFileManagerVO vo) {
-		System.out.println("svc insert 시작");
 		return adDAO.insertBanner(vo);
 	}
 
@@ -38,7 +37,6 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 
 	@Override
 	public List<HomeFileManagerVO> selectBannerList() {
-		System.out.println("svc selectList 시작");
 		return adDAO.selectBannerList();
 	}
 
@@ -106,7 +104,6 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 
 	@Override
 	public boolean likeBtnClick(int status, int memberId, int lectureId) {
-		// TODO Auto-generated method stub
 		return adDAO.likeBtnClick(status, memberId, lectureId);
 	}
 

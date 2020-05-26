@@ -1,5 +1,11 @@
 @charset "UTF-8";
-
+.admin_table_wrap tr {
+	text-align: center;
+	height: 25px;
+}
+.admin_table_filter th{
+	height: 25px;
+}
 .main_top, .main_top2 {
 	width: 1200px;
 	height: 100px;

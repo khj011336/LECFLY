@@ -65,7 +65,6 @@ public interface IAdminLectureSVC {
 	List<VideoVO> selectAllVideo(int pageNumber);	
 	Map<String,Integer> checkVideoMaxPageNumber();
 	List<LectureVO> selectLectureListSearchFilter(Map<String, Object> condition);
-	Map<String, Integer> checkLectureMaxPageNumberSearchFilter(Map<String, Object> condition);
 	// 관리자 메인 통계파트
 	int selectLectureApproval();
 	int selectLectureAll();
@@ -79,4 +78,9 @@ public interface IAdminLectureSVC {
 	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
 	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
 	boolean delectLectureforIds(ArrayList<Integer> checkList);
+	Map<String, Integer> checkLectureMaxPageNumberSearch(Map<String, Object> searchMap);
+	List<LectureVO> selectAllLectureSearch(Map<String, Object> searchMap);
+	List<LectureVO> selectAllLectureByApproval(int pageNumber);
+	List<LectureVO> selectAllLectureByLike(int pageNumber);
+	List<LectureVO> selectAllLectureByApprovalDone(int pageNumber);
 }

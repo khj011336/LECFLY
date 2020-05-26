@@ -30,10 +30,31 @@
 		<result property="lectureCnt" column="lecture_cnt"/>
 	</resultMap>
 
-	<!-- 전체 강의목록 조회(페이지네이션) -->
+	<!-- 전체 강의목록 조회(페이지네이션) 최신순 -->
 	<select id="SQL_SELECT_LECTURE_ALL_PG" parameterType="map" resultType="lectureVO">
 		<![CDATA[
 		SELECT * FROM LECTURES ORDER BY ID DESC LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	
+	<!-- 전체 강의목록 조회(페이지네이션) 승인대기순 -->
+	<select id="SQL_SELECT_LECTURE_ALL_PG_APPROVAL" parameterType="map" resultType="lectureVO">
+		<![CDATA[
+		SELECT * FROM LECTURES where status >= 2 ORDER BY status asc LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	
+	<!-- 전체 강의목록 조회(페이지네이션) 승인완료순 -->
+	<select id="SQL_SELECT_LECTURE_ALL_PG_APPROVAL_DONE" parameterType="map" resultType="lectureVO">
+		<![CDATA[
+		SELECT * FROM LECTURES ORDER BY status DESC LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	
+	<!-- 전체 강의목록 조회(페이지네이션) 인기순 -->
+	<select id="SQL_SELECT_LECTURE_ALL_PG_LIKE" parameterType="map" resultType="lectureVO">
+		<![CDATA[
+		SELECT * FROM LECTURES ORDER BY like_count DESC LIMIT #{offset},#{limit}
 		]]>
 	</select>
 	
@@ -58,49 +79,51 @@
 		]]>
 	</select>
 	
-	<!-- 검색필터 사용하여 강의목록 조회 & 페이지네이션 -->
+	<!-- (기본)전체 강의수 조회_검색필터 추가 -->
+	<select id="SQL_SELECT_LECTURE_NUMBER_SEARCH" parameterType="map" resultType="int">
+		SELECT count(id) FROM LECTURES WHERE 1 = 1
+
+		<if test='start_date != null and end_date != null'>
+		AND created_at between #{start_date} and #{end_date}
+		</if>
+		<if test='category != 0'>
+		AND category = #{category}
+		</if>
+		<if test='status != 4'>
+		AND status = #{status}
+		</if>
+		<if test='keyword != null'>
+		AND #{target} like concat('%',#{keyword},'%')
+		</if>
+<!-- 			<if test='target = "all" and keyword != null'> -->
+<!-- 			AND title like concat('%',#{keyword},'%') or  -->
+<!-- 			id like concat('%',#{keyword},'%') or  -->
+<!-- 			nickname like concat('%',#{keyword},'%') -->
+<!-- 			</if> -->
+	</select>
+		
+	<!-- (기본)검색필터 사용하여 강의목록 조회 & 페이지네이션 -->
 	<select id="SQL_SELECT_LECTURE_BY_FILTER_PG" parameterType="map" resultType="lectureVO">
 		SELECT * FROM LECTURES WHERE 1 = 1
-		<if test="start_date != null and end_date != null">
+
+		<if test='start_date != null and end_date != null'>
 		AND created_at between #{start_date} and #{end_date}
 		</if>
-		<if test="category != 0">
+		<if test='category != 0'>
 		AND category = #{category}
 		</if>
-		<if test="search != 'all' and keyword != null">
-		AND #{search} like concat('%',#{keyword},'%')
-		</if>
-		<if test="search = 'all' and keyword != null">
-		AND title like concat('%',#{keyword},'%') or 
-		id like concat('%',#{keyword},'%') or 
-		nickname like concat('%',#{keyword},'%')
-		</if>
-		<if test="status != 3">
+		<if test='status != 4'>
 		AND status = #{status}
 		</if>
-		ORDER BY ID DESC LIMIT #{offset},#{limit}
-	</select>
-	
-	<!-- 검색필터 사용하여 강의수 조회-->
-	<select id="SQL_SELECT_LECTURE_NUMBER_BY_FILTER" parameterType="map" resultType="int">
-		SELECT COUNT(ID) FROM LECTURES WHERE 1 = 1
-		<if test="start_date != null and end_date != null">
-		AND created_at between #{start_date} and #{end_date}
+		<if test='keyword != null'>
+		AND #{target} like concat('%',#{keyword},'%')
 		</if>
-		<if test="category != 0">
-		AND category = #{category}
-		</if>
-		<if test="search != 'all' and keyword != null">
-		AND #{search} like concat('%',#{keyword},'%')
-		</if>
-		<if test="search = 'all' and keyword != null">
-		AND title like concat('%',#{keyword},'%') or 
-		id like concat('%',#{keyword},'%') or 
-		nickname like concat('%',#{keyword},'%')
-		</if>
-		<if test="status != 3">
-		AND status = #{status}
-		</if>
+<!-- 			<if test='target = "all" and keyword != null'> -->
+<!-- 			AND title like concat('%',#{keyword},'%') or  -->
+<!-- 			id like concat('%',#{keyword},'%') or  -->
+<!-- 			nickname like concat('%',#{keyword},'%') -->
+<!-- 			</if> -->
+<!-- 		ORDER BY ID DESC LIMIT #{offset},#{limit} -->
 	</select>
 	
 	<!-- Lecture 테이블 - 요청중 강의 승인처리 -->
@@ -108,7 +131,7 @@
 	<update id="SQL_UPDATE_LECTURE_APPROVAL_IDS" parameterType="map">
 	update lectures set status = 3 
 	<if test="ids != null">
-	where id inS
+	where id in
 		<foreach collection="ids" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>
@@ -189,12 +212,12 @@
 	
 	<!-- 업로더 승인대기수 -->
 	<select id="SQL_SELECT_CREATOR_APPROVAL_CNT" resultType="int">
-	select count(id) from members where check_creator = 1;
+	select count(id) from members where check_creator = 2;
 	</select>
 	
 	<!-- 강의 승인대기수 -->
 	<select id="SQL_SELECT_LECTURE_APPROVAL_CNT" resultType="int">
-	select count(id) from lectures where status = 0;
+	select count(id) from lectures where status = 2;
 	</select>
 	
 	<!-- 문의 답변하기 수 -->
