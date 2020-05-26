@@ -41,14 +41,14 @@ public class CreatorController {
 	public static final int APPLY = 2;
 	public static final int GRANT = 3;
 	public static final int WRITING =4;
-	public static int MAXPAGE = 0;
-	public static String USERNAME = "";
-	public static int memberId = 0;
-	public static String imgPath = "";
-	public static String videoPath = "";
-	public static int isCreator = 0;
-	public static String[] CATEGORIRES = {"","미술","음악","요리","라이프스타일","운동","커리어","여행"}; 
-	public static String[] GRANTSTATUS = {"","거절","요청중","승인","작성중"};
+	private int MAXPAGE = 0;
+	private  String USERNAME = "";
+	private  int memberId = 0;
+	private  String imgPath = "";
+	private  String videoPath = "";
+	private  int isCreator = 0;
+	public static final String[] CATEGORIRES = {"","미술","음악","요리","라이프스타일","운동","커리어","여행"}; 
+	public static final String[] GRANTSTATUS = {"","거절","요청중","승인","작성중"};
 	@Autowired
 	LectureSVCImpl LecSVC;
 	@Autowired
@@ -100,6 +100,7 @@ public class CreatorController {
 			imgPath = "/images/2020/" + USERNAME + "/Img";
 			videoPath = "/images/2020/" + USERNAME + "/video";
 			CreatorVO creVO = CreDAO.selectOneCreator(memberId);
+			System.out.println(creVO);
 			System.out.println(creVO);
 			if (creVO != null) {
 				if (creVO.getStatus() == GRANT) {
