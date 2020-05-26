@@ -116,11 +116,11 @@ public class homeController {
 		return "payment/ticket_guide/lecfly_guide.ho";
 	}	
 	// LecFly TICKET
-	@RequestMapping(value = "lecfly_ticket.LF", method = RequestMethod.GET)
-	public String lecflyTicket() {
-		System.out.println("lecflyTicket()...MJ");	
-		return "payment/ticket_guide/lecfly_ticket.ho";
-	}
+//	@RequestMapping(value = "lecfly_ticket.LF", method = RequestMethod.GET)
+//	public String lecflyTicket() {
+//		System.out.println("lecflyTicket()...MJ");	
+//		return "payment/ticket_guide/lecfly_ticket.ho";
+//	}
 	
 	// 카테고리 티켓용 설정 // 출력:${categoryMapTicket[number]}
 	@ModelAttribute("categoryMapTicket")

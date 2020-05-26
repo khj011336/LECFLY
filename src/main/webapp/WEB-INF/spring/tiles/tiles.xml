@@ -98,4 +98,20 @@
     <definition name="*/*/*.pay" extends="payment">
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
     </definition>
+    
+<!-- 결제 메뉴 타일즈 미 적용 -->
+	<definition name="pay-notiles" template="/WEB-INF/views/payment/pay_tilesNo.jsp">
+	</definition>
+	
+	<definition name="*.pays" extends="pay-notiles">
+		<put-attribute name="payment-body" value="/WEB-INF/views/{1}.jsp" />
+	</definition>
+	
+	<definition name="*/*.pays" extends="pay-notiles">
+         <put-attribute name="payment-body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.pays" extends="pay-notiles">
+        <put-attribute name="payment-body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+	</definition>
  </tiles-definitions>
