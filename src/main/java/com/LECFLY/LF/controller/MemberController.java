@@ -61,6 +61,8 @@ public class MemberController {
 				mb.setLoginCount(mb.getLoginCount()+1);
 				System.out.println("로그인횟수 증가 / 현재:"+mb.getLoginCount()+"회");
 			}
+			if(logSvc.updateLoginDate(mb.getId()))
+				System.out.println("로그인일시 변경 / 현재 : "+ mb.getLoginedAt());
 			ses.setAttribute("member", mb);
 			System.out.println(mb);
 			return "redirect:/";

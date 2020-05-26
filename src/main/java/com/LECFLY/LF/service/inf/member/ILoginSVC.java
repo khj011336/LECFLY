@@ -33,6 +33,9 @@ public interface ILoginSVC {
 	MemberVO login(String email, String pw);
 	// 로그인 시 로그인 횟수 증가
 	boolean incLoginCnt(int id);
+	// 로그인 시 로그인날자 갱신
+	boolean updateLoginDate(int id);
+	
 	//회원가입
 	//member_join.lf (proc; post; dao; 비회원)			회원가입proc 실행(createNewMember)
 	boolean joinMember(
@@ -57,4 +60,5 @@ public interface ILoginSVC {
 	String check_none(String name, String nickname, Date birthday,
 			String gender, String email, String password,
 			String pw_confirm, String phNumber, String phNumber2);
+
 }

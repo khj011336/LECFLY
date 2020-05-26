@@ -65,6 +65,12 @@ public class loginSVCImpl implements ILoginSVC {
 		System.out.println("svc: incLoginCnt로그인횟수증가");
 		return mbDao.incLoginCnt(id);
 	}
+	
+	@Override
+	public boolean updateLoginDate(int id) {
+		System.out.println("svc: updateLoginDate 로그인날자 갱신");
+		return mbDao.updateLoginDate(id);
+	}
 
 	@Override
 	public boolean joinMember(String pic, String name, String nicname, Timestamp birthday, int gender, String email,
