@@ -230,14 +230,18 @@ public class FileSVCImpl {
 	}
 
 	public static String getPath(String username, int IorV) {
-		String path = "C:/fusion11/spring_ws/LECFILE";
+		String path = "/opt/bitnami/tomcat/webapps/LECFILE";
+//		TODO
+//		String path = "C:/fusion11/spring_ws/LECFILE";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		String ImgorVideo = IorV == 1 ? DEF_DIR_IMG : DEF_DIR_VIDEO;
 		return path += "/" + sdf.format(new Date()) + "/" + username + ImgorVideo;
 	}
 
 	public boolean makeDir(String username) {
-		String path = "C:/fusion11/spring_ws/LECFILE";
+		String path = "/opt/bitnami/tomcat/webapps/LECFILE";
+//		TODO
+//		String path = "C:/fusion11/spring_ws/LECFILE";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		path += "/" + sdf.format(new Date()) + "/" + username;
 		File mk = new File(path);
@@ -315,7 +319,9 @@ public class FileSVCImpl {
 		System.out.println("@@ media_player_time start @@");
 		String returnData = "0";
 		try {
-			FFprobe ffprobe = new FFprobe("C:\\ffmpeg-4.2.2-win64-static\\bin\\ffprobe.exe");
+			FFprobe ffprobe = new FFprobe("/usr/bin/ffprobe");
+//			TODO
+//			FFprobe ffprobe = new FFprobe("C:\\ffmpeg-4.2.2-win64-static\\bin\\ffprobe.exe");
 			FFmpegProbeResult probeResult = ffprobe.probe(videoPath); // 동영상 경로
 			FFmpegFormat format = probeResult.getFormat();
 			double second = format.duration; 
