@@ -1,12 +1,14 @@
 package com.LECFLY.LF.controller;
 
 import java.io.File;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -96,10 +98,11 @@ public class CreatorController {
 
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
-			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+			@RequestParam(value = "page", defaultValue = "1", required = false) int page ) {
 		MemberVO mb = new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
 				"dd", 1111, null, null);
 		model.addAttribute("grant",GRANTSTATUS);
+		 
 		if (mb != null) {
 			memberId = mb.getId();
 			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
@@ -108,8 +111,8 @@ public class CreatorController {
 			videoPath = "/images/2020/" + USERNAME + "/video";
 			CreatorVO creVO = CreDAO.selectOneCreator(memberId);
 			System.out.println(creVO);
-			System.out.println(creVO);
 			if (creVO != null) {
+				ses.setAttribute("creator", creVO);
 				if (creVO.getStatus() == GRANT) {
 					isCreator = GRANT;
 				} else if (creVO.getStatus() == APPLY) {
@@ -178,14 +181,19 @@ public class CreatorController {
 		}
 		return "creator/cre_lecture_upload.page";
 	}
-	@RequestMapping(value = "creator_writing_store.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "creator_writing_store.LF", method = RequestMethod.POST)
 	public String createWritingStore(Model model, HttpSession ses ,SessionStatus sesStatus,
 			@RequestParam(value = "LecId", required = false, defaultValue = "0") int id,
-			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up) {
+			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up,
+			@ModelAttribute(value = "Lecture") LectureVO Lecvo,
+	@ModelAttribute(value = "creator") CreatorVO CreVO){
 		model.addAttribute("isCreator", isCreator);
-		System.out.println("작성중인 첫 프로필 처리");
-		CreatorVO creVO = (CreatorVO) ses.getAttribute("creator");
-		 LectureVO lecVO = (LectureVO) ses.getAttribute("Lecture");
+		System.out.println("작성중인 첫 프로필 처리2");
+		CreatorVO creVO =  CreVO;
+		 LectureVO lecVO =  Lecvo;
+		 System.out.println(creVO);
+		 System.out.println(lecVO);
+		 System.out.println("id= "+id +"isUpdate = " +  up);
 		 if(up == 0) {
 		 lecVO.setStatus(APPLY);
 		 creVO.setStatus(APPLY);
@@ -196,6 +204,7 @@ public class CreatorController {
 			 }
 		 LecDAO.updateLecture(lecVO,creVO, id);
 		 }else {
+			 System.out.println("업데이트 진입");
 			 LecDAO.updateOnlyLecuture(lecVO, id);
 		 }
 		sesStatus.setComplete();
@@ -261,10 +270,22 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "creator_new_lecture.LF", method = RequestMethod.GET)
-	public String createLecture(Model model) {
+	public String createLecture(Model model , SessionStatus sesStatus, @RequestParam(value = "nl" ,required = false, defaultValue = "0")int cl 
+			,HttpSession ses , LectureVO lecVo) {
+		System.out.println(cl);
+		
 		model.addAttribute("crPath",imgPath);
 		model.addAttribute("p", 2);
 		model.addAttribute("isCreator", isCreator);
+		if(cl == 1) {
+			model.addAttribute("Lecture",null);
+//			ses.setAttribute("Lecture", null);
+//			sesStatus.setComplete();
+			lecVo.setFid(memberId);
+			model.addAttribute("Lecture",lecVo);
+			System.out.println(ses.getAttribute("Lecture"));
+		}
+		System.out.println(ses.getAttribute("Lecture"));
 		return "creator/cre_lecture_upload.page";
 	}
 	

@@ -1,15 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+    <%response.setHeader("Cache-Control","no-store"); %>
 	<%@include file="cre_status.jsp" %>
 	<div id="cls_wrap">
-	<form id = "lecform" class='pubf'  method="post" enctype="multipart/form-data" action="creator_rightset_proc.LF">
+	<form id = "lecform" class='pubf'  method="post" enctype="multipart/form-data" action="creator_rightset_proc.LF" name = "lecupload">
       	<div id="cls_content">
        		<div id="cls_head"><span class="creator_h1">클래스기본정보</span></div>
        		<div id="cls_part1">
        			<div id="cls_form">
        			<input type="hidden" name="unloadB" value="." id = "unloadb">
-       			<input type= "hidden" name = "id"value ="${Lecture.id}">
        			<input type= "hidden" name = "fid"value ="${Lecture.fid}">
        			<input type= "hidden" name= "titleImg" value ="${Lecture.titleImg}" id ="temp1">
        			<input type= "hidden" name = "infoImg" value ="${Lecture.infoImg}" id ="temp2">
@@ -45,7 +44,7 @@
        		</div>
        		<div id="cls_part2">
 	    		<div class="cls_text1"><label for="cls_cover_img" class="creator_h3">클래스 커버이미지</label><span class="creator_h5 cls_left_interval">커버로 사용할 이미지를 추가해보세요</span></div>
-       			<div id="cls_imgbox1" class="cls_imgbox1"><img src="${crPath }${Lecture.titleImg}" class="cls_imgbox1" id="Timgshow">
+       			<div id="cls_imgbox1" class="cls_imgbox1"><img src="${crPath }${Lecture.titleImg}" class="cls_imgbox1" id="Timgshow" >
        			<input type="file" accept="image/gif, image/jpeg, image/png" name="TitleImgM" id="titleimg" class="cls_bar2"></div>
        			<div id="cls_img_path_box"></div>
        		</div>
