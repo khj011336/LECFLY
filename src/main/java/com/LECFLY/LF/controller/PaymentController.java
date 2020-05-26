@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.LECFLY.LF.model.vo.PostscriptVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
@@ -22,6 +24,8 @@ import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.cart.ICartSVC;
+import com.LECFLY.LF.service.inf.comment.ICommentSVC;
+import com.LECFLY.LF.service.inf.member.IPostscriptSVC;
 import com.LECFLY.LF.service.inf.payhistory.IPayHistorySVC;
 
 @Controller
@@ -34,6 +38,12 @@ public class PaymentController {
 	CartVO cartVO;
 	@Autowired
 	MemberVO memberVO;
+	
+	//후기/댓글서비스 추가
+	@Autowired
+	IPostscriptSVC psSvc;
+	@Autowired
+	ICommentSVC ctSvc;
 	
 	final String[] STR_CATE = {"전체", "미술", "음악", "요리", "라이프스타일", "운동", "커리어", "여행"};
 	
@@ -77,7 +87,9 @@ public class PaymentController {
 	
 	// 회원이 세션 로그인 후, 상품 상세페이지로 이동 할 수 있다.
 	@RequestMapping(value = "pay_goodsDetail.LF", method = RequestMethod.GET)
-	public String showLectureProc(@RequestParam("lecId") int lecId, Model model) {
+	public String showLectureProc(
+			@RequestParam("lecId") int lecId, Model model
+			) {
 		System.out.println("payController :: showLectureProc()");
 		
 		Map<String,Object> lMap = cartSvc.showLectureProc(lecId);
@@ -100,10 +112,76 @@ public class PaymentController {
 				model.addAttribute("creNickname", creNickname);
 				model.addAttribute("creInfo", creInfo);
 				model.addAttribute("ccList", ccList);
+				
+				//5.26gm - 후기를 위한 추가사항
+				System.out.println(lecId);
+				List<PostscriptVO> psList = psSvc.readAllPostscriptInLec(lecId);
+				for (PostscriptVO ps : psList) {
+					System.out.println("test" + ps);
+				}
+				model.addAttribute("psList", psList);
+//				List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
+//				for (CommentVO ct : ctList) {
+//					System.out.println("test" + ct);
+//				}
+//				model.addAttribute("ctList", ctList);
+				
 				return "payment/pay_goodsDetail.pay";
 			} else {
 				return "lecture/main.ho";
 			}
+	}
+	
+	// 단일 댓글 작성시 (대댓글 x)
+	@RequestMapping(value="insert_comment.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberMypageUpdatePwProc(
+			HttpSession ses,
+			@RequestParam(value="ct") String ct,
+			@RequestParam(value="lecId") int lecId
+			) {
+		System.out.println("insert_comment.LF 진입 성공 ct = "+ct+ ", lecId = "+lecId);
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		String temp = "";
+		String result = "";
+		
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb==null) {
+			System.out.println("로그아웃상태");
+			temp="로그아웃되어있음";
+			rMap.put("temp",temp);
+			return rMap;
+		}
+		int mbId = mb.getId();
+		String mbNic = mb.getNicname();
+		int r = ctSvc.addComment(mbId, ctSvc.LEC_ARTICLE, lecId, ct, mbNic, ctSvc.ORIGIN_COMMENT);
+		switch (r) {
+		case 1:
+			result = "성공";
+			break;
+		case 2:
+			result = "실패";
+			break;
+		case 3:
+			result = "해당 글 없음";
+			break;
+		case 4:
+			result = "order증산 실패";
+			break;
+		default:
+			break;
+		}
+		List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
+		for (int i = 0; i < ctList.size(); i++) {
+			temp += "				<br> <i class=\"fas fa-user\"><label>" + ctList.get(i).getMbNic() + "님</label>\r\n" + 
+					"				<label style=\"padding-left:45px;\">" + ctList.get(i).getComment() + "</label>\r\n" + 
+					"				<br>\r\n" + 
+					"				<label><fmt:formatDate value='"+ ctList.get(i).getCreatedAt() +"' pattern='yyyy-MM-dd HH:mm:ss'/></label>\r\n" + 
+					"				<br>";
+		}
+		rMap.put("temp", temp);
+		System.out.println(temp);
+		return rMap;
 	}
 	
 	

@@ -37,6 +37,14 @@ public interface ICommentSVC {
 	final int NONE_FIND_ATID = 3;		// 해당 글 없음
 	final int FAIL_INCREASE = 4;		// order 증가 연산 실패
 	
+	// 댓글이 적힌 게시글의 테이블 종류  0:클래스 1:비디오 2:qna
+	final int LEC_ARTICLE = 0;
+	final int VIDEO_ARTICLE = 1;
+	final int QNA_ARTICLE = 2;
+	
+	// 대댓글이 아닐경우 (원댓글일 경우
+	final int ORIGIN_COMMENT = 0;
+	
 	// 댓글 등록		글쓴이번호	해당 글이 속한 테이블	해당 글		댓글 내용			글쓴이 닉네임	대댓글이면 해당 댓글의 id(VO에 속하지않은 인자)
 	int addComment(int mbId, int tableCate, int atId, String comment, String mbNic, int targetCtId);
 		// 기본 생성(일반적으로 사용해야됨

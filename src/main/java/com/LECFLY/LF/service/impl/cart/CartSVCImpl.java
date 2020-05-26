@@ -32,8 +32,11 @@ public class CartSVCImpl implements ICartSVC {
 	@Autowired
 	private ICartDAO cartDAO;
 	
+//	@Autowired
+//	private ICommentDAO comDao;
+	
 	@Autowired
-	private ICommentDAO comDao;
+	private ICommentSVC ctSvc;
 	
 	@Autowired
 	private TestGeon2 testDAO2;
@@ -81,7 +84,8 @@ public class CartSVCImpl implements ICartSVC {
 			String creNickname = (String)cMap.get("nickname");
 			String creInfo = (String)cMap.get("info");
 			System.out.printf("%s, %s, %s  = ", creName, creNickname, creInfo);
-			List<CommentVO> comList = comDao.selectCommentsForOrderNumAsc(0, lecId);
+			List<CommentVO> comList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
+//			List<CommentVO> comList = comDao.selectCommentsForOrderNumAsc(0, lecId);
 			Map<String, Object> rMap = new HashMap<>();
 			rMap.put("lec", lec);
 			rMap.put("kit", kit);

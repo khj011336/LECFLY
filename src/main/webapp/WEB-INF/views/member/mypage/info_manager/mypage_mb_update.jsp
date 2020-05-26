@@ -110,7 +110,7 @@
     	 			data: params,
     	 			dataType: "JSON",
     	 			success: function(res, status, xhr) {
-    	 				console.log("수정성공");
+    	 				console.log("성공");
     	 				$("#mypage_mb_update_confirm").html(res.temp);
     	 			},
     	 			error: function(status, xhr) {
