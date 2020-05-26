@@ -1,5 +1,6 @@
 package com.LECFLY.LF.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,12 +115,30 @@ public class PaymentController {
 				model.addAttribute("ccList", ccList);
 				
 				//5.26gm - 후기를 위한 추가사항
-				System.out.println(lecId);
+				String postscript = "";
 				List<PostscriptVO> psList = psSvc.readAllPostscriptInLec(lecId);
 				for (PostscriptVO ps : psList) {
 					System.out.println("test" + ps);
 				}
-				model.addAttribute("psList", psList);
+				List<String> psListRate = new ArrayList<String>(psList.size());
+				for (int i = 0; i < psList.size(); i++) {
+					String stars = "";
+					float rate = psList.get(i).getRate();
+					int times = (int)rate;
+					for (int j = 0; j < times; j++) {
+						stars += "★";
+					}
+					if( (rate*2)%2 == 1)
+						stars += "☆";
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					postscript +=
+							"		\r\n	<p id=\"register_review\">" + 
+							"					<span class=\"review_name\">"+ psList.get(i).getMbLogin() +"</span>&nbsp;&nbsp;<label>"+stars+ 
+							"					</label><span class=\"review_week\"><small>"+sdf.format(psList.get(i).getWritedDay())+"</small>" + 
+							"						</span>\r\n\r\n<small>"+psList.get(i).getContent()+"</small>" + 
+							"				</p>";
+				}
+				model.addAttribute("postscript", postscript);
 //				List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
 //				for (CommentVO ct : ctList) {
 //					System.out.println("test" + ct);
