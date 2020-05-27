@@ -106,7 +106,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		Map<String, Object> rMap = new HashMap<>(); 
 		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
 		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
-				 testDao.selectOneTiketByMbId(mbId);
+				 testDao.selectOneTiketForCanUseByMbId(mbId);
 		System.out.println("svc:: ticket = " + ticket);
 		if(ticket != null) {
 			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
@@ -533,8 +533,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 					String creatorIds = phisList.get(i).getSellMbId();
 					String kitIds = phisList.get(i).getGoodsId();
 					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
-					String[] arrayCreatorIds = creatorIds.split(",");
-					String[] arrayKitIds = kitIds.split(",");
+					String[] arrayCreatorIds = creatorIds.split("_");
+					String[] arrayKitIds = kitIds.split("_");
 					kitCount = arrayKitIds.length;
 					
 					if(arrayCreatorIds.length >= 0 ) {

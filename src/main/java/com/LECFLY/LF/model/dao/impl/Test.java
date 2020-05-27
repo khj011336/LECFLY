@@ -349,15 +349,29 @@ public class Test {
 	
 	////////// 『 TiketDAOImpl 에서 사용하세요~
 	
-	public static final String SQL_SELECT_ONE_TIKET_BY_MBID = 
+	public static final String SQL_SELECT_TIKET_BY_MBID = 
 			"SELECT * FROM TICKETS WHERE MB_ID = ?";
 	
-	public TicketVO selectOneTiketByMbId(int mbId) {
-		System.out.println("dao : selectOneTiketByMbId()");
+	public List<TicketVO> selectTiketByMbId(int mbId) {
+		System.out.println("dao : selectTiketByMbId()");
 		try {
-			System.out.println(SQL_SELECT_ONE_TIKET_BY_MBID + " / mb_id = " + mbId);
-			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, 
+			System.out.println(SQL_SELECT_TIKET_BY_MBID + " / mb_id = " + mbId);
+			return  jtem.query(SQL_SELECT_TIKET_BY_MBID, 
 					BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static final String SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID =
+			"SELECT * FROM TICKETS WHERE MB_ID = ? and (current_time() <= end_day)";
+	public TicketVO selectOneTiketForCanUseByMbId(int mbId) {
+		try{
+			System.out.println(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID + " / mbId = " + mbId);
+			jtem.queryForObject(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID, 
+						BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();
@@ -466,6 +480,10 @@ public class Test {
 		}
 		return null;
 	}
+
+	
+	
+	
 
 
 
