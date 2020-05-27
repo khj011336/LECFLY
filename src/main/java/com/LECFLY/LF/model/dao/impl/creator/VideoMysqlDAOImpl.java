@@ -28,7 +28,7 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	
 	@Override
 	public boolean insertNewVideo(VideoVO Vvo) {
-	int r = 	jtem.update(INSERT, Vvo.getfId(),Vvo.getCFId(),Vvo.getVideoPath(),Vvo.getDuration(),Vvo.getTitle(),Vvo.getInfo(),Vvo.getImgPath()
+	int r = jtem.update(INSERT, Vvo.getfId(),Vvo.getCFId(),Vvo.getVideoPath(),Vvo.getDuration(),Vvo.getTitle(),Vvo.getInfo(),Vvo.getImgPath()
 				,Vvo.getGifPath(),Vvo.getOrderInfo(),Vvo.getCategory(),Vvo.getCommentYorN(),Vvo.getViews(),Vvo.getStatus());
 		return r == 1;
 	}
@@ -56,14 +56,12 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 			return null;
 		}
 	}
-
-	 
-
 	@Override
 	public List<VideoVO> selectVideoTrack(int fid, int CFID) {
 		return jtem.query(SELECT_ALL_VIDEOTRACK, BeanPropertyRowMapper.newInstance(VideoVO.class), fid,CFID);
 		
 	}
+	@Override
 	public int checkNumberOfVideo(int CFID){
 		int r = jtem.queryForObject(COUNT_VIDEO, Integer.class,CFID );
 		return 	r;

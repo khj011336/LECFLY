@@ -14,7 +14,7 @@ import org.springframework.transaction.InvalidTimeoutException;
 import com.LECFLY.LF.model.dao.impl.Test;
 import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
-import com.LECFLY.LF.model.dao.inf.creator.IKITDAO;
+import com.LECFLY.LF.model.dao.inf.creator.IKitDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;

@@ -14,10 +14,14 @@
 			alias="videoVO"></typeAlias>
 		<typeAlias type="com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO" 
 			alias="categoryLectureStatVO"></typeAlias>
+				<typeAlias type="com.LECFLY.LF.model.vo.creator.KitVO" 
+			alias="KitVO"></typeAlias>
+	
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mappers/admin_mapper.xml" />
+		<mapper resource="mappers/creator_mapper.xml" />
 	</mappers>
 	
 </configuration>
