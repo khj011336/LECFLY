@@ -335,85 +335,7 @@
 // 		}); // 마이페이지 회원정보 변경 클릭시
 
 		
-//		// 마이페이지 결제내역 보기 
-//		$(document).on("click", "#mypage_dilivery_status_1", function(e) {
-//			console.log("status_1");
-//			var url = 'delivery_stat1.LF';
-//			var params = "deliveryStat=" + 0; //0: 주문서 확인 
-//			$.ajax({
-//				type: "POST",
-//				url: url,
-//				dataType: "text",
-//				data: params,
-//				success: function(res, status, xhr) {
-//					$(".dilivery_status_chart").html(res);
-//					console.log("결제대기 로딩완료");
-//				},
-//				error: function(status,xhr) {
-//					
-//				}
-//			});			
-//		}); // 배송 정보 결제대기
-// 		
-//		
-//		$(document).on("click", "#mypage_dilivery_status_2", function() {
-//			console.log("status_2");
-//			var url = 'delivery_stat2.LF';
-//			var params = "deliveryStat=" + 1; // 1:상품준비중 
-//			$.ajax({
-//				type: "POST",
-//				url: url,
-//				dataType: "text",
-//				data: params,
-//				success: function(res, status, xhr) {
-//					$(".dilivery_status_chart").html(res);
-//					console.log("배송준비 로딩완료");
-//				},
-//				error: function(status,xhr) {
-//					
-//				}
-//			});
-//		}); // 배송 정보 배송준비
-//		
-//		$(document).on("click", "#mypage_dilivery_status_3", function() {
-//			console.log("status_3");
-//			var url = 'delivery_stat3.LF';
-//			var params = "deliveryStat=" + 2; // 2: 배송중
-//			$.ajax({
-//				type: "POST",
-//				url: url,
-//				dataType: "text",
-//				data: params,
-//				success: function(res, status, xhr) {
-//					$(".dilivery_status_chart").html(res);
-//					console.log("배송중 로딩완료");
-//				},
-//				error: function(status,xhr) {
-//					
-//				}
-//			});
-//		}); // 배송 정보 배송중
-//		
-//		$(document).on("click", "#mypage_dilivery_status_4", function() {
-//			console.log("status_4");
-//			var url = 'delivery_stat4.LF';
-//			var params = "deliveryStat=" + 3; //  3: 배송완료*
-//			$.ajax({
-//				type: "POST",
-//				url: url,
-//				dataType: "text",
-//				data: params,
-//				success: function(res, status, xhr) {
-//					$(".dilivery_status_chart").html(res);
-//					console.log("배송완료 로딩완료");
-//				},
-//				error: function(status,xhr) {
-//					
-//				}
-//			});
-//		}); // 배송 정보 배송완료
-		
- 	// 마이페이지 결제내역 보기 
+		// 마이페이지 결제내역 보기 
 		$(document).on("click", "#mypage_dilivery_status_1", function(e) {
 			console.log("status_1");
 			var url = 'delivery_stat1.LF';
@@ -421,11 +343,11 @@
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "JSON",
+				dataType: "text",
 				data: params,
 				success: function(res, status, xhr) {
-					$(".dilivery_status_chart").html(res.template);
-					console.log("res.template = " + res.template);
+					$(".dilivery_status_chart").html(res);
+					console.log("결제대기 로딩완료");
 				},
 				error: function(status,xhr) {
 					
@@ -441,7 +363,7 @@
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "JSON",
+				dataType: "text",
 				data: params,
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
@@ -460,7 +382,7 @@
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "JSON",
+				dataType: "text",
 				data: params,
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
@@ -479,7 +401,7 @@
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "JSON",
+				dataType: "text",
 				data: params,
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
@@ -490,6 +412,84 @@
 				}
 			});
 		}); // 배송 정보 배송완료
+		
+// 	// 마이페이지 결제내역 보기 
+//		$(document).on("click", "#mypage_dilivery_status_1", function(e) {
+//			console.log("status_1");
+//			var url = 'delivery_stat1.LF';
+//			var params = "deliveryStat=" + 0; //0: 주문서 확인 
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "JSON",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res.template);
+//					console.log("res.template = " + res.template);
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});			
+//		}); // 배송 정보 결제대기
+// 		
+//		
+//		$(document).on("click", "#mypage_dilivery_status_2", function() {
+//			console.log("status_2");
+//			var url = 'delivery_stat2.LF';
+//			var params = "deliveryStat=" + 1; // 1:상품준비중 
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "JSON",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res);
+//					console.log("배송준비 로딩완료");
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});
+//		}); // 배송 정보 배송준비
+//		
+//		$(document).on("click", "#mypage_dilivery_status_3", function() {
+//			console.log("status_3");
+//			var url = 'delivery_stat3.LF';
+//			var params = "deliveryStat=" + 2; // 2: 배송중
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "JSON",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res);
+//					console.log("배송중 로딩완료");
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});
+//		}); // 배송 정보 배송중
+//		
+//		$(document).on("click", "#mypage_dilivery_status_4", function() {
+//			console.log("status_4");
+//			var url = 'delivery_stat4.LF';
+//			var params = "deliveryStat=" + 3; //  3: 배송완료*
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "JSON",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res);
+//					console.log("배송완료 로딩완료");
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});
+//		}); // 배송 정보 배송완료
  		
 		
 		///// 결제내역

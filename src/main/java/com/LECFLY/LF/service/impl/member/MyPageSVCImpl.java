@@ -669,8 +669,10 @@ public class MyPageSVCImpl implements IMypageSVC {
 		if(mbId > 0 && deliveryStat >= 0 && deliveryStat < 4) {
 			List<PayHistoryVO> phisList = //phisDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
 											testDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
-			List<CreatorVO> creList = new ArrayList<>();
-			List<KitVO> kitList = new ArrayList<>();
+			
+			Map<Integer, List<CreatorVO>> creListMap = new HashMap<Integer, List<CreatorVO>>();
+			Map<Integer, List<KitVO>> kitListMap = new HashMap<Integer, List<KitVO>>();
+			Map<Integer, List<Integer>> kitCountMap = new HashMap<Integer, List<Integer>>();
 			if(phisList != null) {
 				final int PHIS_LIST_SIZE = phisList.size();
 				for (int i = 0; i < PHIS_LIST_SIZE; i++) {
@@ -680,6 +682,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 					String[] arrayCreatorIds = creatorIds.split("_");
 					String[] arrayKitIds = kitIds.split("_");
 					
+					List<CreatorVO> creList = new ArrayList<>();
+					List<KitVO> kitList = new ArrayList<>();
 					if(arrayCreatorIds.length >= 0 ) {
 						for (int j = 0; j < arrayKitIds.length; j++) {
 							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
@@ -692,6 +696,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 										testDao.selectOneKitById(intKitId);
 							creList.add(cre);
 							kitList.add(kit);
+							creListMap.put(i, creList);
+							kitListMap.put(i, kitList);
 						}
 					} else {
 						System.out.println("arrayCreatorIds.length 는 음수 ");
@@ -699,8 +705,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 				} // for 문끝
 				Map<String, Object> rMap = new HashMap<>();
 				rMap.put("phisList", phisList);
-				rMap.put("creList", creList);
-				rMap.put("kitList", kitList);
+				rMap.put("creListMap", creListMap);
+				rMap.put("kitListMap", kitListMap);
+				
 				return rMap;
 			} else {
 				System.out.println("phisList == null");
