@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.LECFLY.LF.model.vo.LecAttendVO;
+import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
@@ -418,6 +419,7 @@ public class MemberController {
 				int cntCoupon = (int)pMap.get("cntCoupon");
 				int cntLecture = (int)pMap.get("cntLecture");
 				
+				
 				System.out.println("ticketFrontName = " + ticketFrontName + " / ticketName = " + ticketName + 
 						" / strCateList.size() = " + strCateList.size() + " / tiketEndDay = " + tiketEndDay + 
 						" / cntCoupon = " + cntCoupon + " / cntLecture = " + cntLecture);
@@ -432,6 +434,14 @@ public class MemberController {
 				model.addAttribute("mb", mb);
 				model.addAttribute("mbLoginNicname", mb.getNicname());
 				model.addAttribute("mpNone", "");
+				
+				List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING);
+				if(laList != null) {
+					model.addAttribute("msg_status", "수강중인 강의");
+					model.addAttribute("laList", laList);
+				} else {
+					model.addAttribute("msg_status", "수강중인 강의");
+				}
 			} else {
 				System.out.println("pMap == null ");
 				System.out.println("mb = " + mb);

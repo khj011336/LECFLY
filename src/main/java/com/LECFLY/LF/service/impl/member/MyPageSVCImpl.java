@@ -115,7 +115,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
 					testDao.checkNumberOfCouponseByMbId(mbId);
 			if(cntCoupon >= 0) {
-				int cntLecture = ltDao.checkNumberOfLectureByMbIdStatus(mbId, 0); // 회원이듣는강의개수
+				int cntLecture = 
+						ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
 				if(cntLecture >= 0) {
 					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
 					String ticketFrontName = "";
@@ -139,9 +140,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 						}
 						
 					} else if(cntUseCategory == 3) {
-						ticketFrontName = "★";
-						ticketName = TicketVO.STR_TICKET_NAME_MAP.get(cntUseCategory);
-						String strCate = "전체"; 
+						ticketFrontName = "무제한";
+						ticketName = "카테고리 이용권";
+						String strCate = "";
 						strCateList.add(strCate);
 					}
 

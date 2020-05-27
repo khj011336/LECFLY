@@ -98,11 +98,11 @@
 				</div>
 				
 				<div id="mypage_bottom">									<!-- 조각페이지 영역 -->
-					<c:if test="${not empty mpNone}">
+<%-- 					<c:if test="${not empty mpNone}"> --%>
 						<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%>
-					</c:if>
-					<c:if test="${empty mpNone}">
+<%-- 					</c:if> --%>
+<%-- 					<c:if test="${empty mpNone}"> --%>
 						
-					</c:if>
+<%-- 					</c:if> --%>
 				</div>
 			</div>
