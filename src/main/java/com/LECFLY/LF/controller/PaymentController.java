@@ -89,7 +89,7 @@ public class PaymentController {
 	// 회원이 세션 로그인 후, 상품 상세페이지로 이동 할 수 있다.
 	@RequestMapping(value = "pay_goodsDetail.LF", method = RequestMethod.GET)
 	public String showLectureProc(
-			@RequestParam("lecId") int lecId, Model model
+			@RequestParam("lecId") int lecId, Model model, HttpSession ses
 			) {
 		System.out.println("payController :: showLectureProc()");
 		
@@ -115,6 +115,7 @@ public class PaymentController {
 				model.addAttribute("ccList", ccList);
 				
 				//5.26gm - 후기를 위한 추가사항
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String postscript = "";
 				List<PostscriptVO> psList = psSvc.readAllPostscriptInLec(lecId);
 				for (PostscriptVO ps : psList) {
@@ -130,7 +131,6 @@ public class PaymentController {
 					}
 					if( (rate*2)%2 == 1)
 						stars += "☆";
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					postscript +=
 							"		\r\n	<p id=\"register_review\">" + 
 							"					<span class=\"review_name\">"+ psList.get(i).getMbLogin() +"</span>&nbsp;&nbsp;<label>"+stars+ 
@@ -139,11 +139,29 @@ public class PaymentController {
 							"				</p>";
 				}
 				model.addAttribute("postscript", postscript);
+				
+				// 5.27 댓글을 위한 추가사항
+				sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String comment = "";
+				List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
+				for (int i = 0; i < ctList.size(); i++) {
+					CommentVO ctori = ctList.get(i);
+					comment += "			<div"+(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
+							"				<label style=\"padding-left:45px;\">" + ctori.getComment() + "</label>\r\n" +
+							"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
+							"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
+							"				</div><div id='udner_ct_form'></div>";
+				}
+				model.addAttribute("comment", comment);
 //				List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
 //				for (CommentVO ct : ctList) {
 //					System.out.println("test" + ct);
 //				}
 //				model.addAttribute("ctList", ctList);
+				
+				// 5.27 강의 신청하기를 위한 데이터 출력(회원이 가지고 있는 category를 뽑아야됨)
+				MemberVO mb = (MemberVO)ses.getAttribute("member");
+				
 				
 				return "payment/pay_goodsDetail.pay";
 			} else {
@@ -190,13 +208,15 @@ public class PaymentController {
 		default:
 			break;
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
 		for (int i = 0; i < ctList.size(); i++) {
-			temp += "				<br> <i class=\"fas fa-user\"><label>" + ctList.get(i).getMbNic() + "님</label>\r\n" + 
-					"				<label style=\"padding-left:45px;\">" + ctList.get(i).getComment() + "</label>\r\n" + 
-					"				<br>\r\n" + 
-					"				<label><fmt:formatDate value='"+ ctList.get(i).getCreatedAt() +"' pattern='yyyy-MM-dd HH:mm:ss'/></label>\r\n" + 
-					"				<br>";
+			CommentVO ctori = ctList.get(i);
+			temp += "			<div"+(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
+					"				<label style=\"padding-left:45px;\">" + ctori.getComment() + "</label>\r\n" +
+					"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
+					"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
+					"				</div><div id='udner_ct_form'></div>";
 		}
 		rMap.put("temp", temp);
 		System.out.println(temp);
