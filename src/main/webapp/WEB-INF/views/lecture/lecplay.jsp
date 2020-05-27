@@ -45,6 +45,7 @@
 						poster="${crPath}${fn:split(videoList[index.current].imgPath,'-')[0]}">
 						<source  src='${viPath}${videoList[0].videoPath}' type="video/mp4" id = "videSource" />
 					</video>
+					
 				</div>
 				<div id="aboutContent">
 					<div class="vertical">

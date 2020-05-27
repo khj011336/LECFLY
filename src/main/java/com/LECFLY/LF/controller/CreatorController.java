@@ -476,8 +476,8 @@ public class CreatorController {
 
 	@RequestMapping(value = "creator_lecplay.LF", method = RequestMethod.GET)
 	public String show_video(Model model) {
-		int fid = 30325;
-		int CFID = 159;
+		 
+		int CFID = 48;
 
 		List<LectureVO> Lec = LecDAO.selectLectureList(CFID);
 		String username = Lec.get(0).getImgPath().split("_")[1];
@@ -486,7 +486,7 @@ public class CreatorController {
 		model.addAttribute("crPath", imgPath);
 		model.addAttribute("viPath", videoPath);
 		model.addAttribute("lecList", Lec);
-		model.addAttribute("videoList", ViDAO.selectVideoTrack(fid, CFID));
+		model.addAttribute("videoList", ViDAO.selectVideoTrack(  CFID));
 		return "lecture/lecplay.page";
 	}
 
