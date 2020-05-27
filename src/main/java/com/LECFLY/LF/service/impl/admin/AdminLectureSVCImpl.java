@@ -269,8 +269,8 @@ public class AdminLectureSVCImpl implements IAdminLectureSVC {
 	}
 
 	@Override
-	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
-		return adDAO.delectLectureforIds(checkList);
+	public boolean deleteLectureforIds(ArrayList<Integer> checkList) {
+		return adDAO.deleteLectureforIds(checkList);
 	}
 	// 상세조회 페이지수
 	@Override
@@ -295,6 +295,36 @@ public class AdminLectureSVCImpl implements IAdminLectureSVC {
 		List<LectureVO> list = adDAO.selectLectureListSearchFilter(searchMap);
 		System.out.println("searchfilter result : "+ list.size());
 		return list;
+	}
+
+	@Override
+	public boolean updateMemberApprovalforIds(ArrayList<Integer> checkList) {
+		return adDAO.updateMemberApprovalforIds(checkList);
+	}
+
+	@Override
+	public boolean updateCreatorApprovalforIds(ArrayList<Integer> checkList) {
+		return adDAO.updateCreatorApprovalforIds(checkList);
+	}
+
+	@Override
+	public boolean updateMemberDisapprovalforIds(ArrayList<Integer> checkList) {
+		return adDAO.updateMemberDisapprovalforIds(checkList);
+	}
+
+	@Override
+	public boolean updateCreatorDisapprovalforIds(ArrayList<Integer> checkList) {
+		return adDAO.updateCreatorDisapprovalforIds(checkList);
+	}
+
+	@Override
+	public boolean deleteMemberforIds(ArrayList<Integer> checkList) {
+		return adDAO.deleteMemberforIds(checkList);
+	}
+
+	@Override
+	public boolean deleteCreatorforIds(ArrayList<Integer> checkList) {
+		return adDAO.deleteCreatorforIds(checkList);
 	}
 
 }

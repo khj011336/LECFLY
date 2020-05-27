@@ -256,12 +256,6 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public List<LectureVO> searchLectureByApproval(int offset, int limit) {
 		// TODO Auto-generated method stub
 		return null;
@@ -277,6 +271,48 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	public List<LectureVO> searchLectureByApprovalDone(int offset, int limit) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean updateMemberApprovalforIds(ArrayList<Integer> ids) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateCreatorApprovalforIds(ArrayList<Integer> ids) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateMemberDisapprovalforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateCreatorDisapprovalforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteLectureforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteMemberforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteCreatorforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

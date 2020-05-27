@@ -24,12 +24,12 @@
 					<option value="${pageContext.request.contextPath}/search_category.LF?category=6">커리어</option>
 					<option value="${pageContext.request.contextPath}/search_category.LF?category=7">여행</option>
 			</select></li>
-			<li><select>
-					<option>정확도순</option>
-					<option>최신순</option>
-					<option>인기순</option>
-					<option>만족도순</option>
-			</select></li>
+<!-- 			<li><select> -->
+<!-- 					<option>정확도순</option> -->
+<!-- 					<option>최신순</option> -->
+<!-- 					<option>인기순</option> -->
+<!-- 					<option>만족도순</option> -->
+<!-- 			</select></li> -->
 		</ul>
 	</div>
 	<c:choose>
