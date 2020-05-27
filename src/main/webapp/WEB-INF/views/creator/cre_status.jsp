@@ -70,7 +70,10 @@ function setImageFromFile(input, expression, tempses) {
     			ex = true; location.href ="creator_new_lecture.LF";
     			}
     		}else{
-    			ex = true; location.href ="creator_update_store.LF";
+    			var formPro = document.profileForm;
+    			formPro.action ="creator_update_store.LF";
+    			ex = true;  
+    			formPro.submit();
     		}
     		}
     	});

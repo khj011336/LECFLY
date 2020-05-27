@@ -1,6 +1,7 @@
 package com.LECFLY.LF.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,8 +193,10 @@ public class CreatorController {
 			lecVO.setStatus(APPLY);
 			creVO.setStatus(APPLY);
 		}
+		LecSVC.fileProcessforLectures(lecVO, memberId, model, USERNAME);
 		if (isCreator == WRITING) {
 			if (up == 0) {
+				CreSVC.fileProcessforCreator(creVO, ses, model, USERNAME, memberId);
 				CreDAO.updateCreator(creVO, memberId);
 			}
 			LecDAO.updateLecture(lecVO, creVO, id);
@@ -221,11 +224,21 @@ public class CreatorController {
 		return "creator/cre_profile.page";
 	}
 
-	@RequestMapping(value = "creator_update_store.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "creator_update_store.LF", method = RequestMethod.POST)
 	public String createUpdateStore(Model model, HttpSession ses, SessionStatus sesStatus,
-			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up) {
+			@RequestParam(value = "isUpdate", required = false, defaultValue = "0") int up,
+			@ModelAttribute(value = "creator") CreatorVO crvo) {
+		CreatorVO creVO = crvo;
 		System.out.println("크리에이터 업데이트 ");
-		CreatorVO creVO = (CreatorVO) ses.getAttribute("creator");
+		if (crvo.getImgPathM() != null && !creVO.getImgPathM().isEmpty()) {
+			if (new File(FileSVCImpl.getPath(USERNAME, 1) + creVO.getImgPath()).delete()) {
+				System.out.println("기존 크리에이터이미지 이미지 삭제");
+			}
+			Map<String, String> file = fileSVC.writeFile(creVO.getImgPathM(), memberId, USERNAME);
+			creVO.setImgPath(file.get("file"));
+			System.out.println("기존 크리에이터이미지 이미지 갱신");
+		}
+		System.out.println(creVO);
 		CreDAO.updateCreator(creVO, memberId);
 		sesStatus.setComplete();
 		return "creator/cre_href";
@@ -272,8 +285,6 @@ public class CreatorController {
 		if (cl == 1 && resetCounter == 1) {
 			resetCounter++;
 			model.addAttribute("Lecture", null);
-//			ses.setAttribute("Lecture", null);
-//			sesStatus.setComplete();
 			lecVo.setFid(memberId);
 			model.addAttribute("Lecture", lecVo);
 			System.out.println(ses.getAttribute("Lecture"));
@@ -426,7 +437,7 @@ public class CreatorController {
 			kitCheck.setAttribute("update");
 			model.addAttribute("creatorKit", kitCheck);
 			model.addAttribute("crPath", imgPath);
-			System.out.println(kitCheck+"2");
+			System.out.println(kitCheck + "2");
 		}
 		return "creator/cre_kit.page";
 	}
@@ -441,14 +452,14 @@ public class CreatorController {
 			kitxo = kit.getAttribute().equals("update");
 		}
 		if (kitxo) {
-			if(kit.getImgPath() != null && !kit.getImgPath().isEmpty()) {
-			if (new File(FileSVCImpl.getPath(USERNAME, 1) + kit.getImgPath()).delete()) {
-				System.out.println("기존 키트 이미지 삭제");
-			}
+			if (kit.getImgPath() != null && !kit.getImgPath().isEmpty()) {
+				if (new File(FileSVCImpl.getPath(USERNAME, 1) + kit.getImgPath()).delete()) {
+					System.out.println("기존 키트 이미지 삭제");
+				}
 			}
 			Map<String, String> file = fileSVC.writeFile(kit.getKitImg(), CF, USERNAME);
 			kit.setImgPath(file.get("file"));
-			System.out.println(kit+"2");
+			System.out.println(kit + "2");
 			kitDAO.updateKit(kit, CF);
 			sesstatus.setComplete();
 		} else {
@@ -466,8 +477,8 @@ public class CreatorController {
 
 	@RequestMapping(value = "creator_lecplay.LF", method = RequestMethod.GET)
 	public String show_video(Model model) {
-		int fid = 30325;
-		int CFID = 159;
+		 
+		int CFID = 48;
 
 		List<LectureVO> Lec = LecDAO.selectLectureList(CFID);
 		String username = Lec.get(0).getImgPath().split("_")[1];
@@ -476,7 +487,7 @@ public class CreatorController {
 		model.addAttribute("crPath", imgPath);
 		model.addAttribute("viPath", videoPath);
 		model.addAttribute("lecList", Lec);
-		model.addAttribute("videoList", ViDAO.selectVideoTrack(fid, CFID));
+		model.addAttribute("videoList", ViDAO.selectVideoTrack(  CFID));
 		return "lecture/lecplay.page";
 	}
 
@@ -525,22 +536,29 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "creator_statistics.LF", method = RequestMethod.GET)
-	public String showstatisticsList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+	public String showstatisticsList(
 			Model model) {
-		if (page == 1) {
-			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
-			model.addAttribute("crPath", imgPath);
-			model.addAttribute("isCreator", isCreator);
-			model.addAttribute("maxPage", MAXPAGE);
-			model.addAttribute("lecList", LecSVC.showLectureList(memberId, page, 0));
-			return "creator/cre_statistics.page";
-		} else if (page >= 2) {
-			model.addAttribute("crPath", imgPath);
-			model.addAttribute("maxPage", MAXPAGE);
-			List<LectureVO> LecList = LecSVC.showLectureList(memberId, page, 0);
-			model.addAttribute("lecList", LecList);
-			return "creator/_cre_statistics";
-		}
+		  List<LectureVO> lecvo = LecDAO.selectLectureList(memberId);
+		  System.out.println(lecvo.get(0));
+		  if(lecvo != null && !lecvo.isEmpty()) {
+		  List<VideoVO> videoList = ViDAO.selectVideoTrack(lecvo.get(0).getId());
+		  HashMap<String, Object> videoStat = new HashMap<String, Object>();
+		  List<String> title = new ArrayList<String>();
+		  List<Integer> like = new ArrayList<Integer>();
+		  List<Integer> views = new ArrayList<Integer>();
+		  List<Integer> statCfid = new ArrayList<Integer>();
+		  for(int i = 0 ; i < videoList.size(); i++) {
+			 like.add(videoList.get(i).getLikeCount());
+			views.add(videoList.get(i).getViews());
+			 title.add(lecvo.get(i).getTitle());
+			 statCfid.add(lecvo.get(i).getId());
+		  }
+		  videoStat.put("title", title);
+		  videoStat.put("like",like);
+		  videoStat.put("views",views);
+		  videoStat.put("statCFID",statCfid);
+		  model.addAttribute("videoStat",videoStat);
+		  }
 		return "creator/cre_statistics.page";
 	}
 }
