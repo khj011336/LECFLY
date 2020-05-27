@@ -1,32 +1,32 @@
 
 
  var videoUP = '${videoUP}';
-$().ready(function() {
-	
  function videoChange(){
-	var video = $("#viosrc").attr("src");
-	if(video != undefined && video != null && video.indexOf('mp4') != -1 ){
-		return true;
-	} else{
-		return false;
+		var video = $("#viosrc").attr("src");
+		if(video != undefined && video != null && video.indexOf('mp4') != -1 ){
+			return true;
+		} else{
+			return false;
+		}
 	}
-}
-var upbutton = 0;
-function ispty(){
-    var each =	$('#viform').find("input[type!=hidden],textarea,select").not("input[type=url]").not("input[type=button]").not("input[type=file]");
-    var a = 0;
-    for(var i =0 ; i<each.length;i++ ){
-    	if(each[i].value == undefined || each[i].value == null || each[i].value ==""){
-    		a++;
-    	}
-    } 
-    	if(a>0){
-    		alert("값을 다입력해주세요");
-    		return true;
-    	}else{
-    		return false;
-    	}
-  }
+ function ispty(){
+	    var each =	$('#viform').find("input[type!=hidden],textarea,select").not("input[type=url]").not("input[type=button]").not("input[type=file]");
+	    var a = 0;
+	    for(var i =0 ; i<each.length;i++ ){
+	    	if(each[i].value == undefined || each[i].value == null || each[i].value ==""){
+	    		a++;
+	    	}
+	    } 
+	    	if(a>0){
+	    		alert("값을 다입력해주세요");
+	    		return true;
+	    	}else{
+	    		return false;
+	    	}
+	  }
+ var upbutton = 0;
+$().ready(function() {
+
 $(".upl_bt").on("click",function(){
 	if(videoUP != '1'){
 		if(!ispty()){

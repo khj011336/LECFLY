@@ -13,7 +13,7 @@ $(window).on("unload",function(e){
 		 }else{
 			 nodename = false;
 		 }
-	 if(nodename == false && videoChange()   && upbutton != 1 && isUpdate !=5){
+	 if(nodename == false && videoChange()  && upbutton != 1 && isUpdate !=5){
 		 $("#uplUP").attr("disabled","disabled");
 		 navigator.sendBeacon("video_upload_proc.LF", formdata);
 	 }

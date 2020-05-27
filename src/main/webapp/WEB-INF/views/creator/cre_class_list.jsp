@@ -14,7 +14,7 @@ $("#CRHT2").on("click",function(){
 	if(${isCreator} == 2){
 	alert("현재 크리에이터 승인요청중입니다.승인후 정상적인 등록이가능합니다!");
 	}else if(${isCreator} == 3){
-		location.href ="creator_new_lecture.LF";
+		location.href ="creator_new_lecture.LF?nl=1";
 	}else if(${isCreator} == 4){
 		alert("현재 작성중인 첫 글이있습니다.등록후 정상적인 활동이가능합니다!");	
 	}else{
