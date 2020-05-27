@@ -47,12 +47,15 @@
 						<span><b><c:out value="${ticketFrontName}" default="" /></b> <c:out value="${ticketName}" default="보유중인 티켓 없음" /></span>
 						<br>
 						<p>
+							<c:set var="lastCt" value="${(fn:length(strCateList) - 1)}" />
 							<c:forEach var="strCate" items="${strCateList}" varStatus="vs">
-								<a><c:out value="${strCateList.get(vs.index)}"/></a>
-								<c:if test="${vs.index ne vs.last}"> / </c:if>
-								<c:if test="${vs.index eq vs.last}"> </c:if>
+								<a><c:out value="${strCate}"/></a>
+								<c:if test="${vs.index ne lastCt}"> / </c:if>
+								<c:if test="${vs.index eq lastCt}"> </c:if>
 							</c:forEach>
 						</p>
+						<br>
+						<span><small><fmt:formatDate value="${ticketEndDay}" pattern="yyyy-MM-dd" />까지</small></span>
 			        </div>
 			    </div>
 				<div id="mypage_middle">									<!-- 정보 영역 및 메뉴영역 -->

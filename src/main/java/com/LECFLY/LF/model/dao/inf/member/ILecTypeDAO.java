@@ -10,4 +10,6 @@ public interface ILecTypeDAO {
 	
 	List<LecTypeVO> selectAllLecTypeByMbIdStatus(int mbId, int status);
 
+	int checkNumberOfLectureByMbIdStatus(int mbId, int status);
+
 }

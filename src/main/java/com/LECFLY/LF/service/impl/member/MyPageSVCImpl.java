@@ -115,13 +115,13 @@ public class MyPageSVCImpl implements IMypageSVC {
 			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
 					testDao.checkNumberOfCouponseByMbId(mbId);
 			if(cntCoupon >= 0) {
-				int cntLecture = testDao.checkNumberOfLectureByMbId(mbId); // 회원이듣는강의개수
+				int cntLecture = ltDao.checkNumberOfLectureByMbIdStatus(mbId, 0); // 회원이듣는강의개수
 				if(cntLecture >= 0) {
 					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
 					String ticketFrontName = "";
 					String ticketName = "";
 					List<String> strCateList = new ArrayList<>(); 
-
+					System.out.println("mpSvc :: cntUseCategory = " + cntUseCategory);
 					if(cntUseCategory == 1) {
 						ticketFrontName = "1";
 						ticketName = "카테고리 이용권";
@@ -133,26 +133,18 @@ public class MyPageSVCImpl implements IMypageSVC {
 						ticketName = "카테고리 이용권";
 						String[] arrayCategories = ticket.getCategory().split("_");
 						for (int i = 0; i < arrayCategories.length; i++) {
-							String strCate = "무제한 이용권"; 
+							String strCate = 
+									LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])]; 
 							strCateList.add(strCate);
 						}
 						
 					} else if(cntUseCategory == 3) {
-						ticketFrontName = "∞";
+						ticketFrontName = "★";
 						ticketName = TicketVO.STR_TICKET_NAME_MAP.get(cntUseCategory);
 						String strCate = "전체"; 
 						strCateList.add(strCate);
 					}
-					
-					System.out.println("mpSvc : strCateList.size() = " + strCateList.size());
-					for (int i = 0; i < strCateList.size(); i++) {
-						System.out.println("mpSvc : strCateList.get(i) = " + strCateList.get(i));
-					}
-					
-					
-					/* 개수가지고 카테고리를 어떻게? 하는지 확인이필요함 
-					 티켓을 가지고 있다가 강의볼떄마다 하나씩사용하는지 애초에 살떄 3개짜리를사게되는 
-					순간 정해져서 오는지 오게되면은 번호로 하는데 스플릿을 나타나는지 알아야한다 */
+
 					rMap.put("ticketFrontName", ticketFrontName);
 					rMap.put("ticketName", ticketName);
 					rMap.put("strCateList", strCateList);
@@ -271,17 +263,22 @@ public class MyPageSVCImpl implements IMypageSVC {
 						String strCate = LecTypeVO.STR_CATEGORY[cate];
 						strCateList.add(strCate);
 						
+						
 						String subTitle = (String)lecParamMap.get("subtitle");
 						subTitleList.add(subTitle);
+						
 						
 						String titleImgPath = (String)lecParamMap.get("title_img");
 						imgPathList.add(titleImgPath);
 						
+						
 						String nickName = (String)lecParamMap.get("nickname");
 						nickNameList.add(nickName);
 						
+						
 						int likeCount = (int)lecParamMap.get("like_count");
 						likeCountList.add(likeCount);
+						
 						
 						/* 	크리에이터 프로필 이미지? 뽑는방법
 						 * LectureVO 타입의 객체를 뽑는다. 그곳의 LectureVO.getImgPath() 
@@ -291,15 +288,14 @@ public class MyPageSVCImpl implements IMypageSVC {
 						 * <3> + <2> + img + <1> 하면 해당 이미지 사진의 경로가 완성이됨. 
 						 * 	(경로니까 사이에 / 없으면 추가해주자)
 						*/
-						String localPath = "";// creDao.
+						String localPath = "/Images/2020/";// creDao.
 						String creImgPath = (String)lecParamMap.get("img_path");
+						
 						String creNickName = creImgPath.split("_")[1];
-						System.out.println("creNickName = " + creNickName);
-						String creatorImgPath = localPath + creNickName + "img" + creImgPath;
+						
+						String creatorImgPath = localPath + creNickName + "/Img" + creImgPath;
 						creatorImgPathList.add(creatorImgPath);
-						System.out.printf("%d회차 id = %d, strCate = %s, subTitle =  %s," + 
-						" titleImgPath = %s, nickName = %s, likeCount = %d, creatorImgPath =  %s\r\n" ,
-						i, id, strCate, subTitle, titleImgPath, nickName, likeCount, creatorImgPath);
+						System.out.println("creatorImgPath = " + creatorImgPath);
 					} else {
 						System.out.println("lecParamMap == null");
 					}

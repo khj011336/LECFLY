@@ -421,13 +421,11 @@ public class MemberController {
 				System.out.println("ticketFrontName = " + ticketFrontName + " / ticketName = " + ticketName + 
 						" / strCateList.size() = " + strCateList.size() + " / tiketEndDay = " + tiketEndDay + 
 						" / cntCoupon = " + cntCoupon + " / cntLecture = " + cntLecture);
-				for (int i = 0; i < strCateList.size(); i++) {
-					System.out.println("strCateList.get(i) = " + strCateList.get(i));
-				}
+				
 				model.addAttribute("ticketFrontName", ticketFrontName);
 				model.addAttribute("ticketName", ticketName);
 				model.addAttribute("strCateList", strCateList);
-				model.addAttribute("tiketEndDay", tiketEndDay);
+				model.addAttribute("ticketEndDay", tiketEndDay);
 				model.addAttribute("cntCoupon", cntCoupon);
 				model.addAttribute("cntLecture", cntLecture);
 				

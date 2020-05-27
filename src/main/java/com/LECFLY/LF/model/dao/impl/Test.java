@@ -295,10 +295,7 @@ public class Test {
 	/////////////// ILectureDAO
 	
 	public static final String SQL_SELECT_ONE_ID_CATEGOTY_TITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
-			= "select id, category, title, title_img nickname, like_count, img_path from lectures where id = ?";
-	
-	public static final String SQL_SELECT_COUNT_LECTURES_BY_MBID = 
-			"select count(*) from lectures where fid = ?";	
+			= "select id, category, title, title_img, nickname, like_count, img_path from lectures where id = ?";
 	
 	public Map<String, Object> selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById(int lecId) {
 		System.out.println("selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById()");
@@ -330,24 +327,6 @@ public class Test {
 		}
 		return null;
 	}
-	
-	
-	/**
-	 * 회원의 아이디로 검색할경우 그회원이 듣고있는 lectuer 의개수
-	 */
-	public int checkNumberOfLectureByMbId(int fId) {
-		System.out.println("checkNumberOfLectureByMbId()");
-		try {
-			System.out.println(SQL_SELECT_COUNT_LECTURES_BY_MBID + " / fId = " + fId);
-			return jtem.queryForObject(SQL_SELECT_COUNT_LECTURES_BY_MBID, Integer.class, fId);
-		} catch(DataAccessException e) {
-			System.out.println("DataAccessException..");
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	
-	
 
 	///////////
 	
