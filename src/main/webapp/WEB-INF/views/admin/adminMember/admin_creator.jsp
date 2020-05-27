@@ -32,7 +32,7 @@
 				<label><input name="status" type="radio" value="1">승인거절</label>
 				<label><input name="status" type="radio" value="2">승인요청</label>
 				<label><input name="status" type="radio" value="3">승인완료</label>
-			</td><td></td>
+			</td>
 		</tr>
 	</table>
 	<div class="admin_search_btns">
@@ -49,18 +49,18 @@
 	
 	<ul class="admin_search_edit">	
 		<li>
-			<button class="date_filter" onclick="clickAllCheckBtn()">전체 선택</button>
-			<button class="date_filter" onclick="unclickAllCheckBtn()">선택 취소</button> |
-			<button class="date_filter" id="update_approval_creator"> 승인 완료</button>
-			<button class="date_filter" id="update_disapproval_creator">승인거절</button> |
-			<button class="date_filter" id="delete_creator_list">삭제</button>
+			<button onclick="clickAllCheckBtn()">전체 선택</button>
+			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="btn_filter" id="update_approval_creator"> 승인 완료</button>
+			<button class="btn_filter" id="update_disapproval_creator">승인거절</button> |
+			<button class="btn_filter" id="delete_creator_list">삭제</button>
 		</li>
 	</ul>	
-	<ul class="admin_search_sort">	
-		<li><a href="?p=${pn}&o=1">강의많은순</a></li>
-		<li><a href="?p=${pn}&o=2">승인대기순</a></li>
-		<li><a href="?p=${pn}&o=3">승인완료순</a></li>
-	</ul>
+<!-- 	<ul class="admin_search_sort">	 -->
+<%-- 		<li><a href="?p=${pn}&o=1">강의많은순</a></li> --%>
+<%-- 		<li><a href="?p=${pn}&o=2">승인대기순</a></li> --%>
+<%-- 		<li><a href="?p=${pn}&o=3">승인완료순</a></li> --%>
+<!-- 	</ul> -->
 </div>    
 
 
@@ -110,36 +110,45 @@
 		 		    </c:out></c:otherwise>
 	 		    </c:choose>
 			</td>
-			<td>
 			<c:choose>
-					<c:when test="${cr.status==0}">미신청</c:when>
-					<c:when test="${cr.status==1}">요청 취소</c:when>
-					<c:when test="${cr.status==2}">신규 요청</c:when>
-					<c:when test="${cr.status==3}">크리에이터</c:when>
+					<c:when test="${cr.status == 0}">
+						<td name="status" value="0" style="color: gray;">미신청</td>
+					</c:when>
+					<c:when test="${cr.status == 1}">
+						<td name="status" value="1" style="color: orangered;">승인 거절</td>
+					</c:when>
+					<c:when test="${cr.status == 2}">
+						<td name="status" value="2" style="color: orange;">신규 요청</td>
+					</c:when>
+					<c:when test="${cr.status == 3}">
+						<td name="status" value="3" style="color: #5cb85c;">승인 완료</td>
+					</c:when>
 				</c:choose>
-			</td> 
 			<td><fmt:formatDate value="${cr.grantDate}" pattern="yyyy.MM.dd" /></td> 
 		</tr>
 		</c:forEach>
 	</table>
 	<div id="paginate">
 		<c:if test="${pn > 1}">
-			<a href="${pageContext.request.contextPath}/admin_creator.LF?pn=${pn-1}">[이전]</a>
+			<a href="?p=${pn-1}">[이전]</a>
 		</c:if>
-		 &nbsp; &nbsp;
+		<c:if test="${pn <= 1}">
+			<span>[이전]</span>
+		</c:if> &nbsp;&nbsp;
 		<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
 			<c:if test='${vs.current eq pn}'>
 				<b style='color: orange'>${vs.current}</b>
 			</c:if>	
 			<c:if test='${vs.current ne pn}'>
-				<a href="${pageContext.request.contextPath}/admin_creator.LF?pn=${vs.current}">${vs.current}</a>
-			</c:if>
-			 &nbsp;
-			 ${vs.current eq maxPn ? '': '|'}
-		</c:forEach>
-		 &nbsp; &nbsp;
+				<a href="?p=${vs.current}">${vs.current}</a>
+			</c:if>			 	
+			 ${vs.current eq maxPn ? '': '| '}
+		</c:forEach> &nbsp; &nbsp;
 		<c:if test="${pn < maxPn}">
-			<a href="${pageContext.request.contextPath}/admin_creator.LF?pn=${pn+1}">[다음]</a>
+			<a href="?p=${pn+1}">[다음]</a>
+		</c:if>
+		<c:if test="${pn > maxPn}">
+			<span>[다음]</span>
 		</c:if>
 	</div>
 </div>

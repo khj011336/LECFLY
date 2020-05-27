@@ -74,11 +74,22 @@ public interface IAdminLectureDAO {
 	int selectCreatorApprovalCnt();
 	int selectQnaCommentCnt();
 	List<CategoryLectureStatVO> selectCategoryLectureCnt();
-	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
-	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
-	boolean delectLectureforIds(ArrayList<Integer> checkList);
 	List<LectureVO> searchLectureByApproval(int offset, int limit);
 	List<LectureVO> searchLectureByLike(int offset, int limit);
 	List<LectureVO> searchLectureByApprovalDone(int offset, int limit);
+	
+	// 일괄 승인
+	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
+	boolean updateMemberApprovalforIds(ArrayList<Integer> checkList);
+	boolean updateCreatorApprovalforIds(ArrayList<Integer> checkList);
+	// 일괄 승인 거절
+	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
+	boolean updateMemberDisapprovalforIds(ArrayList<Integer> checkList);
+	boolean updateCreatorDisapprovalforIds(ArrayList<Integer> checkList);
+	// 일괄 삭제
+	boolean deleteLectureforIds(ArrayList<Integer> checkList);
+	boolean deleteMemberforIds(ArrayList<Integer> checkList);
+	boolean deleteCreatorforIds(ArrayList<Integer> checkList);
+	
 
 }

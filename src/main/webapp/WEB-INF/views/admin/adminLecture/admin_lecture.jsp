@@ -64,11 +64,11 @@
 	
 	<ul class="admin_search_edit">	
 		<li>
-			<button class="date_filter" onclick="clickAllCheckBtn()">전체 선택</button>
-			<button class="date_filter" onclick="unclickAllCheckBtn()">선택 취소</button> |
-			<button class="date_filter" id="update_approval_lecture"> 승인 완료</button>
-			<button class="date_filter" id="update_disapproval_lecture">승인거절</button> |
-			<button class="date_filter" id="delete_lecture_list">삭제</button>
+			<button onclick="clickAllCheckBtn()">전체 선택</button>
+			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="btn_filter" id="update_approval_lecture"> 승인 완료</button>
+			<button class="btn_filter" id="update_disapproval_lecture">승인거절</button> |
+			<button class="btn_filter" id="delete_lecture_list">삭제</button>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	

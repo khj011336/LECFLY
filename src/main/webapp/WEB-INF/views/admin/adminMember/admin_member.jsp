@@ -51,18 +51,18 @@
 	
 	<ul class="admin_search_edit">	
 		<li>
-			<button class="date_filter" onclick="clickAllCheckBtn()">전체 선택</button>
-			<button class="date_filter" onclick="unclickAllCheckBtn()">선택 취소</button> |
-			<button class="date_filter" id="update_approval_member"> 승인 완료</button>
-			<button class="date_filter" id="update_disapproval_member">승인 거절</button> |
-			<button class="date_filter" id="delete_member_list">삭제</button>
+			<button onclick="clickAllCheckBtn()">전체 선택</button>
+			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="btn_filter" id="update_approval_member"> 승인 완료</button> 
+			<button class="btn_filter" id="update_disapproval_member">승인 취소</button> |
+			<button class="btn_filter" id="delete_member_list">삭제</button>
 		</li>
 	</ul>	
-	<ul class="admin_search_sort">	
-		<li><a href="?p=${pn}&o=1">신규가입순</a></li>
-		<li><a href="?p=${pn}&o=2">승인대기순</a></li>
-		<li><a href="?p=${pn}&o=3">승인완료순</a></li>
-	</ul>
+<!-- 	<ul class="admin_search_sort">	 -->
+<%-- 		<li><a href="?p=${pn}&o=1">신규가입순</a></li> --%>
+<%-- 		<li><a href="?p=${pn}&o=2">승인대기순</a></li> --%>
+<%-- 		<li><a href="?p=${pn}&o=3">승인완료순</a></li> --%>
+<!-- 	</ul> -->
 </div>    
 
 <div class="admin_table_wrap">
@@ -107,14 +107,20 @@
 					<c:when test="${mb.useTicket==3}">무제한 이용권</c:when>
 				</c:choose>
 				</td> 
-				<td>
 				<c:choose>
-					<c:when test="${mb.checkCreator==0}">일반회원</c:when>
-					<c:when test="${mb.checkCreator==1}">요청 취소</c:when>
-					<c:when test="${mb.checkCreator==2}">신규 요청</c:when>
-					<c:when test="${mb.checkCreator==3}">크리에이터</c:when>
+					<c:when test="${mb.checkCreator == 0}">
+						<td name="status" value="0" style="color: gray;">미신청</td>
+					</c:when>
+					<c:when test="${mb.checkCreator == 1}">
+						<td name="status" value="1" style="color: orange;">신규 요청</td>
+					</c:when>
+					<c:when test="${mb.checkCreator == 2}">
+						<td name="status" value="2" style="color: orangered;">승인 거절</td>
+					</c:when>
+					<c:when test="${mb.checkCreator == 3}">
+						<td name="status" value="3" style="color: #5cb85c;">승인 완료</td>
+					</c:when>
 				</c:choose>
-				</td> 
 				<td><fmt:formatDate value="${mb.joinedAt}" pattern="yyyy.MM.dd" /></td>
 				<td><fmt:formatDate value="${mb.loginedAt}" pattern="yyyy.MM.dd" /></td> 
 			</tr>

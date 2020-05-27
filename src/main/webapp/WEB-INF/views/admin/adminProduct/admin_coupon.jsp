@@ -48,18 +48,16 @@
 	
 	<ul class="admin_search_edit">	
 		<li>
-			<span class="date_filter"><a href="#" onclick="clickAllCheckBtn()">| 전체선택</a></span>
-			<span class="date_filter"><a href="#" onclick="unclickAllCheckBtn()">선택취소 |</a></span>
-			<span class="date_filter"><a href="#" id="update_approve_lecture"> 승인처리</a></span>
-			<span class="date_filter"><a href="#" id="update_disapproval_lecture">승인취소 |</a></span>
-			<span class="date_filter"><a href="#" id="delete_lecture_list">삭제</a></span>
+			<button onclick="clickAllCheckBtn()">전체 선택</button>
+			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="btn_filter" id="">삭제</button>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	
-		<li><a href="#" sort="status,asc">승인대기순</a></li>
-		<li><a href="#" sort="id,desc">생성일순</a></li>
-		<li><a href="#" sort="video_track,desc">영상많은순</a></li>
-		<li><a href="#" sort="like_count,desc">좋아요순</a></li>
+<!-- 		<li><a href="#" sort="status,asc">승인대기순</a></li> -->
+<!-- 		<li><a href="#" sort="id,desc">생성일순</a></li> -->
+<!-- 		<li><a href="#" sort="video_track,desc">영상많은순</a></li> -->
+<!-- 		<li><a href="#" sort="like_count,desc">좋아요순</a></li> -->
 	</ul>
 </div>    
 
@@ -119,4 +117,5 @@
 			<span>[다음]</span>
 		</c:if>
 	</div>
+	
 </div>

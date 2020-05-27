@@ -33,13 +33,12 @@
 		<div class="sidebar-search">
 			<div>
 				<div class="input-group">
-					<input type="text" class="form-control search-menu"
-						placeholder="Search...">
-					<div class="input-group-append">
-						<span class="input-group-text"> <i class="fa fa-search"
-							aria-hidden="true"></i>
-						</span>
-					</div>
+<!-- 					<input type="text" name="adminsearch" class="form-control search-menu" placeholder="Search..."> -->
+<!-- 					<div class="input-group-append"> -->
+<!-- 						<span class="input-group-text"> <i class="fa fa-search" -->
+<!-- 							aria-hidden="true"></i> -->
+<!-- 						</span> -->
+<!-- 					</div> -->
 				</div>
 			</div>
 		</div>
@@ -55,7 +54,7 @@
 							<li><a href="admin_site.LF">사이트이용안내</a></li>
 							<li><a href="admin_banner.LF">배너관리 <!-- <span class="badge badge-pill badge-success">Pro</span> --></a></li>
 <!-- 							<li><a href="admin_recommend.LF">추천강의관리 <span class="badge badge-pill badge-success">Pro</span></a></li> -->
-							<li><a href="admin_account.LF">관리자계정관리</a></li>
+							<li><a href="#">관리자계정관리</a></li>
 						</ul>
 					</div></li>
 				<li class="sidebar-dropdown"><a href="#"> <i
@@ -99,7 +98,7 @@
 						<ul>
 							<li><a href="admin_member.LF">회원관리</a></li>
 							<li><a href="admin_creator.LF" id="nav_board_creator">크리에이터관리</a></li>
-							<li><a href="admin_member_stat.LF">회원통계</a></li>
+<!-- 							<li><a href="admin_member_stat.LF">회원통계</a></li> -->
 						</ul>
 					</div></li>
 				<li class="sidebar-dropdown"><a href="#"> <i
@@ -115,10 +114,9 @@
 						</ul>
 					</div></li>
 				<li class="header-menu"><span>Extra</span></li>
-				<li><a href="#"> <i class="fa fa-book"></i> <span>약관</span>
+				<li><a href="admin_clause.LF"> <i class="fa fa-book"></i> <span>약관</span>
 				</a></li>
-				<li><a href="#"> <i class="fa fa-calendar"></i> <span>캘린더</span>
-				</a></li>
+<!-- 				<li><a href="#"> <i class="fa fa-calendar"></i> <span>캘린더</span></a></li> -->
 				<li><a href="#"> <i class="fa fa-folder"></i> <span>자료실</span>
 				</a></li>
 			</ul>
@@ -127,10 +125,10 @@
 	</div>
 	<!-- sidebar-content  -->
 	<div class="sidebar-footer">
-		<a href="#"> <i class="fa fa-bell"></i> <span
-			class="badge badge-pill badge-warning notification">3</span>
-		</a> <a href="#"> <i class="fa fa-envelope"></i> <span
-			class="badge badge-pill badge-success notification">7</span>
+		<a href="#"> <i class="fa fa-bell"></i>
+<!-- 			 <span class="badge badge-pill badge-warning notification">3</span> -->
+		</a> <a href="#"> <i class="fa fa-envelope"></i> 
+<!-- 		<span class="badge badge-pill badge-success notification">7</span> -->
 		</a> <a href="#"> <i class="fa fa-cog"></i> <span class="badge-sonar"></span>
 		</a> <a href="#"> <i class="fa fa-power-off"></i>
 		</a>

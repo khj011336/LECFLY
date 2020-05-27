@@ -59,11 +59,11 @@
 			<button class="date_filter" id="delete_video_list">삭제</button>
 		</li>
 	</ul>	
-	<ul class="admin_search_sort">	
-		<li><a href="?p=${pn}&o=1">조회순</a></li>
-		<li><a href="?p=${pn}&o=2">좋아요순</a></li>
-		<li><a href="?p=${pn}&o=3">업데이트순</a></li>
-	</ul>
+<!-- 	<ul class="admin_search_sort">	 -->
+<%-- 		<li><a href="?p=${pn}&o=1">조회순</a></li> --%>
+<%-- 		<li><a href="?p=${pn}&o=2">좋아요순</a></li> --%>
+<%-- 		<li><a href="?p=${pn}&o=3">업데이트순</a></li> --%>
+<!-- 	</ul> -->
 </div>    
 
 <div class="admin_table_wrap">
