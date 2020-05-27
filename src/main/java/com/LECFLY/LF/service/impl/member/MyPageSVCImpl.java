@@ -105,19 +105,19 @@ public class MyPageSVCImpl implements IMypageSVC {
 		System.out.println("selectMyPageContents()..");
 		Map<String, Object> rMap = new HashMap<>(); 
 		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
+	
+		//쿠폰
+		int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
+				testDao.checkNumberOfCouponseByMbId(mbId);
+		
+		int cntLecture = 
+				ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
+	
 		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
 				 testDao.selectOneTiketForCanUseByMbId(mbId);
-		System.out.println("svc:: ticket = " + ticket);
-		if(ticket != null) {
-			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
-			//쿠폰
-			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
-					testDao.checkNumberOfCouponseByMbId(mbId);
-			
-			int cntLecture = 
-					ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
-			
-			int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
+		
+		if(ticket != null) { // 티켓에대한정보들
+			int cntUseCategory = ticket.getName();
 			String ticketFrontName = "";
 			String ticketName = "";
 			List<String> strCateList = new ArrayList<>(); 
@@ -143,17 +143,17 @@ public class MyPageSVCImpl implements IMypageSVC {
 				String strCate = "";
 				strCateList.add(strCate);
 			}
+			rMap.put("rt", "ok");
 			rMap.put("ticketFrontName", ticketFrontName);
 			rMap.put("ticketName", ticketName);
 			rMap.put("strCateList", strCateList);
 			rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
-			rMap.put("cntCoupon", cntCoupon);
-			rMap.put("cntLecture", cntLecture);
-			return rMap;
 		} else {
 			System.out.println("ticket = null");
-		} 	
-		return null;
+		}
+		rMap.put("cntCoupon", cntCoupon);
+		rMap.put("cntLecture", cntLecture);
+		return rMap;
 	}
 	
 	

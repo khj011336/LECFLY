@@ -411,14 +411,13 @@ public class MemberController {
 			//마이페이지에 필요한거 카테고리 이용권개수(무엇을이용하는지(카테고리) + 종료날짜) + 쿠폰 개수 + 강의신청 목록 개수
 			int mbId = mb.getId();
 			Map<String, Object> pMap = mpSvc.selectMyPageContents(mbId);
-			if(pMap != null) {
+			int cntCoupon = (int)pMap.get("cntCoupon");
+			int cntLecture = (int)pMap.get("cntLecture");
+			if( pMap.get("rt").equals("ok") ) {
 				String ticketFrontName = (String)pMap.get("ticketFrontName");
 				String ticketName = (String)pMap.get("ticketName");
 				List<String> strCateList = (List<String>)pMap.get("strCateList");
 				Timestamp tiketEndDay = (Timestamp)pMap.get("tiketEndDay");
-				int cntCoupon = (int)pMap.get("cntCoupon");
-				int cntLecture = (int)pMap.get("cntLecture");
-				
 				
 				System.out.println("ticketFrontName = " + ticketFrontName + " / ticketName = " + ticketName + 
 						" / strCateList.size() = " + strCateList.size() + " / tiketEndDay = " + tiketEndDay + 
@@ -429,26 +428,21 @@ public class MemberController {
 				model.addAttribute("strCateList", strCateList);
 				model.addAttribute("ticketEndDay", tiketEndDay);
 				model.addAttribute("addText", "까지");
-				model.addAttribute("cntCoupon", cntCoupon);
-				model.addAttribute("cntLecture", cntLecture);
 				
-				model.addAttribute("mb", mb);
-				model.addAttribute("mbLoginNicname", mb.getNicname());
-				model.addAttribute("mpNone", "");
-				
-				List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING);
+				List<LecAttendVO> laList 
+					= mpSvc.selectLecToStatusForMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING);
 				if(laList != null) {
 					model.addAttribute("msg_status", "수강중인 강의");
 					model.addAttribute("laList", laList);
 				} else {
 					model.addAttribute("msg_status", "수강중인 강의");
 				}
-			} else {
-				System.out.println("pMap == null ");
-				model.addAttribute("mb", mb);
-				model.addAttribute("mbLoginNicname", mb.getNicname());
-				model.addAttribute("mpNone", "");
 			}
+			model.addAttribute("cntCoupon", cntCoupon);
+			model.addAttribute("cntLecture", cntLecture);
+			model.addAttribute("mb", mb);
+			model.addAttribute("mbLoginNicname", mb.getNicname());
+			model.addAttribute("mpNone", "");
 			return "member/mypage.ho";
 		} else {
 			// 실패시 로그인창으로~
