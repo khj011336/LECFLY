@@ -44,15 +44,15 @@
        		</div>
        		<div id="cls_part2">
 	    		<div class="cls_text1"><label for="cls_cover_img" class="creator_h3">클래스 커버이미지</label><span class="creator_h5 cls_left_interval">커버로 사용할 이미지를 추가해보세요</span></div>
-       			<div id="cls_imgbox1" class="cls_imgbox1"><img src="${crPath }${Lecture.titleImg}" class="cls_imgbox1" id="Timgshow" >
+       			<div id="cls_imgbox1" class="cls_imgbox1"><img src="${crPath }${Lecture.titleImg}" class="cls_imgbox1" id="Timgshow" onError ="this.src='resources/imges/unknown/l4.PNG'">
        			<input type="file" accept="image/gif, image/jpeg, image/png" name="TitleImgM" id="titleimg" class="cls_bar2"></div>
        			<div id="cls_img_path_box"></div>
        		</div>
        		<div id="cls_part3">
        			<div class="cls_text1"><span class="creator_h3">강의 소개하기</span></div>
-       			<div id="cls_imgbox2" class="cls_imgbox2"><img src="${crPath }${Lecture.infoImg}" class="cls_imgbox2" id ="imgshow">
+       			<div id="cls_imgbox2" class="cls_imgbox2"><img src="${crPath }${Lecture.infoImg}" class="cls_imgbox2" id ="imgshow" onError ="this.src='resources/imges/unknown/l4.PNG'">
        			<input  type="file" accept="image/gif, image/jpeg, image/png"  name = "infoImgM" id ="infoimg"></div>
-       			<div id="cls_imgbox3" class="cls_imgbox2"><img src="${crPath }${Lecture.infoImg}" class="cls_imgbox2" id ="imgshowb">
+       			<div id="cls_imgbox3" class="cls_imgbox2"><img src="${crPath }${Lecture.infoImg}" class="cls_imgbox2" id ="imgshowb" onError ="this.src='resources/imges/unknown/l4.PNG'">
        			<input  type="file" accept="image/gif, image/jpeg, image/png" name = "infoImgbM" id ="infoimgb"></div>
        			<div id="cls_contentbox"></div>
        		</div>
