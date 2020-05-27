@@ -113,51 +113,43 @@ public class MyPageSVCImpl implements IMypageSVC {
 			//쿠폰
 			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
 					testDao.checkNumberOfCouponseByMbId(mbId);
-			if(cntCoupon >= 0) {
-				int cntLecture = 
-						ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
-				if(cntLecture >= 0) {
-					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
-					String ticketFrontName = "";
-					String ticketName = "";
-					List<String> strCateList = new ArrayList<>(); 
-					System.out.println("mpSvc :: cntUseCategory = " + cntUseCategory);
-					if(cntUseCategory == 1) {
-						ticketFrontName = "1";
-						ticketName = "카테고리 이용권";
-						String strCate = 
-								LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
-						strCateList.add(strCate);
-					} else if(cntUseCategory == 2) {
-						ticketFrontName = "3";
-						ticketName = "카테고리 이용권";
-						String[] arrayCategories = ticket.getCategory().split("_");
-						for (int i = 0; i < arrayCategories.length; i++) {
-							String strCate = 
-									LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])]; 
-							strCateList.add(strCate);
-						}
-						
-					} else if(cntUseCategory == 3) {
-						ticketFrontName = "무제한";
-						ticketName = "카테고리 이용권";
-						String strCate = "";
-						strCateList.add(strCate);
-					}
-
-					rMap.put("ticketFrontName", ticketFrontName);
-					rMap.put("ticketName", ticketName);
-					rMap.put("strCateList", strCateList);
-					rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
-					rMap.put("cntCoupon", cntCoupon);
-					rMap.put("cntLecture", cntLecture);
-					return rMap;
-				} else {
-					System.out.println("cntLecture = 음수");
+			
+			int cntLecture = 
+					ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
+			
+			int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
+			String ticketFrontName = "";
+			String ticketName = "";
+			List<String> strCateList = new ArrayList<>(); 
+			System.out.println("mpSvc :: cntUseCategory = " + cntUseCategory);
+			if(cntUseCategory == 1) {
+				ticketFrontName = "1";
+				ticketName = "카테고리 이용권";
+				String strCate = 
+						LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
+				strCateList.add(strCate);
+			} else if(cntUseCategory == 2) {
+				ticketFrontName = "3";
+				ticketName = "카테고리 이용권";
+				String[] arrayCategories = ticket.getCategory().split("_");
+				for (int i = 0; i < arrayCategories.length; i++) {
+					String strCate = 
+							LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])]; 
+					strCateList.add(strCate);
 				}
-			} else {
-				System.out.println("cntCoupon = 음수 ");
+			} else if(cntUseCategory == 3) {
+				ticketFrontName = "무제한";
+				ticketName = "카테고리 이용권";
+				String strCate = "";
+				strCateList.add(strCate);
 			}
+			rMap.put("ticketFrontName", ticketFrontName);
+			rMap.put("ticketName", ticketName);
+			rMap.put("strCateList", strCateList);
+			rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
+			rMap.put("cntCoupon", cntCoupon);
+			rMap.put("cntLecture", cntLecture);
+			return rMap;
 		} else {
 			System.out.println("ticket = null");
 		} 	

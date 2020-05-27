@@ -55,7 +55,7 @@
 							</c:forEach>
 						</p>
 						<br>
-						<span><small><fmt:formatDate value="${ticketEndDay}" pattern="yyyy-MM-dd" />까지</small></span>
+						<span><small><fmt:formatDate value="${ticketEndDay}" pattern="yyyy-MM-dd" /><c:if test="${addText}">까지</c:if></small></span>
 			        </div>
 			    </div>
 				<div id="mypage_middle">									<!-- 정보 영역 및 메뉴영역 -->

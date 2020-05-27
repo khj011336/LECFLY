@@ -428,6 +428,7 @@ public class MemberController {
 				model.addAttribute("ticketName", ticketName);
 				model.addAttribute("strCateList", strCateList);
 				model.addAttribute("ticketEndDay", tiketEndDay);
+				model.addAttribute("addText", "까지");
 				model.addAttribute("cntCoupon", cntCoupon);
 				model.addAttribute("cntLecture", cntLecture);
 				
@@ -444,7 +445,7 @@ public class MemberController {
 				}
 			} else {
 				System.out.println("pMap == null ");
-				System.out.println("mb = " + mb);
+				model.addAttribute("mb", mb);
 				model.addAttribute("mbLoginNicname", mb.getNicname());
 				model.addAttribute("mpNone", "");
 			}
