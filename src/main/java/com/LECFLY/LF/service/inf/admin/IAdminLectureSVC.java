@@ -1,12 +1,14 @@
 package com.LECFLY.LF.service.inf.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.CouponVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO;
 
 public interface IAdminLectureSVC {
 	public static int AD_PAGE_SIZE = 20;
@@ -58,6 +60,27 @@ public interface IAdminLectureSVC {
 	CouponVO selectCoupon(CouponVO vo);
 	// 쿠폰을 전체조회할 수 있다.
 	List<CouponVO> selectCouponList();
-	Map<String,Integer> checkMaxPageNumber();
-	List<LectureVO> selectAllLecture(int pageNumber);	
+	Map<String,Integer> checkLectureMaxPageNumber();
+	List<LectureVO> selectAllLecture(int pageNumber);
+	List<VideoVO> selectAllVideo(int pageNumber);	
+	Map<String,Integer> checkVideoMaxPageNumber();
+	List<LectureVO> selectLectureListSearchFilter(Map<String, Object> condition);
+	// 관리자 메인 통계파트
+	int selectLectureApproval();
+	int selectLectureAll();
+	int selectTodayInCnt();
+	int selectMemberCnt();
+	int selectCreatorCnt();
+	int selectNewMemberCnt();
+	int selectCreatorApprovalCnt();
+	int selectQnaCommentCnt();
+	List<CategoryLectureStatVO> selectCategoryLectureCnt();
+	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
+	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
+	boolean delectLectureforIds(ArrayList<Integer> checkList);
+	Map<String, Integer> checkLectureMaxPageNumberSearch(Map<String, Object> searchMap);
+	List<LectureVO> selectAllLectureSearch(Map<String, Object> searchMap);
+	List<LectureVO> selectAllLectureByApproval(int pageNumber);
+	List<LectureVO> selectAllLectureByLike(int pageNumber);
+	List<LectureVO> selectAllLectureByApprovalDone(int pageNumber);
 }

@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cscenter.INoticeDAO;
-import com.LECFLY.LF.model.vo.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
 
 
 @Repository
@@ -30,6 +30,9 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 	// Notice 목록(고객센터게시판) 보여주기
 	public static String SQL_NOTICE_SHOWALL
 		= "select * from notices where type like '0' order by id desc";
+	// Notice 목록(크리에이터) 보여주기
+		public static String SQL_CRNOTICE_SHOWALL
+			= "select * from notices where type like '1' order by id desc";
 	// Notice 상세조회
 	public static String SQL_NOTICE_SHOWONE
 		= "select * from notices where id = ?";
@@ -49,6 +52,13 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 	public static String SQL_CHECK_NOTICE_NUMBERS
 	= "select count(*) from notices where type like concat('%',0,'%')";	
 	
+	
+	// CREATOR Notice 페이지 조회
+	public static String SQL_CRNOTICE_SHOWALL_PG
+		= "SELECT * FROM notices where type like '1' order by id desc limit ?, ?";
+	// CREATOR Notice 갯수 카운트
+	public static String SQL_CHECK_CRNOTICE_NUMBERS
+	= "select count(*) from notices where type like concat('%',1,'%')";	
 	//@Autowired
 	private JdbcTemplate jtem;	
 	private SimpleJdbcInsert simIn;
@@ -80,7 +90,11 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 		// VO <==> TBL
 		return jtem.query(SQL_NOTICE_SHOWALL, BeanPropertyRowMapper.newInstance(NoticeVO.class));
 	}
-
+	@Override
+	public List<NoticeVO> showAllCreatorNotices() {
+		// VO <==> TBL
+		return jtem.query(SQL_CRNOTICE_SHOWALL, BeanPropertyRowMapper.newInstance(NoticeVO.class));
+	}
 	@Override
 	public List<NoticeVO> showAllNotices(boolean order) {
 		// TODO Auto-generated method stub
@@ -90,6 +104,11 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 	@Override
 	public List<NoticeVO> showAllNotices(int offset, int limit) {
 		return jtem.query(SQL_NOTICE_SHOWALL_PG, BeanPropertyRowMapper.newInstance(NoticeVO.class), offset, limit);
+
+	}
+	@Override
+	public List<NoticeVO> showAllCreatorNotices(int offset, int limit) {
+		return jtem.query(SQL_CRNOTICE_SHOWALL_PG, BeanPropertyRowMapper.newInstance(NoticeVO.class), offset, limit);
 
 	}
 
@@ -102,6 +121,10 @@ public class NoticeMysqlDAOImpl implements INoticeDAO{
 	@Override
 	public int checkNumberOfNotices() {
 		return jtem.queryForObject(SQL_CHECK_NOTICE_NUMBERS, Integer.class);
+	}
+	@Override
+	public int checkNumberOfCreatorNotices() {
+		return jtem.queryForObject(SQL_CHECK_CRNOTICE_NUMBERS, Integer.class);
 	}
 
 	

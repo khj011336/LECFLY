@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.LECFLY.LF.model.vo.MemberVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
 
 public interface IMemberDAO {
 	//impl로 옮겨야됨

@@ -5,13 +5,13 @@
 
 	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage.css">
 	<link type="text/css" rel="stylesheet" href="resources/css/member/mypage_list.css">
+	<link type="text/css" rel="stylesheet" href="resources/css/member/create_new_member.css">
 	
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	<script src="resources/js/member/mypage.js"></script>
-
 			<div id="mypage_wrap"> 											<!-- 조각페이지 -->	
 				<div id="mypage_top"> 										<!-- 개인정보 영역 -->
 					<div id="mypage_pic">
@@ -34,23 +34,28 @@
 			        <div class="mypage_mb_t" id="mypage_mb_t_attendlec">
 			        	<img src="resources/imges/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">
 						<br><br><br>
-						<span>강의 신청 목록<b>6</b> 개</span>
+						<span>강의 신청 목록<b><c:out value="${cntLecture}" default ="0" /></b> 개</span>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_coupon">
 			        	<img src="resources/imges/mypage/mypage_coupon.png" class="mypage_1" alt="쿠폰" width="64px" height="64px">
 						<br><br><br>
-						<span>쿠폰 <b>4</b> 개</span>
+						<span>쿠폰 <b><c:out value="${cntCoupon}" default="0" /></b> 개</span>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_ticket">
 			        	<img src="resources/imges/mypage/mypage_ticket.png" class="mypage_1" alt="이용권" width="64px" height="64px">
 						<br><br><br>
-						<span><b>3</b> 카테고리 이용권</span>
+						<span><b><c:out value="${ticketFrontName}" default="" /></b> <c:out value="${ticketName}" default="보유중인 티켓 없음" /></span>
 						<br>
 						<p>
-						<!--  여기서 포문 -->
-							<a>미술</a> / <a>요리</a> / <a>라이프스타일</a> 
-							<!--  여기서 포문 끝 마지막에는 / 없어야됨 -->
+							<c:set var="lastCt" value="${(fn:length(strCateList) - 1)}" />
+							<c:forEach var="strCate" items="${strCateList}" varStatus="vs">
+								<a><c:out value="${strCate}"/></a>
+								<c:if test="${vs.index ne lastCt}"> / </c:if>
+								<c:if test="${vs.index eq lastCt}"> </c:if>
+							</c:forEach>
 						</p>
+						<br>
+						<span><small><fmt:formatDate value="${ticketEndDay}" pattern="yyyy-MM-dd" />까지</small></span>
 			        </div>
 			    </div>
 				<div id="mypage_middle">									<!-- 정보 영역 및 메뉴영역 -->
@@ -85,8 +90,6 @@
 					  </div>
 					  <div id="tabs-4" class="mypage_tabs_li mypage_tabs_none">
 					  	<ul>
-					    	<!-- <li><a href="#" id="mypage_shoppingcart">장바구니</a></li>
-					    	<li><a href="#" id="mypage_receive_address">배송지관리</a></li> -->
 					    	<li><a href="#" id="mypage_delivery_info">배송정보</a></li>
 					    	<li><a href="#" id="mypage_payment_info">결제내역</a></li>
 						</ul>
@@ -95,10 +98,11 @@
 				</div>
 				
 				<div id="mypage_bottom">									<!-- 조각페이지 영역 -->
-					<c:if test="${not empty mpNone}">
+<%-- 					<c:if test="${not empty mpNone}"> --%>
 						<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%>
-					</c:if>
-					<c:if test="${empty mpNone}">
+<%-- 					</c:if> --%>
+<%-- 					<c:if test="${empty mpNone}"> --%>
 						
-					</c:if>
+<%-- 					</c:if> --%>
 				</div>
+			</div>

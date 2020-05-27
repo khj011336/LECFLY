@@ -1,7 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <div class="main_banner">
-	<%@ include file="../common/main_banner.jsp"%>
+	<c:choose>
+		<c:when test="${empty bannerList}">
+			<%@ include file="../common/main_banner2.jsp"%>
+		</c:when>
+		<c:when test="${not empty bannerList}">
+			<%@ include file="../common/main_banner.jsp"%>
+		</c:when>
+	</c:choose>
+	
 </div>
 <div id="main_content" class="main_content">
 	<div class="main_wrapper">
@@ -19,10 +27,26 @@
 			</c:forEach>
 		</div>
 		<h2 class="main_title">추천 클래스</h2>
-		<%@ include file="main_recommend_list.jsp" %>
+		<c:choose>
+			<c:when test="${empty recoList}">
+				<%@ include file="main_recommend_list2.jsp" %>
+			</c:when>
+			<c:when test="${not empty recoList}">
+				<%@ include file="main_recommend_list.jsp" %>
+			</c:when>
+		</c:choose>
+		
 		
 		<h2 class="main_title">이런 클래스는 어때요</h2>
-		<%@ include file="main_video_list.jsp" %>
+		<c:choose>
+			<c:when test="${empty nomalList}">
+				<%@ include file="main_video_list2.jsp" %>
+			</c:when>
+			<c:when test="${not empty nomalList}">
+				<%@ include file="main_video_list.jsp" %>
+			</c:when>
+		</c:choose>
+		
 	</div>
 </div>
 

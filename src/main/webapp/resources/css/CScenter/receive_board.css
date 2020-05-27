@@ -115,10 +115,24 @@
 	border-top: 1px dashed #999999;
 	font-size: 14px;
 }
-
-.counter {
-	font-size: 5px;
-	color: #666666;
+#reply_count {
+	font-size: 15px;
+	color: grey;
+}
+#input_comment{
+	width: 800px;
+	padding-bottom: 20px;
+}
+#input_comment >input {
+	font-size: 17px;
+	width: 500px;
+}
+#input_comment >.btn_comment {
+	width: 150px;
+}
+/* .counter {
+	font-size: 15px;
+	color: RED;
 	position: relative;
 }
 
@@ -157,4 +171,4 @@
 	word-wrap: break-word;
 	min-height: 42px;
 	box-shadow: 8px 8px 5px #888888;
-}
+}  */

@@ -18,7 +18,14 @@
 				<span class="user-name"> <a href="admin.LF" id="nav_admin_main"><strong>LECFLY ADMIN</strong></a></span> 
 				<!-- <span class="user-role">관리자 MAIN</span> --> 
 				<span class="user-status">
-					<i class="fa fa-circle"></i> <span>Online</span>
+					<c:choose>
+						<c:when test="${not empty member and member.gender eq 2}">
+							<i class="fa fa-circle"></i> <span>Online</span>
+						</c:when>
+						<c:when test="${empty member and member.gender ne 2}">
+							<i class="fa fa-circle" style="color:red"></i> <span>Offline</span>
+						</c:when>
+					</c:choose>
 				</span>
 			</div>
 		</div>
@@ -47,54 +54,57 @@
 						<ul>
 							<li><a href="admin_site.LF">사이트이용안내</a></li>
 							<li><a href="admin_banner.LF">배너관리 <!-- <span class="badge badge-pill badge-success">Pro</span> --></a></li>
-							<li><a href="admin_recommend.LF">추천강의관리 <!-- <span class="badge badge-pill badge-success">Pro</span> --></a></li>
+<!-- 							<li><a href="admin_recommend.LF">추천강의관리 <span class="badge badge-pill badge-success">Pro</span></a></li> -->
 							<li><a href="admin_account.LF">관리자계정관리</a></li>
 						</ul>
 					</div></li>
 				<li class="sidebar-dropdown"><a href="#"> <i
-						class="fa fa-shopping-cart"></i> <span>강의관리</span> <span
-						class="badge badge-pill badge-danger">3</span>
+						class="far fa-gem"></i> <span>강의관리</span> 
+						<span class="badge badge-pill badge-danger"><c:out value="${appLecCnt }" default="0" /></span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
 							<li><a href="admin_lecture.LF" id="nav_board_lecture">강의관리 </a></li>
 							<li><a href="admin_video.LF">영상관리</a></li>
-							<li><a href="admin_kit.LF">키트관리</a></li>
+							
 						</ul>
 					</div></li>
+<!-- 				<li class="sidebar-dropdown"><a href="#"> <i -->
+<!-- 						class="far fa-gem"></i> <span>펀딩관리</span> <span -->
+<!-- 						class="badge badge-pill badge-primary">Beta</span> -->
+<!-- 				</a> -->
+<!-- 					<div class="sidebar-submenu"> -->
+<!-- 						<ul> -->
+<!-- 							<li><a href="#">펀딩승인관리</a></li> -->
+<!-- 							<li><a href="#">펀딩상품관리</a></li> -->
+<!-- 							<li><a href="#">리워드관리</a></li> -->
+<!-- 						</ul> -->
+<!-- 					</div></li> -->
 				<li class="sidebar-dropdown"><a href="#"> <i
-						class="far fa-gem"></i> <span>펀딩관리</span> <span
-						class="badge badge-pill badge-primary">Beta</span>
-				</a>
-					<div class="sidebar-submenu">
-						<ul>
-							<li><a href="#">펀딩승인관리</a></li>
-							<li><a href="#">펀딩상품관리</a></li>
-							<li><a href="#">리워드관리</a></li>
-						</ul>
-					</div></li>
-				<li class="sidebar-dropdown"><a href="#"> <i
-						class="fa fa-shopping-cart"></i> <span>결제관리</span> <span
-						class="badge badge-pill badge-danger">63</span>
+						class="fa fa-shopping-cart"></i> <span>결제관리</span> 
+						<span class="badge badge-pill badge-danger"><c:out value="" default="0" /></span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
 							<li><a href="admin_payment.LF">결제내역관리 </a></li>
 							<li><a href="admin_coupon.LF">쿠폰관리</a></li>
+							<li><a href="admin_kit.LF">키트관리</a></li>
 						</ul>
 					</div></li>
 				<li class="sidebar-dropdown"><a href="#"> <i
 						class="fa fa-chart-line"></i> <span>회원관리</span>
+						<span class="badge badge-pill badge-danger"><c:out value="${appCrCnt }" default="0" /></span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
-							<li><a href="admin_member.LF">일반회원관리</a></li>
+							<li><a href="admin_member.LF">회원관리</a></li>
 							<li><a href="admin_creator.LF" id="nav_board_creator">크리에이터관리</a></li>
-							<li><a href="#" id="nav_board_lecture">회원통계</a></li>
+							<li><a href="admin_member_stat.LF">회원통계</a></li>
 						</ul>
 					</div></li>
 				<li class="sidebar-dropdown"><a href="#"> <i
 						class="fa fa-globe"></i> <span>게시판관리</span>
+						<span class="badge badge-pill badge-danger"><c:out value="" default="0" /></span>
 				</a>
 					<div class="sidebar-submenu">
 						<ul>
@@ -126,24 +136,3 @@
 		</a>
 	</div>
 </nav>
-
-<script type="text/javascript">
-	$(".sidebar-dropdown > a").click(function() {
-		$(".sidebar-submenu").slideUp(200);
-		if ($(this).parent().hasClass("active")) {
-			$(".sidebar-dropdown").removeClass("active");
-			$(this).parent().removeClass("active");
-		} else {
-			$(".sidebar-dropdown").removeClass("active");
-			$(this).next(".sidebar-submenu").slideDown(200);
-			$(this).parent().addClass("active");
-		}
-	});
-
-	$("#close-sidebar").click(function() {
-		$(".page-wrapper").removeClass("toggled");
-	});
-	$("#show-sidebar").click(function() {
-		$(".page-wrapper").addClass("toggled");
-	});
-</script>

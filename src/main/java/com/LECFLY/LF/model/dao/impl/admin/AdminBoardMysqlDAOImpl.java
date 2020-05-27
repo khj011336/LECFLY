@@ -11,10 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminBoardDAO;
 import com.LECFLY.LF.model.vo.CommentClassVO;
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.NoticeVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 
 @Repository
 public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
@@ -108,22 +109,22 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 
 	// Comment 목록 보여주기
 	public static final String SQL_COMMENT_SHOWALL
-		= "select * from qna_comment order by created_at desc";
+		= "select * from comments order by created_at desc";
 	// Comment 등록하기
 	public static final String SQL_COMMENT_INSERT_VO
-		= "insert into qna_comment values(0, ?, ?, ?, ?, ?, ?, ?, now())";
+		= "insert into comments values(0, ?, ?, ?, ?, ?, ?, ?, now())";
 	// Comment 수정하기
 	public static final String SQL_COMMENT_UPDATE_VO
-		= "update qna_comment set cMIF = ? where id = ?";
+		= "update comments set cMIF = ? where id = ?";
 	// Comment 삭제하기
 	public static final String SQL_COMMENT_DELETE_VO
-		= "delete qna_comment where id = ?";
+		= "delete comments where id = ?";
 	// Comment 페이지 조회
 	public static final String SQL_COMMENT_SHOWALL_PG
-		= "SELECT * FROM qna_comment order by id desc limit ?, ?";
+		= "SELECT * FROM comments order by id desc limit ?, ?";
 	// Comment 갯수 카운트
 	public static final String SQL_CHECK_COMMENT_NUMBERS
-	= "select count(id) as cnt from qna_comment";	
+	= "select count(id) as cnt from comments";	
 		
 	
 	
@@ -227,26 +228,26 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 	}
 
 	@Override
-	public boolean insertNewComment(QnaCommentVO cm) {
+	public boolean insertNewComment(CommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean updateComment(QnaCommentVO cm) {
+	public boolean updateComment(CommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean deleteComment(QnaCommentVO cm) {
+	public boolean deleteComment(CommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List <QnaCommentVO> showAllComments(int offset, int limit) {
-		return jtem.query(SQL_COMMENT_SHOWALL_PG, BeanPropertyRowMapper.newInstance(QnaCommentVO.class), offset, limit);
+	public List <CommentVO> showAllComments(int offset, int limit) {
+		return jtem.query(SQL_COMMENT_SHOWALL_PG, BeanPropertyRowMapper.newInstance(CommentVO.class), offset, limit);
 	}
 
 	@Override

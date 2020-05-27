@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminBoardDAO;
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.NoticeVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.CommentClassVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.service.inf.admin.IAdminBoardSVC;
 
 @Service
@@ -123,25 +125,25 @@ public class AdminBoardSVCImpl implements IAdminBoardSVC {
 	}
 
 	@Override
-	public boolean insertNewComment(QnaCommentVO cm) {
+	public boolean insertNewComment(CommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean updateComment(QnaCommentVO cm) {
+	public boolean updateComment(CommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean deleteComment(QnaCommentVO cm) {
+	public boolean deleteComment(CommentVO cm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List<QnaCommentVO> showAllComments(int offset, int limit) {
+	public List<CommentVO> showAllComments(int offset, int limit) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -218,9 +220,9 @@ public class AdminBoardSVCImpl implements IAdminBoardSVC {
 	}
 
 	@Override
-	public List<QnaCommentVO> selectAllComment(int pageNumber) {
+	public List<CommentVO> selectAllComment(int pageNumber) {
 		int offset = (pageNumber -1)*AD_PAGE_SIZE;
-		List<QnaCommentVO> qcList = abDao.showAllComments(offset, AD_PAGE_SIZE);
+		List<CommentVO> qcList = abDao.showAllComments(offset, AD_PAGE_SIZE);
 		return qcList;
 	}
 

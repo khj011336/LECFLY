@@ -2,7 +2,7 @@ package com.LECFLY.LF.model.dao.inf.Comment;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.CommentVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 
 public interface ICommentDAO {
 
@@ -40,4 +40,6 @@ public interface ICommentDAO {
 	boolean deleteOneCommentByVO(CommentVO ct);
 	
 	boolean increaseOrderNumComment(CommentVO ct);
+	
+	int checkNumberOfComments(int cate, int atId);
 }

@@ -7,9 +7,10 @@
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
     <script>
-	    $("input:text[close]").on("click", function() {
-			$('#mypage_mb_update_confirm').html('');
-	    });
+	    function goBack() {
+			console.log("goBack 실행");
+			location.replace("${pageContext.request.contextPath}/mypage.LF#tabs-3");
+		}
     
 	    // input text에서 숫자만 받게 하는 스크립트
 	    $("input:text[numberOnly]").on("keyup", function() {
@@ -84,55 +85,50 @@
     			});
     			}
     		});
-    		
-    	 	// 수정시 해결사항
-    		$('#cnm_mb_nick_check_btn').on("click", function() {
-    			var nic = $('input[name=nickname]').val();
-    			var ph1 = $('input[name=ph1]').val();
-    			var ph2 = $('input[name=ph2]').val();
-    			var pc = $('input[name=postalcode]').val();
-    			var ba = $('input[name=basic_address]').val();
-    			var da = $('input[name=detail_address]').val();
-    			var ae = $('input[name=agree_email]').val();
-    			var as = $('input[name=agree_sms]').val();
-    			var tUrl = "${pageContext.request.contextPath}/";
-    			tUrl += 'update_mb_info.LF';
-    			if(nickname == '${member.nicname}'){
-					$('#nicmsg').html('<b>사용예정인 닉네임을 입력하세요</b>');
-    			} else{
-    			$.ajax ({ 
-    				type: 'get', 
-    				url: tUrl,
-    				data: "nic="+nic+"&ph1="+ph1+"&ph2="+ph2+"&pc="+pc+"&ba="+ba+"&da="+da+"&ae="+ae+"&as="+as,
-    				success: function(res) {
-    					console.log(res);
-    					$('#nicmsg').html();
-    					$('#nicmsg').removeClass('yes');
-    					$('#nicmsg').removeClass('no');
-    					$('#nicmsg').removeClass('error');
-    					var msg = "";
-    					switch(res) {
-    						case '1': 
-    							msg = '이미 사용중인 닉네임입니다';
-    							break;
-    						case 'no':
-    							msg = '사용 가능한 닉네임입니다';
-    							break;
-    						case 'error':
-    							msg = '입력된 닉네임이 없습니다.';
-    							break;
-    					}
-    					
-<%--     					$('#mypage_bottom').html(<%@ include file="mypage/attend_lec_manager/mmypage_mb_update.jsp"%>); --%>
-    				}
-    			});
-    		});
-        });
+    	 	
+    	 	$("#mb_update_confirm").on("click", function() {
+    	 		console.log("mb_update_confirm 눌럿다");
+    	 		var url = "${pageContext.request.contextPath}/mypage_mb_update_proc.LF";
+    	 		var nickname = $("input[name=nickname]").val();
+    	 		var ph1 = $("input[name=ph1]").val();
+    	 		var ph2 = $("input[name=ph2]").val();
+    	 		var agreeEmail = $("input[name=agree_email]").is(":checked") ? 'agree_email' : 'none';
+    	 		var agreeSms = $("input[name=agree_sms]").is(":checked") ? 'agree_sms' : 'none';
+    	 		var postalcode = $("input[name=postalcode]").val();
+    	 		var basicAddress = $("input[name=basic_address]").val();
+    	 		var detailAddress = $("input[name=detail_address]").val();
+    	 		
+    	 		var params = "nickname=" + encodeURIComponent(nickname) +  "&ph1=" + 
+    	 			encodeURIComponent(ph1) + "&ph2=" + encodeURIComponent(ph2) + 
+    	 			"&agreeEmail=" + encodeURIComponent(agreeEmail) + "&agreeSms=" + encodeURIComponent(agreeSms) + 
+    	 			"&postalcode=" + postalcode + "&basicAddress=" + encodeURIComponent(basicAddress) + 
+    	 			"&detailAddress=" + encodeURIComponent(detailAddress);
+    	 		console.log("params = " + params );
+    	 		$.ajax({
+    	 			type: "POST",
+    	 			url: url,
+    	 			data: params,
+    	 			dataType: "JSON",
+    	 			success: function(res, status, xhr) {
+    	 				console.log("수정성공");
+    	 				$("#mypage_mb_update_confirm").html(res.temp);
+    	 			},
+    	 			error: function(status, xhr) {
+    	 				console.log("수정실패")
+    	 			}
+    	 		});
+    	 		
+    	 	
+    	 	});
+    	 	
+    	});
     </script>
 <div class="mypage_bottom_info">
 	<h2 class="mypage_bottom_title">회원정보 수정</h2>
 	<div class="mypage_bottom_contents">
 		<div id="mypage_update_info_table">
+		
+          	<form action="update_mb_info.LF" method="post" id="update_mb_info">
 			<div id="cnm_wrap3">
 		    	<!-- <div id="cnm_pic">
 		            <img src="resource/img/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
@@ -176,7 +172,8 @@
              </div>
              <div id="cnm_table_right">
                 <div id="cnm_table2">
-                	<form action="update_mb_info.LF" method="post">
+<!--                 	<form action="update_mb_info.LF" method="post"> -->
+				<form>
 	                <table>
 	                	<tr>
 	                		<td colspan="2" style="height:70px;"><b style="color:orangered;">*수정 가능 Part*</b><br><span style="font-size:12px; color:orangered;">&nbsp;</span></td>
@@ -185,7 +182,7 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_nick">닉네임</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_nick" name="nickname" class="input_cnm" placeholder="닉네임" value=${member.nicname}>
+		                    		<input type="text" id="cnm_mb_nick" name="cnm_mb_nick" placeholder="닉네임">
 		                    		<input type="button" id="cnm_mb_nick_check_btn" value="중복확인">
 		                    	</div>
 		                    </td>
@@ -209,16 +206,17 @@
 				        	<th rowspan="3"><label class="cnm_subtitle">주소</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" value=${member.postalCode}>
+						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" readonly
+						    		value=${member.postalCode}>
 						        	<input type="button" id="find_adress_btn" value="주소찾기" onclick="find_address()">
 					        	</div>
 		                    </td>
 		                </tr>
 		                <tr>
-				        	<td><input type="text" id="cnm_mb_adress_basic" name="basic_adress" class="input_cnm" placeholder="주소" value="${member.basicAddress}"></td>
+				        	<td><input type="text" id="cnm_mb_adress_basic" name="basic_address" class="input_cnm" placeholder="주소" readonly value="${member.basicAddress}"></td>
 		                </tr>
 		                <tr>
-		                	<td><input type="text" id="cnm_mb_adress_detail" name="detail_adress" class="input_cnm" placeholder="상세주소" value="${member.detailAddress}"></td>
+		                	<td><input type="text" id="cnm_mb_adress_detail" name="detail_address" class="input_cnm" placeholder="상세주소" value="${member.detailAddress}"></td>
 		                </tr>
 		                <tr>
 				        	<th rowspan="2">소식 수신 동의</th>
@@ -237,23 +235,23 @@
 	                        </td>
 		                </tr>
 		           </table>
-		           </form>
 		    </div>
 	        </div>
+           </form>
 		</div>
     </div>	
    	<div id="mypage_update_info_btn">
 <!-- 			<button>회원정보 수정</button> -->
-		<a href="#mypage_mb_update_confirm">회원정보 수정</a> 
+		<a href="#mypage_mb_update_confirm" id="mb_update_confirm">회원정보 수정</a> 
 	</div>
 	</div>
 	<div id="mypage_mb_update_confirm" class="overlay">
-		<div class="popup">
-			<a class="close" href="#">x</a>
-			<div class="mypage_mb_update_popup_content">
-				<h2 class="mypage_mb_isupdate">'${member.name}'님 회원정보 수정 성공</h2>
-			</div>
-			<input id="mypage_mb_update_popup_submitbtn" type="button" value="확인" close>
-		</div>
+<!-- 		<div class="popup"> -->
+<!-- 			<a class="close" href="#">x</a> -->
+<!-- 			<div class="mypage_mb_update_popup_content"> -->
+<%-- 				<h2 class="mypage_mb_isupdate">'${member.name}'님 회원정보 수정 성공</h2> --%>
+<!-- 			</div> -->
+<!-- 			<input id="mypage_mb_update_popup_submitbtn" type="button" value="확인" class="close"> -->
+<!-- 		</div> -->
 	</div>
 </div>

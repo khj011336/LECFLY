@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IKitDAO">
+
+	<resultMap type="KitVO" id="KitResultMap">
+		<id property="id" column="id"/>	
+		<result property="fid" column="fid"/>	
+		<result property="CFId" column="CFId"/>	
+		<result property="category" column="category"/>	
+		<result property="attribute" column="attribute"/>	
+		<result property="title" column="title"/>	
+		<result property="price" column="price"/>	
+		<result property="remain" column="remain"/>	
+		<result property="imgPath" column="img_path"/>	
+		<result property="deliver" column="deliver"/>	
+		<result property="deliveryPrice" column="delivery_price"/>	
+		<result property="fromTo" column="from_to"/>	
+		<result property="info" column="info"/>	
+		<result property="detailInfo" column="detail_info"/>	
+	</resultMap>
+
+	 
+	<insert id="BATIS_INSERT_KIT" parameterType="KitVO" >
+		<![CDATA[
+		INSERT INTO KIT VALUES(NULL,#{fId},#{CFId},#{category},#{attribute},#{title},#{price},#{remain},#{imgPath}
+		,#{deliver},#{deliveryPrice},#{fromTo},#{info},#{detailInfo})
+		]]>
+	</insert>
+	
+	 
+	<select id="BATIS_SELECT_ONE_KIT" resultType="KitVO" parameterType="int">
+		<![CDATA[
+		SELECT * FROM KIT WHERE CFId = #{CFid}
+		]]>
+	</select>
+	
+	 
+	<update id="BATIS_UPDATE_KIT" parameterType="hashmap"  >
+		<![CDATA[
+		UPDATE KIT SET attribute = null , title = #{title} , price = #{price} , remain = #{remain} , img_path = #{imgPath} , deliver = #{deliver} ,
+		delivery_price = #{deliveryPrice} , from_to = #{fromTo} , info = #{info} ,detail_info = #{detailInfo} WHERE CFId = #{CFId}
+		]]>
+	</update>
+	
+	 
+	 
+	
+	 
+	
+	 
+	
+</mapper>

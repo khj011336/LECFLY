@@ -23,19 +23,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.LECFLY.LF.model.vo.FaqVO;
-import com.LECFLY.LF.model.vo.MemberVO;
-import com.LECFLY.LF.model.vo.NoticeVO;
-import com.LECFLY.LF.model.vo.QnaCommentVO;
-import com.LECFLY.LF.model.vo.QnaVO;
+import com.LECFLY.LF.model.vo.cscenter.FaqVO;
+import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
+import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
+import com.LECFLY.LF.model.vo.member.MemberVO;
+import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
+import com.LECFLY.LF.service.inf.comment.ICommentSVC;
 import com.LECFLY.LF.service.inf.cscenter.ICscenterFileSVC;
 import com.LECFLY.LF.service.inf.cscenter.IFaqSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
 import com.LECFLY.LF.service.inf.cscenter.IQnaCommentSVC;
 import com.LECFLY.LF.service.inf.cscenter.IQnaSVC;
-
-
-
 
 
 @Controller
@@ -50,13 +50,19 @@ public class CscenterController {
 	@Autowired
 	private INoticeSVC ntSvc;
 	
-	@Autowired
-	private ICscenterFileSVC csSvc; 
+	
+	 @Autowired 
+	 private ICscenterFileSVC csSvc;
+	 
 	
 	@Autowired
 	private IQnaCommentSVC qcSvc;
 	
+	@Autowired
+	private ICommentSVC cmSvc;
 
+	@Autowired
+	private FileSVCImpl fsSvc;
 	
 //	@Autowired
 //	private IMemberSVC mbSvc;
@@ -90,7 +96,7 @@ public class CscenterController {
 	
 	// 회원이 QnA 글쓰기 + 파일
 		@RequestMapping(value = "cs_post_new_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-		public String cscenterPostNewQna(HttpSession ses, Model model) {
+		public String cscenterPostNewQna(HttpSession ses, Model model ) {
 			System.out.println("cscenterPostNewQna()...");
 			MemberVO mb = (MemberVO)ses.getAttribute("member");			
 			model.addAttribute("mb", mb);
@@ -99,14 +105,21 @@ public class CscenterController {
 		}
 	
 	@RequestMapping(value = "cs_post_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterAddQna(int mbId, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
+	public String cscenterAddQna(int mbId, @RequestParam(required = false, value = "multiFile")MultipartFile File, String mbNicname, int type, String title, String content, List<MultipartFile>file, int showPrivate, HttpSession ses) {
 		System.out.println("cscenterAddQna()...");
+		
+			Map<String, String> fileMap = null;
+		if(File != null) {
+			fileMap = fsSvc.writeFile(File, mbId, "cscenter");
+			System.out.println(fileMap.get("file"));
+			System.out.println(File.getOriginalFilename());
+		}
 		System.out.println("multipart size: " + file.size());
 		String realPath = ses.getServletContext().getRealPath(ICscenterFileSVC.DEF_UPLOAD_DEST)+"/";
 		
 		//다중 처리
 		Map<String, Object> rMap = csSvc.writeUploadedMultipleFiles(file, realPath, (String)ses.getAttribute("mbId"));
-		String filePath = (String)rMap.get("muliFPs");
+		String filePath = fileMap.get("file");
 		
 		System.out.println("총 파일 수: " + rMap.get("fileCnt"));
 		System.out.println("총 볼륨(MB): "+ rMap.get("totalMB") +"MB");
@@ -126,33 +139,37 @@ public class CscenterController {
 	
 	// QnA 글 상세보기
 	@RequestMapping(value = "/qna_receive.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterReceiveQna(HttpSession ses, int id, Model model) {
+	public String cscenterReceiveQna(HttpSession ses, int id, Model model , @RequestParam(value = "mbId", defaultValue = "1") int memberId) {
+		MemberVO mb = (MemberVO)ses.getAttribute("member");			
+		model.addAttribute("mb", mb);
 		QnaVO qa = this.qaSvc.selectOneQna(id);
 		int pn = this.qaSvc.checkPageNumber(id);
 			System.out.println("pn은?" + pn);
 		if( qa != null ) {
 			System.out.println("게시글 상세조회 성공 " + qa);
 			model.addAttribute("qna", qa);
-			String qaFilePath = qa.getFile();
-			int fpsCount = -1;
-			if( qaFilePath != null && qaFilePath.isEmpty()) {
-				String fps[] = null;
-				if( qaFilePath.indexOf(ICscenterFileSVC.MULTI_SEP) != -1 ) {
-					fps = qaFilePath.split("\\" + ICscenterFileSVC.MULTI_SEP);
-					fpsCount = fps.length;
-				} else {
-					fpsCount = 1;
-					fps = new String[]{qaFilePath};
-				}
-				model.addAttribute("fps", fps);
-			} else {
-				//첨부파일 없는 정상 게시글 상세보기
-				fpsCount = 0;
-			}
-			model.addAttribute("fpsCount", fpsCount);
+//			String qaFilePath = qa.getFile();
+//			int fpsCount = -1;
+//			if( qaFilePath != null && qaFilePath.isEmpty()) {
+//				String fps[] = null;
+//				if( qaFilePath.indexOf(ICscenterFileSVC.MULTI_SEP) != -1 ) {
+//					fps = qaFilePath.split("\\" + ICscenterFileSVC.MULTI_SEP);
+//					fpsCount = fps.length;
+//				} else {
+//					fpsCount = 1;
+//					fps = new String[]{qaFilePath};
+//				}
+//				model.addAttribute("fps", fps);
+//			} else {
+//				//첨부파일 없는 정상 게시글 상세보기
+//				fpsCount = 0;
+//			}
+//			model.addAttribute("fpsCount", fpsCount);
 			model.addAttribute("pn", pn);
+			// 댓글 등록
+			
 			//댓글 리스트
-			List<QnaCommentVO> qcList = qcSvc.commentListForQna(qa.getId());
+			List<CommentVO> qcList = cmSvc.selectCommentsForOrderNumAsc(2, qa.getId());
 			if(qcList != null ) {
 				System.out.println("댓글 상세조회 성공 " + qcList);
 				model.addAttribute("qcSize", qcList.size());
@@ -162,6 +179,7 @@ public class CscenterController {
 				model.addAttribute("msg", "댓글리스트 조회 실패");
 			}
 			return "cscenter/cs_qna_receive.ho";
+			
 		} else {
 			model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
 			return "redirect:cs_qna.ho";
@@ -169,8 +187,11 @@ public class CscenterController {
 	}
 	// QnA 글 수정하기
 	@RequestMapping(value = "/cs_edit_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterEditQna(HttpSession ses, Model model, int id){
+	public String cscenterEditQna(HttpSession ses, Model model, int id,  @RequestParam(value = "mbId", defaultValue = "1") int memberId){
 //			@RequestParam(value = "qaId", defaultValue = "0") int id){
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		model.addAttribute("mb", mb);
+		System.out.println("mb = " + mb);
 		if(id == 0 ) {
 			System.out.println("qna update: id=0");
 			return "redirect:cs_qna.LF";
@@ -210,7 +231,7 @@ public class CscenterController {
 	
 	// QnA 글 삭제하기
 	@RequestMapping(value = "/qna_delete.LF", method = {RequestMethod.GET, RequestMethod.POST})
-	public String cscenterDeleteQna(int id, HttpSession ses) {
+	public String cscenterDeleteQna(int id, HttpSession ses,  @RequestParam(value = "mbId", defaultValue = "1") int memberId) {
 		System.out.println("cscenterDeleteQna()"+ id);
 		int commentCheck = this.qcSvc.checkNumberOfCommentsForQna(id);
 		if(commentCheck >= 1) {
@@ -249,9 +270,10 @@ public class CscenterController {
 			// 댓글의 개수 리스트/배열
 			List<Integer> cntComments = new ArrayList<Integer>();
 			for (int i = 0; i < qaList.size(); i++) {
-				int cntQC = qcSvc.checkNumberOfCommentsForQna(qaList.get(i).getId());
+				int cntQC = cmSvc.checkNumberOfComments(2, qaList.get(i).getId());
 				cntComments.add(cntQC);
 			}
+			System.out.println("댓글수" +  cntComments);
 			mav.addObject("cntComments", cntComments);
 			System.out.println("게시글리스트 조회 성공: " + qaList.size());
 		} else {
@@ -266,7 +288,6 @@ public class CscenterController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//- 댓글 리스트가 게시글 상세보기에 연동 표시될 수 있다.
-	//	answer_list.my
 	@RequestMapping(value = "/cs_qna_receive.LF", method = {RequestMethod.GET, RequestMethod.POST})
 	public String commentListProc(
 			@RequestParam(value="qnaId") int qnaId, Model model) {
@@ -520,6 +541,7 @@ public class CscenterController {
 				fpsCount = 0;
 			}
 			model.addAttribute("fpsCount", fpsCount);
+			
 			return "cscenter/cs_notice_receive.ho";
 		} else {model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
 			return "redirect:cs_notice.ho";
@@ -572,7 +594,6 @@ public class CscenterController {
 		int ntmaxPG = ntSvc.checkMaxPageNumber();
 		if( pageNumber > ntmaxPG || pageNumber <= 0 ) {
 			System.out.println("잘못된 페이지 번호: " + pageNumber);
-//			return new ModelAndView("redirect:cs_notice.LF?pn=1");
 		}
 		List<NoticeVO> ntList = ntSvc.showAllNotices(pageNumber);
 		ModelAndView mav = new ModelAndView("cscenter/cs_notice.ho");
@@ -581,7 +602,8 @@ public class CscenterController {
 			mav.addObject("notice", ntList);
 			mav.addObject("maxPn", ntmaxPG);
 			mav.addObject("pn", pageNumber); // 활성페이지 
-				System.out.println("게시글리스트 조회 성공: " + ntList.size());
+				
+			System.out.println("게시글리스트 조회 성공: " + ntList.size());
 		} else {
 			mav.addObject("msg", "게시글리스트 조회 실패!");
 		}

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
-import com.LECFLY.LF.model.vo.CommentVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.service.inf.comment.ICommentSVC;
 
 @Service
@@ -200,4 +200,8 @@ public class CommentSVCImpl implements ICommentSVC {
 		System.out.println(inc+"' order증가");
 		return inc;
 	}
+	
+	public int checkNumberOfComments(int cate, int atId) {
+		return ctDao.checkNumberOfComments(cate, atId);
+	};
 }

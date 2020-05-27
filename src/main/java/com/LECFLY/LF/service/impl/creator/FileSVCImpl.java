@@ -17,12 +17,14 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
+import com.LECFLY.LF.service.inf.creator.IFileSVC;
+
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegFormat;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 
 @Service
-public class FileSVCImpl {
+public class FileSVCImpl implements IFileSVC {
 	public static final String DEF_DIR = "/LECFILE";
 	public static final String DEF_DIR_IMG = "/Img";
 	public static final String DEF_DIR_VIDEO = "/video";
@@ -35,8 +37,9 @@ public class FileSVCImpl {
 			return true;
 		}
 	}
+
 	private boolean checkString(String args) {
-		if (args != null && !args.isEmpty() ) {
+		if (args != null && !args.isEmpty()) {
 			return true;
 		} else {
 			return false;
@@ -130,106 +133,112 @@ public class FileSVCImpl {
 		}
 		return null;
 	}
+
 	public Map<String, String> writeFile(MultipartFile file, int id, String username) {
-		String path =getPath(username, 1);
+		String path = getPath(username, 1);
 		Map<String, String> rmap = new HashMap<String, String>();
-				if (file != null && !file.isEmpty()) {
-					String oriFileName = file.getOriginalFilename();
-					String storeFileName = fileNamingforImg(oriFileName, id, username);
-					System.out.println(file.getSize() + "파일사이즈");
-					String totalPath = path + storeFileName;
-					totalPath = totalPath.replaceAll("\\\\", "/");
-					File newFile = new File(totalPath);
-					try {
-						file.transferTo(newFile);
-						rmap.put("file", storeFileName);
-						System.out.println("저장 파일 이름 ->" + newFile + "등록완료");
-					} catch (IllegalStateException e) {
-						System.out.println("fileSVC writeFiles -han");
-						e.printStackTrace();
-					} catch (IOException e) {
-						System.out.println("fileSVC writeFiles -han");
-						e.printStackTrace();
-					}
-				}
-				return rmap;
+		if (file != null && !file.isEmpty()) {
+			String oriFileName = file.getOriginalFilename();
+			String storeFileName = fileNamingforImg(oriFileName, id, username);
+			System.out.println(file.getSize() + "파일사이즈");
+			String totalPath = path + storeFileName;
+			totalPath = totalPath.replaceAll("\\\\", "/");
+			File newFile = new File(totalPath);
+			try {
+				file.transferTo(newFile);
+				rmap.put("file", storeFileName);
+				System.out.println("저장 파일 이름 ->" + newFile + "등록완료");
+			} catch (IllegalStateException e) {
+				System.out.println("fileSVC writeFiles -han");
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println("fileSVC writeFiles -han");
+				e.printStackTrace();
+			}
+		}
+		return rmap;
 	}
 
-	public Map<String, String> writeFilesForvideo(MultipartFile file, int id, String username , VideoVO changevideo, HttpSession ses) {
-		if(changevideo.getVideoPath() != null && !changevideo.getVideoPath().isEmpty()) {
+	public Map<String, String> writeFilesForvideo(MultipartFile file, int id, String username, VideoVO changevideo,
+			HttpSession ses) {
+		if (changevideo.getVideoPath() != null && !changevideo.getVideoPath().isEmpty()) {
 			System.out.println("upload 비디오 변경 -");
 			String totalImgpath = getPath(username, 1);
 			String totalVideopath = getPath(username, 2);
-			String imgpaths[] =changevideo.getImgPath().split("-");
+			String imgpaths[] = changevideo.getImgPath().split("-");
 			String gifPath = changevideo.getGifPath();
 			String videoPath = changevideo.getVideoPath();
-			 if(new File(totalImgpath+imgpaths[0]).delete()) {
-				 System.out.println(imgpaths[0]+"[imgPathA]가삭제되었습니다");
-			 }if(new File(totalImgpath+imgpaths[1]).delete()) {
-				 System.out.println(imgpaths[0]+"[imgPathB]가삭제되었습니다");
-			 }if(new File(totalImgpath+gifPath).delete()) {
-				 System.out.println(gifPath+"[gifPath]가삭제되었습니다");
-			 }if(new File(totalVideopath+videoPath).delete()) {
-			System.out.println(videoPath+"[videoPath]가삭제되었습니다");
-			 }
+			if (new File(totalImgpath + imgpaths[0]).delete()) {
+				System.out.println(imgpaths[0] + "[imgPathA]가삭제되었습니다");
+			}
+			if (new File(totalImgpath + imgpaths[1]).delete()) {
+				System.out.println(imgpaths[0] + "[imgPathB]가삭제되었습니다");
+			}
+			if (new File(totalImgpath + gifPath).delete()) {
+				System.out.println(gifPath + "[gifPath]가삭제되었습니다");
+			}
+			if (new File(totalVideopath + videoPath).delete()) {
+				System.out.println(videoPath + "[videoPath]가삭제되었습니다");
+			}
 		}
 		Map<String, String> rmap = new HashMap<String, String>();
 		File newFile = null;
 		String oriFileName = null;
 		String storeFileName = null;
-			if (file != null && !file.isEmpty()) {
-				oriFileName = file.getOriginalFilename();
-				storeFileName = fileNamingforImg(oriFileName, id, username);
-				System.out.println(file.getSize() + "파일사이즈");
-				// TODO 패스 설정 글로벌변경
-				String totalPath = 	ses.getServletContext()
-				.getRealPath("/videoTemp");
-				totalPath += storeFileName;
-				newFile = new File(totalPath);
-				try {
-					file.transferTo(newFile);
-				} catch (IllegalStateException e) {
-					System.out.println("fileSVC writeFiles -han");
-					e.printStackTrace();
-				} catch (IOException e) {
-					System.out.println("fileSVC writeFiles -han");
-					e.printStackTrace();
-				}
-				if (makeDir(username)) {
-					if (newFile.isFile()) {
-						String tempVideoPath = newFile.getAbsolutePath();
-						System.out.println(tempVideoPath);
-						String duration = media_player_time(tempVideoPath);
-						String pngAB = extractImageAndVideo(username, storeFileName, tempVideoPath, duration, id, 1, 1);
-						if(checkString(pngAB)) {
-						String oriFile = pngAB; 
-							pngAB=oriFile+"_01"+".png"+"-"+oriFile+"_02"+".png";
-						}
-						String gif = extractImageAndVideo(username, storeFileName, tempVideoPath, duration, id, 1, 2);
-						String video = extractImageAndVideo(username, oriFileName, tempVideoPath, duration, id, 1, 3);
-						if (newFile.delete()) {
-							System.out.println("TEMPVIDEO 가 삭제되었습니다");
-						}else {
-							System.out.println("TEMPVIDEO  삭제실패");
-						}
-						
-						if(checkString(pngAB)&& checkString(gif)&& checkString(video)) {
-							rmap.put("png", pngAB);
-							rmap.put("gif", gif);
-							rmap.put("video", video);
-							rmap.put("duration", duration);
-						}
+		if (file != null && !file.isEmpty()) {
+			oriFileName = file.getOriginalFilename();
+			storeFileName = fileNamingforImg(oriFileName, id, username);
+			System.out.println(file.getSize() + "파일사이즈");
+			// TODO 패스 설정 글로벌변경
+			String totalPath = ses.getServletContext().getRealPath("/videoTemp");
+			totalPath += storeFileName;
+			newFile = new File(totalPath);
+			try {
+				file.transferTo(newFile);
+			} catch (IllegalStateException e) {
+				System.out.println("fileSVC writeFiles -han");
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println("fileSVC writeFiles -han");
+				e.printStackTrace();
+			}
+			if (makeDir(username)) {
+				if (newFile.isFile()) {
+					String tempVideoPath = newFile.getAbsolutePath();
+					System.out.println(tempVideoPath);
+					String duration = media_player_time(tempVideoPath);
+					String pngAB = extractImageAndVideo(username, storeFileName, tempVideoPath, duration, id, 1, 1);
+					if (checkString(pngAB)) {
+						String oriFile = pngAB;
+						pngAB = oriFile + "_01" + ".png" + "-" + oriFile + "_02" + ".png";
+					}
+					String gif = extractImageAndVideo(username, storeFileName, tempVideoPath, duration, id, 1, 2);
+					String video = extractImageAndVideo(username, oriFileName, tempVideoPath, duration, id, 1, 3);
+					if (newFile.delete()) {
+						System.out.println("TEMPVIDEO 가 삭제되었습니다");
+					} else {
+						System.out.println("TEMPVIDEO  삭제실패");
+					}
+
+					if (checkString(pngAB) && checkString(gif) && checkString(video)) {
+						rmap.put("png", pngAB);
+						rmap.put("gif", gif);
+						rmap.put("video", video);
+						rmap.put("duration", duration);
 					}
 				}
-				return rmap;
-			}else {
-				System.out.println("비디오 파일객체가 없습니다 (통신 - 파일 확인바람)");
-				return null;
 			}
-			
+			return rmap;
+		} else {
+			System.out.println("비디오 파일객체가 없습니다 (통신 - 파일 확인바람)");
+			return null;
+		}
+
 	}
 
 	public static String getPath(String username, int IorV) {
+//		String path = "/opt/bitnami/tomcat/webapps/LECFILE";
+//		TODO
 		String path = "C:/fusion11/spring_ws/LECFILE";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		String ImgorVideo = IorV == 1 ? DEF_DIR_IMG : DEF_DIR_VIDEO;
@@ -237,7 +246,11 @@ public class FileSVCImpl {
 	}
 
 	public boolean makeDir(String username) {
-		String path  = getPath(username, 1);
+//		String path = "/opt/bitnami/tomcat/webapps/LECFILE";
+//		TODO
+		String path = "C:/fusion11/spring_ws/LECFILE";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		path += "/" + sdf.format(new Date()) + "/" + username;
 		File mk = new File(path);
 		File mkimg = new File(path + "/" + "Img");
 		File mkvideo = new File(path + "/" + "video");
@@ -276,9 +289,10 @@ public class FileSVCImpl {
 			int lastExt = oriFileName.lastIndexOf('.');
 			String withoutExt = oriFileName.substring(0, lastExt);
 			if (syntax == 1) {
-				returname = withoutExt ;
+				returname = withoutExt;
 				commands = new String[] { "ffmpeg", "-ss", String.format("%02d:%02d:%02d", hours, minutes, seconds),
-						"-i", TempvideoFile, "-an", "-r", "0.2", "-vframes", "2", "-y", imgpath + returname+"_%2d.png" };
+						"-i", TempvideoFile, "-an", "-r", "0.2", "-vframes", "2", "-y",
+						imgpath + returname + "_%2d.png" };
 			} else if (syntax == 2) {
 				returname = withoutExt + ".gif";
 				commands = new String[] { "ffmpeg", "-i", TempvideoFile, "-vf", "scale=500:-1", "-t", "10", "-r", "10",
@@ -289,7 +303,7 @@ public class FileSVCImpl {
 						"-b", "100k", "-r", "24", "-y", "-f", "mp4", videopath + returname };
 //					-r 프레임 , -f변환 -b 비트프레임
 			}
-			System.out.println(TempvideoFile+"시작전");
+			System.out.println(TempvideoFile + "시작전");
 			Process processor = Runtime.getRuntime().exec(commands);
 			String line1 = null;
 			BufferedReader error = new BufferedReader(new InputStreamReader(processor.getErrorStream()));
@@ -313,10 +327,12 @@ public class FileSVCImpl {
 		System.out.println("@@ media_player_time start @@");
 		String returnData = "0";
 		try {
+//			FFprobe ffprobe = new FFprobe("/usr/bin/ffprobe");
+//			TODO
 			FFprobe ffprobe = new FFprobe("C:\\ffmpeg-4.2.2-win64-static\\bin\\ffprobe.exe");
 			FFmpegProbeResult probeResult = ffprobe.probe(videoPath); // 동영상 경로
 			FFmpegFormat format = probeResult.getFormat();
-			double second = format.duration; 
+			double second = format.duration;
 			returnData = second + "";
 			System.out.println("second==" + second);
 		} catch (IOException e) {

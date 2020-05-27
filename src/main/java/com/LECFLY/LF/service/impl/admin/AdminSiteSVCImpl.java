@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminSiteDAO;
-import com.LECFLY.LF.model.vo.HomeFileManagerVO;
+import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.service.inf.admin.IAdminSiteSVC;
 
@@ -17,7 +17,6 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 
 	@Override
 	public boolean insertBanner(HomeFileManagerVO vo) {
-		System.out.println("svc insert 시작");
 		return adDAO.insertBanner(vo);
 	}
 
@@ -38,7 +37,6 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 
 	@Override
 	public List<HomeFileManagerVO> selectBannerList() {
-		System.out.println("svc selectList 시작");
 		return adDAO.selectBannerList();
 	}
 
@@ -106,7 +104,6 @@ public class AdminSiteSVCImpl implements IAdminSiteSVC {
 
 	@Override
 	public boolean likeBtnClick(int status, int memberId, int lectureId) {
-		// TODO Auto-generated method stub
 		return adDAO.likeBtnClick(status, memberId, lectureId);
 	}
 

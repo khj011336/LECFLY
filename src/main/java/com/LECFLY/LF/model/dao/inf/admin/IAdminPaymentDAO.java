@@ -2,9 +2,10 @@ package com.LECFLY.LF.model.dao.inf.admin;
 
 import java.util.List;
 
-import com.LECFLY.LF.model.vo.CouponVO;
-import com.LECFLY.LF.model.vo.PayHistoryVO;
 import com.LECFLY.LF.model.vo.ProfitHistoryVO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
+import com.LECFLY.LF.model.vo.virtual.PaymentStatVO;
 
 
 public interface IAdminPaymentDAO {
@@ -49,5 +50,13 @@ public interface IAdminPaymentDAO {
 	// 수익분배 목록을 전체 조회할수 있다.
 	List<ProfitHistoryVO> showAllProfits(int offset, int limit);
 	int checkNumberOfProfits();
+	
+	
+	//통계
+	List<PaymentStatVO> statSumKitSaleByMonth();
+	List<PaymentStatVO> statSumTicketSaleByMonth();
+	List<PaymentStatVO> statSumTotalSaleByMonth();
+	
+	
 	
 }

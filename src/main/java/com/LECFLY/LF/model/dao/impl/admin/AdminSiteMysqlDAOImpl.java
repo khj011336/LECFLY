@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminSiteDAO;
-import com.LECFLY.LF.model.vo.HomeFileManagerVO;
+import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 
 @Repository
@@ -111,8 +111,8 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 	
 	@Override
 	public boolean insertBanner(HomeFileManagerVO vo) {
-		System.out.println("dao insert 시작");
-		System.out.println(vo.toString());
+//		System.out.println("dao insert 시작");
+//		System.out.println(vo.toString());
 		int r = jtem.update(SQL_ADMIN_SITE_INSERT_BANNER, 
 				vo.getFileDisplayNum(), vo.getFileLectureId(), vo.getFileName(), vo.getFilePath(), vo.getFileSize());
 		return r == 1;
@@ -195,7 +195,7 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 				sql+= ")";
 			} 
 		}
-		System.out.println(sql);
+//		System.out.println(sql);
 		return jtem.query(sql, BeanPropertyRowMapper.newInstance(LectureVO.class));
 		
 	}

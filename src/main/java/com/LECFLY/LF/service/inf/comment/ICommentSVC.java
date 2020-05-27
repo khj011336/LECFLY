@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.LECFLY.LF.model.vo.CommentVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 
 /*
  	**********필독: 대댓글의 모체(부모)를 삭제하면 안됨! 원글/원댓글 삭제시 대댓글처리문제 미정되어 구현 안한 상태!!*************
@@ -84,5 +84,6 @@ public interface ICommentSVC {
 		// 댓글 추가시 해당 댓글에 이미 같은 깊이의 대댓글이 있다면 그 댓글들의 숫자를 확인하여 그 값을 리턴
 	int selectOneCommentByOrder(List<CommentVO> ctList, int orderNum, int depth);
 	
+	int checkNumberOfComments(int cate, int atId);
 	
 }

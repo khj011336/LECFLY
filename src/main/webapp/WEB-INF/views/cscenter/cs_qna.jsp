@@ -11,10 +11,32 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script type="text/javascript">
-	function selectQna(qaId) { window.location.href		
-			= '${pageContext.request.contextPath}'
-			+ '/qna_receive.LF?id='+ qaId;
-	}	
+	function selectQna(qaId, qaPV, mbId, logId) { 
+		if(qaPV == 0){
+			window.location.href = '${pageContext.request.contextPath}' + '/qna_receive.LF?id='+ qaId;
+		}else{
+			if(mbId == logId){
+				window.location.href = '${pageContext.request.contextPath}' + '/qna_receive.LF?id='+ qaId;
+			}else{
+				alert("작성자가 아닙니다. 비공개 글은 본인만 상세조회 가능합니다.");
+			}
+		}
+	}
+</script>
+<script>
+
+	function loginbfpostconfirm(mbId) {
+		if(mbId == null){
+			if(confirm("로그인 후 작성 가능합니다. 로그인하시겠습니까?")){
+				window.location.href = '${pageContext.request.contextPath}/login.LF';
+			}else{
+				window.location.href = 'cs_qna.LF';
+			}
+		} else {
+			window.location.href = 'cs_post_new_qna.LF';
+		}
+	}
+
 </script>
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
@@ -45,8 +67,8 @@
          		<br>비회원께서는 회원가입을 해주시거나 우측 하단 실시간문의를 이용해주시면 감사하겠습니다.
          		<br>*실시간문의는 운영시간내에만 이용가능합니다.
          		<br><br>감사합니다:)
-         		<a href="cs_post_new_qna.LF"><button class="edit_qna">QnA 작성하기</button></a>
-			</p>
+         		<a href="#" onclick="loginbfpostconfirm(${member.id})"><button class="edit_qna">QnA 작성하기</button></a>
+         	</p>
 	    </div>
 	    <div id="qna_table">
 		     
@@ -60,22 +82,24 @@
                     <th>구분</th>
                     <th>작성자</th>
                     <th>등록일</th>
+                    <th>공개여부</th>
                     <th>조회수</th>
                  </tr>
                  <c:forEach var="qa" items="${qna}" varStatus="vs">
-                 <tr id="tr_qa_${qa.id}" onclick="selectQna('${qa.id}')" style="height:46px"> 
+                 <tr id="tr_qa_${qa.id}" onclick="selectQna('${qa.id}', '${qa.showPrivate}', '${qa.mbId}', '${member.id}')" style="height:46px"> 
                  	<td><c:out value="${qa.id}" default="0"/> </td>
                  	<td>
 						<c:out value="${qa.title}" default="제목없음"/>
 						<span class="qc_cnt">
 							<small style="color: red">
-							 (${cntQnaComments[vs.index]}) 
+							 (${cntComments[vs.index]}) 
 							</small>
 						</span>
 					</td>
 					<td><c:out value="${qa.stype}" default="선택안함"/></td>
 					<td><c:out value="${qa.mbNicname}" default="멤버없음"/></td>
 	               	<td><fmt:formatDate value="${qa.writedDay}" pattern="yyyy.MM.dd" /> </td>
+	               	<td><c:out value="${qa.sshowPrivate}"/></td>
 					<td><c:out value="${qa.hits}" default="0"/></td>
 				</tr>
 				</c:forEach>	

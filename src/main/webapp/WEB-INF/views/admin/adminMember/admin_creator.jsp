@@ -50,8 +50,8 @@
 			<th>분류 선택</th>
 			<td>
 				<select name="">
-   					<option value="">전체</option>
-  					<option value="">회원</option>
+<!--    					<option value="">전체</option> -->
+<!--   					<option value="">회원</option> -->
     				<option value="" selected="selected">크리에이터</option>
 				</select>
 			</td>
@@ -153,7 +153,7 @@
 	 		    </c:choose>
 			</td>
 			<td>${cr.status }</td> 
-			<td>${cr.grantDate }</td> 
+			<td><fmt:formatDate value="${cr.grantDate}" pattern="yyyy.MM.dd" /></td> 
 		</tr>
 		</c:forEach>
 	</table>
