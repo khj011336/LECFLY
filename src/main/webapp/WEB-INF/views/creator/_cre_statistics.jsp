@@ -5,7 +5,11 @@
 <script src="${pageContext.request.contextPath}/resources/chart/modules/export-data.js"></script>
 <script src="${pageContext.request.contextPath}/resources/chart/modules/accessibility.js"></script>
 <script type="text/javascript">
+videoStat
 $(document).ready(function(){
+	var videoStat = '${videoStat}';
+	JSON.parse(videoStat);
+	console.log(videoStat);
 	var myChart2;
 		var chartOptions2 = {
 		chart: {
@@ -16,7 +20,7 @@ $(document).ready(function(){
 	        renderTo: 'treeab'
 	    },
 	    title: {
-	        text: '날자 별 댓글 개수의 비율(%)'
+	        text: '영상 별  만족도  비율(%)'
 	    },
 	    tooltip: {
 	        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -65,14 +69,14 @@ $(document).ready(function(){
  		        renderTo: 'treea'
  		    },
  		    title: {
- 		        text: '댓글 통계'
+ 		        text: '영상별 조회수'
  		    },
  		    subtitle: {
- 		        text: '게시글별 댓글 개수, 동감합, 동감평균 (개)'
+ 		        text: '영상별 조회수 현황 (개)'
  		    },
  		    xAxis: {
  		    	title: {
- 		    		text: '게시글'
+ 		    		text: '영상별 조회수'
  		    	}, 
  		        categories: [ 'a', 'b', 'c', 'd' ]  // [] 
  		    	, crosshair: true
@@ -116,16 +120,10 @@ $(document).ready(function(){
  		    },
  		    credits: false,
  		    series: [{
- 		        name: '댓글수',
+ 		        name: '조회수',
  		       data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
 				color: '#FF0000' 		        
- 		    }, {
- 		        name: '공감합',
- 		        color: '#00FF00'
- 		    }, {
- 		        name: '공감평균',
- 		       color: '#0000FF' 
- 		    }]
+ 		    }] 
  		};
  		
  		myChart = new Highcharts.chart(chartOptions);

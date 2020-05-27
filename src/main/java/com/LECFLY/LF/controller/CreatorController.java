@@ -1,6 +1,7 @@
 package com.LECFLY.LF.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -535,22 +536,29 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "creator_statistics.LF", method = RequestMethod.GET)
-	public String showstatisticsList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+	public String showstatisticsList(
 			Model model) {
-		if (page == 1) {
-			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
-			model.addAttribute("crPath", imgPath);
-			model.addAttribute("isCreator", isCreator);
-			model.addAttribute("maxPage", MAXPAGE);
-			model.addAttribute("lecList", LecSVC.showLectureList(memberId, page, 0));
-			return "creator/cre_statistics.page";
-		} else if (page >= 2) {
-			model.addAttribute("crPath", imgPath);
-			model.addAttribute("maxPage", MAXPAGE);
-			List<LectureVO> LecList = LecSVC.showLectureList(memberId, page, 0);
-			model.addAttribute("lecList", LecList);
-			return "creator/_cre_statistics";
-		}
+		  List<LectureVO> lecvo = LecDAO.selectLectureList(memberId);
+		  System.out.println(lecvo.get(0));
+		  if(lecvo != null && !lecvo.isEmpty()) {
+		  List<VideoVO> videoList = ViDAO.selectVideoTrack(lecvo.get(0).getId());
+		  HashMap<String, Object> videoStat = new HashMap<String, Object>();
+		  List<String> title = new ArrayList<String>();
+		  List<Integer> like = new ArrayList<Integer>();
+		  List<Integer> views = new ArrayList<Integer>();
+		  List<Integer> statCfid = new ArrayList<Integer>();
+		  for(int i = 0 ; i < videoList.size(); i++) {
+			 like.add(videoList.get(i).getLikeCount());
+			views.add(videoList.get(i).getViews());
+			 title.add(lecvo.get(i).getTitle());
+			 statCfid.add(lecvo.get(i).getId());
+		  }
+		  videoStat.put("title", title);
+		  videoStat.put("like",like);
+		  videoStat.put("views",views);
+		  videoStat.put("statCFID",statCfid);
+		  model.addAttribute("videoStat",videoStat);
+		  }
 		return "creator/cre_statistics.page";
 	}
 }
