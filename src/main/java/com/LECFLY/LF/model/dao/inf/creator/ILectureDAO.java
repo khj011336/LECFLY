@@ -28,7 +28,9 @@ public interface ILectureDAO {
 		return df.get(category);
 	}
 
-	List<LectureVO> selectLectureList(int Fid);
+	List<LectureVO> selectLectureListForSTAT(int id);
+
+	LectureVO selectLecture(int Fid);
 
 	List<LectureVO> selectLectureList(int Fid, int offset, int limit, int order);
 
