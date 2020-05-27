@@ -39,7 +39,7 @@ public class PayHistoryVO {
 	int PayHistorySum;
 
 	public PayHistoryVO() {}
-	public PayHistoryVO(int id, int buyMbId, int sellMbId, int goodsType, String goodsId, int payWay, int couponId,
+	public PayHistoryVO(int id, int buyMbId, String sellMbId, int goodsType, String goodsId, int payWay, int couponId,
 			int buyProductCount, int diliveryPrice, Timestamp dealDay, String checkSameOrder, int deliveryStatus,
 			String deliveryRequire, Timestamp updatedAt, int payHistorySum) {
 		super();
@@ -72,10 +72,10 @@ public class PayHistoryVO {
 	public void setBuyMbId(int buyMbId) {
 		this.buyMbId = buyMbId;
 	}
-	public int getSellMbId() {
+	public String getSellMbId() {
 		return sellMbId;
 	}
-	public void setSellMbId(int sellMbId) {
+	public void setSellMbId(String sellMbId) {
 		this.sellMbId = sellMbId;
 	}
 	public int getGoodsType() {

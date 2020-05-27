@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.vo.CommentClassVO;
-import com.LECFLY.LF.model.vo.creator.CommentVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;

@@ -351,7 +351,7 @@ public class CreatorController {
 			@ModelAttribute(value = "video") VideoVO vio) {
 		if (CFID != 0) {
 			vio.setCategory(category);
-			vio.setCFId(CFID);
+			vio.setcFId(CFID);
 			vio.setfId(memberId);
 			model.addAttribute("categ", CATEGORIRES);
 			model.addAttribute(vio);
@@ -414,9 +414,9 @@ public class CreatorController {
 	public String videoUpdateProc(HttpSession ses, @ModelAttribute(value = "video") VideoVO vio,
 			SessionStatus sesstatus) {
 		System.out.println("비디오 업데이트 진입");
-		if (vio.getCFId() != 0 && vio.getId() != 0) {
+		if (vio.getcFId() != 0 && vio.getId() != 0) {
 			System.out.println(vio + "업데이트");
-			ViDAO.updateVideo(vio, vio.getCFId(), vio.getId());
+			ViDAO.updateVideo(vio, vio.getcFId(), vio.getId());
 			sesstatus.setComplete();
 		}
 

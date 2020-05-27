@@ -94,7 +94,7 @@ public class CartMysqlDAOImpl implements ICartDAO {
 
 	@Override
 	public void updateCartGoodsCnt(CartVO cartVO) throws DataAccessException {
-		jtem.update(SQL_UPDATE_CART_GOODS_CNT, cartVO.getGdsCnt(), cartVO.getMbId(), cartVO.getGdsId());
+		jtem.update(SQL_UPDATE_CART_GOODS_CNT, cartVO.getGdCnt(), cartVO.getMbId(), cartVO.getGdsId());
 	}
 
 	@Override

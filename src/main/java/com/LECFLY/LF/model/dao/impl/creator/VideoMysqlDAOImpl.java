@@ -28,7 +28,7 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 
 	@Override
 	public boolean insertNewVideo(VideoVO Vvo) {
-	int r = jtem.update(INSERT, Vvo.getfId(),Vvo.getCFId(),Vvo.getVideoPath(),Vvo.getDuration(),Vvo.getTitle(),Vvo.getInfo(),Vvo.getImgPath()
+	int r = jtem.update(INSERT, Vvo.getfId(),Vvo.getcFId(),Vvo.getVideoPath(),Vvo.getDuration(),Vvo.getTitle(),Vvo.getInfo(),Vvo.getImgPath()
 				,Vvo.getGifPath(),Vvo.getOrderInfo(),Vvo.getCategory(),Vvo.getCommentYorN(),Vvo.getViews(),Vvo.getStatus());
 		return r == 1;
 	}
