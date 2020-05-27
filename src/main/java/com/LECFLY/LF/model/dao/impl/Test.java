@@ -102,7 +102,7 @@ public class Test {
 	public CreatorVO selectOneCreatorById(int id) {
 		try {
 			System.out.println(SQL_SELECT_ONE_CREATOR_BY_ID + " / id = " + id);
-			jtem.queryForObject(SQL_SELECT_ONE_CREATOR_BY_ID, 
+			return jtem.queryForObject(SQL_SELECT_ONE_CREATOR_BY_ID, 
 					BeanPropertyRowMapper.newInstance(CreatorVO.class), id);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
@@ -370,7 +370,7 @@ public class Test {
 	public TicketVO selectOneTiketForCanUseByMbId(int mbId) {
 		try{
 			System.out.println(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID + " / mbId = " + mbId);
-			jtem.queryForObject(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID, 
+			return jtem.queryForObject(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID, 
 						BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
@@ -469,9 +469,10 @@ public class Test {
 	///////// 『  KitImpl 에서 사용하세요~~
 	
 	public static final String SQL_SELECT_ONE_KIT_BY_ID = 
-			"select * from kits where id = ?"; 
+			"select * from kit where id = ?"; 
 	public KitVO selectOneKitById(int id) {
 		try {
+			System.out.println(SQL_SELECT_ONE_KIT_BY_ID + " / id = " + id);
 			return jtem.queryForObject(SQL_SELECT_ONE_KIT_BY_ID, 
 					BeanPropertyRowMapper.newInstance(KitVO.class), id);
 		} catch(DataAccessException e) {
@@ -481,14 +482,26 @@ public class Test {
 		return null;
 	}
 
-	
-	
-	
-
-
-
 
 	
 	/////// 』
+
+	/** */
 	
+	///////// 『  PayHistoryImpl 에서 사용하세요~~
+	
+	public static final String SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID = 
+			"select * from pay_histories where buy_mb_id = ?";
+	
+	public List<PayHistoryVO> selectPayHistoriesByBuyMbId(int mbId) {
+		try {
+			System.out.println(SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID + "buyMbId = " + mbId);
+			return jtem.query("SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID",
+					BeanPropertyRowMapper.newInstance(PayHistoryVO.class),mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

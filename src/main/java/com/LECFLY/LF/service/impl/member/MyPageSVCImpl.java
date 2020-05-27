@@ -2,6 +2,7 @@ package com.LECFLY.LF.service.impl.member;
 
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -496,9 +497,11 @@ public class MyPageSVCImpl implements IMypageSVC {
 	public Map<String, Object> selectMyPageDeliveryInfoMap(int mbId) {
 		System.out.println("mpSvc : selectMyPageDeliveryInfoMap()..");
 		if(mbId > 0) {
+			Map<String, Object> rMap = new HashMap<>();
 			List<PayHistoryVO> phisList =  //phisDao.
 											testDao.selectAllPayHistoriesByMbId(mbId);
-			if(phisList != null) {
+			System.out.println("mp: svc  phisList = " + phisList);
+			if(phisList != null) { // 기록이있어야 보여줄수있는것들
 				List<CreatorVO> creList = new ArrayList<>();
 				List<KitVO> kitList = new ArrayList<>();
 				
@@ -531,8 +534,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 								= (deliveryStatusDeliveryCompleted + 1); break;
 					}
 					String creatorIds = phisList.get(i).getSellMbId();
+	
 					String kitIds = phisList.get(i).getGoodsId();
-					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
+					
 					String[] arrayCreatorIds = creatorIds.split("_");
 					String[] arrayKitIds = kitIds.split("_");
 					kitCount = arrayKitIds.length;
@@ -555,7 +559,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 						System.out.println("arrayCreatorIds.length 는 음수 ");
 					}
 				}
-				Map<String, Object> rMap = new HashMap<>();
+				
 				int[] deliveryStatus = { deliveryStatusPaymentWaiting,  
 						deliveryStatusDeliveryPreparation, 
 						deliveryStatusShippingInProgress, 
@@ -565,10 +569,11 @@ public class MyPageSVCImpl implements IMypageSVC {
 				rMap.put("creList", creList);
 				rMap.put("kitList", kitList);
 				rMap.put("deliveryStatusArray", deliveryStatus);
-				return rMap;
+				
 			} else {
 				System.out.println("phisList == null");
 			}
+			return rMap;
 		} else {
 			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
 			System.out.println("mbId = " + mbId);
@@ -661,7 +666,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 	public Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat) {
 		System.out.println("mpSvc : selectMyPageDeliveryStatMap()..");
 		System.out.println("mbId = " + mbId + " / deliveryStat = " + deliveryStat);
-		if(mbId > 0 && deliveryStat > 0 && deliveryStat < 5) {
+		if(mbId > 0 && deliveryStat >= 0 && deliveryStat < 4) {
 			List<PayHistoryVO> phisList = //phisDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
 											testDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
 			List<CreatorVO> creList = new ArrayList<>();
@@ -672,8 +677,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 					String creatorIds = phisList.get(i).getSellMbId();
 					String kitIds = phisList.get(i).getGoodsId();
 					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
-					String[] arrayCreatorIds = creatorIds.split(",");
-					String[] arrayKitIds = kitIds.split(",");
+					String[] arrayCreatorIds = creatorIds.split("_");
+					String[] arrayKitIds = kitIds.split("_");
 					
 					if(arrayCreatorIds.length >= 0 ) {
 						for (int j = 0; j < arrayKitIds.length; j++) {
@@ -706,6 +711,147 @@ public class MyPageSVCImpl implements IMypageSVC {
 		return null;
 	}
 
+	private String mypageDeliveryStatTemplat() {
+		StringBuffer sbTemp = new StringBuffer();
+		sbTemp.append("<div class=\"mypage_bottom_info\">");
+		sbTemp.append("<h2 class=\"mypage_bottom_title\"><c:out value=\"${delStatHead}\"/></h2>");
+		sbTemp.append("<div class=\"mypage_bottom_contents\">");
+		sbTemp.append("<c:if test=\"${not empty phisList}\">");
+		sbTemp.append("<div class=\"mypage_table\">");
+		sbTemp.append("<c:forEach var=\"phis\" items=\"phisList\" varStatus=\"vs\">"); // 포문시작
+		sbTemp.append("<table border=\"0\">");
+		sbTemp.append("<tr>");
+		sbTemp.append("<th rowspan=\"3\" style='width: 250px;'><img src=\"<c:out value='${kitList.get(vs.index).imgPath}' />\" width=\"240px\" height=\"125px\"></th>");
+		sbTemp.append("<td colspan=\"2\"><b><c:out value=\"${kitList.get(vs.index).title}\" /></b></td><td></td><td><button>주문상세조회</button></td>");
+		sbTemp.append("</tr>");
+		sbTemp.append("<tr>");
+		sbTemp.append("<td>판매자:</td><td><c:out value=\"${creList.get(vs.index).nickname}\" /></td><td>주문번호 : <c:out value=\"${phis.checkSameOrder}\" /></td><td>주문일자 : <fmt:formatDate value=\"${phis.dealDay}\"  pattern=\"yyyy.MM.dd\" /></td>");          
+		sbTemp.append("</tr>");
+		sbTemp.append("<tr>");
+		sbTemp.append("<td>수량: </td><td><c:out value=\"${kitCount}\"/>개</td><td>총 결제금액:</td><td><c:out value=\"${phis.payHistorySum}\"/>원</td>");
+		sbTemp.append("</tr>");
+		sbTemp.append("<tr>");
+		sbTemp.append("<td></td>");
+		sbTemp.append("</tr>");
+		sbTemp.append("</table>");
+		sbTemp.append("</c:forEach>");
+		sbTemp.append("</div>");
+		sbTemp.append("</c:if>");
+		sbTemp.append("<c:if test=\"${empty phisList}\">");
+		sbTemp.append("<div class=\"mypage_table\">");
+		sbTemp.append("<table border=\"0\">");
+		sbTemp.append("<tr>");	
+		sbTemp.append("<th>현재 <c:out value=\"${delStat}\"/>인 상품이 없습니다.</th>");		
+		sbTemp.append("</tr>");
+		sbTemp.append("</table>");
+		sbTemp.append("</div>");
+		sbTemp.append("</c:if>");
+		sbTemp.append("</div>");
+		sbTemp.append("</div>");
+		return sbTemp.toString();
+	}
+	
+	@Override
+	public Map<String, Object> showMyPageDeliveryContentsByMbIdDeliveryStat(int mbId, int deliveryStat) {
+		System.out.println("mpSvc : showMyPageDeliveryContentsByMbIdDeliveryStat()");
+		System.out.println("mbId = " + mbId + " / deliveryStat = " + deliveryStat);
+		Map<String, Object> rMap = new HashMap<>();
+		if(mbId > 0 && deliveryStat >= 0 && deliveryStat < 4) {
+			List<PayHistoryVO> phisList = //phisDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+									testDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+			String strDeliveryStat = "";
+			switch(deliveryStat) {
+				case 0: strDeliveryStat="결제대기"; break;
+				case 1: strDeliveryStat="배송준비"; break;
+				case 2: strDeliveryStat="배송중"; break;
+				case 3: strDeliveryStat="배송완료"; break;
+			}
+			StringBuffer sbTemp = new StringBuffer();
+			sbTemp.append("<div class=\"mypage_bottom_info\">");
+			sbTemp.append("<h2 class=\"mypage_bottom_title\"><c:out value=\"" + strDeliveryStat + "\"/></h2>");
+			sbTemp.append("<div class=\"mypage_bottom_contents\">");
+			sbTemp.append("<div class=\"mypage_table\">");
+			
+			List<CreatorVO> creList = new ArrayList<>();
+			List<KitVO> kitList = new ArrayList<>();
+			if(phisList != null) {
+				System.out.println("여기들림");
+				
+				// 들리는데 스트링버퍼에 안담김.. ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅂㄱㅈㅂㅈ거ㅔㅂ먀러ㅔㅂ
+				final int PHIS_LIST_SIZE = phisList.size();
+				for (int i = 0; i < PHIS_LIST_SIZE; i++) {
+					String creatorIds = phisList.get(i).getSellMbId();
+					String kitIds = phisList.get(i).getGoodsId();
+					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
+					String[] arrayCreatorIds = creatorIds.split("_");
+					String[] arrayKitIds = kitIds.split("_");
+					
+					sbTemp.append("<table border=\"0\">");
+					sbTemp.append("<tr>");
+					
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+					if(arrayCreatorIds.length >= 0 ) {
+						for (int j = 0; j < arrayKitIds.length; j++) {
+							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
+							int intKitId = Integer.parseInt(arrayKitIds[j]);
+							
+							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
+							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
+											testDao.selectOneCreatorById(intCreatorId);
+							KitVO kit = //kitDao.selectOneKitById(intKitId);
+										testDao.selectOneKitById(intKitId);
+							sbTemp.append("<tr>");
+							sbTemp.append("<th rowspan=\"3\" style='width: 250px;'><img src=\"<c:out value='" + kit.getImgPath() + "' />\" width=\"240px\" height=\"125px\"></th>");
+							sbTemp.append("<td colspan=\"2\"><b><c:out value=\"" + kit.getTitle() + "\" /></b></td><td></td><td><button>주문상세조회</button></td>");
+							sbTemp.append("</tr>");
+							sbTemp.append("<tr>");
+							sbTemp.append("<td>판매자:</td><td><c:out value=\"" + cre.getNickname() + "\" /></td><td>주문번호 : <c:out value=\"" + phisList.get(i).getCheckSameOrder() + "\" /></td><td>주문일자 : " + sdf.format(phisList.get(i).getDealDay()) + "");          
+							sbTemp.append("</tr>");
+							sbTemp.append("<tr>");
+							sbTemp.append("<td>수량: </td><td><c:out value=\"" + phisList.get(i).getBuyProductCount() + "\"/>개</td><td>총 결제금액:</td><td><c:out value=\"" + phisList.get(i).getPayHistorySum() + "\"/>원</td>");
+							sbTemp.append("</tr>");
+							sbTemp.append("<tr>");
+							sbTemp.append("<td></td>");
+						}
+						sbTemp.append("</tr>");
+						sbTemp.append("</table>");
+						sbTemp.append("</div>");
+						
+					} else {
+						System.out.println("arrayCreatorIds.length 는 음수 ");
+					}
+				} // for 문끝
+				
+			} else {
+				System.out.println("phisList == null");
+				String strDelStat = "";
+				switch(deliveryStat) {
+					case 0: strDelStat="결제대기중인"; break;
+					case 1: strDelStat="배송준비중인"; break;
+					case 2: strDelStat="배송중인"; break;
+					case 3: strDelStat="배송완료된"; break;
+				}
+				
+				
+				sbTemp.append("<table border=\"0\">");
+				sbTemp.append("<tr>");	
+				sbTemp.append("<th>현재 <c:out value=\"" + strDelStat + "\"/> 상품이 없습니다.</th>");
+				sbTemp.append("</tr>");
+				sbTemp.append("</table>");
+				sbTemp.append("</div>");
+			}
+			sbTemp.append("</div>");
+			sbTemp.append("</div>");
+			rMap.put("template", sbTemp.toString());
+			return rMap;
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+		}
+		return null;
+	}
+	
+	
 
 	@Override
 	public Map<String, Object> selectMemberPayHistoriesByPayStatusMbId
@@ -746,4 +892,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 		return null;
 	}
+
+	
+
+
 }

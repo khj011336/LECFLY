@@ -62,6 +62,9 @@ public interface IMypageSVC {
 	Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat);
 
 	Map<String, Object> selectMemberPayHistoriesByPayStatusMbId(String payStatus, int mbId);
+
+	Map<String, Object> showMyPageDeliveryContentsByMbIdDeliveryStat(int mbId, int deliveryStat);
+
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴			

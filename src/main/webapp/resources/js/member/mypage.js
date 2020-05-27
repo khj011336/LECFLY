@@ -107,7 +107,8 @@
 				success:function(res){
 					$("#mypage_bottom").html(res);
 				},
-				error:function(request,status,error){	
+				error:function(request,status,error){
+					
 				}
  			});				
  		}); // 대분류 이동> 댓글내역
@@ -132,7 +133,6 @@
  				url: "mypage_delivery_info.LF",
 	 			cache: true,
 				datatype: "text",
-				data: "",
 				success:function(res){
 					$("#mypage_bottom").html(res);
 				},
@@ -333,39 +333,115 @@
 // 			var name= $('input#posting-value-1').val();
 
 // 		}); // 마이페이지 회원정보 변경 클릭시
- 		
- 		
- 		
 
- 		
- 		// 마이페이지 결제내역 보기 
+		
+//		// 마이페이지 결제내역 보기 
+//		$(document).on("click", "#mypage_dilivery_status_1", function(e) {
+//			console.log("status_1");
+//			var url = 'delivery_stat1.LF';
+//			var params = "deliveryStat=" + 0; //0: 주문서 확인 
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "text",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res);
+//					console.log("결제대기 로딩완료");
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});			
+//		}); // 배송 정보 결제대기
+// 		
+//		
+//		$(document).on("click", "#mypage_dilivery_status_2", function() {
+//			console.log("status_2");
+//			var url = 'delivery_stat2.LF';
+//			var params = "deliveryStat=" + 1; // 1:상품준비중 
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "text",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res);
+//					console.log("배송준비 로딩완료");
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});
+//		}); // 배송 정보 배송준비
+//		
+//		$(document).on("click", "#mypage_dilivery_status_3", function() {
+//			console.log("status_3");
+//			var url = 'delivery_stat3.LF';
+//			var params = "deliveryStat=" + 2; // 2: 배송중
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "text",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res);
+//					console.log("배송중 로딩완료");
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});
+//		}); // 배송 정보 배송중
+//		
+//		$(document).on("click", "#mypage_dilivery_status_4", function() {
+//			console.log("status_4");
+//			var url = 'delivery_stat4.LF';
+//			var params = "deliveryStat=" + 3; //  3: 배송완료*
+//			$.ajax({
+//				type: "POST",
+//				url: url,
+//				dataType: "text",
+//				data: params,
+//				success: function(res, status, xhr) {
+//					$(".dilivery_status_chart").html(res);
+//					console.log("배송완료 로딩완료");
+//				},
+//				error: function(status,xhr) {
+//					
+//				}
+//			});
+//		}); // 배송 정보 배송완료
+		
+ 	// 마이페이지 결제내역 보기 
 		$(document).on("click", "#mypage_dilivery_status_1", function(e) {
 			console.log("status_1");
 			var url = 'delivery_stat1.LF';
-			var params = "deliveryStat=" + 1;
+			var params = "deliveryStat=" + 0; //0: 주문서 확인 
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "text",
+				dataType: "JSON",
 				data: params,
 				success: function(res, status, xhr) {
-					$(".dilivery_status_chart").html(res);
-					console.log("결제대기 로딩완료");
+					$(".dilivery_status_chart").html(res.template);
+					console.log("res.template = " + res.template);
 				},
 				error: function(status,xhr) {
 					
 				}
 			});			
 		}); // 배송 정보 결제대기
+ 		
 		
 		$(document).on("click", "#mypage_dilivery_status_2", function() {
 			console.log("status_2");
 			var url = 'delivery_stat2.LF';
-			var params = "deliveryStat=" + 2;
+			var params = "deliveryStat=" + 1; // 1:상품준비중 
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "text",
+				dataType: "JSON",
 				data: params,
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
@@ -380,11 +456,11 @@
 		$(document).on("click", "#mypage_dilivery_status_3", function() {
 			console.log("status_3");
 			var url = 'delivery_stat3.LF';
-			var params = "deliveryStat=" + 3;
+			var params = "deliveryStat=" + 2; // 2: 배송중
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "text",
+				dataType: "JSON",
 				data: params,
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
@@ -399,11 +475,11 @@
 		$(document).on("click", "#mypage_dilivery_status_4", function() {
 			console.log("status_4");
 			var url = 'delivery_stat4.LF';
-			var params = "deliveryStat=" + 4;
+			var params = "deliveryStat=" + 3; //  3: 배송완료*
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "text",
+				dataType: "JSON",
 				data: params,
 				success: function(res, status, xhr) {
 					$(".dilivery_status_chart").html(res);
@@ -415,14 +491,16 @@
 			});
 		}); // 배송 정보 배송완료
  		
+		
+		///// 결제내역
 		$(document).on("click", "#mypage_pay_all", function() {
 			console.log("결제내역 전체");
-			var url = 'mypage_pay_all.LF';
-			var params = "payStatus=" + 1;
+			var url = 'mypage_pay_list.LF';
+			var params = "pn=" + pn;
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "JSON",
+				dataType: "text",
 				data: params,
 				success: function(res, status, xhr) {
 					$("#payment_chart").html(res);
@@ -435,12 +513,12 @@
 		
 		$(document).on("click", "#mypage_pay_tickets", function() {
 			console.log("결제내역 티켓");
-			var url = 'mypage_pay_tickets.LF';
-			var params = "payStatus=" + 2;
+			var url = 'mypage_pay_ticket.LF';
+			var params = "pn=" + pn;
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "JSON",
+				dataType: "text",
 				data: params,
 				success: function(res, status, xhr) {
 					$("#payment_chart").html(res);
@@ -453,12 +531,12 @@
 		
 		$(document).on("click", "#mypage_pay_kits", function() {
 			console.log("결제내역 키트");
-			var url = 'mypage_pay_kits.LF';
-			var params = "payStatus=" + 3;
+			var url = 'mypage_pay_kit.LF';
+			var params = "pn=" + pn;
 			$.ajax({
 				type: "POST",
 				url: url,
-				dataType: "JSON",
+				dataType: "text",
 				data: params,
 				success: function(res, status, xhr) {
 					$("#payment_chart").html(res);
@@ -468,7 +546,6 @@
 				}
 			});
 		}); // 결제내역 키트
-		
 		
  	}); // $(document).ready 끝;
  	
