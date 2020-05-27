@@ -237,7 +237,7 @@ public class AdminMybatisDAOImpl implements IAdminLectureDAO{
 	}
 	// 체크리스트 강의 삭제
 	@Override
-	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
+	public boolean deleteLectureforIds(ArrayList<Integer> checkList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", checkList);
 		return sstem.delete("IAdminDAO.SQL_DELETE_LECTURE_IDS", map) == 1;
@@ -273,5 +273,47 @@ public class AdminMybatisDAOImpl implements IAdminLectureDAO{
 		map.put("offset", offset);
 		map.put("limit", limit);
 		return sstem.selectList("IAdminDAO.SQL_SELECT_LECTURE_ALL_PG_APPROVAL_DONE",map);
+	}
+
+	@Override
+	public boolean updateMemberApprovalforIds(ArrayList<Integer> checkList) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ids", checkList);
+		return sstem.update("IAdminDAO.SQL_UPDATE_MEMBER_APPROVAL_IDS", map) == 1;
+	}
+
+	@Override
+	public boolean updateCreatorApprovalforIds(ArrayList<Integer> checkList) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ids", checkList);
+		return sstem.update("IAdminDAO.SQL_UPDATE_CREATOR_APPROVAL_IDS", map) == 1;
+	}
+
+	@Override
+	public boolean updateMemberDisapprovalforIds(ArrayList<Integer> checkList) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ids", checkList);
+		return sstem.update("IAdminDAO.SQL_UPDATE_MEMBER_DISAPPROVAL_IDS", map) == 1;
+	}
+
+	@Override
+	public boolean updateCreatorDisapprovalforIds(ArrayList<Integer> checkList) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ids", checkList);
+		return sstem.update("IAdminDAO.SQL_UPDATE_CREATOR_DISAPPROVAL_IDS", map) == 1;
+	}
+
+	@Override
+	public boolean deleteMemberforIds(ArrayList<Integer> checkList) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ids", checkList);
+		return sstem.delete("IAdminDAO.SQL_DELETE_MEMBER_IDS", map) == 1;
+	}
+
+	@Override
+	public boolean deleteCreatorforIds(ArrayList<Integer> checkList) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ids", checkList);
+		return sstem.delete("IAdminDAO.SQL_DELETE_CREATOR_IDS", map) == 1;
 	}
 }
