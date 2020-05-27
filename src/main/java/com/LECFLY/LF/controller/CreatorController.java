@@ -477,7 +477,7 @@ public class CreatorController {
 
 	@RequestMapping(value = "creator_lecplay.LF", method = RequestMethod.GET)
 	public String show_video(Model model) {
-		 
+
 		int CFID = 48;
 
 		List<LectureVO> Lec = LecDAO.selectLectureList(CFID);

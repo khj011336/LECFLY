@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 public class CreatorVO {
-
 private int id; 			 //PK AI  
 private int fId; 			 //Fk 
 private String imgPath; 	 // 이미지 파일경로 파일네이밍 규정에 따름 UQ

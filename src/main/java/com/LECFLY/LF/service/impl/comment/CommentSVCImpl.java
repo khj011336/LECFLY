@@ -33,6 +33,14 @@ public class CommentSVCImpl implements ICommentSVC {
 		int depth;
 		// 댓글다는 해당 게시글들 판별
 		List<CommentVO> ctList = selectCommentsForOrderNumDesc(tableCate, atId);
+		if(ctList.size()==0) {
+			System.out.println("첫댓글임");
+			ct = new CommentVO(mbId, tableCate, atId, 0, 0, comment, mbNic);
+			if(addComment(ct))
+				return ADD_COMMENT_SUCCES;
+			else
+				return ADD_COMMENT_FAIL;
+		}	
 		for (CommentVO cts : ctList) {
 			System.out.println(cts.getId() + "/" + cts.getComment());
 		}

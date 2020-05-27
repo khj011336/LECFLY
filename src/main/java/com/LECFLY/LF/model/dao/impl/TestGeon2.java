@@ -20,7 +20,7 @@ public class TestGeon2 {
 
 	@Autowired
 	private JdbcTemplate jtem;
-	
+
 	private final String SQL_SELECT_LECTURE_ID = "select * from lectures where id = ?";
 	public LectureVO selectOneLecture(int lecId) {
 		System.out.println(SQL_SELECT_LECTURE_ID + "lecId = " + lecId);
@@ -45,12 +45,12 @@ public class TestGeon2 {
 		}
 		return null;
 	}
-	
-	private final String SQL_SELECT_VIDEO_CFID = "select * from video where CFId = ?";
+
+	private final String SQL_SELECT_VIDEO_CFID = "select * from videos where play_c_f_id = ?";
 	public List<VideoVO> selectOneVideo(int CFId) {
 		System.out.println(SQL_SELECT_VIDEO_CFID + "CFId =" + CFId);
 		try {
-		return jtem.query(SQL_SELECT_VIDEO_CFID, 
+		return jtem.query(SQL_SELECT_VIDEO_CFID,
 				BeanPropertyRowMapper.newInstance(VideoVO.class), CFId);
 		} catch (DataAccessException e) {
 			System.out.println("Video DataAccessException");
@@ -69,15 +69,15 @@ public class TestGeon2 {
 			e.printStackTrace();
 		}
 		return null;
-	} 
-	
+	}
+
 	private final String SQL_SELECT_KIT_ID = "select * from kit where id = ?";
 	public KitVO selectOneKitbyId(int kitId) {
 		System.out.println(SQL_SELECT_KIT_ID + "kitId = " + kitId);
-		return jtem.queryForObject(SQL_SELECT_KIT_ID, 
+		return jtem.queryForObject(SQL_SELECT_KIT_ID,
 				BeanPropertyRowMapper.newInstance(KitVO.class), kitId);
 	}
-	
+
 	private final String SQL_SELECT_CREATOR_FID ="select * from creator where fId = ?";
 	public CreatorVO selectOneCreByfId(int getfId) {
 		System.out.println(SQL_SELECT_CREATOR_FID + "getfId = " + getfId);

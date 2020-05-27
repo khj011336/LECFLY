@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.LECFLY.LF.model.dao.impl.member.MemberMySqlDAOImpl;
+import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 
@@ -16,7 +16,7 @@ import com.LECFLY.LF.service.inf.member.ILoginSVC;
 public class loginSVCImpl implements ILoginSVC {
 	
 	@Autowired
-	MemberMySqlDAOImpl mbDao;
+	IMemberDAO mbDao;
 	
 	@Override
 	public String getMsg(int r) {
@@ -58,6 +58,18 @@ public class loginSVCImpl implements ILoginSVC {
 	@Override
 	public MemberVO login(String email, String pw) {
 		return this.mbDao.memberPassword(email, pw);
+	}
+	
+	@Override
+	public boolean incLoginCnt(int id) {
+		System.out.println("svc: incLoginCnt로그인횟수증가");
+		return mbDao.incLoginCnt(id);
+	}
+	
+	@Override
+	public boolean updateLoginDate(int id) {
+		System.out.println("svc: updateLoginDate 로그인날자 갱신");
+		return mbDao.updateLoginDate(id);
 	}
 
 	@Override

@@ -110,7 +110,7 @@
     	 			data: params,
     	 			dataType: "JSON",
     	 			success: function(res, status, xhr) {
-    	 				console.log("수정성공");
+    	 				console.log("성공");
     	 				$("#mypage_mb_update_confirm").html(res.temp);
     	 			},
     	 			error: function(status, xhr) {
@@ -155,7 +155,8 @@
 		                    <td>
 <!-- 		                    	<input type="radio" id="cnm_mb_f" name="cnm_mb_gender" value="여" disabled><label for="cnm_mb_f" class="gender_sub_title">여성</label> -->
 <!-- 	    						<input type="radio" id="cnm_mb_m" name="cnm_mb_gender" value="남" disabled><label for="cnm_mb_m" class="gender_sub_title">남성</label> -->
-								<input type="text" id="cnm_mb_m" name="cnm_mb_gender" readonly value="${member.gender==1?'여성':'남성'}">
+								<label id="cnm_mb_m" name="cnm_mb_gender" class="gender_sub_title">${member.gender==1?'여성':'남성'}</label>
+<%-- 								<input type="text" id="cnm_mb_m" name="cnm_mb_gender" readonly value="${member.gender==1?'여성':'남성'}"> --%>
 	    					</td>
 		                </tr>
 		                <tr>
@@ -182,7 +183,7 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_nick">닉네임</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_nick" name="cnm_mb_nick" placeholder="닉네임">
+		                    		<input type="text" id="cnm_mb_nick" name="nickname" placeholder="닉네임">
 		                    		<input type="button" id="cnm_mb_nick_check_btn" value="중복확인">
 		                    	</div>
 		                    </td>
@@ -207,7 +208,7 @@
 		                    <td>
 		                    	<div style="display: inline-block">
 						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" readonly
-						    		value=${member.postalCode}>
+						    		value=${postalcode}>
 						        	<input type="button" id="find_adress_btn" value="주소찾기" onclick="find_address()">
 					        	</div>
 		                    </td>
