@@ -7,10 +7,10 @@
 	<div id="Crpf_wrap">
         <div id='Crpf_content'>
         	<div id="Crpf_head"><span class="creator_h1">크리에이터 소개</span></div>
-        	<form  method="post"  id="aform" class='pubf'  enctype="multipart/form-data" action="creator_new_profile_proc.LF">
+        	<form  method="post"  id="aform" class='pubf'  enctype="multipart/form-data" action="creator_new_profile_proc.LF" name ="profileForm">
         	<input type="hidden" name="unloadA" value="." id = "unload">
         	<input type="hidden" name="id" value="${creator.id }">
-        	<input type="hidden" name="imgPath" id="tempImg" value="${creator.imgPath }">
+<%--         	<input type="hidden" name="imgPath" id="tempImg" value="${creator.imgPath }"> --%>
         	<input type="hidden" name="fid" value="${creator.fid }">
         	<div class="Crpf_form">
 	            <div class="Crpf_text1"><span class="creator_h2">프로필 사진</span></div>

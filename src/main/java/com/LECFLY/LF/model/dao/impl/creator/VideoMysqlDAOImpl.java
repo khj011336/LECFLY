@@ -24,7 +24,7 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	final String SELECT_ONE_VIDEO = "select * from video where CFId = ? and id = ?";
 	final String UPDATE_VIDEO ="update video set video_path = ? , duration = ? , title = ? , info = ? , img_path =  ? , gif_path = ? ,order_info = ?,"+
 	"comment_y_n = ? , status = ? , updated_at = now() where CFId = ? and id = ?";
-	final String SELECT_ALL_VIDEOTRACK = "select * from video where fId = ? and CFId = ?";
+	final String SELECT_ALL_VIDEOTRACK = "select * from video where CFId = ?";
 	
 	@Override
 	public boolean insertNewVideo(VideoVO Vvo) {
@@ -57,8 +57,8 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 		}
 	}
 	@Override
-	public List<VideoVO> selectVideoTrack(int fid, int CFID) {
-		return jtem.query(SELECT_ALL_VIDEOTRACK, BeanPropertyRowMapper.newInstance(VideoVO.class), fid,CFID);
+	public List<VideoVO> selectVideoTrack( int CFID) {
+		return jtem.query(SELECT_ALL_VIDEOTRACK, BeanPropertyRowMapper.newInstance(VideoVO.class),CFID);
 		
 	}
 	@Override

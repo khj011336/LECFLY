@@ -3,25 +3,37 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-	
-	
-	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-		<import resource="aop/aop_conf.xml"></import>
-		<import resource="dataSource/dbcp_ds.xml"/>
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-		<bean class="org.springframework.jdbc.core.JdbcTemplate" id="jtemplete" p:dataSource-ref="ds"></bean>
-		
-		<!-- Mybatis 관련 빈 등록 -->
-	<bean id="mybatisFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<import resource="aop/aop_conf.xml"></import>
+	<import resource="dataSource/dbcp_ds.xml" />
+
+	<bean class="org.springframework.jdbc.core.JdbcTemplate"
+		id="jtemplete" p:dataSource-ref="ds"></bean>
+
+	<!-- Mybatis 관련 빈 등록 -->
+	<bean id="mybatisFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="ds" />
 		<property name="configLocation"
-			 value="classpath:mybatis-config.xml"/>
+			value="classpath:mybatis-config.xml" />
 	</bean>
-	
+
 	<bean id="sstem" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="mybatisFactory" />
 	</bean>
+	<!-- aop transaction 빈 등록 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+
+	
+
 </beans>
