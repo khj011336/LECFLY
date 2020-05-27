@@ -32,8 +32,11 @@ import com.LECFLY.LF.service.impl.comment.CommentSVCImpl;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
 import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.impl.creator.LectureSVCImpl;
+import com.LECFLY.LF.service.inf.creator.IStatSVC;
 import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @SessionAttributes({ "creator", "Lecture", "video", "creatorKit" })
@@ -70,7 +73,8 @@ public class CreatorController {
 	CommentSVCImpl commentSVC;
 	@Autowired
 	private INoticeSVC ntSvc;
-
+	@Autowired
+	IStatSVC statSVC;
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -389,6 +393,7 @@ public class CreatorController {
 		vio.setfId(memberId);
 		System.out.println(vio.toString());
 		VdoSVC.insertNewVideo(vio);
+		ViDAO.addCountVideoTrack(vio.getCFId());
 		sesStatus.setComplete();
 		return "creator/cre_href";
 	}
@@ -478,16 +483,21 @@ public class CreatorController {
 	@RequestMapping(value = "creator_lecplay.LF", method = RequestMethod.GET)
 	public String show_video(Model model) {
 		 
-		int CFID = 48;
-
-		List<LectureVO> Lec = LecDAO.selectLectureList(CFID);
-		String username = Lec.get(0).getImgPath().split("_")[1];
+		int LecId = 52;
+		int CFid = 0;
+		String username = null;
+		LectureVO Lec = LecDAO.selectLecture(LecId);
+		if(Lec != null) {
+		username = Lec.getImgPath().split("_")[1];
+		CFid = Lec.getId();
+		}
 		String videoPath = "/images/2020/" + username + "/video";
 		String imgPath = "/images/2020/" + username + "/Img";
 		model.addAttribute("crPath", imgPath);
 		model.addAttribute("viPath", videoPath);
 		model.addAttribute("lecList", Lec);
-		model.addAttribute("videoList", ViDAO.selectVideoTrack(  CFID));
+		model.addAttribute("videoList", ViDAO.selectVideoTrack(CFid));
+		
 		return "lecture/lecplay.page";
 	}
 
@@ -537,28 +547,8 @@ public class CreatorController {
 
 	@RequestMapping(value = "creator_statistics.LF", method = RequestMethod.GET)
 	public String showstatisticsList(
-			Model model) {
-		  List<LectureVO> lecvo = LecDAO.selectLectureList(memberId);
-		  System.out.println(lecvo.get(0));
-		  if(lecvo != null && !lecvo.isEmpty()) {
-		  List<VideoVO> videoList = ViDAO.selectVideoTrack(lecvo.get(0).getId());
-		  HashMap<String, Object> videoStat = new HashMap<String, Object>();
-		  List<String> title = new ArrayList<String>();
-		  List<Integer> like = new ArrayList<Integer>();
-		  List<Integer> views = new ArrayList<Integer>();
-		  List<Integer> statCfid = new ArrayList<Integer>();
-		  for(int i = 0 ; i < videoList.size(); i++) {
-			 like.add(videoList.get(i).getLikeCount());
-			views.add(videoList.get(i).getViews());
-			 title.add(lecvo.get(i).getTitle());
-			 statCfid.add(lecvo.get(i).getId());
-		  }
-		  videoStat.put("title", title);
-		  videoStat.put("like",like);
-		  videoStat.put("views",views);
-		  videoStat.put("statCFID",statCfid);
-		  model.addAttribute("videoStat",videoStat);
-		  }
-		return "creator/cre_statistics.page";
+			Model model , @RequestParam(value = "lecId",defaultValue = "0" ,required = false) int lecId,
+			@RequestParam(value = "net",defaultValue = "0" ,required = false) int net) {
+		return statSVC.StatSvc(model, net, lecId, net);
 	}
 }

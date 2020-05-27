@@ -54,10 +54,10 @@
 					<hr>
 					<div id="uplorder">
 						<div id='uplorderplayWrap'>
-							<img id='usr' src="${crPath}${lecList[0].imgPath}"><span
+							<img id='usr' src="${crPath}${lecList.imgPath}"><span
 								id="usrname" class="usrab">
-								<h3>${lecList[0].nickname}</h3>
-							</span> <span id="usrtitle" class="usrab"><b>${lecList[0].title}</b>-${lecList[0].subTitle}</span>
+								<h3>${lecList.nickname}</h3>
+							</span> <span id="usrtitle" class="usrab"><b>${lecList.title}</b>-${lecList.subTitle}</span>
 							<span id="usrpick" class="usrab">조회수
 								${videoList[0].views}명</span>
 						</div>
