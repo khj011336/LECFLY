@@ -4,7 +4,6 @@ import com.LECFLY.LF.model.vo.creator.CreatorVO;
 
 public interface ICreatorDAO {
 	CreatorVO selectOneCreator(int id);
-	CreatorVO selectCreators();
 	 boolean insertNewCreator(int fid , String imgPath, String name , String nickname, String cellphone, String sns, String info ,int status);
 	 boolean updateCreator(CreatorVO crVo ,int fid); 
 		

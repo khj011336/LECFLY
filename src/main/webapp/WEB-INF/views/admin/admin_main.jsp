@@ -1,163 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<script>
-$(document).ready(function() {
-	var myChart;
-	var chartOptions = {
-			 chart: {
-				  type: 'column',
-				  renderTo: 'container_categorylecture'
-				  },
-				  title: {
-				    text: '카테고리별 강의수'
-				  },
-				  subtitle: {
-				    text: '2020.05 기준'
-				  },
-				  accessibility: {
-				    announceNewData: {
-				      enabled: true
-				    }
-				  },
-				  xAxis: {
-				    type: 'category'
-				  },
-				  yAxis: {
-				    title: {
-				      text: '강의 수(건)'
-				    }
-				  },
-				  legend: {
-				    enabled: false
-				  },
-				  plotOptions: {
-				    series: {
-				      borderWidth: 0,
-				      dataLabels: {
-				        enabled: true,
-				        format: '{point.y}'
-				      }
-				    }
-				  },
-				  tooltip: {
-				    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>총 {point.y}건</b><br/>'
-				  },
 
-				  series: [{
-				      name: "카테고리",
-				      colorByPoint: true,
-				      data: []
-				  }]	
-	};
-	myChart = new Highcharts.chart(chartOptions);
-	
-	var myChart2;
-	var chartOptions2 = {
-			chart: {
-			    type: 'line',
-			    renderTo: 'container_monthlymember'
-			  },
-			  title: {
-			    text: '달 기준 회원가입 인원 수'
-			  },
-			  subtitle: {
-			    text: '이번달 기준 최근 1년'
-			  },
-			  xAxis: {
-				  type: 'category'
-			  },
-			  yAxis: {
-			    title: {
-			      text: '회원 수(명)'
-			    }
-			  },
-			  plotOptions: {
-			    line: {
-			      dataLabels: {
-			        enabled: true
-			      },
-			      enableMouseTracking: false
-			    }
-			  },
-			  series: [{
-			    name: '가입 인원',
-			    color: '#000000',
-			  }]
-			};
-			
-			myChart2 = new Highcharts.chart(chartOptions2);
-			
-			
-	$("#categorylecture").on("click", function(){
-		console.log("카테고리 차트 요청");
-		var URLHD = '${pageContext.request.contextPath}/';
-		var url = URLHD + "stat_categoryLecture.LF";
-		$.ajax({
-			type: 'post',
-			contentType: 'application/json',
-			data: 'start=1',
-			url: url,
-			dateType: 'json',
-			success: function(res, status, xhr) {
-				console.log(res);
-				
-				var cateName = res.cateName;// 카테고리명
-				var lectureCnt = res.lectureCnt;// 강의수
-				
-				var arr = new Array();
-				var info;
-				for (var i = 0; i < cateName.length; i++) {
-					info = new Object();
-					info.name = cateName[i];
-					info.y = lectureCnt[i];
-					arr.push(info);
-					myChart.series[0].setData(arr, true);
-				}
-			},
-			error: function(xhr, status) {
-				console.log(xhr);
-				console.log(xhr.status);
-				console.log(status);
-			}
-		});
-		
-	});
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////monthlymember
-
-
-	$("#monthlymember").on("click", function(){
-		console.log("멤버증가 차트 요청");
-		var URLHD = '${pageContext.request.contextPath}/';
-		var url = URLHD + "stat_monthlyMember.LF";
-		$.ajax({
-			type: 'post',
-			data: 'start=1',
-			url: url,
-			dateType: 'json',
-			success: function(res, status, xhr) {
-				console.log(res);
-				myChart2.xAxis[0].setCategories(res.monthName, true);
-				
-				var memberCnt = res.memberCnt;// 인원수
-				myChart2.series[0].setData(memberCnt, true);
-			
-			},
-			error: function(xhr, status) {
-				console.log(xhr);
-				console.log(xhr.status);
-				console.log(status);
-			}
-		});
-		
-	});
-	// 통계 자동실행
-	$("#monthlymember").trigger("click");
-	$("#categorylecture").trigger("click");
-});
-	
-</script>
 <h2>관리자 메인</h2>
 <hr>
 <div class="main_top">
@@ -268,6 +111,8 @@ $(document).ready(function() {
 </div> -->
 <input id="monthlymember" type="hidden" value="1통계보기">
 <input id="categorylecture" type="hidden" value="2통계보기">
+<input id="monthlysales" type="hidden" value="3통계보기">
+
 <!-- 차트 출력 부분 -->
 <div id="stat_result" style="display: flex; width: 1200px;">
 	<figure class="highcharts-figure">
@@ -277,6 +122,11 @@ $(document).ready(function() {
 	
 	<figure class="highcharts-figure">
 		<div id="container_categorylecture"></div>
+		<p class="highcharts-description"></p>
+	</figure>
+	
+	<figure class="highcharts-figure">
+		<div id="container_monthlysales"></div>
 		<p class="highcharts-description"></p>
 	</figure>
 	

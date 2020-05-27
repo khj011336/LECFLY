@@ -9,21 +9,13 @@
 <title>CSCENTER/NOTICE</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/CSCenter.css">
 <link type="text/css" rel="stylesheet" href="resources/css/CScenter/receive_board.css">
 
 </head>
 <body>
 <div id="receiveBoard_wrapper">
-		<!-- <div id = "receiveBoard_button">
-			<div id = "button_left">
-			<span class="onlyForAdmin" id="rbBtn">수정</span>
-			<div id = "button_right">
-			<span class="onlyForAdmin" id="rbBtn">삭제</span>
-			</div>
-		</div>   -->
-        <div id="receiveBoard_content">
+		<div id="receiveBoard_content">
             
             <div class="receiveBoard_content_title">
                 <span class=""></span>
@@ -50,13 +42,9 @@
                 </strong>
             </div>
             <div class="titleRight">
-            <span class="file">첨부파일:
-            	<c:if test="${fpsCount gt 0}">
-					<c:forEach var="fp" items="${fps}" varStatus="vs">
-						<%@ include file="cs_file.jsp" %>						
-					</c:forEach>
-				</c:if>
-			</span>
+            	<span class="file">첨부파일:
+	            	<a href="C:\fusion11\spring_ws\LECFILE\2020\cscenter\Img${notice.file}">첨부파일</a>
+				</span>
             </div>
         </div>
         </div>

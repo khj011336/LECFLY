@@ -1,12 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<script>
-var arrNumber =["실패","요청중","승인","작성중"];
-function tx(v){
-	return arrNumber[v];
-}
-</script>	 
 <c:forEach begin="0" end="${empty lecList ? '0': lecList.size()-1  }"
 	varStatus="vs">
 	<div class='CRconbox'
@@ -17,7 +10,7 @@ function tx(v){
 				<c:set var="titleImg"
 					value="resources/imges/logo/LecFly_SLOGO_W_C.png" />
 			</c:if>
-			<img src="${crPath}${titleImg}" class="CRimg" alt="이미지">
+			<img src="${crPath}${titleImg}" class="CRimg" alt="이미지" onError ="this.src='resources/imges/logo/LecFly_SLOGO_W_W.png'">
 		</div>
 		<div class="CRC">
 			<p class='CRname'>
@@ -43,7 +36,7 @@ function tx(v){
 			 <c:when test="${status  != 4 }">
 				<div class='CRsend'
 					onclick="selectLecture(${lecList[vs.current].id},${lecList[vs.current].category})">
-					<p>수정하기</p>
+					<p>업로드/수정하기</p>
 				</div>
 				</c:when>
 				<c:when test="${status eq 4 }">

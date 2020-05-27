@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 <script>
 var LecId = '${LecId}';
-var isCreator = ${isCreator};
+var isCreator = '${isCreator}';
+var isUpdate = '${isUpdate}';
 var ex = false;
 var finallwrite = false;
 var WritingServe = false;
@@ -19,8 +20,7 @@ function setImageFromFile(input, expression, tempses) {
     }
 }
     $().ready(function () {
-    	$("#cls_category option:nth-child("+${Lecture.category}+")").attr("selected","selected");
-    	
+    
      	$(".pubf").find("input,textarea,select").on("change",function(){
      		if(${p}==1){
             	sessionStorage.setItem("s1","1");
@@ -63,26 +63,56 @@ function setImageFromFile(input, expression, tempses) {
     	});
     	$(document).on("click","#creatBtn",function(){
     		if(!ispty()){
+    			if(${p} != 5){
     			if(isCreator == 4){
     				ex = true; location.href ="creator_writing_lecture.LF?LecId="+LecId;
     			}else{
     			ex = true; location.href ="creator_new_lecture.LF";
     			}
+    		}else{
+    			var formPro = document.profileForm;
+    			formPro.action ="creator_update_store.LF";
+    			ex = true;  
+    			formPro.submit();
+    		}
     		}
     	});
     	$(document).on("click",".exportb",function(){
+    		var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name', "LecId");
+    		var hiddenField2 = document.createElement('input');
+			hiddenField2.setAttribute('type', "hidden");
+			hiddenField2.setAttribute('name', "isUpdate");
     		if(!ispty()){
+    			var form = document.lecupload;
+     			 $(".exportb").attr("disabled","disabled");
+     			form.action ="creator_writing_store.LF";
+     			 finallwrite = true;
+     			 ex = true;
     			if(isCreator == 4){
-    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId;
+    				hiddenField.setAttribute('value', LecId);		
+    				form.appendChild(hiddenField);
+    				form.submit();
     			}else if(${Lecture.status == 4}){
-    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId;
+    				hiddenField.setAttribute('value', LecId);		
+    				form.appendChild(hiddenField);
+    				form.submit();
     			}else if(${update == 2}){
-    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId+"&isUpdate=2";
+    				hiddenField.setAttribute('value', LecId);		
+    				hiddenField2.setAttribute('value', "2");		
+    				form.appendChild(hiddenField);
+    				form.appendChild(hiddenField2);
+    				form.submit();
+    			}else if(${update == 5}){
+    				hiddenField.setAttribute('value', LecId);		
+    				hiddenField2.setAttribute('value', "5");		
+    				form.appendChild(hiddenField);
+    				form.appendChild(hiddenField2);
+    				form.submit();
     			}else{
-    				var form = $('.pubf');
-       			 $(".exportb").attr("disabled","disabled");
-       			 finallwrite = true;
-       				form.submit();	
+    				form.action ="creator_rightset_proc.LF";
+    				form.submit();
     			}
     			
     		}
@@ -125,23 +155,23 @@ function setImageFromFile(input, expression, tempses) {
     		 }
     		   var pagenation = ${p};
     		   
-    		   if(nodename && pagenation ==1 && ischage == "1" ){
+    		   if(nodename && pagenation ==1 && ischage == "1" && isUpdate !='5'){
     				  sessionStorage.setItem("s1","2");
     				  navigator.sendBeacon("creator_new_profile_proc.LF", formdata);
-    			  }else if( nodename && pagenation ==2 && ischageB == "1" &&!finallwrite){
+    			  }else if( nodename && pagenation ==2 && ischageB == "1" && !finallwrite &&isUpdate !='5'){
     				  sessionStorage.setItem("s2","2");
     				  navigator.sendBeacon("creator_new_lecture_proc.LF", formdata);
     			  }else if(ex){
     				   
-    			  }else if(!nodename && !finallwrite &&  !ex){
+    			  }else if(!nodename && !finallwrite &&  !ex && isUpdate !='5' ){
     				  if(pagenation == 1){
-    					  if(WritingServe == false){
+    					  if(WritingServe == false && pagenation != '5'){
     					  $("#unload").val("y");
     					  formdata = new FormData($('.pubf')[0]);
     				  navigator.sendBeacon("creator_new_profile_proc.LF", formdata);
     					  }
     				  }else if(pagenation ==2){
-    					  if(WritingServe == false){
+    					  if(WritingServe == false && pagenation != 5 && isUpdate !='5' ){
     					  $("#unloadb").val("y");
     					   formdata = new FormData($('.pubf')[0]);
     					  navigator.sendBeacon("creator_new_lecture_proc.LF", formdata);
@@ -150,13 +180,13 @@ function setImageFromFile(input, expression, tempses) {
     			  }
     		});
     
-    
     	 
     </script>
 <div id="Crcircle">
 	<%
 		int a = 0;
 	%>
+	<c:if test = "${p != 5 }">
 	<c:if test="${isCreator != 3}">
 		<div class="Ccirk" id="fl1"><%=++a%>.크리에이터 소개
 		</div> -</c:if>
@@ -165,7 +195,7 @@ function setImageFromFile(input, expression, tempses) {
 	-
 	<div class="Ccirk" id="fl3"><%=++a%>.클래스 미리 보기
 	</div>
-
+</c:if>
 </div>
 
 

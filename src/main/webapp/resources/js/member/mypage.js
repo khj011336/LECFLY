@@ -3,27 +3,31 @@
  */	
  	$(document).ready(function() {
  		
- 		$("#tabs-mom-1").mouseenter(function() {
+ 		$("#tabs-mom-1").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-2").css("display", "none");
  			$("#tabs-3").css("display", "none");
  			$("#tabs-4").css("display", "none");
  			$("#tabs-1").css("display", "block");
  		});
  		
- 		$("#tabs-mom-2").mouseenter(function() {
+ 		$("#tabs-mom-2").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-1").css("display", "none");
  			$("#tabs-3").css("display", "none");
  			$("#tabs-4").css("display", "none");
  			$("#tabs-2").css("display", "block");
  		});
- 		$("#tabs-mom-3").mouseenter(function() {
+ 		$("#tabs-mom-3").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-1").css("display", "none");
  			$("#tabs-2").css("display", "none");
  			$("#tabs-4").css("display", "none");
  			$("#tabs-3").css("display", "block");
  		});
  		
- 		$("#tabs-mom-4").mouseenter(function() {
+ 		$("#tabs-mom-4").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-1").css("display", "none");
  			$("#tabs-2").css("display", "none");
  			$("#tabs-3").css("display", "none");
@@ -163,7 +167,6 @@
 				datatype: "text",
 				data: rtPn,
 				success:function(res){
-					console.log(res);
 					$("#mypage_bottom").html(res);
 				},
 				error:function(request,status,error){	
@@ -301,7 +304,6 @@
  				url: "mypage_delivery_info.LF",
 	 			cache: true,
 				datatype: "text",
-				data: "",
 				success:function(res){
 					$("#mypage_bottom").html(res);
 				},
@@ -309,6 +311,7 @@
 				}
  			});			
  		}); // 배송정보
+ 		
  		$("#mypage_payment_info").click(function() {
  			$.ajax({
  				type: "POST",
@@ -333,7 +336,140 @@
  		
  		
  		
+
  		
+ 		// 마이페이지 결제내역 보기 
+		$(document).on("click", "#mypage_dilivery_status_1", function(e) {
+			console.log("status_1");
+			var url = 'delivery_stat1.LF';
+			var params = "deliveryStat=" + 1;
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: "text",
+				data: params,
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("결제대기 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});			
+		}); // 배송 정보 결제대기
+		
+		$(document).on("click", "#mypage_dilivery_status_2", function() {
+			console.log("status_2");
+			var url = 'delivery_stat2.LF';
+			var params = "deliveryStat=" + 2;
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: "text",
+				data: params,
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("배송준비 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 배송 정보 배송준비
+		
+		$(document).on("click", "#mypage_dilivery_status_3", function() {
+			console.log("status_3");
+			var url = 'delivery_stat3.LF';
+			var params = "deliveryStat=" + 3;
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: "text",
+				data: params,
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("배송중 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 배송 정보 배송중
+		
+		$(document).on("click", "#mypage_dilivery_status_4", function() {
+			console.log("status_4");
+			var url = 'delivery_stat4.LF';
+			var params = "deliveryStat=" + 4;
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: "text",
+				data: params,
+				success: function(res, status, xhr) {
+					$(".dilivery_status_chart").html(res);
+					console.log("배송완료 로딩완료");
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 배송 정보 배송완료
+ 		
+		$(document).on("click", "#mypage_pay_all", function() {
+			console.log("결제내역 전체");
+			var url = 'mypage_pay_all.LF';
+			var params = "payStatus=" + 1;
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: "JSON",
+				data: params,
+				success: function(res, status, xhr) {
+					$("#payment_chart").html(res);
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 결제내역 전체
+		
+		$(document).on("click", "#mypage_pay_tickets", function() {
+			console.log("결제내역 티켓");
+			var url = 'mypage_pay_tickets.LF';
+			var params = "payStatus=" + 2;
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: "JSON",
+				data: params,
+				success: function(res, status, xhr) {
+					$("#payment_chart").html(res);
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 결제내역 티켓
+		
+		$(document).on("click", "#mypage_pay_kits", function() {
+			console.log("결제내역 키트");
+			var url = 'mypage_pay_kits.LF';
+			var params = "payStatus=" + 3;
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: "JSON",
+				data: params,
+				success: function(res, status, xhr) {
+					$("#payment_chart").html(res);
+				},
+				error: function(status,xhr) {
+					
+				}
+			});
+		}); // 결제내역 키트
+		
+		
  	}); // $(document).ready 끝;
  	
  	
@@ -395,4 +531,15 @@
 	 		});
  		}
  	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
  	

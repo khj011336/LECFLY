@@ -25,10 +25,14 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 		int categoryId = CartVO.CATEGORY_ID_TICKET;
 		UUID uuid = UUID.randomUUID();
 		String strUuid = uuid.toString();
-		int r = ctDao.insertNewCartByMbIdTicId(categoryId, mbId, ticName, strUuid);
+		String ticketName = TicketVO.STR_TICKET_NAME_MAP.get(ticName);
+		int ticketPrice = TicketVO.TICKET_PRICE_MAP.get(ticName);
+		System.out.println("mbId = " + mbId + "ticName = " + ticName + "categoryId = "
+				+ categoryId + "strUuid = " + strUuid + "ticketName = " + ticketName + "ticketPrice = " + ticketPrice );
+		int r = ctDao.insertNewCartByMbIdTicId(categoryId, mbId, ticName, strUuid, ticketName, ticketPrice);
 		CartVO cart = ctDao.selectOneCartByUUId(mbId, strUuid);
 		System.out.println("svc . cart = " + cart);
-		
+
 		Map<String, Object> rMap = new HashMap<>();
 		rMap.put("r", r);
 		rMap.put("cart", cart);

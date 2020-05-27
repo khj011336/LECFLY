@@ -24,38 +24,37 @@ import com.LECFLY.LF.model.vo.creator.KitVO;
 public class CartMysqlDAOImpl implements ICartDAO {
 	@Autowired
 	JdbcTemplate jtem;
-	
+
 	// SQL 정의문
-	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, 1, ?, now() )";
-	private static final String SQL_SELECT_CART_LIST = "select * from cart where mb_id = ?"; 
-			//"insert into cart(member_id, goods_id) values(?, ?)";
+	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, ?, ?, 1, ?, now() )";
+	private static final String SQL_SELECT_CART_LIST = "select * from cart where mb_id = ?";
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
 	private static final String SQL_SELECT_KIT_LIST = "";
 	private static final String SQL_SELECT_COUNT_IN_CART = "select if(count(*)=0, 'false', 'true) from cart where gdsId = ? and mbId = ? ";
 	private static final String SQL_INSERT_GOODS_IN_CART = "insert into cart(id, mbId, gdsId) values(?, ?, ?)";
-	private static final String SQL_UPDATE_CART_GOODS_CNT = "update cart set gdCnt = ? where mbid = ? and gdsId = ?";
+	private static final String SQL_UPDATE_CART_GOODS_CNT = "update cart set gdsCnt = ? where mbid = ? and gdsId = ?";
 	private static final String SQL_DELETE_CART_GOODS = "delete from cart where id = ?";
 	private static final String SQL_SELECT_MAX_CART_ID = "select ifnull(max(id), 0) +1 from cart";
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	private static final String SQL_INSERT_IN_CART = "insert into cart values(null, ?, 1, ?, 1, now())";
-	
+
 	/**
 	 * @param categoryId // 0이면 이용권  1이면 키트
 	 * @param mbId
-	 * @param kitOrTicId // 이용권 or 키트 아이디 
-	 * 
+	 * @param kitOrTicId // 이용권 or 키트 아이디
+	 *
 	 */
 	@Override
-	public int insertNewCartByMbIdTicId(int categoryId, int mbId, int kitOrTicId, String uuid) {
+	public int insertNewCartByMbIdTicId(int categoryId, int mbId, int kitOrTicId, String uuid, String ticketName, int ticketPrice) {
 		System.out.println("insertNewCartByMbIdTicId().");
-		int r = jtem.update(SQL_INSERT_NEW_CART, mbId, categoryId, kitOrTicId, uuid);
+		int r = jtem.update(SQL_INSERT_NEW_CART, mbId, categoryId, kitOrTicId, ticketName, ticketPrice, uuid);
 		return r;
 	}
 	// 0 이용권 1 키트*/ 이게 카테고리아이디      키트나 티켓의 아이디 갯수 1 uuid  now()
 	// id null mb_id 받아 caterory_id  gds_id gd_cnt check_same_order created_at
 
-	
-	
+
+
 	@Override
 	public List<CartVO> selectCartListByMbId(int mbId) throws DataAccessException {
 		System.out.println(SQL_SELECT_CART_LIST + "mbId = " + mbId);
@@ -94,7 +93,7 @@ public class CartMysqlDAOImpl implements ICartDAO {
 
 	@Override
 	public void updateCartGoodsCnt(CartVO cartVO) throws DataAccessException {
-		jtem.update(SQL_UPDATE_CART_GOODS_CNT, cartVO.getGdCnt(), cartVO.getMbId(), cartVO.getGdsId());
+		jtem.update(SQL_UPDATE_CART_GOODS_CNT, cartVO.getGdsCnt(), cartVO.getMbId(), cartVO.getGdsId());
 	}
 
 	@Override
@@ -102,13 +101,13 @@ public class CartMysqlDAOImpl implements ICartDAO {
 		jtem.query(SQL_DELETE_CART_GOODS, BeanPropertyRowMapper.newInstance(CartVO.class), id);
 
 	}
-	
+
 	@Override
 	public int insertNewCartRtKey(CartVO cart) {
 		System.out.println(SQL_INSERT_IN_CART + "/ mbId = " + cart.getMbId() + "gdsId = " + cart.getGdsId());
 		KeyHolder kh = new GeneratedKeyHolder();
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
-			
+
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement pstmt = con.prepareStatement(SQL_INSERT_IN_CART);
@@ -126,16 +125,24 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	private static final String SQL_ONE_CART_BY_UUID = "select * from cart where check_same_order = ?";
 	@Override
 	public CartVO selectOneCartByUUId(int mbId, String uuid) {
+		System.out.println("mbId = " + mbId + "문제의 uuid = " + uuid);
 		return jtem.queryForObject(SQL_ONE_CART_BY_UUID,BeanPropertyRowMapper.newInstance(CartVO.class), uuid);
 	}
 
 
 	private static final String SQL_ONE_CART_BY_MBID_KITID = "select count(*) from cart where mb_id = ? and gds_id = ?";
-	
+
 	@Override
 	public int checkCartByMbIdKitId(int mbId, int kitId) {
 		System.out.println("checkCartByMbIdKitId 왔어");
 		return jtem.queryForObject(SQL_ONE_CART_BY_MBID_KITID, Integer.class, mbId, kitId);
+	}
+
+	public static final String SQL = "select * from cart where mb_id = ? and category_id = ?";
+
+	@Override
+	public List<CartVO> selectCartListByCategoryIdMbId(int categoryId, int mbId) {
+		return jtem.query(SQL, BeanPropertyRowMapper.newInstance(CartVO.class), mbId, categoryId);
 	}
 
 }

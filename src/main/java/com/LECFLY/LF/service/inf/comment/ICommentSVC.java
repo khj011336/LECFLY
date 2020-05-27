@@ -92,5 +92,6 @@ public interface ICommentSVC {
 		// 댓글 추가시 해당 댓글에 이미 같은 깊이의 대댓글이 있다면 그 댓글들의 숫자를 확인하여 그 값을 리턴
 	int selectOneCommentByOrder(List<CommentVO> ctList, int orderNum, int depth);
 	
+	int checkNumberOfComments(int cate, int atId);
 	
 }

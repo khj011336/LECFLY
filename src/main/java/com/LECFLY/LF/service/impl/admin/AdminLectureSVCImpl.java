@@ -154,14 +154,34 @@ public class AdminLectureSVCImpl implements IAdminLectureSVC {
 		rMap.put("maxPg", maxPg);
 		return rMap;
 	}
-
+	// 정렬 최신순
 	@Override
 	public List<LectureVO> selectAllLecture(int pageNumber) {
 		int offset = (pageNumber -1)*AD_PAGE_SIZE;
 		List<LectureVO> lecList = adDAO.searchLectureForAll(offset, AD_PAGE_SIZE);
 		return lecList;
 	}
-
+	// 정렬 승인대기순
+	@Override
+	public List<LectureVO> selectAllLectureByApproval(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<LectureVO> lecList = adDAO.searchLectureByApproval(offset, AD_PAGE_SIZE);
+		return lecList;
+	}
+	// 정렬 승인대기순
+	@Override
+	public List<LectureVO> selectAllLectureByApprovalDone(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<LectureVO> lecList = adDAO.searchLectureByApprovalDone(offset, AD_PAGE_SIZE);
+		return lecList;
+	}
+	// 정렬 인기순
+	@Override
+	public List<LectureVO> selectAllLectureByLike(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<LectureVO> lecList = adDAO.searchLectureByLike(offset, AD_PAGE_SIZE);
+		return lecList;
+	}	
 	@Override
 	public List<VideoVO> selectAllVideo(int pageNumber) {
 		int offset = (pageNumber -1)*AD_PAGE_SIZE;
@@ -191,17 +211,6 @@ public class AdminLectureSVCImpl implements IAdminLectureSVC {
 		List<LectureVO> list = adDAO.selectLectureListSearchFilter(condition);
 		System.out.println("결과수 : "+ list.size());
 		return adDAO.selectLectureListSearchFilter(condition);
-	}
-
-	@Override
-	public Map<String, Integer> checkLectureMaxPageNumberSearchFilter(Map<String, Object> condition) {
-		int totalRecords = adDAO.checkNumberOfLecturesSearchFilter(condition);
-		int maxPg = totalRecords / AD_PAGE_SIZE + (
-				totalRecords % AD_PAGE_SIZE == 0 ? 0 : 1 );
-		HashMap<String,Integer> rMap = new HashMap<>();
-		rMap.put("totalRecords", totalRecords);
-		rMap.put("maxPg", maxPg);
-		return rMap;
 	}
 
 	@Override
@@ -256,12 +265,36 @@ public class AdminLectureSVCImpl implements IAdminLectureSVC {
 
 	@Override
 	public boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList) {
-		return adDAO.updateLectureDispprovalforIds(checkList);
+		return adDAO.updateLectureDisapprovalforIds(checkList);
 	}
 
 	@Override
 	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
 		return adDAO.delectLectureforIds(checkList);
+	}
+	// 상세조회 페이지수
+	@Override
+	public Map<String, Integer> checkLectureMaxPageNumberSearch(Map<String, Object> searchMap) {
+		int totalRecords = adDAO.checkNumberOfLecturesSearch(searchMap);
+		System.out.println(totalRecords+"서비스단 총레코드수");
+		int maxPg = totalRecords / AD_PAGE_SIZE + (totalRecords % AD_PAGE_SIZE == 0 ? 0 : 1 );
+		HashMap<String,Integer> rMap = new HashMap<>();
+		rMap.put("totalRecords", totalRecords);
+		rMap.put("maxPg", maxPg);
+		return rMap;
+	}
+	// 상세조회 레코드수
+	@Override
+	public List<LectureVO> selectAllLectureSearch(Map<String, Object> searchMap) {
+		String pn = (String) searchMap.get("pn");
+		int pageNumber = Integer.parseInt(pn);
+		int offset =(pageNumber-1)*AD_PAGE_SIZE;
+		searchMap.put("offset", offset);
+		searchMap.put("limit", AD_PAGE_SIZE);
+		System.out.println(searchMap);
+		List<LectureVO> list = adDAO.selectLectureListSearchFilter(searchMap);
+		System.out.println("searchfilter result : "+ list.size());
+		return list;
 	}
 
 }

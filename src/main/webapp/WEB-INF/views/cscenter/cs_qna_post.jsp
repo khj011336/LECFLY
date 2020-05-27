@@ -106,9 +106,10 @@
 	                <th>파일첨부</th>
 	                <td>
 		                <div class="post_add_thumb_wrap">
-		                	<input type="file" id="add_thumb" multiple="multiple" name="File" accept="image/*">
+		                	<img src="${Qna.file}" class="file_imgbox" id="QnaImgFile">
+		                	<input type="file" id="add_thumb" multiple="multiple" name="multiFile" accept="image/*">
 		                </div>
-	                </td>
+		            </td>
 	            </tr>
 	            <tr>
 	            	<th>&nbsp;</th>

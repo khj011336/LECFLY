@@ -21,10 +21,6 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<%-- <script src="${pageContext.request.contextPATH}/RESOURCES/CHART/HIGHCHARTS.JS"></SCRIPT> --%>
-<%-- <SCRIPT SRC="${PAGECONTEXT.REQUEST.CONTEXTPATH}/RESOURCES/CHART/MODULES/EXPORTING.JS"></SCRIPT> --%>
-<%-- <SCRIPT SRC="${PAGECONTEXT.REQUEST.CONTEXTPATH}/RESOURCES/CHART/MODULES/EXPORT-DATA.JS"></SCRIPT> --%>
-<%-- <SCRIPT SRC="${PAGECONTEXT.REQUEST.CONTEXTPATH}/RESOURCES/CHART/MODULES/ACCESSIBILITY.JS"></SCRIPT> --%>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
 <script src="https://code.highcharts.com/modules/drilldown.js"></script>
@@ -32,31 +28,7 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <title>관리자 페이지</title>
-<script type="text/javascript">
-	function checkAll() {
-		if ($("#checkAll").is(':checked')) {
-			$("input[name=checked]").prop("checked", true);
-		} else {
-			$("input[name=checked]").prop("checked", false);
-		}
-	}
 
-	function clickAllCheckBtn() {
-		$("#checkAll").prop("checked", true);
-		checkAll();
-	}
-
-	function unclickAllCheckBtn() {
-		$("#checkAll").prop("checked", false);
-		checkAll();
-	}
-$(document).ready(function() {
-	var check = document.getElementById("checkAll");
-	check.onclick = checkAll;
-	//onclick="checkAll()"
-});	
-	
-</script>
 </head>
 <body>
 	<div class="page-wrapper chiller-theme toggled">
@@ -77,5 +49,8 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+	
+<script src="resources/js/admin/admin.js"></script>
+<script src="resources/js/admin/admin_stat.js"></script>
 </body>
 </html>
