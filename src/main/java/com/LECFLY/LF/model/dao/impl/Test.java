@@ -366,7 +366,7 @@ public class Test {
 	}
 	
 	public static final String SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID =
-			"SELECT * FROM TICKETS WHERE MB_ID = ? and (current_time() <= end_day)";
+			"SELECT * FROM TICKETS WHERE MB_ID = ? and (now() <= end_day)";
 	public TicketVO selectOneTiketForCanUseByMbId(int mbId) {
 		try{
 			System.out.println(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID + " / mbId = " + mbId);
