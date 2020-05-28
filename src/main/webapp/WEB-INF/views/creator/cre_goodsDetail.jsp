@@ -135,10 +135,8 @@ function goTrack(Cfid){
 		<h1 id="register_qna_info">QnA</h1>
 		<br>
 		
-		 
-			<br> <i class="fas fa-user"> ${lec.category} <input type="date" value=" " readonly>
-			 
-			</i> <br> <br> ${lec.category} <br>
+		 ${comment}
+			
 		 
 		 <br>
 		<textarea name="feedback" rows="5" cols="20" placeholder="댓글을 입력해주세요"></textarea>

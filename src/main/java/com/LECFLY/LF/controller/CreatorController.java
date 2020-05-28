@@ -1,6 +1,7 @@
 package com.LECFLY.LF.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +28,13 @@ import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.impl.comment.CommentSVCImpl;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
 import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.impl.creator.LectureSVCImpl;
+import com.LECFLY.LF.service.inf.comment.ICommentSVC;
 import com.LECFLY.LF.service.inf.creator.IStatSVC;
 import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
@@ -75,6 +78,8 @@ public class CreatorController {
 	private INoticeSVC ntSvc;
 	@Autowired
 	IStatSVC statSVC;
+	@Autowired
+	ICommentSVC ctSvc;
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -550,6 +555,7 @@ public class CreatorController {
 	public String showstatisticsList(
 			Model model , @RequestParam(value = "lecId",defaultValue = "0" ,required = false) int lecId,
 			@RequestParam(value = "net",defaultValue = "0" ,required = false) int net) {
+	
 		return statSVC.StatSvc(model, memberId, lecId, net);
 	}
 	
@@ -570,16 +576,33 @@ public class CreatorController {
 		KitVO kit = kitDAO.selectOneKit(lec.getId());
 		CreatorVO cre = CreDAO.selectOneCreator(lec.getFid());
 		List<VideoVO> video = ViDAO.selectVideoTrack(lec.getId());
-		System.out.println(video);
-		System.out.println(cre);
-		System.out.println(lec);
-		System.out.println(kit);
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String comment = "";
+			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(lec.getCategory(), CFId);
+			comment += "<div style=\"padding: 40px;\">";
+			for (int i = 0; i < ctList.size(); i++) {
+				CommentVO ctori = ctList.get(i);
+				String dep = "";
+				int margin = 0;
+				margin = 30;
+				if(ctori.getDepth() != 0) {
+					dep = "ㄴ";
+					margin = margin - ctori.getDepth() * 10;
+				} 
+				comment += "			<div style='display:inline-block;margin-top:4px; width:160px; "+(ctori.getDepth()==0?"'":" padding-left:"+ctori.getDepth()*10+"px;'")+">"+dep+"<image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n</div>" + 
+						"				<div style=\"display:inline-block;margin-top:4px; width:400px;  margin-left:"+margin+"px;\"><label style=\" \">" + ctori.getComment() + "</label>\r\n" +
+						"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
+						"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
+						"				</div><div id='udner_ct_form'></div>";
+			}
+			comment += "</div>";
 		model.addAttribute("video",video);
 		model.addAttribute("cre",kit);
 		model.addAttribute("kit",kit);
 		model.addAttribute("lec",lec);
-		String name = lec.getImgPath().split("_")[1];
-		String path = "/images/2020/"+name+"/Img";
+		model.addAttribute("comment",comment);
+		String creator = cre.getName(); 
+		String path = "/images/2020/"+creator+"/Img";
 		model.addAttribute("crPath",path);
 		return "creator/cre_goodsDetail.ho";
 	}
