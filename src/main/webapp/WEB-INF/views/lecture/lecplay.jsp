@@ -27,6 +27,7 @@
 	display: none;
 }
 </style>
+<link href ="resources/css/creator/lecplay.css" rel ="stylesheet" type="text/css" >
 <body>
 	<div id="playWrap">
 
@@ -41,9 +42,8 @@
 					</div>
 				</div>
 				<div id="Pvideo">
-					<video controls autoplay="autoplay" id = "vide"
-						poster="${crPath}${fn:split(videoList[index.current].imgPath,'-')[0]}">
-						<source  src='${viPath}${videoList[0].videoPath}' type="video/mp4" id = "videSource" />
+					<video controls autoplay="autoplay" id = "vide" poster="${crPath}${lecList.titleImg}">
+						<source   src='${viPath}${videoList[0].videoPath}' type="video/mp4" id = "videSource" />
 					</video>
 					
 				</div>
@@ -56,7 +56,7 @@
 						<div id='uplorderplayWrap'>
 							<img id='usr' src="${crPath}${lecList.imgPath}"><span
 								id="usrname" class="usrab">
-								<h3>${lecList.nickname}</h3>
+								 ${lecList.nickname} 
 							</span> <span id="usrtitle" class="usrab"><b>${lecList.title}</b>-${lecList.subTitle}</span>
 							<span id="usrpick" class="usrab">조회수
 								${videoList[0].views}명</span>
@@ -95,8 +95,8 @@
 									onload="mouseEven('${crPath}','${videoList[index.current].gifPath}','${fn:split(videoList[index.current].imgPath,'-')[0]}')">
 								<p class='movieName'>${videoList[index.current].title}</p>
 								<div class="Timg">
-									<h4>${index.index+1}강${videoList[index.current].title}</h4>
-									<p>${videoList[index.current].duration}</p>
+									<h4>${index.index+1}강.${videoList[index.current].title}</h4>
+									<p>${videoList[index.current].duration}분</p>
 									<span>강의시작하기</span>
 								</div>
 							</div>

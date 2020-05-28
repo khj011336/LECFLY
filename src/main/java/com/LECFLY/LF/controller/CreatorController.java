@@ -481,9 +481,9 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "creator_lecplay.LF", method = RequestMethod.GET)
-	public String show_video(Model model) {
+	public String show_video(Model model , @RequestParam(value ="CFId" , defaultValue = "0" , required = false)int CFID) {
 		 
-		int LecId = 52;
+		int LecId = CFID;
 		int CFid = 0;
 		String username = null;
 		LectureVO Lec = LecDAO.selectLecture(LecId);
@@ -498,7 +498,7 @@ public class CreatorController {
 		model.addAttribute("lecList", Lec);
 		model.addAttribute("videoList", ViDAO.selectVideoTrack(CFid));
 		
-		return "lecture/lecplay.page";
+		return "lecture/lecplay.ho";
 	}
 
 	@RequestMapping(value = "creator_comment_List.LF", method = RequestMethod.GET)
@@ -544,11 +544,44 @@ public class CreatorController {
 		}
 		return mav;
 	}
-
 	@RequestMapping(value = "creator_statistics.LF", method = RequestMethod.GET)
 	public String showstatisticsList(
 			Model model , @RequestParam(value = "lecId",defaultValue = "0" ,required = false) int lecId,
 			@RequestParam(value = "net",defaultValue = "0" ,required = false) int net) {
-		return statSVC.StatSvc(model, net, lecId, net);
+		return statSVC.StatSvc(model, memberId, lecId, net);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value ="goods_detail.LF" ,method= RequestMethod.GET)
+	public String goods_detail(Model model , @RequestParam(value="CFId" ,defaultValue = "0", required = false) int CFId) {
+		LectureVO lec = LecDAO.selectLecture(CFId);
+		KitVO kit = kitDAO.selectOneKit(lec.getId());
+		CreatorVO cre = CreDAO.selectOneCreator(lec.getFid());
+		List<VideoVO> video = ViDAO.selectVideoTrack(lec.getId());
+		System.out.println(video);
+		System.out.println(cre);
+		System.out.println(lec);
+		System.out.println(kit);
+		model.addAttribute("video",video);
+		model.addAttribute("cre",kit);
+		model.addAttribute("kit",kit);
+		model.addAttribute("lec",lec);
+		String name = lec.getImgPath().split("_")[1];
+		String path = "/images/2020/"+name+"/Img";
+		model.addAttribute("crPath",path);
+		return "creator/cre_goodsDetail.ho";
+	}
+	
+	
+	
 }

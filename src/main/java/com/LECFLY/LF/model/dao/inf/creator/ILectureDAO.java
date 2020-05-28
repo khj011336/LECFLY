@@ -30,7 +30,7 @@ public interface ILectureDAO {
 
 	List<LectureVO> selectLectureListForSTAT(int id);
 
-	LectureVO selectLecture(int Fid);
+	LectureVO selectLecture(int id);
 
 	List<LectureVO> selectLectureList(int Fid, int offset, int limit, int order);
 
@@ -41,7 +41,7 @@ public interface ILectureDAO {
 	boolean insertNewLecture(int fid, int category, String subTitle, String title, String titleImg, String infoImg,
 			String infoImgb, String info, int status, String nickname, String imgpath);
 
-	LectureVO selectOneLectureForUpdate(int fid);
+	LectureVO selectOneLectureForUpdate(int id);
 
 	boolean updateLecture(LectureVO lecVO, CreatorVO crVO, int id);
 

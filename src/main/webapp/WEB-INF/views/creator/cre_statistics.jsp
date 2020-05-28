@@ -17,11 +17,15 @@
     <div id="Creaver">
         <div><p>클래스 분석</p></div>
         <div><form><select id="CreSele">
+        <c:choose >
+        <c:when test="${not empty videoStat.title}">
         <c:forEach begin="0" varStatus="rs"  end="${videoStat.title.size()-1}">
-        <c:if test ="${not empty videoStat.title}">
             <option value="${rs.index}">${videoStat.title[rs.current]}</option>
-            </c:if>
-            </c:forEach>
+            </c:forEach></c:when>
+        <c:when test="${empty videoStat.title}">
+        <option value="">없음</option>
+        </c:when>
+            </c:choose>
         </select></form></div>
         <div></div>
     </div>
