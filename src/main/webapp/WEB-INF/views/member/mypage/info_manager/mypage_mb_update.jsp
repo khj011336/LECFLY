@@ -142,13 +142,15 @@
 	                	</tr>
 				     	<tr>
 				     		<th><label class="cnm_subtitle" for="cnm_mb_name">이름</label></th>
-				     		<td><input type="text" id="cnm_mb_name" name="cnm_mb_name" class="input_cnm" style="background-color:lightgrey" readonly
-				     		value=${member.name}></td>
+				     		<td><label>${member.name}</label></td>
+<!-- 				     		<td><input type="text" id="cnm_mb_name" name="cnm_mb_name" class="input_cnm" style="background-color:lightgrey" readonly -->
+<!-- 				     		value=${member.name}></td> -->
 				     	</tr>
 				     	<tr>
 				        	<th><label class="cnm_subtitle" for="cnm_mb_birth">생년월일</label></th>
-		                    <td><input type="date" id="cnm_mb_birth" name="cnm_mb_birth" class="input_cnm" style="color:grey" readonly
-		                    value=<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>></td>
+				        	<td><label><fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/></label></td>
+<!-- 		                    <td><input type="date" id="cnm_mb_birth" name="cnm_mb_birth" class="input_cnm" style="color:grey" readonly -->
+<%-- 		                    value=<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>></td> --%>
 		                </tr>
 		                <tr>
 				        	<th><label class="cnm_subtitle">성별</label></th>
@@ -163,8 +165,9 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_email2">이메일</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_email2" name="cnm_mb_email2" class="input_cnm" style="background-color:lightgrey" readonly
-		                    		value=${member.email}>
+		                    		<label>${member.email}</label>
+<!-- 		                    		<input type="text" id="cnm_mb_email2" name="cnm_mb_email2" class="input_cnm" style="background-color:lightgrey" readonly -->
+<!-- 		                    		value=${member.email}> -->
 		                    	</div>
 		                    </td>
 		                </tr>
@@ -183,7 +186,7 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_nick">닉네임</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_nick" name="nickname" placeholder="닉네임">
+		                    		<input type="text" id="cnm_mb_nick" name="nickname" placeholder="닉네임" value=${member.name}>
 		                    		<input type="button" id="cnm_mb_nick_check_btn" value="중복확인">
 		                    	</div>
 		                    </td>
