@@ -89,7 +89,17 @@ a:hover {
 	font-weight: normal;
 	font-style: normal;
 }
-
+#offset{
+	width:100px;
+	height:100px;
+	padding: auto;
+	margin:0px auto;
+	  
+}
+#offimg{
+	width: 80px;
+	height:80px;
+}
 #Crcircle{
 	width: 800px;
 	margin: 0px auto;

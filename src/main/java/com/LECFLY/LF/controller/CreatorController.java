@@ -103,10 +103,10 @@ public class CreatorController {
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-//		 (MemberVO) ses.getAttribute("member");
-		MemberVO mb =
-				new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
-				"dd", 1111, null, null);
+		
+		MemberVO mb =   (MemberVO) ses.getAttribute("member");
+//				new MemberVO(999, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
+//				"dd", 1111, null, null);
 		model.addAttribute("grant", GRANTSTATUS);
 
 		if (mb != null) {
@@ -241,6 +241,10 @@ public class CreatorController {
 			@ModelAttribute(value = "creator") CreatorVO crvo) {
 		CreatorVO creVO = crvo;
 		System.out.println("크리에이터 업데이트 ");
+		int fid = 0;
+		if(creVO != null ) {
+			fid = creVO.getFid();
+		}
 		if (crvo.getImgPathM() != null && !creVO.getImgPathM().isEmpty()) {
 			if (new File(FileSVCImpl.getPath(USERNAME, 1) + creVO.getImgPath()).delete()) {
 				System.out.println("기존 크리에이터이미지 이미지 삭제");
@@ -249,8 +253,7 @@ public class CreatorController {
 			creVO.setImgPath(file.get("file"));
 			System.out.println("기존 크리에이터이미지 이미지 갱신");
 		}
-		System.out.println(creVO);
-		CreDAO.updateCreator(creVO, memberId);
+		CreDAO.updateCreator(creVO,fid);
 		sesStatus.setComplete();
 		return "creator/cre_href";
 	}
@@ -300,7 +303,6 @@ public class CreatorController {
 			model.addAttribute("Lecture", lecVo);
 			System.out.println(ses.getAttribute("Lecture"));
 		}
-		System.out.println(ses.getAttribute("Lecture"));
 		return "creator/cre_lecture_upload.page";
 	}
 
@@ -319,9 +321,10 @@ public class CreatorController {
 
 	@RequestMapping(value = "creator_rightset_proc.LF", method = RequestMethod.POST)
 	public String createSetProc(Model model, @ModelAttribute(value = "Lecture") LectureVO lec, HttpSession ses,
-			SessionStatus sesStatus) {
+			SessionStatus sesStatus,@ModelAttribute(value = "creator") CreatorVO creato ) {
 		// TODO 회원이 크리에이터 인경우 및 리다이렉트
-		CreatorVO cr = (CreatorVO) ses.getAttribute("creator");
+		CreatorVO cr = creato;
+		System.out.println(cr);
 		LecSVC.storeProcess(lec, memberId, cr, sesStatus, model, USERNAME, isCreator);
 		return "creator/cre_href";
 	}
@@ -348,6 +351,7 @@ public class CreatorController {
 	public Map<String, Object> showVideoListProc(@RequestParam(value = "CFID", required = false) int CF,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 		Map<String, Object> jso = new HashMap<String, Object>();
+		
 		jso.put("crPath", imgPath);
 		jso.put("CFID", CF);
 		jso.put("jsonText", VdoSVC.showLectureList(CF, page));
@@ -359,13 +363,19 @@ public class CreatorController {
 	@RequestMapping(value = "video_upload.LF", method = RequestMethod.GET)
 	public String videoUpload(@RequestParam(value = "CFID", defaultValue = "0") int CFID,
 			@RequestParam(value = "category", defaultValue = "0") int category, Model model, HttpSession ses,
-			@ModelAttribute(value = "video") VideoVO vio) {
+			@ModelAttribute(value = "video") VideoVO vio , SessionStatus sts
+			 ) {
+		model.addAttribute("video",null);
+		sts.setComplete();
+		
+		vio = null;
+		vio = new VideoVO();
 		if (CFID != 0) {
 			vio.setCategory(category);
 			vio.setCFId(CFID);
 			vio.setfId(memberId);
 			model.addAttribute("categ", CATEGORIRES);
-			model.addAttribute(vio);
+			model.addAttribute("video",vio);
 			model.addAttribute("crPath", imgPath);
 			model.addAttribute("viPath", videoPath);
 		}
@@ -494,8 +504,9 @@ public class CreatorController {
 		int CFid = 0;
 		String username = null;
 		LectureVO Lec = LecDAO.selectLecture(LecId);
+		CreatorVO cre  = CreDAO.selectOneCreator(Lec.getFid());
 		if(Lec != null) {
-		username = Lec.getImgPath().split("_")[1];
+		username = cre.getName();
 		CFid = Lec.getId();
 		}
 		String videoPath = "/images/2020/" + username + "/video";
@@ -590,7 +601,7 @@ public class CreatorController {
 		List<VideoVO> video = ViDAO.selectVideoTrack(lec.getId());
 		String comment = LecSVC.tempCommentList(ctSvc, CFId, lec.getCategory());
 		model.addAttribute("video",video);
-		model.addAttribute("cre",kit);
+		model.addAttribute("cre",cre);
 		model.addAttribute("kit",kit);
 		model.addAttribute("lec",lec);
 		model.addAttribute("comment",comment);

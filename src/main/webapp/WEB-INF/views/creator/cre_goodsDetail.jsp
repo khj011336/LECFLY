@@ -72,6 +72,7 @@ function goTrack(Cfid){
 		</ul>
 		<br> <br>
 		<h1 id="register_lecture_info">강의소개</h1>
+		
 		<p id="register_lec">
 			<img class="register_soap_img" src="<c:out value='${crPath}${lec.infoImg}' default='soap.jpg' />">
 			<img class="register_soap_imgb" src="<c:out value='${crPath}${lec.infoImgb}' default='soapb.jpg' />">
@@ -86,6 +87,8 @@ function goTrack(Cfid){
 		<p id = "infoself">소개소개소개</p>
 		<h1 id="register_curri_info">커리큘럼</h1>
 		<table id="register_tb">
+		
+		<c:if test= "${not empty video }">
 		 <c:forEach begin="0" end="${video.size()-1}" varStatus="vs">
 				<tr>
 					<td class="register_td">${vs.index+1}.${video[vs.current].title}</td>
@@ -93,7 +96,7 @@ function goTrack(Cfid){
 					<td class="register_td register_tb_num">${video[vs.current].duration}분</td>
 				</tr>
 		</c:forEach>
-				 
+				 </c:if>
 		 
 		</table>
 		<br> <br>
@@ -148,7 +151,7 @@ function goTrack(Cfid){
 	<h1 id="register_content_title">
 		<c:out value="${lec.title}" default="없음" />	
 	</h1>
-	<div id="register_wri_name">by. ${cre.nickName}</div>
+	<div id="register_wri_name">by. ${cre.nickname}</div>
 	<br> <br>
 	<p>
 		<span class="register_kit_select">&lt;준비물 KIT&gt;</span> <span
