@@ -7,37 +7,34 @@
 	$(document).ready(function() {
 		$("#moveCart").on("click", function() {
 			var URLHD = '${pageContext.request.contextPath}/';
- 			var url = URLHD+'check_pay_cart.LF';
+ 			var url = URLHD+'pay_cart.LF';
  			var kitId = $("input[name=kit_id]").val();
- 			var params = "kitId=" + kitId + "&gdType=kit";
+ 			var param = "kitId=" + kitId + "&gdType=kit";
  			$.ajax({
 				type: 'POST',
 				url : url,
-				data: params,
+				data: param,
 				dataType: "JSON",
 				success: function(res, status ,xhr){
-					console.log("res = " + res  ); 
-					// res 가 1이면 해당회원의 키트가 장바구니에 존재  0이면 존재하지않음
+					// res == 1 키트 Id 존재 / 0 이면 존재하지 않음(장바구니 페이지로 이동)
 					var r = res.c;
 					console.log("r = " + r);
-					if(r == 1){
-						console.log("알은 1");
+					if (r == 0) {
+						alert("상품이 등록되었습니다 !");
+						$("#homemain").load('${pageContext.request.contextPath}' + '/show_cart.LF');
+					} else if( r == 1 || r == 2 ) {
 						location.href = "#goods_detail_modal";
 					} else {
-						console.log("알은 1이아님");
-						location.href = "#goods_detail_modal_popup_submitbtn";
+						if( r == 3 )
+						$("#homemain").load('${pageContext.request.contextPath}' + '/login.LF');
 					}
 				},
-				error: function(status, xhr){
+				error: function(status, xhr) {
 					console.log("실패");
 				}
-			});
-
-			
+			});	
 		});
-		 $("#goods_detail_modal_popup_submitbtn").onclick()
 	});
-
 	
 	// 별점 추가
 	$('#register_review a').click(function() {
@@ -141,7 +138,8 @@
 	<c:out value="${cate}"  default="없음"/>
 	<br><br><br>
 	<h1 id="register_content_title">
-		<c:out value="${lec.subTitle}" default="없음" />	
+		<c:out value="${lec.title}" default="없음" /><br>
+		<c:out value="${lec.subTitle}" default="없음" />
 	</h1>
 	<div id="register_wri_name">by. ${creNickname}</div>
 	<br> <br>

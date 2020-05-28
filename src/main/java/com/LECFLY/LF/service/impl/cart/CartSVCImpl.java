@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.LECFLY.LF.model.dao.impl.TestGeon;
 import com.LECFLY.LF.model.dao.impl.TestGeon2;
 import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
@@ -42,31 +41,6 @@ public class CartSVCImpl implements ICartSVC {
 	
 	@Autowired
 	private TestGeon2 testDAO2;
-	
-	@Autowired
-	private ICreatorDAO creDao;
-	
-	@Override
-	public Map<String, List> myCartList(CartVO cartVO) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean findCartGoods(CartVO cartVO) throws Exception {
-		return cartDAO.selectCountInCart(cartVO);
-	}
-
-	@Override
-	public void addGoodsInCart(CartVO cartVO) throws Exception {
-		cartDAO.insertGoodsInCart(cartVO);
-	}
-
-	@Override
-	public boolean modifyCartCnt(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public Map<String, Object> showLectureProc(int lecId) {
@@ -108,52 +82,56 @@ public class CartSVCImpl implements ICartSVC {
 	}
 
 	@Override
-	public Map<String, Object> showCartProc(int mbId, int kitId) {
+	public Map<String, Object> showCartProc(int mbId) {
 		System.out.println("cartSvc :: showCartProc()");
-		// 장바구니 리스트를 뽑는다. (아이디 기준으로)
-		// 장바구니에서 필요한 것 (kit의 사진 제목, 가격, 카테고리), (cre의 판매자 이름)
-		// 장바구니에서 내가 뽑고 싶은거 => <gdsId>
-		
-		// 목적은
-		// 장바구니의 리스트를 뽑는다. gdsId랑 kitId랑 같은 걸로.
-		// 키트의 리스트를 뽑는다.
-		// 크리에이터의 리스트를 뽑느다. <FK랑 참조>
 		List<CartVO> ctList = cartDAO.selectCartListByMbId(mbId);
 		List<CreatorVO> creList = new ArrayList<>();
-		List<KitVO> kitList = new ArrayList<>();	
+		List<KitVO> kitList = new ArrayList<>();
+		List<String> strNameList = new ArrayList<>();
 		for (int i = 0; i < ctList.size(); i++) {
-			KitVO kit = testDAO2.selectOneKitbyId( ctList.get(i).getGdsId() );
-			System.out.println("kit.get.Title()" + kit.getTitle());
-			CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId());
-			System.out.println("cre.getName()" + cre.getName());
-			creList.add(cre);
-			kitList.add(kit);
+			String strName = "";
+			if(ctList.get(i).getCategoryId() == CartVO.CATEGORY_ID_TICKET) {
+				TicketVO ticket = testDAO2.selectOneTiketById(ctList.get(i).getGdsId());
+				strName = TicketVO.STR_TICKET_NAME_MAP.get(ticket.getName());
+				strNameList.add(strName);
+			} else if(ctList.get(i).getCategoryId() == CartVO.CATEGORY_ID_KIT) {
+				KitVO kit = testDAO2.selectOneKitbyId( ctList.get(i).getGdsId() );
+				strName = kit.getTitle();
+				System.out.println("kit.get.Title()" + kit.getTitle());
+				CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId());
+				System.out.println("cre.getName()" + cre.getName());
+				strNameList.add(strName);
+				creList.add(cre);
+				kitList.add(kit);
+			}
 		}
+		for (int i = 0; i < strNameList.size(); i++) {
+			System.out.println(" 티켓 + 키트 이름 :" + strNameList.get(i));
 		
+		}
 		Map<String, Object> rMap = new HashMap<>();
 		rMap.put("cartList", ctList);
 		rMap.put("kitList", kitList);
 		rMap.put("creList", creList);
-		
 		return rMap;		
 	}
 
 	@Override
 	public Map<String, Object> showCartByNoMbProc(int kitId) {
 		// 비회원이 등록시 하려고함 
-		//int r = cartDAO.insertNewCartForNoMb();
+		// 미 구현
 		return null;
 	}
 
 	@Override
-	public boolean checkCartForKitMb(int mbId, int kitId) {
-		int r = cartDAO.checkCartByMbIdKitId(mbId, kitId);
+	public boolean checkCartForKitMb(int mbId, int kitId, int categoryId) {
+		int r = cartDAO.checkCartByMbIdKitId(mbId, kitId, categoryId);
 		System.out.println("r = " + r);
 		if( r == 1 ) {
-			System.out.println("1개있음 더이만만들필요없음");
+			System.out.println("상품 1개 존재");
 			return true;
 		} else if (r > 1) {
-			System.out.println("r  == 2개이상 확인필요 무저건 한개만있어야됨");
+			System.out.println("상품 에러(1개 이상 존재)");
 		}
 		return false;
 	}
@@ -170,12 +148,12 @@ public class CartSVCImpl implements ICartSVC {
 			gdName = kv.getTitle();
 			gdPrice = kv.getPrice();
 			categoryId = 1;
-			state = 1;
+			state = 0;
 		} else { // ticket
 			TicketListVO tv = gdDao.getOneTicketById(kitId);
 			gdName = tv.getName();
 			gdPrice = tv.getPrice();
-			state = 1;
+			state = 0;
 		}
 		
 		return cartDAO.insertNewCartByTicId(mbId, categoryId, kitId, "", gdName, gdPrice, state);

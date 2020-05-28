@@ -27,7 +27,7 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	
 	// SQL 정의문
 	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, ?, ?, 1, ?, now(), ?)";
-	private static final String SQL_SELECT_CART_LIST = "select * from cart where mb_id = ?"; 
+	private static final String SQL_SELECT_CART_LIST = "select * from cart where mb_id = ? and state = 0"; 
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
 	private static final String SQL_SELECT_COUNT_IN_CART = "select if(count(*)=0, 'false', 'true) from cart where gdsId = ? and mbId = ? ";
 	private static final String SQL_INSERT_GOODS_IN_CART = "insert into cart(id, mbId, gdsId) values(?, ?, ?)";
@@ -73,28 +73,6 @@ public class CartMysqlDAOImpl implements ICartDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public boolean selectCountInCart(CartVO cartVO) throws DataAccessException {
-		boolean r = jtem.query(SQL_SELECT_COUNT_IN_CART, BeanPropertyRowMapper.newInstance(CartVO.class), cartVO) != null;
-		return r;
-	}
-
-	@Override
-	public void insertGoodsInCart(CartVO cartVO) throws DataAccessException {
-		jtem.query(SQL_INSERT_GOODS_IN_CART, BeanPropertyRowMapper.newInstance(CartVO.class), cartVO);
-	}
-
-	@Override
-	public void updateCartGoodsCnt(CartVO cartVO) throws DataAccessException {
-		jtem.update(SQL_UPDATE_CART_GOODS_CNT, cartVO.getGdsCnt(), cartVO.getMbId(), cartVO.getGdsId());
-	}
-
-	@Override
-	public void deleteCartGoods(int id) throws DataAccessException {
-		jtem.query(SQL_DELETE_CART_GOODS, BeanPropertyRowMapper.newInstance(CartVO.class), id);
-
-	}
 	
 	@Override
 	public int insertNewCartRtKey(CartVO cart) {
@@ -124,12 +102,12 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	}
 
 
-	private static final String SQL_ONE_CART_BY_MBID_KITID = "select count(*) from cart where mb_id = ? and gds_id = ?";
+	private static final String SQL_ONE_CART_BY_MBID_KITID = "select count(*) from cart where mb_id = ? and gds_id = ? and category_id = ? and state = 0";
 	
 	@Override
-	public int checkCartByMbIdKitId(int mbId, int kitId) {
-		System.out.println("checkCartByMbIdKitId 왔어");
-		return jtem.queryForObject(SQL_ONE_CART_BY_MBID_KITID, Integer.class, mbId, kitId);
+	public int checkCartByMbIdKitId(int mbId, int kitId, int categoryId) {
+		System.out.println("checkCartByMbIdKitId()");
+		return jtem.queryForObject(SQL_ONE_CART_BY_MBID_KITID, Integer.class, mbId, kitId, categoryId);
 	}
 
 	public static final String SQL = "select * from cart where mb_id = ? and category_id = ?"; 

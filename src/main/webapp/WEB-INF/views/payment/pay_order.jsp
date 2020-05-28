@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<title>주문페이지</title>
+<h3>주문페이지: ${totalPrice} - ${totalPts}</h3>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_order.css">
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <div id="wrapper">
@@ -104,12 +104,6 @@
 							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
 								type="text" id="fundingPayment_extraAddress" placeholder="참고항목">
 							</td>
-						</tr>
-						<tr>
-							<th class="deliveryPlaceInfo_table_th"></th>
-							<td class="deliveryPlaceInfo_table_td"><input
-								type="checkbox" name="default_deliveryInfo_save" checked>
-								기본 배송지로 저장</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">배송요청 사항</th>
@@ -243,9 +237,6 @@
         }).open();
     }
     
-    	function movePaymentFinished() {
-    		$('#homemain').load('<%=request.getContextPath()%>/payment/paymentFinished.jsp');
-		}
 	</script>
 
 	<div id="footer" class="footer">

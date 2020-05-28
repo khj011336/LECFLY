@@ -10,7 +10,7 @@ public class CartVO {
 	public static final int CATEGORY_ID_TICKET = 0;
 	public static final int CATEGORY_ID_KIT = 1;
 	
-	public static final String[] STR_CATEGORY_STATE = {"결제대기, 결제완료, 결제실패, 결제오류"};
+	public static final String[] STR_CATEGORY_STATE = {"결제대기", "결제완료", "결제실패", "결제오류"};
 	public static final int CATEGORY_STATE_WAIT = 0;
 	public static final int CATEGORY_STATE_SUCCEED = 1;
 	public static final int CATEGORY_STATE_FAILED = 2;

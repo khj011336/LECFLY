@@ -6,53 +6,15 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript">
-	
-	function goPayOrder(intName) { // 카테고리 이용권 1개인지 3개인지 전체인지 1 2 3 들어올예정
-		console.log("intName = " + intName);
-		var param = "ticName=" + intName + "&gdType=ticket";
-		$.ajax({
-			type: "POST",
-			url: "pay_order.LF",
-			data: param,
-			dataType: "JSON",
-			success:function(res, status, xhr) {
-				console.log(res.result);
-				var result = res.result;
-				if(result == "yes") {
-					window.location.href = '#lecfly_ticket_modal';
-				} else {
-					window.location.href = 'login.LF';
-				}
-			},
-			error: function(staus, xhr) {
-				console.log(res.result);
-				alert("회원 로그인 후 결제해주세요!");
-			}
-		});
-		
-		$("#lecfly_ticket_modal_popup_goCart").on("click", function() {
-			var param = "ticName=" + intName + "&gdType=ticket";
-			$.ajax({
-				type: 'POST',
-				url: "pay_cart.LF",
-				data: param,
-				succees: function(res, status, xhr) {
-					alert("성공");
-					console.log(res);
-					window.location.href = '/pay_cart.LF';
-				},
-				error: function(status, xhr) {
-					alert("실패");
-				}
-			});
-		});
-	
-	}
 
-	//$('#homemain').html(res);
-	//window.location.href = '${pageContext.request.contextPath}' + '/pay_order.LF';
-</script>
+<script type="text/javascript">
+	var gIntName = 0;
+	function showPayMenu(intName) {
+		gIntName = intName;
+		location.href = "#lecfly_ticket_modal";		
+	}
+</script>	
+
 <div class="CSsection">
 	<div id="CSsec_title">
 		<h2>홈페이지 안내</h2>
@@ -103,8 +65,7 @@
 				</c:forEach>
 			</div>
 
-		</div>
-
+		</div> 
 
 		<div id="lecflyticket_box">
 			<span style="color: gray;"> <i class="fas fa-crown fa-5x"></i>
@@ -122,14 +83,14 @@
 			이용 가능합니다.<br>
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a class="lecflyticket" onclick="goPayOrder(1)">바로가기&nbsp;&gt;</a>
+					<a class="lecflyticket" onclick="showPayMenu(1)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
 			<div id="lecfly_ticket_modal" class="overlay">
 			<div class="popup">
 				<a class="close" href="#">x</a>
 			<div class="lecfly_ticket_modal_popup_content">
-				<h2 class="mypage_mb_isupdate">결제페이지로 바로 이동 하시겠습니까?</h2>
+				<h2 class="mypage_mb_isupdate">이미 등록되어 있는 상품입니다.</h2>
 			</div>
 			<br>
 			<input id="lecfly_ticket_modal_popup_goCart" type="button" value="장바구니 이동">
@@ -154,9 +115,20 @@
 			이용 가능합니다.
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a class="nav_mypage" onclick="goPayOrder(2)">바로가기&nbsp;&gt;</a>
+					<a class="lecflyticket" onclick="showPayMenu(2)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
+			<div id="lecfly_ticket_modal" class="overlay">
+			<div class="popup">
+				<a class="close" href="#">x</a>
+			<div class="lecfly_ticket_modal_popup_content">
+				<h2 class="mypage_mb_isupdate">이미 등록되어 있는 상품입니다.</h2>
+			</div>
+			<br>
+			<input id="lecfly_ticket_modal_popup_goCart" type="button" value="장바구니 이동">
+			<input id="lecfly_ticket_modal_popup_goOrder" type="button" value="결제페이지 이동">
+		</div>
+		</div>
 		</div>
 
 		<div id="lecflyticket_box">
@@ -174,9 +146,119 @@
 			<br> Lecfly에 업로드된<br>모든 카테고리 강의를<br>무제한으로 이용 가능합니다.<br>&nbsp;
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a onclick="goPayOrder(3)">바로가기&nbsp;&gt;</a>
+					<a class="lecflyticket" onclick="showPayMenu(3)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
+			<div id="lecfly_ticket_modal" class="overlay">
+			<div class="popup">
+				<a class="close" href="#">x</a>
+			<div class="lecfly_ticket_modal_popup_content">
+				<h2 class="mypage_mb_isupdate">이미 등록되어 있는 상품입니다.</h2>
+			</div>
+			<br>
+			<input id="lecfly_ticket_modal_popup_goCart" type="button" value="장바구니 이동">
+			<input id="lecfly_ticket_modal_popup_goOrder" type="button" value="결제페이지 이동">
+		</div>
+		</div>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	
+	// // 카테고리 이용권 1개인지 3개인지 전체인지 1 2 3 들어올예정
+		
+		$("#lecfly_ticket_modal_popup_goCart").on("click", function() {
+			console.log("gIntName = " + gIntName);
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'pay_cart.LF';
+			var param = "kitId=" + gIntName + "&gdType=ticket";
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: param,
+				dataType: "JSON",
+				success:function(res, status, xhr) {
+					var r = res.c;
+					console.log("r = " + r);
+					if (r == 0) {
+						alert("상품이 등록되었습니다!");
+						$("#homemain").load('${pageContext.request.contextPath}' + '/show_cart.LF');
+					} else if( r == 1 || r == 2 ) {
+						location.href = "#goods_detail_modal";
+					} else {
+						if( r == 3 )
+						$("#homemain").load('${pageContext.request.contextPath}' + '/login.LF');
+					}
+				},
+				error: function(staus, xhr) {
+					alert("실패1");
+				}
+			});
+		});
+		
+		$("#lecfly_ticket_modal_popup_goOrder").on("click", function() {
+			console.log("gIntName = " + gIntName);
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'before_order.LF';
+// 			var param = "ticName=" + gIntName + "&gdType=ticket";
+			var param = "kitId=" + gIntName + "&gdType=ticket";
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: param,
+				dataType: "JSON",
+				success: function(res, status, xhr) {
+					alert("성공2");
+					console.log(res);
+					console.log(res.result);
+					if( res.result == "yes") {
+						$.ajax({
+							type: 'POST',
+							url: '${pageContext.request.contextPath}' + '/pay_order.LF',							
+							contentType: 'application/json',
+							data: JSON.stringify({
+									"kitId": gIntName,
+									"totalPts": '1'
+							}),							
+							success: function(res2, status2, xhr2) {
+								//	res2 => pay_order.jsp view
+								console.log(res2);
+								$('#homemain').html(res2);
+							},
+							error: function(status2, xhr2) {
+								alert("실패");
+							}
+						});
+					}
+				},
+				error: function(status, xhr) {
+					alert("실패");
+				}
+			});
+		});
+///////////////////////////////////////////////////////////////////////////////
+// 		Debug
+// 		$("#lecfly_ticket_modal_popup_goOrder").on("click", function() {
+//			console.log("gIntName = " + gIntName);
+//			var URLHD = '${pageContext.request.contextPath}/';
+//			var url = URLHD+'before_order.LF';
+//			var param = "ticName=" + gIntName + "&gdType=ticket";
+//			$.ajax({
+//				type: 'POST',
+//				url: url,
+//				data: param,
+//				dataType: "JSON",
+//				success: function(res, status, xhr) {
+//					alert("성공2");
+//					console.log(res);
+//					console.log(res.result);
+//				},
+//				error: function(status, xhr) {
+//					alert("실패");
+//				}
+//			});
+//		});	
+
+	//$('#homemain').html(res);
+	//window.location.href = '${pageContext.request.contextPath}' + '/pay_order.LF';
+</script>

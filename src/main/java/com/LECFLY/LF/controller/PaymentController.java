@@ -7,9 +7,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.velocity.tools.view.WebappUberspector.SetAttributeExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,9 +45,10 @@ public class PaymentController {
 	
 	
 	// 회원이 한개의 선택한 티켓을 바로 주문페이지로 이동할 수 있다.
-	@RequestMapping(value = "pay_order.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "before_order.LF", method = RequestMethod.POST)
+	//@RequestMapping(value = "before_order.LF", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> showOrderProc(HttpSession ses,
+	public Map<String, Object> beforePayOrderProc(HttpSession ses,
 								@RequestParam(value = "ticName", defaultValue="1") int ticName,
 								Model model) {
 			System.out.println("티켓 안내 페이지로 이동!");
@@ -89,9 +92,30 @@ public class PaymentController {
 			return rMap;
 	}
 	
+	// kakaopay, visa...
+	@RequestMapping(value = "pay_order.LF", method = RequestMethod.POST)	
+	public String showPayOrder(HttpSession ses,@RequestBody Map<String,Object> poData, Model model) {
+		
+		System.out.println("poMap: " + poData);
+		
+		MemberVO mb = (MemberVO)ses.getAttribute("memeber");
+		if (mb != null) {
+			int mbId = mb.getId();
+			int totalPrice = (Integer)poData.get("totalPrice");
+			String totalPts = (String)poData.get("totalPts");
+			model.addAttribute("mbId", mbId);
+			model.addAttribute("totalPrice", totalPrice);
+			model.addAttribute("totalPts", totalPts);
+			return "payment/pay_order.pays";
+		} else {
+			System.out.println("mb가 없음");
+		}
+		return "member/login";
+	}
+	
 	// 회원이 세션 로그인 후, 강의 상세페이지로 이동 할 수 있다.
 	@RequestMapping(value = "pay_goodsDetail.LF", method = RequestMethod.GET)
-	public String showLectureProc(@RequestParam("lecId") int lecId, Model model) {
+	public String showLectureProc(@RequestParam(value = "lecId") int lecId, Model model) {
 		System.out.println("payController :: showLectureProc()");
 		
 		Map<String,Object> lMap = cartSvc.showLectureProc(lecId);
@@ -121,54 +145,55 @@ public class PaymentController {
 	}
 	
 	// 회원이 키트를 장바구니에 담을 떄, 담긴 것과 아닌 것을 분기해서 처리 할 수 있다.
-	@RequestMapping(value = "check_pay_cart.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "pay_cart.LF", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> CheckOrderProc(HttpSession ses, 
-											  @RequestParam("kitId") int kitId,
+											  @RequestParam(value = "kitId") int kitId,
 											  @RequestParam(value = "gdType", required = false, defaultValue = "kit" ) String gdType) {
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		Map<String, Object> rMap = new HashMap<>(); 
 		if( mb != null ) {
 			int mbId = mb.getId();
-			boolean r = cartSvc.checkCartForKitMb(mbId, kitId); 
+			boolean r = cartSvc.checkCartForKitMb(mbId, kitId, gdType.equals("ticket") ? 0:1); 
+			// status 0, mbid, kidId(gdId), gdType(categoeryId)
 			if ( r ) {
 				System.out.println("상품이 만들어짐");
-				int c = 1;
-				rMap.put("c", c);
+				//int c = 1;
+				rMap.put("c", 1);// 중복됨...
+				
 			} else {
 				System.out.println("상품이 없음");
-				int c = 0;
-				rMap.put("c", c);
+				//int c = 0;
+				//rMap.put("c", c);
 				// 넣을 제품이 키트인지 티켓인지 구분...							
 				int cr = cartSvc.insertNewCartByTicId(mbId, kitId, gdType);
 				if( cr == 1 ) {
-					
+					System.out.println("장바구니 추가 성공");
+					rMap.put("c", 0);
 				} else {
-					
+					System.out.println("상품 중복이 없으나 장바구니 추가 실패");
+					rMap.put("c", 2); // db, sever err
 				}
 			}
 		} else {
 			System.out.println("mb 없음");
-			int c = 0;
+			int c = 3; // 로그인 없거나 가입안됨,..,
 			rMap.put("c", c);
 		}
 		return rMap;
 	}
-	
-	
+		
 	
 //	장바구니페이지로 들어 갈 때, 세션으로 물건들을 넣을 수 있다.
-	@RequestMapping(value = "pay_cart.LF", method = RequestMethod.GET)
-	public String showCartProc(HttpSession ses, 
-			@RequestParam("kitId") int kitId,
-			Model model){
+	@RequestMapping(value = "show_cart.LF", method = RequestMethod.GET)
+	public String showCartProc(HttpSession ses, Model model){
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
 			int mbId = mb.getId();
 			if( mbId > 0 ) {
 				System.out.println("회원으로 장바구니 이동!");
 				//카트에서 해당 mb가 저키트를 가지고있는지 체크하는 함수 select 하는함수	
-				Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
+				Map<String, Object> cMap = cartSvc.showCartProc(mbId); // state 0인 내것만..
 				if(cMap != null) {
 					List<KitVO> kitList = (List<KitVO>)cMap.get("kitList");
 					List<CreatorVO> creList = (List<CreatorVO>)cMap.get("creList");
@@ -177,16 +202,17 @@ public class PaymentController {
 				}
 			} else {
 				System.out.println("비회원으로 장바구니 이동!");
-				Map<String, Object> cMap = cartSvc.showCartProc(mbId, kitId);
+				Map<String, Object> cMap = cartSvc.showCartProc(mbId);
 			}
-			System.out.println("payment/pay_cart.pay");
+			System.out.println("payment/pay_cart.pays");
 			
 		} else {
 			// 여유 생기면 구현예정
-			Map<String, Object> pMap = cartSvc.showCartByNoMbProc(kitId); // 카트아이디가 리턴되야함
+			//Map<String, Object> pMap = cartSvc.showCartByNoMbProc(kitId); // 카트아이디가 리턴되야함
+			model.addAttribute("msg", "mb 가없음");		
 			System.out.println("mb 가없음");
 		}
-		return "payment/pay_cart.pay";
+		return "payment/pay_cart.pays";
 	}
 	
 	
