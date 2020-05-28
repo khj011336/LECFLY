@@ -25,6 +25,7 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	final String UPDATE_VIDEO ="update video set video_path = ? , duration = ? , title = ? , info = ? , img_path =  ? , gif_path = ? ,order_info = ?,"+
 	"comment_y_n = ? , status = ? , updated_at = now() where CFId = ? and id = ?";
 	final String SELECT_ALL_VIDEOTRACK = "select * from video where CFId = ?";
+	final String UPDATE_VIDEO_TRACK = "update lectures set video_track = video_track+1 where id = ?";
 
 	@Override
 	public boolean insertNewVideo(VideoVO Vvo) {
@@ -45,7 +46,9 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 				viVO.getGifPath(),viVO.getOrderInfo(),viVO.getCommentYorN(),viVO.getStatus(),CFID,id);
 		return r==1;
 	}
-
+	public int addCountVideoTrack(int CFID) {
+		return jtem.update(UPDATE_VIDEO_TRACK, CFID);
+	}
 	@Override
 	public VideoVO selectOneVideo(int CFID,int id) {
 		try {

@@ -22,8 +22,7 @@
 						</c:forEach>
 					</div>
 					<!-- 좋아요 버튼 -->
-					<img
-						src="resources/imges/dummy_lec_img/life_style/life_style_0.jpg">
+					<img src="resources/imges/dummy_lec_img/life_style/life_style_0.jpg">
 				</div>
 				<div class="main_video_info_lec">
 					<p class="main_video_info_category">

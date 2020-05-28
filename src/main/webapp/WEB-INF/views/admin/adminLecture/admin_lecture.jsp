@@ -9,8 +9,7 @@
 				<input type="hidden" name="pn" value="${(empty param.p)? 1: param.p}"/>
 			<td>
 				<a href="#" class="day1">오늘</a> |<a href="#" class="day3">3일</a> |
-				<a href="#" class="day7">7일</a> |<a href="#" class="month1">1개월</a>
-				직접설정
+				<a href="#" class="day7">7일</a> |<a href="#" class="month1">1개월</a>&nbsp; 직접설정 
 				<input type="date" name="start_date" value="2020-05-01"/> ~ <input type="date" name="end_date" value="2020-05-19"/>
 			</td>
 		</tr>
@@ -33,9 +32,9 @@
 			<th>키워드 검색</th>
 			<td>
 				<select name="target">
-    				<option value="title" ${(param.f == "title")? " selected":""} >강의명</option>
-    				<option value="nickname" ${(param.f == "nickname")? " selected":""} >업로더닉네임</option>
-    				<option value="id" ${(param.f == "id")? " selected":""} >강의번호</option>
+    				<option value="title" ${(param.t== "title")? " selected":""} >강의명</option>
+    				<option value="nickname" ${(param.t == "nickname")? " selected":""} >업로더닉네임</option>
+    				<option value="id" ${(param.t == "id")? " selected":""} >강의번호</option>
 				</select>
 				<input type="text" name="keyword" size="40">
 			</td>
@@ -65,18 +64,18 @@
 	
 	<ul class="admin_search_edit">	
 		<li>
-			<button class="date_filter" onclick="clickAllCheckBtn()">전체 선택</button>
-			<button class="date_filter" onclick="unclickAllCheckBtn()">선택 취소</button> |
-			<button class="date_filter" id="update_approval_lecture"> 승인완료</button>
-			<button class="date_filter" id="update_disapproval_lecture">승인거절</button> |
-			<button class="date_filter" id="delete_lecture_list">삭제</button>
+			<button onclick="clickAllCheckBtn()">전체 선택</button>
+			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="btn_filter" id="update_approval_lecture"> 승인 완료</button>
+			<button class="btn_filter" id="update_disapproval_lecture">승인거절</button> |
+			<button class="btn_filter" id="delete_lecture_list">삭제</button>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	
-		<li><a href="?p=${pn}&o=1" onclick="">최신순</a></li>
-		<li><a href="?p=${pn}&o=2" onclick="">승인대기순</a></li>
-		<li><a href="?p=${pn}&o=3" onclick="">승인완료순</a></li>
-		<li><a href="?p=${pn}&o=4" onclick="">인기순</a></li>
+		<li><a href="?p=${pn}&o=1">최신순</a></li>
+		<li><a href="?p=${pn}&o=2">승인대기순</a></li>
+		<li><a href="?p=${pn}&o=3">승인완료순</a></li>
+		<li><a href="?p=${pn}&o=4">인기순</a></li>
 	</ul>
 </div>    
 
@@ -116,20 +115,20 @@
 			</td>
 			<td>${lec.title }</td> 
 			<td><button style="color:gray">미리보기</button></td> 		
-				<c:choose>
-					<c:when test="${lec.status == 0}">
-						<td name="status" value="0">심사중</td>
-					</c:when>
-					<c:when test="${lec.status == 1}">
-						<td name="status" value="1" style="color: orangered;">승인 거절</td>
-					</c:when>
-					<c:when test="${lec.status == 2}">
-						<td name="status" value="2" style="color: orange;">승인 요청</td>
-					</c:when>
-					<c:when test="${lec.status == 3}">
-						<td name="status" value="3" style="color: #5cb85c;">승인 완료</td>
-					</c:when>
-				</c:choose>
+			<c:choose>
+				<c:when test="${lec.status == 0}">
+					<td name="status" value="0">심사중</td>
+				</c:when>
+				<c:when test="${lec.status == 1}">
+					<td name="status" value="1" style="color: orangered;">승인 거절</td>
+				</c:when>
+				<c:when test="${lec.status == 2}">
+					<td name="status" value="2" style="color: orange;">승인 요청</td>
+				</c:when>
+				<c:when test="${lec.status == 3}">
+					<td name="status" value="3" style="color: #5cb85c;">승인 완료</td>
+				</c:when>
+			</c:choose>
 			<td>${lec.likeCount }</td> 
 			<td>${lec.videoTrack }</td> 
 			<td><fmt:formatDate value="${lec.createdAt }" pattern="yyyy.MM.dd"/></td> 			
@@ -147,7 +146,6 @@
 		</c:if> &nbsp;&nbsp;
 		<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
 			<c:if test='${vs.current eq pn}'>
-
 				<b style='color: orange'>${vs.current}</b>
 			</c:if>	
 			<c:if test='${vs.current ne pn}'>

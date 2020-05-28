@@ -64,7 +64,7 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 	// 일반강의 관련
 	/** 전체 일반 강의목록 조회_최신순 */
 	public static String SQL_ADMIN_SITE_SELECT_NOMAL_LEC_ALL = 
-			"SELECT * FROM LECTURES ORDER BY ID DESC";
+			"SELECT * FROM LECTURES WHERE STATUS = 3 ORDER BY ID DESC";
 	
 	// 검색 관련
 	/** 카테고리별 강의 검색  */

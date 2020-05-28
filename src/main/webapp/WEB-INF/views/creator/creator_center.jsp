@@ -11,7 +11,7 @@
 <%@include file ="/resources/variable/pubLinkCss.jspf" %>
 <link href="resources/css/creator/creator.css" rel ="stylesheet" type="text/css" >
 <link href="resources/css/creator/cre_comment_mt.css" rel ="stylesheet" type="text/css" >
-<link href ="resources/css/creator/lecplay.css" rel ="stylesheet" type="text/css" >
+
 <title>크리에이터 센터</title>
 </head>
 <body>

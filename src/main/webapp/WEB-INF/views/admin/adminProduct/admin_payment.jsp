@@ -6,14 +6,13 @@
 <div class="admin_table_filter">
 	<table>
 		<caption>검색조건설정</caption>
-		<tr>
-			<th>날짜 검색</th>
+		<tr class="date_filter">
+			<th>결제일 기준 검색</th>
+				<input type="hidden" name="pn" value="${(empty param.p)? 1: param.p}"/>
 			<td>
-				<span class="date_filter"><a href="#">오늘</a></span> |
-				<span class="date_filter"><a href="#">3일</a></span> |
-				<span class="date_filter"><a href="#">7일</a></span> |
-				<span class="date_filter"><a href="#">1개월</a></span>
-				<input type="date"/> ~ <input type="date"/>
+				<a href="#" class="day1">오늘</a> |<a href="#" class="day3">3일</a> |
+				<a href="#" class="day7">7일</a> |<a href="#" class="month1">1개월</a>&nbsp; 직접설정 
+				<input type="date" name="start_date" value="2020-05-01"/> ~ <input type="date" name="end_date" value="2020-05-19"/>
 			</td>
 		</tr>
 		<tr>
@@ -70,15 +69,14 @@
 	
 	<ul class="admin_search_edit">	
 		<li>
-			<span class="date_filter"><a href="#">전체선택</a></span>
-			<span class="date_filter"><a href="#">수정</a></span>
-			<span class="date_filter"><a href="#">삭제</a></span>
-			<span class="date_filter"><a href="#">저장</a></span>
+			<button onclick="clickAllCheckBtn()">전체 선택</button>
+			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="btn_filter" id="">삭제</button>
 		</li>
 	</ul>	
 	<ul class="admin_search_sort">	
-		<li><a href="#">정확도순</a></li>
-		<li><a href="#">결제일순</a></li>
+<!-- 		<li><a href="#">정확도순</a></li> -->
+<!-- 		<li><a href="#">결제일순</a></li> -->
 	</ul>
 </div>    
 
@@ -115,4 +113,26 @@
 		</tr>
 		</c:forEach>
 	</table>
+	<div id="paginate">
+		<c:if test="${pn > 1}">
+			<a href="?p=${pn-1}">[이전]</a>
+		</c:if>
+		<c:if test="${pn <= 1}">
+			<span>[이전]</span>
+		</c:if> &nbsp;&nbsp;
+		<c:forEach varStatus="vs" begin="1" end="${maxPn}" step="1">
+			<c:if test='${vs.current eq pn}'>
+				<b style='color: orange'>${vs.current}</b>
+			</c:if>	
+			<c:if test='${vs.current ne pn}'>
+				<a href="?p=${vs.current}">${vs.current}</a>
+			</c:if>			 	
+			 ${vs.current eq maxPn ? '': '| '}
+		</c:forEach> &nbsp; &nbsp;
+		<c:if test="${pn < maxPn}">
+			<a href="?p=${pn+1}">[다음]</a>
+		</c:if>
+		<c:if test="${pn > maxPn}">
+			<span>[다음]</span>
+		</c:if>
 </div>
