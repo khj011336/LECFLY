@@ -12,11 +12,11 @@ public class PayHistoryVO {
 	/** 구매회원아이디*/
 	private int buyMbId;             
 	/**  판매회원아이디*/
-	private int sellMbId;            
+	private String sellMbId;            
 	/** 구매한종류                        (1:이용권 2:키트 3:펀딩...)*/
 	private int	goodsType;          
 	/** 구매 품목 id       fk는 없지만 윗 컬럼으로 테이블 판별 후 해당 테이블에서 데이터를 가져와야됨*/
-	private int	goodsId;          
+	private String goodsId;          
 	/** 결제수단                          (1:신용카드 2:카카오페이)*/
 	private int	payWay;             
 	/** 사용한 쿠폰*/
@@ -36,7 +36,7 @@ public class PayHistoryVO {
 	/** 상태업데이트 날짜                 최종 배송완료 시간으로 마지막 저장	CURRENT_TIMESTAMP*/
 	private Timestamp updatedAt;
 	/** 총 결제 금액*/
-	int PayHistorySum; 
+	int PayHistorySum;
 	
 	/**
 	 * 더미 
@@ -60,9 +60,9 @@ public class PayHistoryVO {
 	 * @param updatedAt
 	 * @param payHistorySum
 	 */
-	public PayHistoryVO(int buyMbId, int sellMbId, int goodsType, 
-			int goodsId, int payWay, int couponId, int buyProductCount, 
-			int diliveryPrice, int checkSameOrder, int deliveryStatus,
+	public PayHistoryVO(int buyMbId, String sellMbId, int goodsType, 
+			String goodsId, int payWay, int couponId, int buyProductCount, 
+			int diliveryPrice, int checkSameOrder, int deliveryStatus, 
 			String deliveryRequire, Timestamp updatedAt, int payHistorySum) {
 		this(0, buyMbId, sellMbId, goodsType, goodsId, 
 				payWay, couponId, buyProductCount, diliveryPrice, 
@@ -88,7 +88,7 @@ public class PayHistoryVO {
 	 * @param updatedAt
 	 * @param payHistorySum
 	 */
-	public PayHistoryVO(int id, int buyMbId, int sellMbId, int goodsType, int goodsId, int payWay, int couponId,
+	public PayHistoryVO(int id, int buyMbId, String sellMbId, int goodsType, String goodsId, int payWay, int couponId,
 			int buyProductCount, int diliveryPrice, Timestamp dealDay, int checkSameOrder, int deliveryStatus,
 			String deliveryRequire, Timestamp updatedAt, int payHistorySum) {
 		super();
@@ -108,7 +108,6 @@ public class PayHistoryVO {
 		this.updatedAt = updatedAt;
 		PayHistorySum = payHistorySum;
 	}
-
 
 	public int getId() {
 		return id;
@@ -130,12 +129,12 @@ public class PayHistoryVO {
 	}
 
 
-	public int getSellMbId() {
+	public String getSellMbId() {
 		return sellMbId;
 	}
 
 
-	public void setSellMbId(int sellMbId) {
+	public void setSellMbId(String sellMbId) {
 		this.sellMbId = sellMbId;
 	}
 
@@ -150,12 +149,12 @@ public class PayHistoryVO {
 	}
 
 
-	public int getGoodsId() {
+	public String getGoodsId() {
 		return goodsId;
 	}
 
 
-	public void setGoodsId(int goodsId) {
+	public void setGoodsId(String goodsId) {
 		this.goodsId = goodsId;
 	}
 
@@ -268,5 +267,8 @@ public class PayHistoryVO {
 				+ checkSameOrder + ", deliveryStatus=" + deliveryStatus + ", deliveryRequire=" + deliveryRequire
 				+ ", updatedAt=" + updatedAt + ", PayHistorySum=" + PayHistorySum + "]";
 	}
+
+
+	
 	
 }

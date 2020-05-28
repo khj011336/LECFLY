@@ -24,11 +24,12 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 	final String SELECT_ONE_VIDEO = "select * from video where CFId = ? and id = ?";
 	final String UPDATE_VIDEO ="update video set video_path = ? , duration = ? , title = ? , info = ? , img_path =  ? , gif_path = ? ,order_info = ?,"+
 	"comment_y_n = ? , status = ? , updated_at = now() where CFId = ? and id = ?";
-	final String SELECT_ALL_VIDEOTRACK = "select * from video where fId = ? and CFId = ?";
+	final String SELECT_ALL_VIDEOTRACK = "select * from video where CFId = ?";
+	final String UPDATE_VIDEO_TRACK = "update lectures set video_track = video_track+1 where id = ?";
 	
 	@Override
 	public boolean insertNewVideo(VideoVO Vvo) {
-	int r = 	jtem.update(INSERT, Vvo.getfId(),Vvo.getCFId(),Vvo.getVideoPath(),Vvo.getDuration(),Vvo.getTitle(),Vvo.getInfo(),Vvo.getImgPath()
+	int r = jtem.update(INSERT, Vvo.getfId(),Vvo.getCFId(),Vvo.getVideoPath(),Vvo.getDuration(),Vvo.getTitle(),Vvo.getInfo(),Vvo.getImgPath()
 				,Vvo.getGifPath(),Vvo.getOrderInfo(),Vvo.getCategory(),Vvo.getCommentYorN(),Vvo.getViews(),Vvo.getStatus());
 		return r == 1;
 	}
@@ -45,7 +46,9 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 				viVO.getGifPath(),viVO.getOrderInfo(),viVO.getCommentYorN(),viVO.getStatus(),CFID,id);
 		return r==1;
 	}
-
+	public int addCountVideoTrack(int CFID) {
+		return jtem.update(UPDATE_VIDEO_TRACK, CFID);
+	}
 	@Override
 	public VideoVO selectOneVideo(int CFID,int id) {
 		try {
@@ -56,14 +59,12 @@ public class VideoMysqlDAOImpl implements IVideoDAO {
 			return null;
 		}
 	}
-
-	 
-
 	@Override
-	public List<VideoVO> selectVideoTrack(int fid, int CFID) {
-		return jtem.query(SELECT_ALL_VIDEOTRACK, BeanPropertyRowMapper.newInstance(VideoVO.class), fid,CFID);
+	public List<VideoVO> selectVideoTrack( int CFID) {
+		return jtem.query(SELECT_ALL_VIDEOTRACK, BeanPropertyRowMapper.newInstance(VideoVO.class),CFID);
 		
 	}
+	@Override
 	public int checkNumberOfVideo(int CFID){
 		int r = jtem.queryForObject(COUNT_VIDEO, Integer.class,CFID );
 		return 	r;

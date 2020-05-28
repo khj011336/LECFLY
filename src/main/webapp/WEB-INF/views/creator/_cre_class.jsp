@@ -10,7 +10,7 @@
 				<c:set var="titleImg"
 					value="resources/imges/logo/LecFly_SLOGO_W_C.png" />
 			</c:if>
-			<img src="${crPath}${titleImg}" class="CRimg" alt="이미지">
+			<img src="${crPath}${titleImg}" class="CRimg" alt="이미지" onError ="this.src='resources/imges/logo/LecFly_SLOGO_W_W.png'">
 		</div>
 		<div class="CRC">
 			<p class='CRname'>

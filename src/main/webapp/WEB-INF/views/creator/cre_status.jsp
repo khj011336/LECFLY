@@ -20,8 +20,7 @@ function setImageFromFile(input, expression, tempses) {
     }
 }
     $().ready(function () {
-    	$("#cls_category option:nth-child("+${Lecture.category}+")").attr("selected","selected");
-    	
+    
      	$(".pubf").find("input,textarea,select").on("change",function(){
      		if(${p}==1){
             	sessionStorage.setItem("s1","1");
@@ -71,23 +70,49 @@ function setImageFromFile(input, expression, tempses) {
     			ex = true; location.href ="creator_new_lecture.LF";
     			}
     		}else{
-    			ex = true; location.href ="creator_update_store.LF";
+    			var formPro = document.profileForm;
+    			formPro.action ="creator_update_store.LF";
+    			ex = true;  
+    			formPro.submit();
     		}
     		}
     	});
     	$(document).on("click",".exportb",function(){
+    		var hiddenField = document.createElement('input');
+			hiddenField.setAttribute('type', "hidden");
+			hiddenField.setAttribute('name', "LecId");
+    		var hiddenField2 = document.createElement('input');
+			hiddenField2.setAttribute('type', "hidden");
+			hiddenField2.setAttribute('name', "isUpdate");
     		if(!ispty()){
+    			var form = document.lecupload;
+     			 $(".exportb").attr("disabled","disabled");
+     			form.action ="creator_writing_store.LF";
+     			 finallwrite = true;
+     			 ex = true;
     			if(isCreator == 4){
-    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId;
+    				hiddenField.setAttribute('value', LecId);		
+    				form.appendChild(hiddenField);
+    				form.submit();
     			}else if(${Lecture.status == 4}){
-    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId;
+    				hiddenField.setAttribute('value', LecId);		
+    				form.appendChild(hiddenField);
+    				form.submit();
     			}else if(${update == 2}){
-    				finallwrite = true; ex = true; location.href ="creator_writing_store.LF?LecId="+LecId+"&isUpdate=2";
+    				hiddenField.setAttribute('value', LecId);		
+    				hiddenField2.setAttribute('value', "2");		
+    				form.appendChild(hiddenField);
+    				form.appendChild(hiddenField2);
+    				form.submit();
+    			}else if(${update == 5}){
+    				hiddenField.setAttribute('value', LecId);		
+    				hiddenField2.setAttribute('value', "5");		
+    				form.appendChild(hiddenField);
+    				form.appendChild(hiddenField2);
+    				form.submit();
     			}else{
-    				var form = $('.pubf');
-       			 $(".exportb").attr("disabled","disabled");
-       			 finallwrite = true;
-       				form.submit();	
+    				form.action ="creator_rightset_proc.LF";
+    				form.submit();
     			}
     			
     		}

@@ -22,7 +22,7 @@ public interface ILoginSVC {
 	public static final int MB_EMAIL_NONE = 3;
 	public static final int MB_EMAIL_AUTH_OK = 4;
 	public static final int MB_EMAIL_PW_MISMATCH = 5;
-	
+
 	public static final HashMap<Integer, String> MB_MSG_MAP = new HashMap<Integer, String>();
 	
 	String getMsg(int r);

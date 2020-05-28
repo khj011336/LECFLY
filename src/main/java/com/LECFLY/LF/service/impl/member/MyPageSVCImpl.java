@@ -14,6 +14,7 @@ import org.springframework.transaction.InvalidTimeoutException;
 import com.LECFLY.LF.model.dao.impl.Test;
 
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
+import com.LECFLY.LF.model.dao.inf.creator.IKitDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
@@ -23,6 +24,9 @@ import com.LECFLY.LF.model.dao.inf.member.ILecTypeDAO;
 import com.LECFLY.LF.model.dao.inf.member.IMemberDAO;
 import com.LECFLY.LF.model.vo.LecAttendVO;
 import com.LECFLY.LF.model.vo.LecTypeVO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.creator.CreatorVO;
+import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
@@ -68,6 +72,14 @@ public class MyPageSVCImpl implements IMypageSVC {
 	
 //	@Autowired
 //	private ITiketDAO tiketDao;
+	
+//	@Autowired
+//	private IPayHistoryDAO phisDao;
+	
+//	@Autowired  
+//	private IKitDAO kitDao; // IKITDAO 로되어있는데 확인부탁.
+	
+	
 	
 	private static final int PAGE_SIZE = 10;
 	
@@ -459,21 +471,256 @@ public class MyPageSVCImpl implements IMypageSVC {
 
 	@Override	/** mypage delivery_info 배송정보 조회*/
 	public Map<String, Object> selectMyPageDeliveryInfoMap(int mbId) {
+		System.out.println("mpSvc : selectMyPageDeliveryInfoMap()..");
 		if(mbId > 0) {
-			
-			
-			
-			
+			List<PayHistoryVO> phisList =  //phisDao.
+											testDao.selectAllPayHistoriesByMbId(mbId);
+			if(phisList != null) {
+				List<CreatorVO> creList = new ArrayList<>();
+				List<KitVO> kitList = new ArrayList<>();
+				
+				int deliveryStatusPaymentWaiting = 0;
+				int deliveryStatusDeliveryPreparation = 0;
+				int deliveryStatusShippingInProgress = 0;
+				int deliveryStatusDeliveryCompleted = 0;
+				/* Order confirmation 주문서확인   == Payment waiting 결제 대기중  
+					Preparing product 상품준비중 == Delivery Preparation 배송준비
+					Shipping in progress 배송중
+					Delivery completed 	배송완료		*/
+				int kitCount = 0;
+				
+				final int P_HIS_LIST_SIZE = phisList.size();
+				for (int i = 0; i < P_HIS_LIST_SIZE; i++) {
+					int deliveryStatus = phisList.get(i).getDeliveryStatus();
+					// 상수가 있었으면 좋겠다
+					switch(deliveryStatus) {
+						case 0: // 주문확인(결제 대기중)
+							deliveryStatusPaymentWaiting 
+								= (deliveryStatusPaymentWaiting + 1); break;
+						case 1: // 상품준비중(배송준비)
+							deliveryStatusDeliveryPreparation 
+								= (deliveryStatusDeliveryPreparation + 1); break;
+						case 2: // 배송중
+							deliveryStatusShippingInProgress 
+								= (deliveryStatusShippingInProgress + 1); break;
+						case 3: // 배송완료
+							deliveryStatusDeliveryCompleted 
+								= (deliveryStatusDeliveryCompleted + 1); break;
+					}
+					String creatorIds = phisList.get(i).getSellMbId();
+					String kitIds = phisList.get(i).getGoodsId();
+					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
+					String[] arrayCreatorIds = creatorIds.split(",");
+					String[] arrayKitIds = kitIds.split(",");
+					kitCount = arrayKitIds.length;
+					
+					if(arrayCreatorIds.length >= 0 ) {
+						
+						for (int j = 0; j < arrayKitIds.length; j++) {
+							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
+							int intKitId = Integer.parseInt(arrayKitIds[j]);
+							
+							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
+							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
+											testDao.selectOneCreatorById(intCreatorId);
+							KitVO kit = //kitDao.selectOneKitById(intKitId);
+										testDao.selectOneKitById(intKitId);
+							creList.add(cre);
+							kitList.add(kit);
+						}
+					} else {
+						System.out.println("arrayCreatorIds.length 는 음수 ");
+					}
+				}
+				Map<String, Object> rMap = new HashMap<>();
+				int[] deliveryStatus = { deliveryStatusPaymentWaiting,  
+						deliveryStatusDeliveryPreparation, 
+						deliveryStatusShippingInProgress, 
+						deliveryStatusDeliveryCompleted };
+				rMap.put("kitCount", kitCount);
+				rMap.put("phisList", phisList);
+				rMap.put("creList", creList);
+				rMap.put("kitList", kitList);
+				rMap.put("deliveryStatusArray", deliveryStatus);
+				return rMap;
+			} else {
+				System.out.println("phisList == null");
+			}
 		} else {
 			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
 			System.out.println("mbId = " + mbId);
 		}
 		return null;
 	}
+	
+	@Override
+	public Map<String, Object> updateOneMemberInfo(MemberVO mb, String nickname, String ph1, String ph2, String agreeEmail, String agreeSms,
+			int postalcode, String basicAddress, String detailAddress) {
+		System.out.println("svc: updateOneMemberInfo");
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		if(!nickname.isEmpty() && nickname!=null)
+			mb.setNicname(nickname);
+		if(!ph1.isEmpty() && ph1!=null && !ph2.isEmpty() && ph2!=null) {
+			String ph="010"+ph1+ph2;
+			mb.setPhNumber(ph);
+		}
+//		if(agreeEmail!=null && !agreeEmail.isEmpty() && agreeSms!=null && !agreeSms.isEmpty()) {
+//			int agreeReceive = 0;
+//			if( agreeEmail.equals("agree_email"))
+//				agreeReceive += 1;
+//			if( agreeSms.equals("agree_sms"))
+//				agreeReceive += 2;
+//			mb.setAgreeReceive(agreeReceive);
+//		}
+		if(agreeEmail==null || agreeEmail.isEmpty() || agreeSms==null || agreeSms.isEmpty()) {
+			rMap.put("update_info_msg", "체크박스 오류 발생!");
+			return rMap;
+		} else{
+			int agreeReceive = 0;
+			if( agreeEmail.equals("agree_email"))
+				agreeReceive += 1;
+			if( agreeSms.equals("agree_sms"))
+				agreeReceive += 2;
+			System.out.println("agree있음");
+			mb.setAgreeReceive(agreeReceive);
+			System.out.println(mb.getAgreeReceive());
+		}
+			
+		
+		if(postalcode!=0)
+			mb.setPostalCode(postalcode);
+		if(!basicAddress.isEmpty() && basicAddress!=null)
+			mb.setbasicAddress(basicAddress);
+		if(!detailAddress.isEmpty() && detailAddress!=null)
+			mb.setDetailAddress(detailAddress);
+		if(updateOneMember(mb)) {
+			rMap.put("update_info_msg", "회원정보 수정 성공");
+			rMap.put("update_member", mb);
+		}else
+			rMap.put("update_info_msg", "회원정보 수정 실패");
+		return rMap;
+	}
 
-
+	@Override
+	public boolean updateOneMember(MemberVO mb) {
+		System.out.println("svc: updateOneMember");
+		return mbDao.updateOneMemberInfo(mb);
+	}
 	
 	
-
+	@Override
+	public Map<String, Object> updateOneMemberPw(String email, String newPw, String newPwConfirm) {
+		System.out.println("svc: updateOneMemberPw");
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		if(newPw.isEmpty() || newPw==null)
+			rMap.put("update_pw_msg","새 비밀번호를 입력하세요");
+		if(newPwConfirm.isEmpty() || newPwConfirm==null)
+			rMap.put("update_pw_msg","새 비밀번호를 다시 입력하세요");
+		if(newPw.equals(newPwConfirm)) {
+			if(updateOneMember(email, newPw))
+				rMap.put("update_pw_msg","비밀번호 변경 성공");
+			else
+				rMap.put("update_pw_msg","비밀번호 변경 실패");
+		} else {
+			rMap.put("update_pw_msg","같은 비밀번호를 입력하세요");
+		}
+		return rMap;
+	}
 	
+	@Override
+	public boolean updateOneMember(String email, String pw) {
+		System.out.println("svc: updateOneMemberPw");
+		return mbDao.updateMemberPasswordToEmail(email, pw);
+	}
+
+
+	@Override
+	public Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat) {
+		System.out.println("mpSvc : selectMyPageDeliveryStatMap()..");
+		System.out.println("mbId = " + mbId + " / deliveryStat = " + deliveryStat);
+		if(mbId > 0 && deliveryStat > 0 && deliveryStat < 5) {
+			List<PayHistoryVO> phisList = //phisDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+											testDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+			List<CreatorVO> creList = new ArrayList<>();
+			List<KitVO> kitList = new ArrayList<>();
+			if(phisList != null) {
+				final int PHIS_LIST_SIZE = phisList.size();
+				for (int i = 0; i < PHIS_LIST_SIZE; i++) {
+					String creatorIds = phisList.get(i).getSellMbId();
+					String kitIds = phisList.get(i).getGoodsId();
+					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
+					String[] arrayCreatorIds = creatorIds.split(",");
+					String[] arrayKitIds = kitIds.split(",");
+					
+					if(arrayCreatorIds.length >= 0 ) {
+						for (int j = 0; j < arrayKitIds.length; j++) {
+							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
+							int intKitId = Integer.parseInt(arrayKitIds[j]);
+							
+							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
+							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
+											testDao.selectOneCreatorById(intCreatorId);
+							KitVO kit = //kitDao.selectOneKitById(intKitId);
+										testDao.selectOneKitById(intKitId);
+							creList.add(cre);
+							kitList.add(kit);
+						}
+					} else {
+						System.out.println("arrayCreatorIds.length 는 음수 ");
+					}
+				} // for 문끝
+				Map<String, Object> rMap = new HashMap<>();
+				rMap.put("phisList", phisList);
+				rMap.put("creList", creList);
+				rMap.put("kitList", kitList);
+				return rMap;
+			} else {
+				System.out.println("phisList == null");
+			}
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+		}
+		return null;
+	}
+
+
+	@Override
+	public Map<String, Object> selectMemberPayHistoriesByPayStatusMbId
+												(String payStatus, int mbId) {
+		System.out.println("mpSvc :: selectMemberPayHistoriesByPayStatusMbId()");
+		if(mbId > 0 && payStatus != null && !payStatus.isEmpty()) {
+			int payStat = 0;
+			switch(payStatus) {
+				case "all" : payStat = 3; break;
+				case "tickets" : payStat = 1; break;
+				case "kits" : payStat = 2; break;
+			}
+			// PayHistoryVO 에서 1:이용권 2:키트
+			// 상품명 결제금액 구매일 배송상태 카드종류
+			List<Map<String,Object>> phisMapList = //phisDao.selectMemberPayHistoryByBuyMbIdgdsType(mbId, payStat);
+												testDao.selectMemberPayHistoryByBuyMbIdgdsType(mbId, payStat);
+			if(phisMapList != null) {
+				final int PHIS_MAP_LIST_SIZE = phisMapList.size(); 
+				for (int i = 0; i < PHIS_MAP_LIST_SIZE; i++) {
+					Map<String, Object> pMap = phisMapList.get(i);
+					int phisId = (int)pMap.get("id");
+					String phisGdsId = (String)pMap.get("gds_id"); // split 해서 잘라서 구분해야함 이미위에서 이용권이냐 키트냐로 뽑음 
+					int phisPayWay = (int)pMap.get("pay_way"); // 1 이면 신용카드 2면 카카오페이 
+					Timestamp phisDealDay = (Timestamp)pMap.get("deal_day");
+					String phisCheckSameOrder = (String)pMap.get("check_same_order"); // uuid String ver
+					int phisDeliveryStatus = (int)pMap.get("delivery_status"); // 0주문서확인 1상품준비중 2배송중 3 배송완료
+					int phisHistorySum = (int)pMap.get("pay_history_sum");
+				}
+				
+				
+			} else {
+				System.out.println("phisListMap ==  null");
+			}
+			
+		} else {
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+			System.out.println("payStatus = " + payStatus + " / mbId = " + mbId );
+		}
+		return null;
+	}
 }

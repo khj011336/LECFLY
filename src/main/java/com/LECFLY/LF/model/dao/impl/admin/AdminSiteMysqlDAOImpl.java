@@ -64,7 +64,7 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 	// 일반강의 관련
 	/** 전체 일반 강의목록 조회_최신순 */
 	public static String SQL_ADMIN_SITE_SELECT_NOMAL_LEC_ALL = 
-			"SELECT * FROM LECTURES ORDER BY ID DESC";
+			"SELECT * FROM LECTURES WHERE STATUS = 3 ORDER BY ID DESC";
 	
 	// 검색 관련
 	/** 카테고리별 강의 검색  */
@@ -111,8 +111,8 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 	
 	@Override
 	public boolean insertBanner(HomeFileManagerVO vo) {
-		System.out.println("dao insert 시작");
-		System.out.println(vo.toString());
+//		System.out.println("dao insert 시작");
+//		System.out.println(vo.toString());
 		int r = jtem.update(SQL_ADMIN_SITE_INSERT_BANNER, 
 				vo.getFileDisplayNum(), vo.getFileLectureId(), vo.getFileName(), vo.getFilePath(), vo.getFileSize());
 		return r == 1;
@@ -195,7 +195,7 @@ public class AdminSiteMysqlDAOImpl implements IAdminSiteDAO {
 				sql+= ")";
 			} 
 		}
-		System.out.println(sql);
+//		System.out.println(sql);
 		return jtem.query(sql, BeanPropertyRowMapper.newInstance(LectureVO.class));
 		
 	}

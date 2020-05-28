@@ -6,10 +6,9 @@
 	<div class="mypage_bottom_contents">
 		<div id="payment_nav" class="mypage_nav2">
 		  	<ul>
-		    	<li><a href="#" id="mypage_attending_lec">전체</a></li>
-		    	<li><a href="#" id="mypage_will_attend">이용권</a></li>
-		    	<li><a href="#" id="mypage_like">kit</a></li>
-		    	<li><a href="#" id="mypage_like">펀딩</a></li>
+		    	<li><a id="mypage_pay_all">전체</a></li>
+		    	<li><a id="mypage_pay_tickets">이용권</a></li>
+		    	<li><a id="mypage_pay_kits">kit</a></li>
 			</ul>
 		 </div>
 		 <div id="payment_chart">

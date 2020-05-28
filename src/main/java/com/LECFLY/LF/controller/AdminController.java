@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.LECFLY.LF.model.vo.CommentClassVO;
 import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
@@ -28,6 +29,7 @@ import com.LECFLY.LF.model.vo.cscenter.FaqVO;
 import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO;
 import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
@@ -52,7 +54,6 @@ public class AdminController {
 	private IAdminBoardSVC adBdSvc;
 	@Autowired
 	private IAdminPaymentSVC adPmSvc;
-	
 
 	@Autowired
 	private IAdminFileSVC adFileSvc;
@@ -70,9 +71,9 @@ public class AdminController {
 		int allLecCnt = adLecSvc.selectLectureAll();
 		// 신규회원수 select count(id) from members where joined_at >=(CURDATE()-interval 7 day);
 		int newMbCnt = adLecSvc.selectNewMemberCnt();
-		// 업로더 승인대기수 select count(id) from members where check_creator = 1;
+		// 업로더 승인대기수 select count(id) from members where check_creator = 2;
 		int appCrCnt = adLecSvc.selectCreatorApprovalCnt();
-		// 강의 승인대기수 select count(id) from lectures where status = 0;
+		// 강의 승인대기수 select count(id) from lectures where status = 2;
 		int appLecCnt = adLecSvc.selectLectureApproval();
 		// 문의 답변하기 수  select count(id) from qnas where comment = 0;
 		int cmQnaCnt = adLecSvc.selectQnaCommentCnt();
@@ -107,9 +108,6 @@ public class AdminController {
 		jsonMap.put("memberCnt", memberCnt);
 		return jsonMap;
 	}
-	
-	
-	
 	
 	// 관리자 메인 통계 - 카테고리별 강의수
 	@RequestMapping(value = "/stat_categoryLecture.LF", method = RequestMethod.POST)
@@ -251,14 +249,7 @@ public class AdminController {
 	}
 	// 관리자 강의관리
 	@RequestMapping(value = "/admin_lecture.LF")
-	public String adminLecture(Model model) {
-		List<LectureVO> lecList = adLecSvc.selectLectureList();
-		model.addAttribute("lecList", lecList);
-		return "admin/adminLecture/admin_lecture.ad";
-	}
-	// 관리자 강의관리(전체조회)
-	@RequestMapping(value = "/admin_lecture_list.LF", method = RequestMethod.GET)
-	public String adminLectureListProc(Model model, 
+	public String adminLecture(Model model,
 			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
 		List<LectureVO> lecList = adLecSvc.selectAllLecture(pageNumber);
@@ -271,31 +262,68 @@ public class AdminController {
 		}
 		return "admin/adminLecture/admin_lecture.ad";
 	}
+	// 관리자 강의관리(전체조회)
+	@RequestMapping(value = "/admin_lecture_list.LF", method = RequestMethod.GET)
+	public String adminLectureListProc(Model model, 
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber,
+			@RequestParam(value = "o",required = false, defaultValue = "1") int order) {
+		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
+		List<LectureVO> lecList = new ArrayList<>();
+		switch (order) {
+		case 1: // 정렬 최신순
+			lecList = adLecSvc.selectAllLecture(pageNumber);
+			break;
+		case 2: // 정렬 승인대기순
+			lecList = adLecSvc.selectAllLectureByApproval(pageNumber);
+			break;	
+		case 3: // 정렬 승인완료
+			lecList = adLecSvc.selectAllLectureByApprovalDone(pageNumber);
+			break;
+		case 4: // 정렬 인기순
+			lecList = adLecSvc.selectAllLectureByLike(pageNumber);
+			break;	
+		default:
+			break;
+		}
+		if(lecList != null && rMap != null) {
+			model.addAttribute("listSize", lecList.size());
+			model.addAttribute("lecList", lecList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminLecture/admin_lecture.ad";
+	}
 	// 관리자 강의관리(상세조회) json
-	@RequestMapping(value = "/admin_lecture_list_search.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin_lecture_search.LF", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> adminLectureListSearch(
-			@RequestBody Map<String, Object> condition){
-		System.out.println(condition);
-
-		String pn = (String) condition.get("pn");
-		int pageNumber = Integer.parseInt(pn);
+	public Map<String,Object> adminLectureListSearch(
+			@RequestBody Map<String, Object> params){
+		// 검색 조건 취합
+		int pageNumber = Integer.parseInt((String) params.get("pn"));
+		int category = Integer.parseInt((String) params.get("category"));
+		params.put("category", category);
+		int status = Integer.parseInt((String) params.get("status"));
+		params.put("status", status);
 		
-		Map<String, Object> jsonMap = new HashMap<String, Object>();
-		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumberSearchFilter(condition);
-		System.out.println("검색결과 수 : "+rMap);
-		List<LectureVO> lecList = adLecSvc.selectLectureListSearchFilter(condition);
-		jsonMap.put("lecList", lecList);
-		jsonMap.put("listSize", lecList.size());
-		jsonMap.put("maxPn", rMap.get("maxPg"));
-		jsonMap.put("totalRecords", rMap.get("totalRecords"));
-		jsonMap.put("pn", pageNumber);
-		return jsonMap;
+		// 검색(page, data)
+		Map<String,Object> jsonMap = new HashMap<String, Object>();
+		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumberSearch(params);
+		List<LectureVO> lecList = adLecSvc.selectAllLectureSearch(params);
+		// 검색 결과 처리
+		if(lecList != null && rMap != null) {
+			jsonMap.put("listSize", lecList.size());
+			jsonMap.put("lecList", lecList);
+			jsonMap.put("maxPn", rMap.get("maxPg"));
+			jsonMap.put("totalRecords", rMap.get("totalRecords"));
+			jsonMap.put("pn", pageNumber);
+		}
+      return jsonMap;
 	}
 	
-	// 관리자 강의리스트(다중) 갱신 AJAX 호출
+	// 관리자 강의리스트(다중) 1승인완료 AJAX 호출(백업)
 	@ResponseBody
-	@RequestMapping(value = "/admin_update_approve_lecture.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin_update_approval_lecture.LF", method = RequestMethod.POST)
 	public String adminLectureListApprovalProc(
 			@RequestBody ArrayList<Integer> checkList) {
 		
@@ -306,15 +334,14 @@ public class AdminController {
 		boolean b = adLecSvc.updateLectureApprovalforIds(checkList);
 		if(b) {
 			System.out.println("승인완료");
-			return "redirect:admin_lecture.LF";
 		} else {
 			System.out.println("승인실패");
-			return "redirect:admin_lecture.LF";
 		}
+		return "redirect:admin_lecture.LF";
 	}
-	// 관리자 강의리스트(다중) 승인거절 AJAX 호출
+	// 관리자 강의리스트(다중) 2승인거절 AJAX 호출
 	@ResponseBody
-	@RequestMapping(value = "/admin_update_disapprove_lecture.LF", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin_update_disapproval_lecture.LF", method = RequestMethod.POST)
 	public String adminLectureListDisapprovalProc(
 			@RequestBody ArrayList<Integer> checkList) {
 		
@@ -324,14 +351,13 @@ public class AdminController {
 		
 		boolean b = adLecSvc.updateLectureDisapprovalforIds(checkList);
 		if(b) {
-			System.out.println("승인거절완료");
-			return "redirect:admin_lecture.LF";
+			System.out.println("승인거절 완료");
 		} else {
-			System.out.println("승인거절실패");
-			return "redirect:admin_lecture.LF";
+			System.out.println("승인거절 실패");
 		}
+		return "redirect:admin_lecture.LF";
 	}
-	// 관리자 강의리스트(다중) 삭제 AJAX 호출
+	// 관리자 강의 일괄 삭제
 	@ResponseBody
 	@RequestMapping(value = "/admin_delete_lecture_list.LF", method = RequestMethod.POST)
 	public String adminDeleteLectureListProc(
@@ -341,7 +367,7 @@ public class AdminController {
 			System.out.println(id); // 수정할 id 값들 전달
 		}
 		
-		boolean b = adLecSvc.delectLectureforIds(checkList);
+		boolean b = adLecSvc.deleteLectureforIds(checkList);
 		if(b) {
 			System.out.println("삭제완료");
 			return "redirect:admin_lecture.LF";
@@ -361,7 +387,7 @@ public class AdminController {
 	// 관리자 영상관리(전체조회)
 	@RequestMapping(value = "/admin_video_list.LF", method = RequestMethod.GET)
 	public String adminVideoListProc(Model model, 
-			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adLecSvc.checkVideoMaxPageNumber();
 		List<VideoVO> vdList = adLecSvc.selectAllVideo(pageNumber);
 		if(vdList != null && rMap != null) {
@@ -402,9 +428,9 @@ public class AdminController {
 		return "admin/adminMember/admin_member.ad";
 	}
 	// 관리자 회원리스트 출력
-	@RequestMapping(value = "/admin_member.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin_member_list.LF", method = RequestMethod.GET)
 	public String adminMemberListProc(Model model, 
-			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adMbSvc.checkMaxPageNumber();
 		List<MemberVO> mbList = adMbSvc.selectAllMember(pageNumber);
 		if(mbList != null && rMap != null) {
@@ -416,22 +442,56 @@ public class AdminController {
 		}
 		return "admin/adminMember/admin_member.ad";
 	}
-	// 관리자 회원리스트(다중) 갱신 AJAX 호출
-	@RequestMapping(value = "/admin_update_member_list.LF", method = RequestMethod.POST)
-	public String adminMemberListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
+	// 관리자 회원 일괄 승인 처리
+	@ResponseBody
+	@RequestMapping(value = "/admin_update_approval_member.LF", method = RequestMethod.POST)
+	public String adminMemberListApprovalProc(@RequestBody ArrayList<Integer> checkList) {
 		for (Integer id : checkList) {
-			System.out.println("체크 id: "+id);
+			System.out.println(id); // 수정할 id 값들 전달
+		}
+		boolean mb = adLecSvc.updateMemberApprovalforIds(checkList);
+		boolean cb = adLecSvc.updateCreatorApprovalforIds(checkList);
+		if( !mb && !cb) {
+			System.out.println("승인완료");
+		} else {
+			System.out.println("승인실패");
 		}
 		return "redirect:admin_member_list.LF";
 	}
-	
-//	// 관리자 크리에이터관리
-//	@RequestMapping(value = "/admin_creator.LF")
-//	public String adminCreator(Model model) {
-//		List<CreatorVO> crList = adMbSvc.selectCreatorMemberList();
-//		model.addAttribute("crList", crList);
-//		return "admin/adminMember/admin_creator.ad";
-//	}
+	// 관리자 회원 일괄 승인 거절 처리
+	@ResponseBody
+	@RequestMapping(value = "/admin_update_disapproval_member.LF", method = RequestMethod.POST)
+	public String adminMemberListDisapprovalProc(@RequestBody ArrayList<Integer> checkList) {
+		for (Integer id : checkList) {
+			System.out.println(id); // 수정할 id 값들 전달
+		}
+		boolean mb = adLecSvc.updateMemberDisapprovalforIds(checkList);
+		boolean cb = adLecSvc.updateCreatorDisapprovalforIds(checkList);
+		if( !mb && !cb) {
+			System.out.println("승인거절 완료");
+		} else {
+			System.out.println("승인거절 실패");
+		}
+		return "redirect:admin_member_list.LF";
+	}
+	// 관리자 회원 일괄 삭제
+	@ResponseBody
+	@RequestMapping(value = "/admin_delete_member_list.LF", method = RequestMethod.POST)
+	public String adminDeleteMemberListProc(
+			@RequestBody ArrayList<Integer> checkList) {
+		
+		for (Integer id : checkList) {
+			System.out.println(id); // 수정할 id 값들 전달
+		}
+		
+		boolean b = adLecSvc.deleteMemberforIds(checkList);
+		if(b) {
+			System.out.println("삭제완료");
+		} else {
+			System.out.println("삭제실패");
+		}
+		return "redirect:admin_member_list.LF";
+	}
 	// 관리자 크리에이터관리
 		@RequestMapping(value = "/admin_creator.LF")
 		public String adminCreator() {
@@ -439,10 +499,9 @@ public class AdminController {
 		}
 	
 	// 관리자 크리에이터 회원리스트 출력
-	@RequestMapping(value = "/admin_creator.LF", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin_creator_list.LF", method = RequestMethod.GET)
 	public String adminCreatorListProc(Model model, 
-			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		System.out.println("PN? "+ pageNumber);
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adMbSvc.checkMaxPageNumberForCreator();
 		List<CreatorVO> crList = adMbSvc.selectAllCreator(pageNumber);
 		if(crList != null && rMap != null) {
@@ -454,20 +513,32 @@ public class AdminController {
 		}
 		return "admin/adminMember/admin_creator.ad";
 	}
-	// 관리자 크리에이터리스트(다중) 갱신 AJAX 호출
-	@RequestMapping(value = "/admin_update_creator_list.LF", method = RequestMethod.POST)
-	public String adminCreatorListUpdateProc(@RequestParam(value="checkList[]") List<Integer> checkList) {
+	// 관리자 크리에이터 일괄 삭제
+	@ResponseBody
+	@RequestMapping(value = "/admin_delete_creator_list.LF", method = RequestMethod.POST)
+	public String adminCreatorListDeleteProc(@RequestBody ArrayList<Integer> checkList) {
 		for (Integer id : checkList) {
-			System.out.println("체크 id: "+id);
+			System.out.println(id); // 수정할 id 값들 전달
 		}
-		return "redirect:admin_creator.LF";
+		boolean b = adLecSvc.deleteCreatorforIds(checkList);
+		if(b) {
+			System.out.println("삭제완료");
+		} else {
+			System.out.println("삭제실패");
+		}
+		return "redirect:admin_creator_list.LF";
 	}
-	// 회원 통계 내역
-		@RequestMapping(value = "/admin_member_stat.LF")
-		public String adminMemberStat() {
-			return "admin/adminMember/admin_memberstat.ad";
-		}	
-	
+
+//	// 회원 통계 내역
+//		@RequestMapping(value = "/admin_member_stat.LF")
+//		public String adminMemberStat() {
+//			return "admin/adminMember/admin_memberstat.ad";
+//		}
+	// 약관	
+	@RequestMapping(value="admin_clause.LF", method=RequestMethod.GET)
+	public String memberClausePage() {
+		return "admin/admin_clause.ad";
+	}
 	// 관리자 공지내역
 	@RequestMapping(value = "/admin_board_notice.LF")
 	public String adminBoardNotice() {
@@ -476,8 +547,7 @@ public class AdminController {
 	// 관리자 공지내역리스트 출력
 	@RequestMapping(value = "/admin_board_notice.LF", method = RequestMethod.GET)
 	public String adminBoardNoticeListProc(Model model, 
-			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		System.out.println("PN? "+ pageNumber);
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfNotice();
 		List<NoticeVO> ntList = adBdSvc.selectAllNotice(pageNumber);
 		if(ntList != null && rMap != null) {
@@ -498,12 +568,6 @@ public class AdminController {
 		return "redirect:admin_board_notice.LF";
 	}
 	
-	
-	
-	
-	
-	
-	
 	// 관리자 자주묻는질문
 	@RequestMapping(value = "/admin_board_faq.LF")
 	public String adminBoardFaq() {
@@ -512,8 +576,7 @@ public class AdminController {
 	// 관리자 자주묻는질문 내역 리스트 출력
 	@RequestMapping(value = "/admin_board_faq.LF", method = RequestMethod.GET)
 	public String adminBoardFaqListProc(Model model, 
-			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		System.out.println("PN? "+ pageNumber);
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfFaq();
 		List<FaqVO> fqList = adBdSvc.selectAllFaq(pageNumber);
 		if(fqList != null && rMap != null) {
@@ -534,7 +597,6 @@ public class AdminController {
 		return "redirect:admin_board_faq.LF";
 	}
 	
-	
 	// 관리자 문의내역
 	@RequestMapping(value = "/admin_board_qna.LF")
 	public String adminBoardQna() {
@@ -543,8 +605,7 @@ public class AdminController {
 	// 관리자 문의내역 리스트 출력
 	@RequestMapping(value = "/admin_board_qna.LF", method = RequestMethod.GET)
 	public String adminBoardQnaListProc(Model model, 
-			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		System.out.println("PN? "+ pageNumber);
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfQna();
 		List<QnaVO> qaList = adBdSvc.selectAllQna(pageNumber);
 		if(qaList != null && rMap != null) {
@@ -565,7 +626,6 @@ public class AdminController {
 		return "redirect:admin_board_qna.LF";
 	}
 	
-	
 	// 관리자 댓글내역
 	@RequestMapping(value = "/admin_board_comment.LF")
 	public String adminBoardComment() {
@@ -574,10 +634,9 @@ public class AdminController {
 	// 관리자 댓글내역 리스트 출력
 	@RequestMapping(value = "/admin_board_comment.LF", method = RequestMethod.GET)
 	public String adminBoardCommentListProc(Model model, 
-			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		System.out.println("PN? "+ pageNumber);
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adBdSvc.checkMaxPageNumberOfComment();
-		List<QnaCommentVO> qcList = adBdSvc.selectAllComment(pageNumber);
+		List<CommentVO> qcList = adBdSvc.selectAllComment(pageNumber);
 		if(qcList != null && rMap != null) {
 			model.addAttribute("listSize", qcList.size());
 			model.addAttribute("qcList", qcList);

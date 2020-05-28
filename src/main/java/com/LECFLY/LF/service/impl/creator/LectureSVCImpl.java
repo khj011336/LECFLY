@@ -18,7 +18,7 @@ import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.service.inf.creator.ILectureSVC;
 @Service
-public class LectureSVCImpl{
+public class LectureSVCImpl implements ILectureSVC{
 	final int INPUT_EMPTY_CHECK = 3;
 	final int LECTURE_CHECK_VAR_SIZE = 8;
 	@Autowired

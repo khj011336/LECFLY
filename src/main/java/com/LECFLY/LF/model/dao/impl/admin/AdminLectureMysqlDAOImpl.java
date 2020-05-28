@@ -178,12 +178,6 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public int checkNumberOfLecturesSearchFilter(Map<String, Object> condition) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<LectureVO> selectLectureListSearchFilter(Map<String, Object> condition) {
 		// TODO Auto-generated method stub
 		return null;
@@ -238,6 +232,12 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
+	public int checkNumberOfLecturesSearch(Map<String, Object> searchMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
 	public List<CategoryLectureStatVO> selectCategoryLectureCnt() {
 		// TODO Auto-generated method stub
 		return null;
@@ -250,15 +250,71 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	}
 
 	@Override
-	public boolean updateLectureDispprovalforIds(ArrayList<Integer> checkList) {
+	public boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean delectLectureforIds(ArrayList<Integer> checkList) {
+	public List<LectureVO> searchLectureByApproval(int offset, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<LectureVO> searchLectureByLike(int offset, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<LectureVO> searchLectureByApprovalDone(int offset, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean updateMemberApprovalforIds(ArrayList<Integer> ids) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean updateCreatorApprovalforIds(ArrayList<Integer> ids) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateMemberDisapprovalforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateCreatorDisapprovalforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteLectureforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteMemberforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteCreatorforIds(ArrayList<Integer> checkList) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 
 }
