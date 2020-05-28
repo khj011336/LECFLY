@@ -175,8 +175,8 @@ $(document).ready(function(){
 });
 </script>
   <div class="CreavIner">
-            <div><p>만족도</p></div>
-            <div><p>${videoStat.totalview} 뷰</p></div>
+            <div><p>전체</p></div>
+            <div><p>${videoStat.totalview}<span style="font-size:20px;"> views</span> </p></div>
             <div><p>좋아요:${videoStat.likeCount}</p></div>
         </div>
         <div class="Cregraphaa" id="treea">

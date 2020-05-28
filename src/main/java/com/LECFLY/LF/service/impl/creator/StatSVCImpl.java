@@ -27,6 +27,7 @@ public class StatSVCImpl implements IStatSVC{
 	int likeCount = 0;
 	  if(lecvo != null && !lecvo.isEmpty()) {
 	  List<VideoVO> videoList = ViDAO.selectVideoTrack(lecvo.get(lecId).getId());
+	  System.out.println(videoList);
 	  ObjectMapper mapper = new ObjectMapper(); 
 	  HashMap<String, Object> videoStat = new HashMap<String, Object>();
 	  List<String> title = new ArrayList<String>();

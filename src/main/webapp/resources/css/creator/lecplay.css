@@ -13,6 +13,7 @@ charset "UTF-8 ";
 	width: 1200px;
 	box-sizing: border-box;
 	margin: 30px auto;
+	
 }
 
 #Tcontent {
@@ -39,7 +40,7 @@ charset "UTF-8 ";
 }
 
 #PvideoList {
-	height: 1025px;
+	height: 1040px;
 	display: flex;
 	overflow-y: scroll;
 	overflow-x: hidden
@@ -193,6 +194,8 @@ width: 165px;
 	top: 30px;
 }
 
-
+.alter{
+	cursor: pointer;
+}
 .alter p.movieName{
 display: none;	
