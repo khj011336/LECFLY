@@ -99,7 +99,14 @@
         </div>
         <div class="counter" id="reply_count">댓글 <c:out value="${qcSize}" default="0"/>개</div>
         <div id="receiveBoard_bottom">
-	      	<div id="input_comment">
+        	<div id="comment_list">
+        		${comment}
+        	</div>
+        	<div id="input_comment">
+	        	<textarea name="input_comment" rows="2" cols="112" placeholder="댓글을 입력해주세요"></textarea>
+				<input style="width:70px; height: 26px;" id="input_btn" type="button" value="댓글달기">
+			</div>
+	      	<%-- <div id="input_comment">
 	      	<form action="${pageContext.request.contextPath}/qna_receive.LF?id=${qna.id}" method="post" enctype="multipart/form-data">
 	      		<input type="hidden" name="mbId" value="${mb.id}">
 	      		<input type="hidden" name="mbNic" value="${mb.nicname}">
@@ -131,8 +138,9 @@
 				</c:if>
 			</ul>
 		
-			</div>
-            </div>
+			</div> --%>
+			
+        </div>
         </div>
     </div>
 </body>
