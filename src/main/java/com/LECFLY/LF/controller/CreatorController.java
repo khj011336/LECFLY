@@ -103,10 +103,10 @@ public class CreatorController {
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-		MemberVO mb = (MemberVO) ses.getAttribute("member");
-				
-//				new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
-//				"dd", 1111, null, null);
+//		 (MemberVO) ses.getAttribute("member");
+		MemberVO mb =
+				new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
+				"dd", 1111, null, null);
 		model.addAttribute("grant", GRANTSTATUS);
 
 		if (mb != null) {
@@ -512,17 +512,29 @@ public class CreatorController {
 	public String showCreCommentList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			Model model) {
 //		commentSVC.addComment(mbId, tableCate, atId, comment, mbNic, targetCtId);
+		
 		if (page == 1) {
+			List<LectureVO> lec = LecSVC.showLectureList(memberId, page, 0);
+			List<String> comment = new ArrayList<String>();
 			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
 			model.addAttribute("crPath", imgPath);
 			model.addAttribute("isCreator", isCreator);
 			model.addAttribute("maxPage", MAXPAGE);
-			model.addAttribute("lecList", LecSVC.showLectureList(memberId, page, 0));
+			model.addAttribute("lecList", lec);
+			for (int i = 0; i < lec.size(); i++) {
+				comment.add(LecSVC.tempCommentList(ctSvc, lec.get(i).getId(), lec.get(i).getCategory()));
+			}
+			model.addAttribute("comment",comment);
 			return "creator/cre_comment_list.page";
 		} else if (page >= 2) {
+			List<LectureVO> LecList = LecSVC.showLectureList(memberId, page, 0);
+			List<String> comment = new ArrayList<String>();
+			for (int i = 0; i < LecList.size(); i++) {
+			comment.add(LecSVC.tempCommentList(ctSvc, LecList.get(i).getId(), LecList.get(i).getCategory()));
+			}
+			model.addAttribute("comment",comment);
 			model.addAttribute("crPath", imgPath);
 			model.addAttribute("maxPage", MAXPAGE);
-			List<LectureVO> LecList = LecSVC.showLectureList(memberId, page, 0);
 			model.addAttribute("lecList", LecList);
 			return "creator/_cre_comment";
 		}
@@ -576,26 +588,7 @@ public class CreatorController {
 		KitVO kit = kitDAO.selectOneKit(lec.getId());
 		CreatorVO cre = CreDAO.selectOneCreator(lec.getFid());
 		List<VideoVO> video = ViDAO.selectVideoTrack(lec.getId());
-		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String comment = "";
-			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(lec.getCategory(), CFId);
-			comment += "<div style=\"padding: 40px;\">";
-			for (int i = 0; i < ctList.size(); i++) {
-				CommentVO ctori = ctList.get(i);
-				String dep = "";
-				int margin = 0;
-				margin = 30;
-				if(ctori.getDepth() != 0) {
-					dep = "ㄴ";
-					margin = margin - ctori.getDepth() * 10;
-				} 
-				comment += "			<div style='display:inline-block;margin-top:4px; width:160px; "+(ctori.getDepth()==0?"'":" padding-left:"+ctori.getDepth()*10+"px;'")+">"+dep+"<image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n</div>" + 
-						"				<div style=\"display:inline-block;margin-top:4px; width:400px;  margin-left:"+margin+"px;\"><label style=\" \">" + ctori.getComment() + "</label>\r\n" +
-						"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
-						"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
-						"				</div><div id='udner_ct_form'></div>";
-			}
-			comment += "</div>";
+		String comment = LecSVC.tempCommentList(ctSvc, CFId, lec.getCategory());
 		model.addAttribute("video",video);
 		model.addAttribute("cre",kit);
 		model.addAttribute("kit",kit);

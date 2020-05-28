@@ -27,7 +27,7 @@
                 </div>
                         <div class="confirmTB">
                     <div class="MADbutton">버튼 아코디언
-        	<%@include file ="_comment.jsp" %>
+        	${comment[in.index]}
                     </div>
                 </div>
                 </div>
