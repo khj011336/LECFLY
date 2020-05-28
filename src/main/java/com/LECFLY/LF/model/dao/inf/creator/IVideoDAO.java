@@ -16,8 +16,9 @@ public interface IVideoDAO {
 
 	int checkNumberOfVideo(int CFID);
 
-	List<VideoVO> selectVideoTrack(  int CFID);
+	List<VideoVO> selectVideoTrack(int CFID);
 
 	List<VideoVO> selectVideoTrack(int CFID, int offset, int limit);
-	
+
+	int addCountVideoTrack(int CFID);
 }

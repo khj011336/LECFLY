@@ -1,6 +1,7 @@
 package com.LECFLY.LF.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,13 +28,18 @@ import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.impl.comment.CommentSVCImpl;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
 import com.LECFLY.LF.service.impl.creator.FileSVCImpl;
 import com.LECFLY.LF.service.impl.creator.LectureSVCImpl;
+import com.LECFLY.LF.service.inf.comment.ICommentSVC;
+import com.LECFLY.LF.service.inf.creator.IStatSVC;
 import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @SessionAttributes({ "creator", "Lecture", "video", "creatorKit" })
@@ -70,7 +76,10 @@ public class CreatorController {
 	CommentSVCImpl commentSVC;
 	@Autowired
 	private INoticeSVC ntSvc;
-
+	@Autowired
+	IStatSVC statSVC;
+	@Autowired
+	ICommentSVC ctSvc;
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -94,7 +103,9 @@ public class CreatorController {
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-		MemberVO mb = new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
+//		 (MemberVO) ses.getAttribute("member");
+		MemberVO mb =
+				new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
 				"dd", 1111, null, null);
 		model.addAttribute("grant", GRANTSTATUS);
 
@@ -389,6 +400,7 @@ public class CreatorController {
 		vio.setfId(memberId);
 		System.out.println(vio.toString());
 		VdoSVC.insertNewVideo(vio);
+		ViDAO.addCountVideoTrack(vio.getCFId());
 		sesStatus.setComplete();
 		return "creator/cre_href";
 	}
@@ -476,36 +488,53 @@ public class CreatorController {
 	}
 
 	@RequestMapping(value = "creator_lecplay.LF", method = RequestMethod.GET)
-	public String show_video(Model model) {
+	public String show_video(Model model , @RequestParam(value ="CFId" , defaultValue = "0" , required = false)int CFID) {
 		 
-		int CFID = 48;
-
-		List<LectureVO> Lec = LecDAO.selectLectureList(CFID);
-		String username = Lec.get(0).getImgPath().split("_")[1];
+		int LecId = CFID;
+		int CFid = 0;
+		String username = null;
+		LectureVO Lec = LecDAO.selectLecture(LecId);
+		if(Lec != null) {
+		username = Lec.getImgPath().split("_")[1];
+		CFid = Lec.getId();
+		}
 		String videoPath = "/images/2020/" + username + "/video";
 		String imgPath = "/images/2020/" + username + "/Img";
 		model.addAttribute("crPath", imgPath);
 		model.addAttribute("viPath", videoPath);
 		model.addAttribute("lecList", Lec);
-		model.addAttribute("videoList", ViDAO.selectVideoTrack(  CFID));
-		return "lecture/lecplay.page";
+		model.addAttribute("videoList", ViDAO.selectVideoTrack(CFid));
+		
+		return "lecture/lecplay.ho";
 	}
 
 	@RequestMapping(value = "creator_comment_List.LF", method = RequestMethod.GET)
 	public String showCreCommentList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
 			Model model) {
 //		commentSVC.addComment(mbId, tableCate, atId, comment, mbNic, targetCtId);
+		
 		if (page == 1) {
+			List<LectureVO> lec = LecSVC.showLectureList(memberId, page, 0);
+			List<String> comment = new ArrayList<String>();
 			MAXPAGE = LecSVC.checkOfLectureNumber(memberId);
 			model.addAttribute("crPath", imgPath);
 			model.addAttribute("isCreator", isCreator);
 			model.addAttribute("maxPage", MAXPAGE);
-			model.addAttribute("lecList", LecSVC.showLectureList(memberId, page, 0));
+			model.addAttribute("lecList", lec);
+			for (int i = 0; i < lec.size(); i++) {
+				comment.add(LecSVC.tempCommentList(ctSvc, lec.get(i).getId(), lec.get(i).getCategory()));
+			}
+			model.addAttribute("comment",comment);
 			return "creator/cre_comment_list.page";
 		} else if (page >= 2) {
+			List<LectureVO> LecList = LecSVC.showLectureList(memberId, page, 0);
+			List<String> comment = new ArrayList<String>();
+			for (int i = 0; i < LecList.size(); i++) {
+			comment.add(LecSVC.tempCommentList(ctSvc, LecList.get(i).getId(), LecList.get(i).getCategory()));
+			}
+			model.addAttribute("comment",comment);
 			model.addAttribute("crPath", imgPath);
 			model.addAttribute("maxPage", MAXPAGE);
-			List<LectureVO> LecList = LecSVC.showLectureList(memberId, page, 0);
 			model.addAttribute("lecList", LecList);
 			return "creator/_cre_comment";
 		}
@@ -534,31 +563,43 @@ public class CreatorController {
 		}
 		return mav;
 	}
-
 	@RequestMapping(value = "creator_statistics.LF", method = RequestMethod.GET)
 	public String showstatisticsList(
-			Model model) {
-		  List<LectureVO> lecvo = LecDAO.selectLectureList(memberId);
-		  System.out.println(lecvo.get(0));
-		  if(lecvo != null && !lecvo.isEmpty()) {
-		  List<VideoVO> videoList = ViDAO.selectVideoTrack(lecvo.get(0).getId());
-		  HashMap<String, Object> videoStat = new HashMap<String, Object>();
-		  List<String> title = new ArrayList<String>();
-		  List<Integer> like = new ArrayList<Integer>();
-		  List<Integer> views = new ArrayList<Integer>();
-		  List<Integer> statCfid = new ArrayList<Integer>();
-		  for(int i = 0 ; i < videoList.size(); i++) {
-			 like.add(videoList.get(i).getLikeCount());
-			views.add(videoList.get(i).getViews());
-			 title.add(lecvo.get(i).getTitle());
-			 statCfid.add(lecvo.get(i).getId());
-		  }
-		  videoStat.put("title", title);
-		  videoStat.put("like",like);
-		  videoStat.put("views",views);
-		  videoStat.put("statCFID",statCfid);
-		  model.addAttribute("videoStat",videoStat);
-		  }
-		return "creator/cre_statistics.page";
+			Model model , @RequestParam(value = "lecId",defaultValue = "0" ,required = false) int lecId,
+			@RequestParam(value = "net",defaultValue = "0" ,required = false) int net) {
+	
+		return statSVC.StatSvc(model, memberId, lecId, net);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value ="goods_detail.LF" ,method= RequestMethod.GET)
+	public String goods_detail(Model model , @RequestParam(value="CFId" ,defaultValue = "0", required = false) int CFId) {
+		LectureVO lec = LecDAO.selectLecture(CFId);
+		KitVO kit = kitDAO.selectOneKit(lec.getId());
+		CreatorVO cre = CreDAO.selectOneCreator(lec.getFid());
+		List<VideoVO> video = ViDAO.selectVideoTrack(lec.getId());
+		String comment = LecSVC.tempCommentList(ctSvc, CFId, lec.getCategory());
+		model.addAttribute("video",video);
+		model.addAttribute("cre",kit);
+		model.addAttribute("kit",kit);
+		model.addAttribute("lec",lec);
+		model.addAttribute("comment",comment);
+		String creator = cre.getName(); 
+		String path = "/images/2020/"+creator+"/Img";
+		model.addAttribute("crPath",path);
+		return "creator/cre_goodsDetail.ho";
+	}
+	
+	
+	
 }

@@ -1,13 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<script>
+function gotoDetail(CFID){
+	location.href= "goods_detail.LF?CFId="+CFID;
+}
+</script>
+<style>
+.main_video_block{
+cursor: pointer;
+}
+</style>
 <div class="main_video_wrapper">
 
 	<c:forEach items="${nomalList}" var="lec" varStatus="vs">
 	<c:if test="${vs.count % 4 == 1 }">
 	<div class="main_video_block_row"> <!-- 한 행에 전시할 강의 시작점마다 : 4개마다 --> 
 	</c:if>
-		<div class="main_video_block">
+		<div class="main_video_block" onclick="gotoDetail(${lec.id})">
 			<div class="main_video_thumb">
 				<!-- 좋아요 버튼 --> 
 				<div class="main_video_thumb_btn">
