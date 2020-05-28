@@ -26,119 +26,210 @@ span.basket, span.order_sheet {
 	color: gray;
 }
 
-#paymentFinished_content {
-	width: 1200px;
-	margin: 40px auto;
+#finished_wrapper {
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    max-width: 800px;
+    min-height: 1400px;
+/*     box-sizing: border-box; */
+}
+.finished_background {
+    letter-spacing: -1px;
+    background: #f4fae1 url('http://m.oliveyoung.co.kr/mc-static-root/image/etc/@bg_image_top.gif') no-repeat 100% 0;
+    background-size: 125px auto;
 }
 
-#paymentFinishied_sentence_font_color {
-	color: orange;
+.finished_backgroundInfo {
+    padding: 0 20px 27px;
+    border-bottom: 1px solid #e6e6e6;
+    background: url('http://m.oliveyoung.co.kr/mc-static-root/image/etc/@bg_image_btm.gif') no-repeat 100% 100%;
+    background-size: 57px auto;
 }
 
-.paymentFinished_sentence {
-	text-align: center;
-	margin-bottom: 15px;
+.finished_backgroundInfo2 {
+    padding: 20px 0 0;
+    font-size: 0;
+    line-height: 0;
 }
 
-.paymentFinished_table, .banner_space, .paymentFinished_button {
-	margin: 0px auto;
+.finished_img {
+    width: 123px;
+    height: 21px;
 }
 
-.paymentFinished_table {
-	line-height: 25px;
-	border: 2px solid lightgray;
-	width: 800px;
+.finished_font {
+    padding: 11px 0 0;
+    color: #222;
+    font-size: 32px;
+    line-height: 41px;
+/*     letter-spacing: -2px; */
 }
 
-.paymentFinished_table_td {
-	border: 2px solid black;
-	height: 50px;
+.finished_orderdelivery {
+    display: inline-block;
+    margin: 20px 0 0;
+    padding: 15px;
+    border-radius:5px;
+    background:#babc00;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
 }
 
-.paymentFinished_table_td_bc {
-	background-color: lightgray;
-	text-align: center;
+#orderInfo_title, #deliveryGoodsInfo_title, #deliveryInfo_title, #paymentInfo_title {
+    margin: 0 20px;
+    padding: 25px 0 9px;
+    border-bottom: 2px solid #666;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-ul, li {
-	list-style: none;
+.orderInfo_box {
+    font-size: 14px;
+    line-height: 22px;
+    padding: 0 20px;
 }
 
-.slide {
-	height: 300px;
-	overflow: hidden;
-	margin: 15px;
+.orderInfo_table, deliveryInfo_table {
+    border-collapse: collapse;
+    width: 100%;
 }
 
-.slide ul {
-	margin: 0px auto;
-	position: relative;
-	width: 800px;
-	height: 200px;
+.orderInfo_table_th {
+    font-size:14px;
+    padding: 14px 0 16px 16px;
+    line-height: 20px;
+    text-align: left;
+    font-weight: normal;
+    background: #f6f6f6;
+    border-bottom: 1px solid #e6e6e6;
 }
 
-.img_box {
-	width: 800px;
-	height: 200px;
+.deliveryInfo_table_th {
+    font-size:14px;
+    width:120px;
+    padding:14px 0 16px 16px;
+    line-height:20px;
+    text-align:left;
+    font-weight:normal;
+    vertical-align:top;
+    background:#f6f6f6;
+    border-bottom:1px solid #e6e6e6;
 }
 
-.slide li {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	opacity: 0;
-	animation: fade 30s infinite;
+.orderInfo_table_td, .deliveryInfo_table_td {
+    font-size:14px;
+    width: 558px;
+    padding: 14px 0 16px 16px;
+    line-height: 20px;
+    color: #333;
+    border-bottom: 1px solid #e6e6e6
 }
 
-.slide li:nth-child(1) {
-	background: #fff;
-	animation-delay: 0s
+.deliveryGoods_set, .deliveryplace_set, .paymentInfo_set {
+    overflow: hidden;
+    margin:0 20px;
+}
+.deliveryGoods_a {
+    color: #333;
+    font-size: 15px;
+    text-decoration: none;
 }
 
-.slide li:nth-child(2) {
-	background: #faa;
-	animation-delay: 8s
+.deliveryGoods_img {
+    float: left;
+    margin:20px 0;
 }
 
-.slide li:nth-child(3) {
-	background: #afa;
-	animation-delay: 16s
+.deliveryGoods_imgInfo {
+    float:left;
+    width:68%;
+    margin:0 0 0 15px;
+    padding:17px 0 15px;
 }
 
-.slide li:nth-child(4) {
-	background: #aaf;
-	animation-delay: 24s
+.deliveryGoods_cnt {
+    color: #999;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: bold;
 }
 
-@keyframes fade { 
-	0% {
-	opacity: 0;
-	}
-	5% {
-	opacity: 1;
-	}
-	25% {
-	opacity: 1;
-	}
-	30% {
-	opacity: 0;
-	}
-	100% {
-	opacity: 0;
-	}
+.deliveryGoods_discount {
+    color: #b0b0b0;
+    font-size: 13px;
+    text-decoration: line-through;
+}
+
+.deliveryGoods_price {
+    color: #333;
+    font-size:20px;
+    font-weight:bold;
+    padding:0 0 0 7px;
+}
+
+.korean_point {
+    font-style:normal;
+    font-size:12px;
+    padding:0 0 0 2px;
+}
+
+.paymentInfo_sumprice {
+    overflow: hidden;
+    padding: 6px 0 7px;
+}
+
+.sumGoods_price, .sumDelivery_price, .point_discountprice {
+    float:right;
+    color:#f47330;
+    font-weight:bold;
+    font-size:16px;
+}
+
+.sum_paymentPrice {
+    float:right;
+    color:#ff2828;
+    font-weight:bold;
+    font-size:28px;
+    line-height:38px;
+}
+
+.paymentInfo_method {
+    float:right;
+    font-size:12px;
+    font-weight:bold;
+    text-align:right;
+}
+
+.method_record {
+    display:block;
+    font-size:14px;
+    font-style:normal;
+    letter-spacing:-0.5px;
 }
 
 #paymentFinished_button {
 	text-align: center;
 	position: relative;
-	top: -100px;
+	top: 10px;
 }
 
 .paymentFinished_orderPage, .paymentFinished_goHomePage {
-	width: 100px;
+	display: inline-block;
+	margin: 20px 0 0;
+	padding: 15px;
+	border-radius: 5px;
+	background: #babc00;
+	color: black;
+	font-size: 16px;
+	font-weight: bold;
+	width: 120px;
 	height: 40px;
+	cursor: pointer;
 }
 
 /*::selection 슈도 영역잡기*/
