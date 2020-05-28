@@ -98,8 +98,10 @@ public class CreatorController {
 	@RequestMapping(value = "creator.LF", method = RequestMethod.GET)
 	public String showLectureList(HttpSession ses, Model model,
 			@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-		MemberVO mb = new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
-				"dd", 1111, null, null);
+		MemberVO mb = (MemberVO) ses.getAttribute("member");
+				
+//				new MemberVO(3, "dd", "길동", "hong", null, 1, "ad", "asd", "ddd", null, 3, 0, 0, 0, null, "dd",
+//				"dd", 1111, null, null);
 		model.addAttribute("grant", GRANTSTATUS);
 
 		if (mb != null) {
