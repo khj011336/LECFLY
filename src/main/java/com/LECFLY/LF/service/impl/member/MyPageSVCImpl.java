@@ -28,6 +28,7 @@ import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
@@ -113,7 +114,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		
 		int cntLecture = 
 				ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
-	
+		
 		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
 				 testDao.selectOneTiketForCanUseByMbId(mbId);
 		
@@ -122,7 +123,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 			String ticketFrontName = "";
 			String ticketName = "";
 			List<String> strCateList = new ArrayList<>(); 
-			System.out.println("mpSvc :: cntUseCategory = " + cntUseCategory);
+			
 			if(cntUseCategory == 1) {
 				ticketFrontName = "1";
 				ticketName = "카테고리 이용권";
@@ -144,19 +145,21 @@ public class MyPageSVCImpl implements IMypageSVC {
 				String strCate = "";
 				strCateList.add(strCate);
 			}
-			rMap.put("rt", "ok");
+			rMap.put( "cntTicket", (ticket != null ? 1 : 0) );
 			rMap.put("ticketFrontName", ticketFrontName);
 			rMap.put("ticketName", ticketName);
 			rMap.put("strCateList", strCateList);
 			rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
+			rMap.put("rtCheck", 1);
 		} else {
-			System.out.println("ticket = null");
+			System.out.println("ticket == null");
+			rMap.put("cntTicket", 0);
 		}
 		rMap.put("cntCoupon", cntCoupon);
 		rMap.put("cntLecture", cntLecture);
 		return rMap;
+		
 	}
-	
 	
 	@Override // 마이페이지 멤버가 사진업데이트 하려면..~~~
 	public boolean updateMemberProfileImg(int mbId, String pic) {
@@ -940,10 +943,26 @@ public class MyPageSVCImpl implements IMypageSVC {
 				List<PayHistoryVO> phisList = 
 						//phisDao.selectAllMyPayHistory(mbId, offset, PAGE_SIZE);
 						testDao.selectAllMyPayHistory(mbId, offset, PAGE_SIZE);
+				
+				List<CartVO> ctList = new ArrayList<>();
+				List<KitVO> kitList = new ArrayList<>();
+				List<TicketVO> tkList = new ArrayList<>();
+				
+				Map<Integer, List<Object>> objListMap = new HashMap<Integer, List<Object>>();
 				for (int i = 0; i < phisList.size(); i++) {
-					int order = 10000000 + i;
-					phisList.get(i).setCheckSameOrder(String.valueOf(order));
+					CartVO ct = testDao.selectOneCartById(phisList.get(i).getId());
+					// 0 티켓 1 키트
+					if(ct.getCategoryId() == CartVO.CATEGORY_ID_TICKET) {
+						TicketVO tk = testDao.selectOneTiketById(ct.getGdsId());
+						tkList.add(tk);
+//						objListMap.put(i, tkList);
+					} else if(ct.getCategoryId() == CartVO.CATEGORY_ID_KIT) {
+						KitVO kit = testDao.selectOneKitById(ct.getGdsId());
+					}
+					
 				}
+				
+				
 				System.out.println("phisList = " + phisList);
 				if(phisList.size() >= 0) {
 					List<String> kitTitleList =  new ArrayList<>();

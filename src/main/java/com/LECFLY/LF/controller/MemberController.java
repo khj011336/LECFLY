@@ -411,38 +411,30 @@ public class MemberController {
 			//마이페이지에 필요한거 카테고리 이용권개수(무엇을이용하는지(카테고리) + 종료날짜) + 쿠폰 개수 + 강의신청 목록 개수
 			int mbId = mb.getId();
 			Map<String, Object> pMap = mpSvc.selectMyPageContents(mbId);
+			int rtCheck = -1;
+			if( pMap.containsKey("rtCheck") )
+				rtCheck = (int)pMap.get("rtCheck");
+			int cntTicket = (int)pMap.get("cntTicket");
 			int cntCoupon = (int)pMap.get("cntCoupon");
 			int cntLecture = (int)pMap.get("cntLecture");
-			if( pMap.get("rt").equals("ok") ) {
+			System.out.println("2020-05-28 rtCheck = " + rtCheck + " / cntTicket = " + cntTicket +
+					" / cntCoupon = " + cntCoupon + " / cntLecture = " + cntLecture );
+			if(rtCheck == 1) {
 				String ticketFrontName = (String)pMap.get("ticketFrontName");
-				String ticketName = (String)pMap.get("ticketName");
+				String ticketName = (String)pMap.get("ticketName");	
 				List<String> strCateList = (List<String>)pMap.get("strCateList");
-				Timestamp tiketEndDay = (Timestamp)pMap.get("tiketEndDay");
+				Timestamp ticketEndDay = (Timestamp)pMap.get("ticketEndDay");
 				
-				System.out.println("ticketFrontName = " + ticketFrontName + " / ticketName = " + ticketName + 
-						" / strCateList.size() = " + strCateList.size() + " / tiketEndDay = " + tiketEndDay + 
-						" / cntCoupon = " + cntCoupon + " / cntLecture = " + cntLecture);
-				
+				model.addAttribute("rtCheck", rtCheck);
 				model.addAttribute("ticketFrontName", ticketFrontName);
 				model.addAttribute("ticketName", ticketName);
 				model.addAttribute("strCateList", strCateList);
-				model.addAttribute("ticketEndDay", tiketEndDay);
-				model.addAttribute("addText", "까지");
-				
-				List<LecAttendVO> laList 
-					= mpSvc.selectLecToStatusForMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING);
-				if(laList != null) {
-					model.addAttribute("msg_status", "수강중인 강의");
-					model.addAttribute("laList", laList);
-				} else {
-					model.addAttribute("msg_status", "수강중인 강의");
-				}
+				model.addAttribute("ticketEndDay", ticketEndDay);
 			}
+			model.addAttribute("cntTicket", cntTicket);
 			model.addAttribute("cntCoupon", cntCoupon);
 			model.addAttribute("cntLecture", cntLecture);
 			model.addAttribute("mb", mb);
-			model.addAttribute("mbLoginNicname", mb.getNicname());
-			model.addAttribute("mpNone", "");
 			return "member/mypage.ho";
 		} else {
 			// 실패시 로그인창으로~
@@ -1139,20 +1131,10 @@ public class MemberController {
 					mpSvc.selectMypagePayHistoryListByMbId(mbId, pageNumber);
 			if(pMap != null) {
 				
-				int totalRecords = (int)pMap.get("totalRecords");
-				int maxPg = (int)pMap.get("maxPg");
-				List<String> kitTitleList = (List<String>)pMap.get("kitTitleList");
-				List<PayHistoryVO> phisList = (List<PayHistoryVO>)pMap.get("phisList");
 				
-				model.addAttribute("totalRecords", totalRecords);
-				model.addAttribute("maxPg", maxPg);
-				model.addAttribute("kitTitleList", kitTitleList);
-				model.addAttribute("phisList", phisList);
-				model.addAttribute("rtUrl", "mypage_pay_list.LF");
 				
 			} else {
-				model.addAttribute("delStat", "");
-				System.out.println("pMap = null");
+				
 			}
 			return "maypage_payment_info";
 		} else {

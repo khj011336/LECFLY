@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
@@ -379,6 +380,24 @@ public class Test {
 		return null;
 	}
 	
+	
+	
+	public static final String SQL_SELECT_ONE_TICKET_BY_ID = 
+			"select * from ticket where id = ?";
+
+	public TicketVO selectOneTiketById(int id) {
+		try {
+			System.out.println(SQL_SELECT_ONE_TICKET_BY_ID + " / id =" + id);
+			return jtem.queryForObject(SQL_SELECT_ONE_TICKET_BY_ID, 
+					BeanPropertyRowMapper.newInstance(TicketVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	////////////////////////////////// 』
 	
 	/** */
@@ -540,6 +559,30 @@ public class Test {
 		}
 		return null;
 	}
+	
+	
+	//////////////////////
+	
+	/**  */
+	
+	/////////// cartImpl 에서 가져가세요
+	public static final String SQL_SELECT_ONE_CART_BYID = 
+			"select * from cart where id = ?";
+	
+	public CartVO selectOneCartById(int id) {
+		try {
+			System.out.println(SQL_SELECT_ONE_CART_BYID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_ONE_CART_BYID,
+					BeanPropertyRowMapper.newInstance(CartVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException.. ");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	//////
 
 
 }
