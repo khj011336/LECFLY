@@ -318,7 +318,6 @@
  				url: "mypage_payment_info.LF",
 	 			cache: true,
 				datatype: "text",
-				data: "",
 				success:function(res){
 					$("#mypage_bottom").html(res);
 				},
@@ -494,9 +493,9 @@
 		
 		///// 결제내역
 		$(document).on("click", "#mypage_pay_all", function() {
-			console.log("결제내역 전체");
+			console.log("결제내역 전체 눌름");
 			var url = 'mypage_pay_list.LF';
-			var params = "pn=" + pn;
+			var params = "pn=1";
 			$.ajax({
 				type: "POST",
 				url: url,

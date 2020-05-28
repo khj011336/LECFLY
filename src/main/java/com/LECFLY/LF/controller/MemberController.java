@@ -716,6 +716,7 @@ public class MemberController {
 			int maxPG = (int)comqnaMap.get("maxPG");
 			List<QnaVO> qnaList = (List<QnaVO>)comqnaMap.get("qnaList");
 			
+			
 			model.addAttribute("totalRecords", totalRecords);
 			model.addAttribute("maxPG", maxPG);
 			model.addAttribute("qnaList", qnaList);
@@ -744,6 +745,11 @@ public class MemberController {
 			int totalRecords = (int)couponMap.get("totalRecords");
 			int maxPG = (int)couponMap.get("maxPG");
 			List<CouponVO> couponList = (List<CouponVO>)couponMap.get("couponList");
+			List<String> couponApplyList = (List<String>)couponMap.get("strCouponApplyTo");
+			List<String> strCanUse = (List<String>)couponMap.get("strCanuse");
+			
+			model.addAttribute("strCanUse", strCanUse);
+			model.addAttribute("couponApplyList", couponApplyList);
 			model.addAttribute("totalRecords", totalRecords);
 			model.addAttribute("maxPG", maxPG);
 			model.addAttribute("couponList", couponList);
@@ -950,15 +956,15 @@ public class MemberController {
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
-			Map<Integer, List<CreatorVO>> creListMap = 
-					(Map<Integer, List<CreatorVO>>)rMap.get("creListMap");
-			Map<Integer, List<KitVO>> kitListMap = 
-					(Map<Integer,List<KitVO>>)rMap.get("kitListMap");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
 			
 			model.addAttribute("delStatHead", "결제대기");
 			model.addAttribute("phisList", phisList);
-			model.addAttribute("creListMap", creListMap);
-			model.addAttribute("kitListMap", kitListMap);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			model.addAttribute("delStat", "결제대기중인");
+			
 			
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "결제대기");
@@ -978,14 +984,14 @@ public class MemberController {
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
-			Map<Integer, List<CreatorVO>> creListMap = 
-					(Map<Integer, List<CreatorVO>>)rMap.get("creListMap");
-			Map<Integer, List<KitVO>> kitListMap = (Map<Integer,List<KitVO>>)rMap.get("kitListMap");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
 			
 			model.addAttribute("delStatHead", "배송준비");
 			model.addAttribute("phisList", phisList);
-			model.addAttribute("creListMap", creListMap);
-			model.addAttribute("kitListMap", kitListMap);
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			model.addAttribute("delStat", "배송준비중인");
 			
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "결제대기");
@@ -1004,16 +1010,14 @@ public class MemberController {
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
-			Map<Integer, List<CreatorVO>> creListMap = 
-					(Map<Integer, List<CreatorVO>>)rMap.get("creListMap");
-			Map<Integer, List<KitVO>> kitListMap = 
-					(Map<Integer,List<KitVO>>)rMap.get("kitListMap");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
 			
 			model.addAttribute("delStatHead", "배송중");
 			model.addAttribute("phisList", phisList);
-			model.addAttribute("creListMap", creListMap);
-			model.addAttribute("kitListMap", kitListMap);
-			
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			model.addAttribute("delStat", "배송중인");
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "배송중");
 			model.addAttribute("delStat", "배송중인");
@@ -1032,16 +1036,18 @@ public class MemberController {
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
-			Map<Integer, List<CreatorVO>> creListMap = 
-					(Map<Integer, List<CreatorVO>>)rMap.get("creListMap");
-			Map<Integer, List<KitVO>> kitListMap = 
-					(Map<Integer,List<KitVO>>)rMap.get("kitListMap");
+			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
 			
 			model.addAttribute("delStatHead", "배송완료");
 			model.addAttribute("phisList", phisList);
-			model.addAttribute("creListMap", creListMap);
-			model.addAttribute("kitListMap", kitListMap);
-			
+			model.addAttribute("creList", creList);
+			model.addAttribute("kitList", kitList);
+			model.addAttribute("delStat", "배송완료된");
+			for (int i = 0; i < phisList.size(); i++) {
+				System.out.println("phisList.get(i).getCheckSameOrder() = " 
+								+ phisList.get(i).getCheckSameOrder()  );
+			}
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "배송완료");
 			model.addAttribute("delStat", "배송완료된");
@@ -1123,18 +1129,36 @@ public class MemberController {
 	// 결제내역
 	@RequestMapping(value="mypage_pay_list.LF", method=RequestMethod.POST)
 	public String memberMyPagePayHistoryList(HttpSession ses,
+			@RequestParam(value = "pn", required = false, defaultValue = "1" ) int pageNumber,
 			Model model) {
+		System.out.println("cont :: memberMyPagePayHistoryList()..");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
 			int mbId = mb.getId();
-//			Map<String, Object> pMap = 
-//					mpSvc.selectMypagePayHistoryListByMbId(mbId);
-			
+			Map<String, Object> pMap = 
+					mpSvc.selectMypagePayHistoryListByMbId(mbId, pageNumber);
+			if(pMap != null) {
+				
+				int totalRecords = (int)pMap.get("totalRecords");
+				int maxPg = (int)pMap.get("maxPg");
+				List<String> kitTitleList = (List<String>)pMap.get("kitTitleList");
+				List<PayHistoryVO> phisList = (List<PayHistoryVO>)pMap.get("phisList");
+				
+				model.addAttribute("totalRecords", totalRecords);
+				model.addAttribute("maxPg", maxPg);
+				model.addAttribute("kitTitleList", kitTitleList);
+				model.addAttribute("phisList", phisList);
+				model.addAttribute("rtUrl", "mypage_pay_list.LF");
+				
+			} else {
+				model.addAttribute("delStat", "");
+				System.out.println("pMap = null");
+			}
+			return "maypage_payment_info";
 		} else {
 			
 		}
-		
-		return null;
+		return "member/login";
 	}
 	
 	
