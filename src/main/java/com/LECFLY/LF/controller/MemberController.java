@@ -1027,19 +1027,19 @@ public class MemberController {
 			int mbId = mb.getId(); 
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
-			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
-			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
-			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
-			
+//			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
+//			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+//			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+//			
 			model.addAttribute("delStatHead", "배송완료");
-			model.addAttribute("phisList", phisList);
-			model.addAttribute("creList", creList);
-			model.addAttribute("kitList", kitList);
-			model.addAttribute("delStat", "배송완료된");
-			for (int i = 0; i < phisList.size(); i++) {
-				System.out.println("phisList.get(i).getCheckSameOrder() = " 
-								+ phisList.get(i).getCheckSameOrder()  );
-			}
+//			model.addAttribute("phisList", phisList);
+//			model.addAttribute("creList", creList);
+//			model.addAttribute("kitList", kitList);
+//			model.addAttribute("delStat", "배송완료된");
+//			for (int i = 0; i < phisList.size(); i++) {
+//				System.out.println("phisList.get(i).getCheckSameOrder() = " 
+//								+ phisList.get(i).getCheckSameOrder()  );
+//			}
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "배송완료");
 			model.addAttribute("delStat", "배송완료된");

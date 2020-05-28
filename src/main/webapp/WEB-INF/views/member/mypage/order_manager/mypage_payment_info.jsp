@@ -12,19 +12,7 @@
 			</ul>
 		 </div>
 		<div id="payment_chart">
-			<c:if test="">
-			 	<%@ include file="_payment_result.jsp" %>
-			</c:if>
-			<c:if test="">			
-				<div class="mypage_table">
-					<table border="0">
-						<tr>
-							<th>현재 <c:out value="${delStat}"/>인 상품이 없습니다.</th>
-						</tr>
-					</table>
-				</div>
-			</c:if>
-			 	
+			 	<%@ include file="_payment_result.jsp" %>	
 		</div>
 		
 	</div>

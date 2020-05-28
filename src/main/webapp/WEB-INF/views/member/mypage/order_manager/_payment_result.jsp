@@ -5,61 +5,50 @@
 				<tr>
 					<th style='width:100px'>번호</th><th>상품명</th><th>결제금액</th><th>구매일</th><th>배송상태</th><th>결제수단</th>
 				</tr>
-				<c:forEach var="phis" items="${phisList}" varStatus="vs">
 				<tr>
-					<td><c:out value="${((pn-1) * 10) + (vs.index + 1)}" /></td>
-					<td><c:out value="${kitTitleList[vs.index]}" /></td>
-					<td><c:out value="${phis.payHistorySum}" /> 원</td>
-					<td><fmt:formatDate value="${phis.updatedAt}" pattern="yyyy.MM.dd" /></td>
-					<td><c:out value="${phis. }" /></td><td>신용카드</td>
-				</tr>
-				</c:forEach>
-				<tr>
-					<td>126</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>1</td><td>강아지 수채화 클래스 키트</td><td>27,000 원</td><td>2020.06.02</td><td>배송완료<br>2020.03.06</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>125</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>2</td><td>실크커튼 자수 클래스 키트</td><td>18,000 원</td><td>2020.06.02</td><td>배송완료<br>2020.03.06</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>124</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>3</td><td>가죽 카드지갑 만들기 클래스 키트</td><td>36,000 원</td><td>2020.06.01</td><td>배송완료<br>2020.03.05</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>123</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>4</td><td>강아지 수채화 클래스 키트</td><td>27,000 원</td><td>2020.06.01</td><td>배송완료<br>2020.03.05</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>122</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>5</td><td>실크커튼 자수 클래스 키트</td><td>18,000 원</td><td>2020.06.01</td><td>배송완료<br>2020.06.05</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>121</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>6</td><td>가죽 카드지갑 만들기 클래스 키트</td><td>36,000 원</td><td>2020.05.28</td><td>배송완료<br>2020.06.02</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>120</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>7</td><td>홈트레이닝 소도구 KIT</td><td>38,000 원</td><td>2020.05.15</td><td>배송완료<br>2020.05.20</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>119</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>8</td><td>홈트레이닝 소도구 KIT</td><td>38,000 원</td><td>2020.05.11</td><td>배송완료<br>2020.05.16</td><td>신용카드</td>
 				</tr>
 				<tr>
-					<td>118</td><td>홈트레이닝 소도구 KIT</td><td>36,000 원</td><td>2020.03.05</td><td>배송완료<br>2020.03.08</td><td>신용카드</td>
+					<td>9</td><td>홈트레이닝 소도구 KIT</td><td>38,000 원</td><td>2020.05.01</td><td>배송완료<br>2020.05.06</td><td>신용카드</td>
+				</tr>
+				<tr>
+					<td>10</td><td>홈트레이닝 소도구 KIT</td><td>38,000 원</td><td>2020.05.01</td><td>배송완료<br>2020.03.06</td><td>신용카드</td>
 				</tr>
 			</table>
 		</div>
 		<div id="mypage_table_numbering">
-			<c:if test="${pn gt 1}">
-				<span onclick="myPagePagiNatePre(${pn}, '${pageContext.request.contextPath}/${rtUrl}')">&lt;&nbsp;</span>
-			</c:if>
-			<c:forEach begin="1" end="${maxPG}" step="1" varStatus="vs">
-				<c:if test="${vs.index eq pn}">
+			<span>&lt;&nbsp;</span>
+			<c:forEach begin="1" end="10" step="1" varStatus="vs">
+				<c:if test="${vs.index eq 1}">
 					<b>${vs.index}</b>
 				</c:if>
-				
-				<c:if test="${vs.index ne pn}">
-					<span onclick="myPagePagiNateCurrunt(${pn}, ${vs.index}, '${pageContext.request.contextPath}/${rtUrl}')">${vs.index}</span>
+				<c:if test="${vs.index ne 1}">
+					<span>${vs.index}</span>
 				</c:if>
-           		${vs.current eq maxPG ? "" : " "}
+           		${vs.current eq 10 ? "" : " "}
        		</c:forEach>
-			<c:if test="${pn lt maxPG}">
-				<span onclick="myPagePagiNateNext(${pn}, ${maxPG}, '${pageContext.request.contextPath}/${rtUrl}')">&nbsp;&gt;</span>
-			</c:if>
+			<span>&nbsp;&gt;</span>
 		</div>
 		
 		
