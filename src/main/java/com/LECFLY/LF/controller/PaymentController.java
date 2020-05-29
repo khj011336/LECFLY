@@ -249,19 +249,24 @@ public class PaymentController {
 			break;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String comment = "<div id='comment_all'>";
+		String comment = "<div id='comment_all' style=\"padding: 40px;\">";
 		List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, CFId);
 		for (int i = 0; i < ctList.size(); i++) {
 			CommentVO ctori = ctList.get(i);
-			comment += "			<div id='ct_"+ctori.getOrderNum()+"' " +(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
-					"				<label style=\"padding-left:45px;\">" + ctori.getComment() + "</label>\r\n" +
+			String dep = "";
+			int margin = 0;
+			margin = 30;
+			if(ctori.getDepth() != 0) {
+				dep = "ㄴ";
+				margin = margin - ctori.getDepth() * 10;
+			} 
+			comment += "			<div style='display:inline-block;margin-top:4px; width:160px; "+(ctori.getDepth()==0?"'":" padding-left:"+ctori.getDepth()*10+"px;'")+">"+dep+"<image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n</div>" + 
+					"				<div style=\"display:inline-block;margin-top:4px; width:400px;  margin-left:"+margin+"px;\"><label style=\" \">" + ctori.getComment() + "</label>\r\n" +
 					"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
-					"				<input type=\"hidden\" value='"+ ctori.getId()+"'>" + 
-//					"				<i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>\r\n" + 
-					"				</div>\r\n" //+ 
-//					"				<div id='udner_ct_form'></div>"
-					;
+					"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
+					"				</div><div id='udner_ct_form'></div>";
 		}
+		comment += "</div>";
 		comment+="</div>";
 		rMap.put("temp", comment);
 		System.out.println(comment);
