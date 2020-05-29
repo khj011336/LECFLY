@@ -30,6 +30,9 @@
 	border: 1px solid grey;
 	border-radius: 3px;
 }
+#rbBtn > button{
+	border: 0px;	
+}
 #receiveBoard_content {
 	margin: 0px auto;
 	padding: 50px;
@@ -110,7 +113,7 @@
 
 #receiveBoard_bottom {
 	margin-top: 10px;
-	background-color: lightgray;
+	background-color: white;
 	padding: 15px;
 	border-top: 1px dashed #999999;
 	font-size: 14px;
@@ -120,12 +123,15 @@
 	color: grey;
 }
 #input_comment{
-	width: 800px;
-	padding-bottom: 20px;
+	width: 770px;
+	height: 26px;
+	padding-top: 20px;
 }
-#input_comment >input {
+#input_comment >#input_btn {
 	font-size: 17px;
-	width: 500px;
+	float: right;
+	padding-bottom: 10px;
+	/* width: 500px; */
 }
 #input_comment >.btn_comment {
 	width: 150px;
