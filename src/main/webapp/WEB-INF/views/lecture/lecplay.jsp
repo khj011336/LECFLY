@@ -54,7 +54,7 @@
 					<hr>
 					<div id="uplorder">
 						<div id='uplorderplayWrap'>
-							<img id='usr' src="${crPath}${lecList.imgPath}"><span
+							<img id='usr' src="${crPath}${cre.imgPath}"><span
 								id="usrname" class="usrab">
 								 ${lecList.nickname} 
 							</span> <span id="usrtitle" class="usrab"><b>${lecList.title}</b>-${lecList.subTitle}</span>

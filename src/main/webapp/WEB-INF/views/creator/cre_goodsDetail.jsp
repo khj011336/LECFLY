@@ -94,9 +94,12 @@ function goTrack(Cfid){
 		<c:if test= "${not empty video }">
 		 <c:forEach begin="0" end="${video.size()-1}" varStatus="vs">
 				<tr>
-					<td class="register_td">${vs.index+1}.${video[vs.current].title}</td>
-					<td class="register_td">${video[vs.current].info}</td>
-					<td class="register_td register_tb_num">${video[vs.current].duration}분</td>
+					<td class="register_td" style="width: 600px;">${vs.index+1}.${video[vs.current].title}</td>
+					<td class="register_td register_tb_num" rowspan="2" style="width: 100px; text-align: center;" >${video[vs.current].duration}분</td>
+				</tr>
+				<tr>
+					<td class="register_td" style="font-size: 15px; font-weight: normal; padding-left: 30px;">${video[vs.current].info}</td>
+					
 				</tr>
 		</c:forEach>
 				 </c:if>

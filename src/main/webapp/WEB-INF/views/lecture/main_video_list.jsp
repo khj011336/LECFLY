@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  
-<style>
-.main_video_block{
-cursor: pointer;
-}
-</style>
+
 <div class="main_video_wrapper">
 
 	<c:forEach items="${nomalList}" var="lec" varStatus="vs">
