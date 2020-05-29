@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
@@ -102,7 +103,7 @@ public class Test {
 	public CreatorVO selectOneCreatorById(int id) {
 		try {
 			System.out.println(SQL_SELECT_ONE_CREATOR_BY_ID + " / id = " + id);
-			jtem.queryForObject(SQL_SELECT_ONE_CREATOR_BY_ID, 
+			return jtem.queryForObject(SQL_SELECT_ONE_CREATOR_BY_ID, 
 					BeanPropertyRowMapper.newInstance(CreatorVO.class), id);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
@@ -206,7 +207,7 @@ public class Test {
 	
 	/** 마이페이지에서 쿠폰 조회할떄 사용하는 문장 사용한쿠폰 + 사용안한쿠폰 이 날짜순으로 섞여있다. */
 	public static final String SQL_SELECT_ALL_MY_COUPONS_BY_MBID = 
-			"SELECT * FROM COUPONS WHERE MB_ID = ? ORDER BY END_DAY";
+			"SELECT * FROM COUPONS WHERE MB_ID = ?";
 	
 //	/** 사용한다면 ?? 마이페이지에서 사용한 쿠폰 리스트 뽑을떄 출력*/
 //	public static final String SQL_SELECT_ALL_USE_MY_COUPONS_BY_MBID = 
@@ -349,14 +350,14 @@ public class Test {
 	
 	////////// 『 TiketDAOImpl 에서 사용하세요~
 	
-	public static final String SQL_SELECT_ONE_TIKET_BY_MBID = 
+	public static final String SQL_SELECT_TIKET_BY_MBID = 
 			"SELECT * FROM TICKETS WHERE MB_ID = ?";
 	
-	public TicketVO selectOneTiketByMbId(int mbId) {
-		System.out.println("dao : selectOneTiketByMbId()");
+	public List<TicketVO> selectTiketByMbId(int mbId) {
+		System.out.println("dao : selectTiketByMbId()");
 		try {
-			System.out.println(SQL_SELECT_ONE_TIKET_BY_MBID + " / mb_id = " + mbId);
-			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, 
+			System.out.println(SQL_SELECT_TIKET_BY_MBID + " / mb_id = " + mbId);
+			return  jtem.query(SQL_SELECT_TIKET_BY_MBID, 
 					BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
@@ -364,6 +365,38 @@ public class Test {
 		}
 		return null;
 	}
+	
+	public static final String SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID =
+			"SELECT * FROM TICKETS WHERE MB_ID = ? and (now() <= end_day)";
+	public TicketVO selectOneTiketForCanUseByMbId(int mbId) {
+		try{
+			System.out.println(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID + " / mbId = " + mbId);
+			return jtem.queryForObject(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID, 
+						BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	public static final String SQL_SELECT_ONE_TICKET_BY_ID = 
+			"select * from ticket where id = ?";
+
+	public TicketVO selectOneTiketById(int id) {
+		try {
+			System.out.println(SQL_SELECT_ONE_TICKET_BY_ID + " / id =" + id);
+			return jtem.queryForObject(SQL_SELECT_ONE_TICKET_BY_ID, 
+					BeanPropertyRowMapper.newInstance(TicketVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	////////////////////////////////// 』
 	
@@ -455,9 +488,10 @@ public class Test {
 	///////// 『  KitImpl 에서 사용하세요~~
 	
 	public static final String SQL_SELECT_ONE_KIT_BY_ID = 
-			"select * from kits where id = ?"; 
+			"select * from kit where id = ?"; 
 	public KitVO selectOneKitById(int id) {
 		try {
+			System.out.println(SQL_SELECT_ONE_KIT_BY_ID + " / id = " + id);
 			return jtem.queryForObject(SQL_SELECT_ONE_KIT_BY_ID, 
 					BeanPropertyRowMapper.newInstance(KitVO.class), id);
 		} catch(DataAccessException e) {
@@ -468,9 +502,102 @@ public class Test {
 	}
 
 
-
-
 	
 	/////// 』
+
+	/** */
 	
+	///////// 『  PayHistoryImpl 에서 사용하세요~~
+	
+	public static final String SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID = 
+			"select * from pay_histories where buy_mb_id = ?";
+	
+	public static final String SQL_SELECT_COUNT_PAYHISTORIES_BY_BUYMBID = 
+			"select count(*) from pay_histories where buy_mb_id = ?";
+	
+	public List<PayHistoryVO> selectPayHistoriesByBuyMbId(int mbId) {
+		try {
+			System.out.println(SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID + "buyMbId = " + mbId);
+			return jtem.query("SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID",
+					BeanPropertyRowMapper.newInstance(PayHistoryVO.class),mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public int checkNumberOfPayHistoriesByBuyMbId(int mbId) {
+		try {
+			System.out.println(SQL_SELECT_COUNT_PAYHISTORIES_BY_BUYMBID 
+					+ "buyMbId = " + mbId);
+			
+			return jtem.queryForObject(SQL_SELECT_COUNT_PAYHISTORIES_BY_BUYMBID, 
+					Integer.class, mbId);
+			
+		}catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	
+	public static final String SQL_SELECT_PAYHISTORIES_BY_BUYMBID_OFFSET_PAGESIZE = 
+			"select * from pay_histories where buy_mb_id = ? order by deal_day desc limit ?, ?";	
+	
+	public List<PayHistoryVO> selectAllMyPayHistory(int mbId, int offset, int pageSize) {
+		try {
+			System.out.println(SQL_SELECT_PAYHISTORIES_BY_BUYMBID_OFFSET_PAGESIZE + 
+					" / buyMbId = " + mbId + " / offset = " + offset + " / pageSzie = " + pageSize);
+			return jtem.query(SQL_SELECT_PAYHISTORIES_BY_BUYMBID_OFFSET_PAGESIZE, 
+					BeanPropertyRowMapper.newInstance(PayHistoryVO.class), mbId, offset, pageSize);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+			
+		}
+		return null;
+	}
+	
+	
+	//////////////////////
+	
+	/**  */
+	
+	/////////// cartImpl 에서 가져가세요
+	public static final String SQL_SELECT_ONE_CART_BYID = 
+			"select * from cart where id = ?";
+	
+	public CartVO selectOneCartById(int id) {
+		try {
+			System.out.println(SQL_SELECT_ONE_CART_BYID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_ONE_CART_BYID,
+					BeanPropertyRowMapper.newInstance(CartVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException.. ");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	//////////TiketDAOImpl 에서 사용하세요~
+		
+	public static final String SQL_SELECT_ONE_TIKET_BY_MBID = 
+			"SELECT * FROM TICKETS WHERE MB_ID = ?";
+	
+	public TicketVO selectOneTiketByMbId(int mbId) {
+		System.out.println("dao : selectOneTiketByMbId()");
+		try {
+			System.out.println(SQL_SELECT_ONE_TIKET_BY_MBID + " / mb_id = " + mbId);
+			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, TicketVO.class, mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
 }

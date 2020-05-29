@@ -88,5 +88,21 @@ public class LecTypeMySqlDAOImpl implements ILecTypeDAO {
 		}
 		return null;
 	}
+
+	public static final String SQL_COUNT_LEC_TYPE_BY_MBID_STATUS = 
+			"select count(*) from lec_types where mb_id = ? and status = ?";
+
+	@Override
+	public int checkNumberOfLectureByMbIdStatus(int mbId, int status) {
+		try {
+			System.out.println(SQL_COUNT_LEC_TYPE_BY_MBID_STATUS +
+					 " / mbId = " + mbId + " / status = " + status);
+			return jtem.queryForObject(SQL_COUNT_LEC_TYPE_BY_MBID_STATUS, Integer.class, mbId, status);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException.. ");
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
 }

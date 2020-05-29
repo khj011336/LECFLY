@@ -105,63 +105,58 @@ public class MyPageSVCImpl implements IMypageSVC {
 		System.out.println("selectMyPageContents()..");
 		Map<String, Object> rMap = new HashMap<>(); 
 		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
+	
+		//쿠폰
+		int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
+				testDao.checkNumberOfCouponseByMbId(mbId);
+		
+		int cntLecture = 
+				ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
+		
 		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
-				 testDao.selectOneTiketByMbId(mbId);
-		System.out.println("svc:: ticket = " + ticket);
-		if(ticket != null) {
-			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
-			//쿠폰
-			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
-					testDao.checkNumberOfCouponseByMbId(mbId);
-			if(cntCoupon >= 0) {
-				int cntLecture = 
-						ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
-				if(cntLecture >= 0) {
-					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
-					String ticketFrontName = "";
-					String ticketName = "";
-					List<String> strCateList = new ArrayList<>(); 
-					System.out.println("mpSvc :: cntUseCategory = " + cntUseCategory);
-					if(cntUseCategory == 1) {
-						ticketFrontName = "1";
-						ticketName = "카테고리 이용권";
-						String strCate = 
-								LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
-						strCateList.add(strCate);
-					} else if(cntUseCategory == 2) {
-						ticketFrontName = "3";
-						ticketName = "카테고리 이용권";
-						String[] arrayCategories = ticket.getCategory().split("_");
-						for (int i = 0; i < arrayCategories.length; i++) {
-							String strCate = 
-									LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])]; 
-							strCateList.add(strCate);
-						}
-						
-					} else if(cntUseCategory == 3) {
-						ticketFrontName = "무제한";
-						ticketName = "카테고리 이용권";
-						String strCate = "";
-						strCateList.add(strCate);
-					}
-
-					rMap.put("ticketFrontName", ticketFrontName);
-					rMap.put("ticketName", ticketName);
-					rMap.put("strCateList", strCateList);
-					rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
-					rMap.put("cntCoupon", cntCoupon);
-					rMap.put("cntLecture", cntLecture);
-					return rMap;
-				} else {
-					System.out.println("cntLecture = 음수");
+				 testDao.selectOneTiketForCanUseByMbId(mbId);
+		
+		if(ticket != null) { // 티켓에대한정보들
+			int cntUseCategory = ticket.getName();
+			String ticketFrontName = "";
+			String ticketName = "";
+			List<String> strCateList = new ArrayList<>(); 
+			
+			if(cntUseCategory == 1) {
+				ticketFrontName = "1";
+				ticketName = "카테고리 이용권";
+				String strCate = 
+						LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
+				strCateList.add(strCate);
+			} else if(cntUseCategory == 2) {
+				ticketFrontName = "3";
+				ticketName = "카테고리 이용권";
+				String[] arrayCategories = ticket.getCategory().split("_");
+				for (int i = 0; i < arrayCategories.length; i++) {
+					String strCate = 
+							LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])]; 
+					strCateList.add(strCate);
 				}
-			} else {
-				System.out.println("cntCoupon = 음수 ");
+			} else if(cntUseCategory == 3) {
+				ticketFrontName = "무제한";
+				ticketName = "카테고리 이용권";
+				String strCate = "";
+				strCateList.add(strCate);
 			}
+			rMap.put( "cntTicket", (ticket != null ? 1 : 0) );
+			rMap.put("ticketFrontName", ticketFrontName);
+			rMap.put("ticketName", ticketName);
+			rMap.put("strCateList", strCateList);
+			rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
+			rMap.put("rtCheck", 1);
 		} else {
-			System.out.println("ticket = null");
-		} 	
-		return null;
+			System.out.println("ticket == null");
+			rMap.put("cntTicket", 0);
+		}
+		rMap.put("cntCoupon", cntCoupon);
+		rMap.put("cntLecture", cntLecture);
+		return rMap;
+		
 	}
 	
 	
