@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminLectureDAO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -315,5 +316,52 @@ public class AdminMybatisDAOImpl implements IAdminLectureDAO{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", checkList);
 		return sstem.delete("IAdminDAO.SQL_DELETE_CREATOR_IDS", map) == 1;
+	}
+
+	@Override
+	public int checkNumberOfPayment() {
+		return sstem.selectOne("IAdminDAO.SQL_SELECT_PAYMENT_NUMBER");
+	}
+
+	@Override
+	public List<PayHistoryVO> searchPaymentForAll(int offset, int limit) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("limit", limit);
+		return sstem.selectList("IAdminDAO.SQL_SELECT_PAYMENT_ALL_PG",map);
+	}
+
+	@Override
+	public int checkNumberOfCoupon() {
+		return sstem.selectOne("IAdminDAO.SQL_SELECT_COUPON_NUMBER");
+	}
+
+	@Override
+	public List<CouponVO> searchCouponForAll(int offset, int limit) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("limit", limit);
+		return sstem.selectList("IAdminDAO.SQL_SELECT_COUPON_ALL_PG",map);
+	}
+
+	@Override
+	public int checkNumberOfKit() {
+		return sstem.selectOne("IAdminDAO.SQL_SELECT_KIT_NUMBER");
+	}
+
+	@Override
+	public List<KitVO> searchKitForAll(int offset, int limit) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("limit", limit);
+		return sstem.selectList("IAdminDAO.SQL_SELECT_KIT_ALL_PG",map);
+	}
+
+	@Override
+	public List<PayHistoryVO> searchPaymentForAllOld(int offset, int limit) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("limit", limit);
+		return sstem.selectList("IAdminDAO.SQL_SELECT_PAYMENT_ALL_PG_OLD",map);
 	}
 }

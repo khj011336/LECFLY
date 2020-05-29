@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminLectureDAO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -313,6 +314,42 @@ public class AdminLectureMysqlDAOImpl implements IAdminLectureDAO{
 	public boolean deleteCreatorforIds(ArrayList<Integer> checkList) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int checkNumberOfPayment() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<PayHistoryVO> searchPaymentForAll(int offset, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int checkNumberOfCoupon() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<CouponVO> searchCouponForAll(int offset, int adPageSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int checkNumberOfKit() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<KitVO> searchKitForAll(int offset, int adPageSize) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
