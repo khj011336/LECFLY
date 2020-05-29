@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  
-<style>
-.main_video_block{
-cursor: pointer;
-}
-</style>
+
 <div class="main_video_wrapper">
 
 	<c:forEach items="${nomalList}" var="lec" varStatus="vs">
@@ -33,7 +29,7 @@ cursor: pointer;
 				<c:set var="i">${lec.category }</c:set>
 				<c:out value="${categoryMap[i]}"/></p>
 				<p class="main_video_info_title">"${lec.title}"</p>
-				<img src="resources/imges/dummy_lec_img/art/art_2m.jpg" class="video_info_creator_img">
+				<img src="/images/2020/${fn:split(lec.titleImg,'_')[1]}/Img${lec.titleImg}" class="video_info_creator_img">
 				<p class="main_video_info_creator_name">${lec.nickname}</p>
 				<div class="main_video_like">
 					<i class="fas fa-heart fa-lg"></i>${lec.likeCount} &nbsp;

@@ -25,18 +25,18 @@
 				<input type="text" name="keyword" size="40">
 			</td>
 		</tr>
-		<tr>
-			<th>사용여부</th>
-			<td>
-				<label><input name="status" type="radio" value="3" checked="checked">전체보기</label>
-				<label><input name="status" type="radio" value="0">승인미완료</label>
-				<label><input name="status" type="radio" value="1">승인완료</label>
-			</td><td></td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<th>사용여부</th> -->
+<!-- 			<td> -->
+<!-- 				<label><input name="status" type="radio" value="3" checked="checked">전체보기</label> -->
+<!-- 				<label><input name="status" type="radio" value="0">승인미완료</label> -->
+<!-- 				<label><input name="status" type="radio" value="1">승인완료</label> -->
+<!-- 			</td><td></td> -->
+<!-- 		</tr> -->
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" id="search_filter_btn">상세조회</button>
-		<button type="button" onclick="location.href='admin_lecture_list.LF'">전체조회</button>
+		<button type="button" onclick="location.href='admin_coupon_list.LF'">상세조회</button>
+		<button type="button" onclick="location.href='admin_coupon_list.LF'">전체조회</button>
 	</div>
 </div>
 
@@ -71,7 +71,6 @@
 			<th>쿠폰번호</th> 
 			<th>쿠폰명</th> 
 			<th>적용대상</th> 
-			<th>보유회원</th> 
 			<th>사용여부</th>
 			<th>할인금액</th>
 			<th>생성일</th>
@@ -80,16 +79,25 @@
 		
 		<c:forEach items="${cpList}" var="cp" varStatus="vs">
 		<tr style="text-align: center">
-			<td><input type="checkbox" name="checked" value="${lec.id }"/></td> 
+			<td><input type="checkbox" name="checked" value="${cp.id }"/></td> 
 			<td>${vs.count}</td> 
 			<td>${cp.code}</td> 
 			<td>${cp.couponName}</td> 
-			<td>${cp.applyTo}</td> 
-			<td>${cp.mbId}</td> 
-			<td>${cp.useCheck}</td> 
+			<td>
+				<c:choose>
+						<c:when test="${cp.applyTo==0}">모든회원</c:when>
+						<c:when test="${cp.applyTo==1}">신규회원</c:when>
+				</c:choose>
+			</td> 
+			<td>
+				<c:choose>
+						<c:when test="${cp.useCheck==0}">미사용</c:when>
+						<c:when test="${cp.useCheck==1}">사용</c:when>
+				</c:choose>
+			</td> 
 			<td>${cp.discount}</td> 	
-			<td><fmt:formatDate value="${cp.createdDay }" pattern="yyyy년 MM월 dd일"/></td> 			
-			<td><fmt:formatDate value="${cp.endDay }" pattern="yyyy년 MM월 dd일"/></td> 			
+			<td><fmt:formatDate value="${cp.createdDay }" pattern="yyyy.MM.dd"/></td> 			
+			<td><fmt:formatDate value="${cp.endDay }" pattern="yyyy.MM.dd"/></td> 			
 		</tr>
 		</c:forEach>
 	</table>

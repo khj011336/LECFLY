@@ -34,14 +34,14 @@
 				<div class="main_video_block">
 					<div class="main_video_thumb">
 					<a href="like_lecture.LF"><div class="main_video_thumb_btn"><i class="far fa-heart fa-2x"></i></div></a> <!-- 좋아요 버튼 -->
-					<img src="resources/imges/dummy_lec_img/art/art_2m.jpg" alt="${lec.title }">
+					<img src="/images/2020/${fn:split(lec.titleImg,'_')[1]}/Img${lec.titleImg}" alt="${lec.title }">
 					</div>
 					<div class="main_video_info">
 						<p class="main_video_info_category">
 						<c:set var="i">${lec.category }</c:set>
 						<c:out value="${categoryMap[i]}"/></p>
 						<p class="main_video_info_title">"${lec.title}"</p>
-						<img src="resources/imges/dummy_lec_img/art/art_2m.jpg" class="video_info_creator_img">
+						<img src="/images/2020/${fn:split(lec.titleImg,'_')[1]}/Img${lec.titleImg}" class="video_info_creator_img">
 						<p class="main_video_info_creator_name">${lec.nickname}</p>
 						<div class="main_video_like">
 							<i class="fas fa-heart fa-lg"></i>${lec.likeCount} &nbsp;

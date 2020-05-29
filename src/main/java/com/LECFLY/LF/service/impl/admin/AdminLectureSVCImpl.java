@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminLectureDAO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -325,6 +326,67 @@ public class AdminLectureSVCImpl implements IAdminLectureSVC {
 	@Override
 	public boolean deleteCreatorforIds(ArrayList<Integer> checkList) {
 		return adDAO.deleteCreatorforIds(checkList);
+	}
+
+	@Override
+	public Map<String, Integer> checkPaymentMaxPageNumber() {
+		int totalRecords = adDAO.checkNumberOfPayment();
+		int maxPg = totalRecords / AD_PAGE_SIZE + (
+				totalRecords % AD_PAGE_SIZE == 0 ? 0 : 1 );
+		HashMap<String,Integer> rMap = new HashMap<>();
+		rMap.put("totalRecords", totalRecords);
+		rMap.put("maxPg", maxPg);
+		return rMap;
+	}
+
+	@Override
+	public List<PayHistoryVO> selectAllPayment(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<PayHistoryVO> payList = adDAO.searchPaymentForAll(offset, AD_PAGE_SIZE);
+		return payList;
+	}
+
+	@Override
+	public Map<String, Integer> checkCouponMaxPageNumber() {
+		int totalRecords = adDAO.checkNumberOfCoupon();
+		int maxPg = totalRecords / AD_PAGE_SIZE + (
+				totalRecords % AD_PAGE_SIZE == 0 ? 0 : 1 );
+		HashMap<String,Integer> rMap = new HashMap<>();
+		rMap.put("totalRecords", totalRecords);
+		rMap.put("maxPg", maxPg);
+		return rMap;
+	}
+
+	@Override
+	public List<CouponVO> selectAllCoupon(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<CouponVO> cpList = adDAO.searchCouponForAll(offset, AD_PAGE_SIZE);
+		return cpList;
+	}
+
+	@Override
+	public Map<String, Integer> checkKitMaxPageNumber() {
+		int totalRecords = adDAO.checkNumberOfKit();
+		int maxPg = totalRecords / AD_PAGE_SIZE + (
+				totalRecords % AD_PAGE_SIZE == 0 ? 0 : 1 );
+		HashMap<String,Integer> rMap = new HashMap<>();
+		rMap.put("totalRecords", totalRecords);
+		rMap.put("maxPg", maxPg);
+		return rMap;
+	}
+
+	@Override
+	public List<KitVO> selectAllKit(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<KitVO> kitList = adDAO.searchKitForAll(offset, AD_PAGE_SIZE);
+		return kitList;
+	}
+
+	@Override
+	public List<PayHistoryVO> selectAllPaymentOld(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<PayHistoryVO> payList = adDAO.searchPaymentForAllOld(offset, AD_PAGE_SIZE);
+		return payList;
 	}
 
 }

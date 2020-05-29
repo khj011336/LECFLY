@@ -58,20 +58,60 @@
 		]]>
 	</select>
 	
-	<!-- (강의)전체 강의수 조회 -->
+	<!-- *(강의)전체 강의수 조회 -->
 	<select id="SQL_SELECT_LECTURE_NUMBER" resultType="int">
 		<![CDATA[
 		SELECT COUNT(ID) FROM LECTURES
 		]]>
 	</select>
-	
-	<!-- 전체 동영상목록 조회(페이지네이션)  -->
+	<!-- (강의)전체 결제내역수 조회 -->
+	<select id="SQL_SELECT_PAYMENT_NUMBER" resultType="int">
+		<![CDATA[
+		SELECT COUNT(ID) FROM PAY_histories
+		]]>
+	</select>
+	<!-- (강의)전체 키트수 조회 -->
+	<select id="SQL_SELECT_KIT_NUMBER" resultType="int">
+		<![CDATA[
+		SELECT COUNT(ID) FROM KIT
+		]]>
+	</select>
+	<!-- (강의)전체 쿠폰수 조회 -->
+	<select id="SQL_SELECT_COUPON_NUMBER" resultType="int">
+		<![CDATA[
+		SELECT COUNT(ID) FROM COUPONS
+		]]>
+	</select>
+	<!-- *전체 동영상목록 조회(페이지네이션)  -->
 	<select id="SQL_SELECT_VIDEO_ALL_PG" parameterType="map" resultType="videoVO">
 		<![CDATA[
 		SELECT * FROM VIDEO ORDER BY ID DESC LIMIT #{offset},#{limit}
 		]]>
 	</select>
-	
+	<!-- *전체 결제목록 조회(페이지네이션)  -->
+	<select id="SQL_SELECT_PAYMENT_ALL_PG" parameterType="map" resultType="payHistoryVO">
+		<![CDATA[
+		SELECT * FROM PAY_histories ORDER BY ID DESC LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	<!-- *전체 결제목록 조회(페이지네이션)오래된순  -->
+	<select id="SQL_SELECT_PAYMENT_ALL_PG_OLD" parameterType="map" resultType="payHistoryVO">
+		<![CDATA[
+		SELECT * FROM PAY_histories ORDER BY ID LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	<!-- *전체 키트목록 조회(페이지네이션)  -->
+	<select id="SQL_SELECT_KIT_ALL_PG" parameterType="map" resultType="KitVO">
+		<![CDATA[
+		SELECT * FROM KIT ORDER BY ID DESC LIMIT #{offset},#{limit}
+		]]>
+	</select>
+	<!-- *전체 쿠폰목록 조회(페이지네이션)  -->
+	<select id="SQL_SELECT_COUPON_ALL_PG" parameterType="map" resultType="couponVO">
+		<![CDATA[
+		SELECT * FROM COUPONS ORDER BY ID DESC LIMIT #{offset},#{limit}
+		]]>
+	</select>
 	<!-- 전체 동영상수 조회 -->
 	<select id="SQL_SELECT_VIDEO_NUMBER" resultType="int">
 		<![CDATA[
