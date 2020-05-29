@@ -157,7 +157,7 @@
     
 </head>
 <div id="cnm_wrap">
-	<form name="join_member" action="join_member_proc.LF" method="post">
+	<form name="join_member" enctype="multipart/form-data"  action="join_member_proc.LF" method="post">
 	    <div class="cnm_title">
 	    	<br><br><br><br>
 	        <h3>회원가입</h3>

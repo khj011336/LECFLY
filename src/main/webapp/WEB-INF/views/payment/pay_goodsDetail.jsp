@@ -82,28 +82,28 @@
 		});
 		
 		// 대댓글 달기
-// 		$("#submit_under_ct").on("click", function() {
-// 			var URLHD = '${pageContext.request.contextPath}/';
-// 			var url = URLHD+'insert_under_comment.LF';
-// 			var comment = $("textarea[name=feedback]").val();
-// 			var lecId = ${lec.id};
-// 			console.log("댓글내용" + comment + "/게시글id" + lecId);
-// 			var params = "ct=" + comment + "&lecId=" + lecId;
-// 			$.ajax({
-// 				type: 'POST',
-// 				url : url,
-// 				data: params,
-// 	 			dataType: "JSON",
-// 				success: function(res, status ,xhr){
-// 					console.log(res.result);
-// 					$('#comment_div').html().remove();
-// 					$('#comment_div').html(res.temp);
-// 				},
-// 				error: function(status, xhr){
-// 					alert("실패");
-// 				}
-// 			});
-// 		});
+		$("#submit_under_ct").on("click", function() {
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'insert_under_comment.LF';
+			var comment = $("textarea[name=feedback]").val();
+			var lecId = ${lec.id};
+			console.log("댓글내용" + comment + "/게시글id" + lecId);
+			var params = "ct=" + comment + "&lecId=" + lecId;
+			$.ajax({
+				type: 'POST',
+				url : url,
+				data: params,
+	 			dataType: "JSON",
+				success: function(res, status ,xhr){
+					console.log(res.result);
+					$('#comment_div').html().remove();
+					$('#comment_div').html(res.temp);
+				},
+				error: function(status, xhr){
+					alert("실패");
+				}
+			});
+		});
 	});
 	
 	// 대댓글 입력칸?
@@ -114,26 +114,26 @@
 	
 	
 	// 별점 추가
-// 	$('#register_review a').click(function() {
-// 		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
-// 		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-// 		return false;
-// 	});
+	$('#register_review a').click(function() {
+		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
+		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+		return false;
+	});
 	
 	// 강의 수강페이지로 이동(비디오페이지)
-// 	$('#register_lec_apply').on("click", function() {
-// 		console.log('클릭됨');
-// 		var mbId = ${member.id};
-// 		var lecId = ${lecId};
-// 		var lecCate = ${strCategory};
-// 		var mbCate0 = ${mbStrCate0};
-// 		var mbCate1 = ${mbStrCate1};
-// 		var mbCate2 = ${mbStrCate2};
-// 		var URL = "${pageContext.request.contextPath}/creator_lecplay.LF?mbId="+mbId+"&lecId="+lecId+"&lecCate="+lecCate+
-// 		"&mbC0="+mbCate0+"&mbC1="+mbCate1+"&mbC2="+mbCate2;
-// 		console.log(URL);
-// 		location.href = URL;
-// 	});
+	$('#register_lec_apply').on("click", function() {
+		console.log('클릭됨');
+		var mbId = ${member.id};
+		var lecId = ${lecId};
+		var lecCate = ${strCategory};
+		var mbCate0 = ${mbStrCate0};
+		var mbCate1 = ${mbStrCate1};
+		var mbCate2 = ${mbStrCate2};
+		var URL = "${pageContext.request.contextPath}/creator_lecplay.LF?mbId="+mbId+"&lecId="+lecId+"&lecCate="+lecCate+
+		"&mbC0="+mbCate0+"&mbC1="+mbCate1+"&mbC2="+mbCate2;
+		console.log(URL);
+		location.href = URL;
+	});
 </script>
 <div id="register_wrapper">
 	<div id="register_nav">

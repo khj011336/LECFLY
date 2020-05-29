@@ -23,6 +23,7 @@ import com.LECFLY.LF.model.dao.impl.creator.KitMysqlMybatisDAOImpl;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
+import com.LECFLY.LF.model.vo.PostscriptVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -38,6 +39,7 @@ import com.LECFLY.LF.service.inf.comment.ICommentSVC;
 import com.LECFLY.LF.service.inf.creator.IStatSVC;
 import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
+import com.LECFLY.LF.service.inf.member.IPostscriptSVC;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -80,6 +82,8 @@ public class CreatorController {
 	IStatSVC statSVC;
 	@Autowired
 	ICommentSVC ctSvc;
+	@Autowired
+	IPostscriptSVC psSvc;
 	@ModelAttribute("creator")
 	public CreatorVO dummyCRvo() {
 		return new CreatorVO();
@@ -599,15 +603,63 @@ public class CreatorController {
 		KitVO kit = kitDAO.selectOneKit(lec.getId());
 		CreatorVO cre = CreDAO.selectOneCreator(lec.getFid());
 		List<VideoVO> video = ViDAO.selectVideoTrack(lec.getId());
-		String comment = LecSVC.tempCommentList(ctSvc, CFId, lec.getCategory());
+//		String comment = LecSVC.tempCommentList(ctSvc, CFId, lec.getCategory());
 		model.addAttribute("video",video);
 		model.addAttribute("cre",cre);
 		model.addAttribute("kit",kit);
 		model.addAttribute("lec",lec);
-		model.addAttribute("comment",comment);
+//		model.addAttribute("comment",comment);
+		model.addAttribute("CFId", CFId);
 		String creator = cre.getName(); 
 		String path = "/images/2020/"+creator+"/Img";
 		model.addAttribute("crPath",path);
+		
+		
+		//5.29gm - 후기를 위한 추가사항
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String postscript = "";
+		List<PostscriptVO> psList = psSvc.readAllPostscriptInLec(CFId);
+//		for (PostscriptVO ps : psList) {
+//			System.out.println("test" + ps);
+//		}
+		List<String> psListRate = new ArrayList<String>(psList.size());
+		for (int i = 0; i < psList.size(); i++) {
+			String stars = "";
+			float rate = psList.get(i).getRate();
+			int times = (int)rate;
+			for (int j = 0; j < times; j++) {
+				stars += "★";
+			}
+			if( (rate*2)%2 == 1)
+				stars += "☆";
+			postscript +=
+					"		\r\n	<p id=\"register_review\">" + 
+					"					<span class=\"review_name\">"+ psList.get(i).getMbLogin() +"</span>&nbsp;&nbsp;<label>"+stars+ 
+					"					</label><span class=\"review_week\"><small>"+sdf.format(psList.get(i).getWritedDay())+"</small>" + 
+					"						</span>\r\n\r\n<small>"+psList.get(i).getContent()+"</small>" + 
+					"				</p>";
+		}
+		model.addAttribute("postscript", postscript);
+		
+		// 5.29 댓글을 위한 추가사항
+		sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String comment = "<div id='comment_all'>";
+		List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, CFId);
+		for (int i = 0; i < ctList.size(); i++) {
+			CommentVO ctori = ctList.get(i);
+			comment += "			<div id='ct_"+ctori.getOrderNum()+"' " +(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
+					"				<label style=\"padding-left:45px;\">" + ctori.getComment() + "</label>\r\n" +
+					"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
+					"				<input type=\"hidden\" value='"+ ctori.getId()+"'>" + 
+//					"				<i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>\r\n" + 
+					"				</div>\r\n" //+ 
+//					"				<div id='udner_ct_form'></div>"
+					;
+		}
+		comment+="</div>";
+		System.out.println(comment);
+		model.addAttribute("comment", comment);
+		
 		return "creator/cre_goodsDetail.ho";
 	}
 	

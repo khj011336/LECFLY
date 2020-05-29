@@ -215,9 +215,9 @@ public class PaymentController {
 	public Map<String, Object> insert_comment(
 			HttpSession ses,
 			@RequestParam(value="ct") String ct,
-			@RequestParam(value="lecId") int lecId
+			@RequestParam(value="CFId") int CFId
 			) {
-		System.out.println("insert_comment.LF 진입 성공 ct = "+ct+ ", lecId = "+lecId);
+		System.out.println("insert_comment.LF 진입 성공 ct = "+ct+ ", lecId = "+CFId);
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		String temp = "";
 		String result = "";
@@ -231,7 +231,7 @@ public class PaymentController {
 		}
 		int mbId = mb.getId();
 		String mbNic = mb.getNicname();
-		int r = ctSvc.addComment(mbId, ctSvc.LEC_ARTICLE, lecId, ct, mbNic, ctSvc.ORIGIN_COMMENT);
+		int r = ctSvc.addComment(mbId, ctSvc.LEC_ARTICLE, CFId, ct, mbNic, ctSvc.ORIGIN_COMMENT);
 		switch (r) {
 		case 1:
 			result = "성공";
@@ -250,7 +250,7 @@ public class PaymentController {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String comment = "<div id='comment_all'>";
-		List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
+		List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, CFId);
 		for (int i = 0; i < ctList.size(); i++) {
 			CommentVO ctori = ctList.get(i);
 			comment += "			<div id='ct_"+ctori.getOrderNum()+"' " +(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 

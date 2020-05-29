@@ -127,7 +127,9 @@ public class CommentSVCImpl implements ICommentSVC {
 	@Override
 	public List<CommentVO> selectCommentsForOrderNumDesc(int cate, int atId) {
 		System.out.println("svc:selectCommentsForOrderNumDesc");
-		return ctDao.selectCommentsForOrderNumDesc(cate, atId);
+		List<CommentVO> rList = ctDao.selectCommentsForOrderNumDesc(cate, atId);
+		System.out.println("결과 나옴");
+		return rList;
 	}
 
 	@Override
