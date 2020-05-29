@@ -604,7 +604,7 @@ public class Test {
 	}
 	
 	public static final String SQL_SELECT_ALL_QNA_BY_MBID 
-					= "select * from qnas where mb_id = ? order by writed_day desc;";
+					= "select * from qnas where mb_id = ? order by writed_day desc";
 	
 	public List<QnaVO> showAllQnasByMbId(int mbId) {
 		try {
