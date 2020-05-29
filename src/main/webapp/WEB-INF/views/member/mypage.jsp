@@ -12,11 +12,72 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	<script src="resources/js/member/mypage.js"></script>
+	<script type="text/javascript">
+		//jquery
+		$(document).ready( function() {
+	        $("#mypageimgProc").on('change', function(){
+	            readURL(this);
+		 		console.log("mypageimgProc 눌럿다");
+		 		
+                var form = $('#FILE_FORM')[0];
+                var formData = new FormData(form);
+                formData.append("mypageimgProc", $("#mypageimgProc")[0].files[0]);
+ 
+                $.ajax({
+                	url: "${pageContext.request.contextPath}/mypage_change_pic_proc.LF",
+			        processData: false,
+			        contentType: false,
+			        data: formData,
+			        type: 'POST',
+			        success: function(result){
+		 				console.log("수정성공");
+			            alert("프로필 사진 수정 성공!!");
+			        },
+		 			error: function(status, xhr) {
+		 				console.log("수정실패")
+			            alert("프로필 사진 수정 실패");
+		 			}
+				});
+		 	});
+		});
+
+	    function readURL(input) {
+	        if (input.files && input.files[0]) {
+	           var reader = new FileReader();
+	           reader.onload = function (e) {
+	              $('#proImage').attr('src', e.target.result);
+	           }
+	           reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+		
+// 		// 변경시 자동으로 프로필 사진 보여짐
+// 	    $(function() {
+// 	        $("#mypageimgProc").on('change', function(){
+// 	            readURL(this);
+// 	        });
+// 	    });
+// 	    function readURL(input) {
+// 	        if (input.files && input.files[0]) {
+// 	           var reader = new FileReader();
+// 	           reader.onload = function (e) {
+// 	              $('#proImage').attr('src', e.target.result);
+// 	           }
+// 	           reader.readAsDataURL(input.files[0]);
+// 	        }
+// 	    }
+	</script>
 			<div id="mypage_wrap"> 											<!-- 조각페이지 -->	
 				<div id="mypage_top"> 										<!-- 개인정보 영역 -->
 					<div id="mypage_pic">
-			            <img src="resources/imges/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
-			          	<input type="button" value="프로필 사진 편집" onclick="changeProPic()">
+						<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">
+				            <img id="proImage" width="148px" height="148px" 
+				            src=<c:out value="${pic}${member.pic}" default="resources/imges/logo/LecFly_SLOGO_LW_W.png"/>>
+				            ${pic}${member.pic}
+<%-- 				            ${!empty member.pic ? ${pic} : "resources/imges/logo/LecFly_SLOGO_LW_W.png"}> --%>
+<!-- 				            src="resources/imges/logo/LecFly_SLOGO_LW_W.png"> -->
+							<input type="file" accept="image/*" id="mypageimgProc" name="mypage_upload_pic" placeholder="프로필 사진 편집" size='64'>
+						</form>
 			        </div>
 			        <div id="mypage_mb_IF">
 			        	<br><br>
