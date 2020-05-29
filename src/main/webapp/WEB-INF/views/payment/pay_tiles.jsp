@@ -17,7 +17,7 @@
 		</div>
 			<tiles:insertAttribute name="left" />
 		<div id="homemain">
-			<tiles:insertAttribute name="body" />
+			<tiles:insertAttribute name="payment-body" />
 		</div>
 		<div id="footer" class='footer'>
 			<tiles:insertAttribute name="footer" />

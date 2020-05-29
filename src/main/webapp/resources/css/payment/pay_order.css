@@ -243,9 +243,9 @@ button[name=paymentApply] {
     padding: 15px;
 }
 
-#fundingPayment_sidebar {
+#fundingPayment_wrapper #fundingPayment_sidebar {
     position: fixed;
-    right: 250px;
+    right: 330px;
     width: 450px;
     margin-bottom: 20px;
     float: right;

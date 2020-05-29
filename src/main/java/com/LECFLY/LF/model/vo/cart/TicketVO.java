@@ -1,26 +1,10 @@
 package com.LECFLY.LF.model.vo.cart;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TicketVO {
-	
-	public static final Map<Integer, String> STR_TICKET_NAME_MAP = new HashMap<Integer, String>(){
-		{
-			put(1, "1카테고리이용권");
-			put(2, "3카테고리이용권");
-			put(3, "전체이용권");
-		}
-	};
-	
-	public static final Map<Integer, Integer> TICKET_PRICE_MAP = new HashMap<Integer, Integer>() {
-		{
-			put(1, 12900);
-			put(2, 30900);
-			put(3, 49900);
-		}
-	};
+	public static final String[] STR_TICKET_NAME_MAP = {"", "1카테고리이용권", "3카테고리이용권", "전체이용권"};
+	public static final int[] TICKET_PRICE_MAP = { 0 , 12900, 30900, 49900};
 	
 	/** 순서번호*/
 	int id;			
