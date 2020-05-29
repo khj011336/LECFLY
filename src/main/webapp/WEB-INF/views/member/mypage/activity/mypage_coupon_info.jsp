@@ -41,7 +41,7 @@
 						<td><c:out value="${coupon.discount}"/></td> <!-- Property [discount] not found on type [java.lang.String] -->
 						<td><c:out value="${couponApplyList[vs.index]}" default="모든회원" /></td>
 
-						<td><c:out value="${strCanUse[vs.index]}" /></td>
+						<td><c:out value="${strCanUseList[vs.index]}" /></td>
 						<td><fmt:formatDate value="${coupon.endDay}" pattern="yyyy.MM.dd HH:mm" /></td>
 					</tr>
 					</c:forEach>
@@ -49,8 +49,6 @@
 			</div>
 			
 			<div id="mypage_table_numbering">
-				pn = <c:out value="${pn}"/> ,
-				maxPg = <c:out value="${maxPG}"/>  
 					<c:if test="${pn gt 1}">
 						<span onclick="myPagePagiNatePre(${pn}, '${pageContext.request.contextPath}/mypage_coupon_info.LF')">&lt;&nbsp;</span>
 					</c:if>

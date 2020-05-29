@@ -701,12 +701,12 @@ public class MemberController {
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		System.out.println("mb = " + mb);
-		Map<String, Object> comqnaMap = mpSvc.selectAllMyCommentQna(mbId, pageNumber);
-		
-		if( comqnaMap != null ) {
-			int totalRecords = (int)comqnaMap.get("totalRecords");
-			int maxPG = (int)comqnaMap.get("maxPG");
-			List<QnaVO> qnaList = (List<QnaVO>)comqnaMap.get("qnaList");
+//		Map<String, Object> comqnaMap = mpSvc.selectAllMyCommentQna(mbId, pageNumber);
+		Map<String, Object> qnaMap = mpSvc.selectAllMyQna(mbId, pageNumber);
+		if( qnaMap != null ) {
+			int totalRecords = (int)qnaMap.get("totalRecords");
+			int maxPG = (int)qnaMap.get("maxPG");
+			List<QnaVO> qnaList = (List<QnaVO>)qnaMap.get("qnaList");
 			
 			
 			model.addAttribute("totalRecords", totalRecords);
@@ -737,10 +737,10 @@ public class MemberController {
 			int totalRecords = (int)couponMap.get("totalRecords");
 			int maxPG = (int)couponMap.get("maxPG");
 			List<CouponVO> couponList = (List<CouponVO>)couponMap.get("couponList");
-			List<String> couponApplyList = (List<String>)couponMap.get("strCouponApplyTo");
-			List<String> strCanUse = (List<String>)couponMap.get("strCanuse");
+			List<String> couponApplyList = (List<String>)couponMap.get("strCouponApplyToList");
+			List<String> strCanUseList = (List<String>)couponMap.get("strCanuseList");
 			
-			model.addAttribute("strCanUse", strCanUse);
+			model.addAttribute("strCanUseList", strCanUseList);
 			model.addAttribute("couponApplyList", couponApplyList);
 			model.addAttribute("totalRecords", totalRecords);
 			model.addAttribute("maxPG", maxPG);

@@ -123,7 +123,7 @@ public class Test {
 			"select count(*) from comments where mb_id = ? and table_cate = 0 or table_cate = 1";
 	// 세현추가 0515
 	public static final String SQL_SELECT_ALL_COMMENT_FOR_ID_OFFSET_LIMIT = 
-			"select * from comments where mb_id = ? and table_cate = 0 or table_cate = 1 order by created_at desc limit ?, ?";
+			"select * from comments where mb_id = ? order by created_at desc limit ?, ?";
 	
 	//@Override /** 세현 추가*/
 	public int checkNumberOfCommentsForMember(int mbId) {
@@ -186,7 +186,6 @@ public class Test {
 	}
 	
 	
-	
 	///////////////////////       』
 	
 	/** */
@@ -207,7 +206,7 @@ public class Test {
 	
 	/** 마이페이지에서 쿠폰 조회할떄 사용하는 문장 사용한쿠폰 + 사용안한쿠폰 이 날짜순으로 섞여있다. */
 	public static final String SQL_SELECT_ALL_MY_COUPONS_BY_MBID = 
-			"SELECT * FROM COUPONS WHERE MB_ID = ?";
+			"SELECT * FROM COUPONS WHERE MB_ID = ? ORDER BY END_DAY DESC";
 	
 //	/** 사용한다면 ?? 마이페이지에서 사용한 쿠폰 리스트 뽑을떄 출력*/
 //	public static final String SQL_SELECT_ALL_USE_MY_COUPONS_BY_MBID = 
@@ -219,7 +218,7 @@ public class Test {
 	
 	/** 사용하지않은쿠폰(사용가능한 쿠폰의 갯수를 세어주는 함수) */
 	public static final String SQL_COUNT_NOT_USE_COUPONS_BY_MBID = 
-			"SELECT COUNT(*) FROM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
+			"SELECT COUNT(*) FROM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0 AND ( END_DAY > NOW() )";
 	
 	public CouponVO selectOneCouponByCode (String code) {
 		System.out.println("selectOneCouponByCode()");
@@ -459,7 +458,7 @@ public class Test {
 			try {
 				System.out.println("전체검색");
 				System.out.println(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_RT_ID_GOODSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM + "buyMbId = " + buyMbId);
-				jtem.queryForList(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_RT_ID_GOODSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM,
+				return jtem.queryForList(SQL_SELECT_PAY_HISTORIES_BY_BUYMBID_RT_ID_GOODSID_PAYWAY_DEALDAY_CHECKSAMEORDER_DELIVERYSTATUS_PAYHISTORYSUM,
 						buyMbId);
 			} catch(DataAccessException e) {
 				System.out.println("DataAccessException..");
@@ -584,5 +583,40 @@ public class Test {
 
 	//////
 
-
+	
+	/**  */
+	
+	/////////// qnaImpl 에서 가져가세요
+	
+	public static final String SQL_SELECT_QNA_TITLE_BY_ID = 
+			"select title from qnas where id = ?";
+	
+	public String selectQnaTitleById(int id) {
+		try {
+			System.out.println(SQL_SELECT_QNA_TITLE_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_QNA_TITLE_BY_ID, 
+					String.class, id);
+			
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+		}
+		return null;
+	}
+	
+	public static final String SQL_SELECT_ALL_QNA_BY_MBID 
+					= "select * from qnas where mb_id = ? order by writed_day desc;";
+	
+	public List<QnaVO> showAllQnasByMbId(int mbId) {
+		try {
+			System.out.println(SQL_SELECT_ALL_QNA_BY_MBID + " / mbId = " + mbId);
+			return jtem.query(SQL_SELECT_ALL_QNA_BY_MBID, 
+						BeanPropertyRowMapper.newInstance(QnaVO.class), mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException");
+		} 
+		return null;
+	}
+	
+	
+	//////////////
 }

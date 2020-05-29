@@ -370,8 +370,16 @@ public class MyPageSVCImpl implements IMypageSVC {
 							String title = //vdDao.selectVideoTitleById(id);
 											 testDao.selectVideoTitleById(id);
 							titleList.add(title);
+						} else if(comList.get(i).getTableCate() == 2) { // 2: qna
+							String title = //qnaDao.selectQnaTitleById(id);
+									testDao.selectQnaTitleById(id);
+							titleList.add(title);
 						}
 					}
+					for (int i = 0; i < titleList.size(); i++) {
+						System.out.println("테스트 : titleList.get(i) = " + titleList.get(i));
+					}
+					
 					rMap.put("totalRecords", totalRecords);
 					rMap.put("maxPG", maxPG);
 					rMap.put("comList", comList);
@@ -388,17 +396,18 @@ public class MyPageSVCImpl implements IMypageSVC {
 		return null;
 	}
 
-	@Override
-	public Map<String, Object> selectAllMyCommentQna(int mbId, int pn) {
+	@Override			//					selectAllMyCommentQna(int mbId, int pn) {
+	public Map<String, Object> selectAllMyQna(int mbId, int pn) { 
+
 		System.out.println("selectAllMyQna()");
 		Map<String, Object> rMap = new HashMap<>();
 		if(mbId > 0) {
 			System.out.println("mbId = " + mbId);
-			List<CommentVO> comList = //comDao.showAllCommentsQnasByMemberId(mbId);
-									testDao.showAllCommentsQnasByMemberId(mbId);
-			if(comList != null) {
-				System.out.println( "comList.size() = " + comList.size() );
-				int totalRecords = comList.size();
+			List<QnaVO> qnaList = //qnaDao.showAllQnasByMbId(mbId);
+									testDao.showAllQnasByMbId(mbId);
+			if(qnaList != null) {
+				System.out.println( "qnaList.size() = " + qnaList.size() );
+				int totalRecords = qnaList.size();
 				int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 				System.out.println("maxPG = " + maxPG);
 				System.out.println("totalRecords = " + totalRecords + " / PAGE_SIZE = " + 
@@ -407,20 +416,16 @@ public class MyPageSVCImpl implements IMypageSVC {
 					List<QnaVO> rtQnaList = new ArrayList<>();
 					if(totalRecords > 0 && totalRecords <= PAGE_SIZE) {
 						for (int i = 0; i < totalRecords; i++) {
-							CommentVO com = comList.get( ((pn-1)*10) + i);
-							QnaVO qna = qnaDao.selectOneQna(com.getAtId());
+							QnaVO qna = qnaList.get( ((pn-1)*10) + i);
 							rtQnaList.add(qna);
 						}
-					}
-					else {
+					} else {
 						for (int i = 0; i < PAGE_SIZE; i++) {
-							CommentVO com = comList.get( ((pn-1)*10) + i);
-							QnaVO qna = qnaDao.selectOneQna(com.getAtId());
+							QnaVO qna = qnaList.get( ((pn-1)*10) + i);	
 							rtQnaList.add(qna);
 						}
 					}
-					System.out.println("totalRecords = " + totalRecords + 
-								", maxPG = " + maxPG + ", comList = " + comList );
+					
 					rMap.put("totalRecords", totalRecords);
 					rMap.put("maxPG", maxPG);
 					rMap.put("qnaList", rtQnaList);
@@ -456,11 +461,10 @@ public class MyPageSVCImpl implements IMypageSVC {
 				int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 				if(pn > 0 && pn <= maxPG) {
 					List<CouponVO> rtCouponList = new ArrayList<>();
-					List<String> strCouponApplyTo = new ArrayList<>();
-					List<String> strCanUse = new ArrayList<>();
+					List<String> strCouponApplyToList = new ArrayList<>();
+					List<String> strCanUseList = new ArrayList<>();
 					if(totalRecords > 0 && totalRecords <= PAGE_SIZE) {
 						for (int i = 0; i < totalRecords; i++) { 
-							Timestamp creDay = couponList.get( ((pn-1)*10) + i).getCreatedDay();
 							Timestamp endDay = couponList.get( ((pn-1)*10) + i).getEndDay();
 							int useCheck = couponList.get( ((pn-1)*10) + i).getUseCheck();
 							String rtStrCanuse = "";
@@ -468,18 +472,17 @@ public class MyPageSVCImpl implements IMypageSVC {
 								rtStrCanuse = "사용가능";
 							} else if(useCheck == 1 && endDay.getTime() >= System.currentTimeMillis()) {
 								rtStrCanuse = "사용완료";
-							} else if(useCheck == 1 && endDay.getTime() <= System.currentTimeMillis()){
+							} else if(useCheck == 1 || useCheck == 0 && endDay.getTime() <= System.currentTimeMillis()){
 								rtStrCanuse = "기간만료";
 							}
-							strCanUse.add(rtStrCanuse);
+							strCanUseList.add(rtStrCanuse);
 							rtCouponList.add(couponList.get( ((pn-1)*10) + i) );
 							int applyTo = couponList.get( ((pn-1)*10) + i).getApplyTo();
 							String strApplyTo = CouponVO.STR_APPLY_TO[applyTo];
-							strCouponApplyTo.add(strApplyTo);
+							strCouponApplyToList.add(strApplyTo);
 						}
 					} else {
 						for (int i = 0; i < PAGE_SIZE; i++) {
-							Timestamp creDay = couponList.get( ((pn-1)*10) + i).getCreatedDay();
 							Timestamp endDay = couponList.get( ((pn-1)*10) + i).getEndDay();
 							int useCheck = couponList.get( ((pn-1)*10) + i).getUseCheck();
 							String rtStrCanuse = "";
@@ -487,21 +490,24 @@ public class MyPageSVCImpl implements IMypageSVC {
 								rtStrCanuse = "사용가능";
 							} else if(useCheck == 1 && endDay.getTime() >= System.currentTimeMillis()) {
 								rtStrCanuse = "사용완료";
-							} else if(useCheck == 1 && endDay.getTime() <= System.currentTimeMillis()){
+							} else if(useCheck == 1 || useCheck == 0 && endDay.getTime() <= System.currentTimeMillis()){
 								rtStrCanuse = "기간만료";
 							}
-							strCanUse.add(rtStrCanuse);
+							strCanUseList.add(rtStrCanuse);
 							rtCouponList.add(couponList.get( ((pn-1)*10) + i) );
 							int applyTo = couponList.get( ((pn-1)*10) + i).getApplyTo();
 							String strApplyTo = CouponVO.STR_APPLY_TO[applyTo];
-							strCouponApplyTo.add(strApplyTo);
+							strCouponApplyToList.add(strApplyTo);
 						}
 					}
-					rMap.put("strCanuse", strCanUse);
-					rMap.put("strCouponApplyTo", strCouponApplyTo);
+					for (int i = 0; i < strCanUseList.size(); i++) {
+						System.out.println("쿠폰테스트 : strCanUseList.get(i) = " + strCanUseList.get(i));
+					}			
+					rMap.put("strCanuseList", strCanUseList);
+					rMap.put("strCouponApplyToList", strCouponApplyToList);
 					rMap.put("totalRecords", totalRecords);
 					rMap.put("maxPG", maxPG);
-					rMap.put("qnaList", rtCouponList);
+					rMap.put("couponList", rtCouponList);
 					System.out.println("rtCouponList.size() = " + rtCouponList.size());
 					return rMap;
 				} else {
