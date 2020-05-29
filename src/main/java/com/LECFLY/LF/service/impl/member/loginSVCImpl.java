@@ -107,7 +107,7 @@ public class loginSVCImpl implements ILoginSVC {
 	public boolean check_dup_email(String email) {
 		System.out.println("이메일 중복체크");
 		int r = mbDao.memberEamil(email);
-		return r == 1;
+		return r >= 1;
 	}
 
 	@Override
