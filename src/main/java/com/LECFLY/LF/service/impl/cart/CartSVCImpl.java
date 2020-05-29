@@ -42,6 +42,9 @@ public class CartSVCImpl implements ICartSVC {
 	@Autowired
 	private TestGeon2 testDAO2;
 
+	public static final String[] STR_TICKET_NAME_MAP = {"", "1카테고리이용권", "3카테고리이용권", "전체이용권"};
+	public static final int[] TICKET_PRICE_MAP = { 0 , 12900, 30900, 49900};
+	
 	@Override
 	public Map<String, Object> showLectureProc(int lecId) {
 		System.out.println("cartSVC :: showGoodsProc");
@@ -84,35 +87,16 @@ public class CartSVCImpl implements ICartSVC {
 	@Override
 	public Map<String, Object> showCartProc(int mbId) {
 		System.out.println("cartSvc :: showCartProc()");
-		List<CartVO> ctList = cartDAO.selectCartListByMbId(mbId);
+		List<CartVO> cartList = cartDAO.selectCartListByMbId(mbId);
 		List<CreatorVO> creList = new ArrayList<>();
 		List<KitVO> kitList = new ArrayList<>();
-		List<String> strNameList = new ArrayList<>();
-		for (int i = 0; i < ctList.size(); i++) {
-			String strName = "";
-			if(ctList.get(i).getCategoryId() == CartVO.CATEGORY_ID_TICKET) {
-				TicketVO ticket = testDAO2.selectOneTiketById(ctList.get(i).getGdsId());
-				strName = TicketVO.STR_TICKET_NAME_MAP.get(ticket.getName());
-				strNameList.add(strName);
-			} else if(ctList.get(i).getCategoryId() == CartVO.CATEGORY_ID_KIT) {
-				KitVO kit = testDAO2.selectOneKitbyId( ctList.get(i).getGdsId() );
-				strName = kit.getTitle();
-				System.out.println("kit.get.Title()" + kit.getTitle());
-				CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId());
-				System.out.println("cre.getName()" + cre.getName());
-				strNameList.add(strName);
-				creList.add(cre);
-				kitList.add(kit);
-			}
-		}
-		for (int i = 0; i < strNameList.size(); i++) {
-			System.out.println(" 티켓 + 키트 이름 :" + strNameList.get(i));
+		List<TicketListVO> ticketList = new ArrayList<>();
 		
-		}
 		Map<String, Object> rMap = new HashMap<>();
-		rMap.put("cartList", ctList);
+		rMap.put("cartList", cartList);
 		rMap.put("kitList", kitList);
 		rMap.put("creList", creList);
+		rMap.put("ticketList", ticketList);
 		return rMap;		
 	}
 
@@ -150,13 +134,13 @@ public class CartSVCImpl implements ICartSVC {
 			categoryId = 1;
 			state = 0;
 		} else { // ticket
-			TicketListVO tv = gdDao.getOneTicketById(kitId);
-			gdName = tv.getName();
-			gdPrice = tv.getPrice();
+			TicketVO tv = gdDao.getOneTicketById(kitId);
+			gdName = tv.STR_TICKET_NAME_MAP[kitId];
+			gdPrice = tv.TICKET_PRICE_MAP[kitId];
 			state = 0;
 		}
-		
 		return cartDAO.insertNewCartByTicId(mbId, categoryId, kitId, "", gdName, gdPrice, state);
+		//return cartDAO.insertNewCartByTicId(mbId, categoryId, kitId, "", gdName, gdPrice, state);
 
 	}
 

@@ -29,10 +29,6 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	private static final String SQL_INSERT_NEW_CART = "insert into cart values( null, ?, ?, ?, ?, ?, 1, ?, now(), ?)";
 	private static final String SQL_SELECT_CART_LIST = "select * from cart where mb_id = ? and state = 0"; 
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
-	private static final String SQL_SELECT_COUNT_IN_CART = "select if(count(*)=0, 'false', 'true) from cart where gdsId = ? and mbId = ? ";
-	private static final String SQL_INSERT_GOODS_IN_CART = "insert into cart(id, mbId, gdsId) values(?, ?, ?)";
-	private static final String SQL_UPDATE_CART_GOODS_CNT = "update cart set gdsCnt = ? where mbid = ? and gdsId = ?";
-	private static final String SQL_DELETE_CART_GOODS = "delete from cart where id = ?";
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	private static final String SQL_INSERT_IN_CART = "insert into cart values(null, ?, 1, ?, 1, now())";
 	
@@ -42,6 +38,9 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	 * @param kitOrTicId // 이용권 or 키트 아이디 
 	 * 
 	 */
+	
+	
+	
 	@Override
 	public int insertNewCartByTicId(int mbId, int categoryId, int kitOrTicId, String uuid, String ticketName, int ticketPrice, int state) {
 		System.out.println("insertNewCartByMbIdTicId().");
@@ -53,6 +52,7 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	public List<CartVO> selectCartListByMbId(int mbId) throws DataAccessException {
 		System.out.println(SQL_SELECT_CART_LIST + "mbId = " + mbId);
 		List<CartVO> cartList = jtem.query(SQL_SELECT_CART_LIST, BeanPropertyRowMapper.newInstance(CartVO.class), mbId);
+		System.out.println("cartList = " + cartList);
 		return cartList;
 	}
 

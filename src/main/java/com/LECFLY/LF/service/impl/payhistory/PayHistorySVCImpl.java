@@ -26,8 +26,8 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 		int categoryId = CartVO.CATEGORY_ID_TICKET;
 		UUID uuid = UUID.randomUUID();
 		String strUuid = uuid.toString();
-		String ticketName = TicketVO.STR_TICKET_NAME_MAP.get(ticName);
-		int ticketPrice = TicketVO.TICKET_PRICE_MAP.get(ticName);
+		String ticketName = TicketVO.STR_TICKET_NAME_MAP[ticName];
+		int ticketPrice = TicketVO.TICKET_PRICE_MAP[ticName];
 		int state = CartVO.CATEGORY_STATE_WAIT;
 		System.out.println("ticName = " + ticName + "categoryId = " 
 				+ categoryId + "strUuid = " + strUuid + "ticketName = " + ticketName + "ticketPrice = " + ticketPrice );

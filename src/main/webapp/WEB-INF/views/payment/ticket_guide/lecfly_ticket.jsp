@@ -11,7 +11,7 @@
 	var gIntName = 0;
 	function showPayMenu(intName) {
 		gIntName = intName;
-		location.href = "#lecfly_ticket_modal";		
+		location.href = "#lecfly_ticket_modal";
 	}
 </script>	
 
@@ -201,7 +201,7 @@
 			var URLHD = '${pageContext.request.contextPath}/';
 			var url = URLHD+'before_order.LF';
 // 			var param = "ticName=" + gIntName + "&gdType=ticket";
-			var param = "kitId=" + gIntName + "&gdType=ticket";
+			var param = "kitName=" + gIntName + "&gdType=ticket";
 			$.ajax({
 				type: 'POST',
 				url: url,
@@ -218,10 +218,10 @@
 							contentType: 'application/json',
 							data: JSON.stringify({
 									"kitId": gIntName,
-									"totalPts": '1'
+									"totalPts": '1',
+									
 							}),							
 							success: function(res2, status2, xhr2) {
-								//	res2 => pay_order.jsp view
 								console.log(res2);
 								$('#homemain').html(res2);
 							},

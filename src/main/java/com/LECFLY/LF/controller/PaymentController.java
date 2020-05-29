@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.LECFLY.LF.model.dao.impl.TestGeon2;
 import com.LECFLY.LF.model.dao.inf.payHistory.IPayHistoryDAO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.cart.TicketListVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -92,25 +93,23 @@ public class PaymentController {
 			return rMap;
 	}
 	
-	// kakaopay, visa...
+	// 회원이 장바구니안에 담겨있는 상품을 결제 할 수 있다.
 	@RequestMapping(value = "pay_order.LF", method = RequestMethod.POST)	
 	public String showPayOrder(HttpSession ses,@RequestBody Map<String,Object> poData, Model model) {
 		
 		System.out.println("poMap: " + poData);
-		
-		MemberVO mb = (MemberVO)ses.getAttribute("memeber");
-		if (mb != null) {
+			MemberVO mb = (MemberVO)ses.getAttribute("memeber");
+			if(mb != null) {
 			int mbId = mb.getId();
 			int totalPrice = (Integer)poData.get("totalPrice");
 			String totalPts = (String)poData.get("totalPts");
 			model.addAttribute("mbId", mbId);
 			model.addAttribute("totalPrice", totalPrice);
 			model.addAttribute("totalPts", totalPts);
-			return "payment/pay_order.pays";
-		} else {
-			System.out.println("mb가 없음");
-		}
-		return "member/login";
+			} else { // mb == null이면 
+				return "payment/pay_order.pays";
+			}
+			return "member/login";
 	}
 	
 	// 회원이 세션 로그인 후, 강의 상세페이지로 이동 할 수 있다.
@@ -195,16 +194,55 @@ public class PaymentController {
 				//카트에서 해당 mb가 저키트를 가지고있는지 체크하는 함수 select 하는함수	
 				Map<String, Object> cMap = cartSvc.showCartProc(mbId); // state 0인 내것만..
 				if(cMap != null) {
+					List<CartVO> cartList = (List<CartVO>)cMap.get("cartList");
 					List<KitVO> kitList = (List<KitVO>)cMap.get("kitList");
 					List<CreatorVO> creList = (List<CreatorVO>)cMap.get("creList");
-					model.addAttribute("kitList", kitList);
-					model.addAttribute("creList", creList);					
+					List<TicketListVO> ticketList = (List<TicketListVO>)cMap.get("ticketList");
+					
+					System.out.println("ctList = " + cartList );
+					List<Map<String,Object>> cartViewList 
+						= new ArrayList<Map<String,Object>>();					
+					for (CartVO ct : cartList) {
+						Map<String,Object> cartView // VO대신
+						= new HashMap<String, Object>();
+						//cartView.put("ct", ct);
+						cartView.put("id", ct.getId()); // cartVO pk
+						cartView.put("gdsId", ct.getGdsId());
+						cartView.put("gdsName", ct.getGdsName());
+						cartView.put("gdsCnt", ct.getGdsCnt());
+						cartView.put("gdsPrice", ct.getGdsPrice());
+						cartView.put("gdType", ct.getCategoryId()); // 0, 1
+						//
+						String imgPath = null;
+						if( ct.getCategoryId() == CartVO.CATEGORY_ID_TICKET )
+							imgPath = "resources/images/tickets/ticket_"+ct.getGdsId()+".png";
+						else { // kit
+							for (KitVO kt : kitList) {
+								if( kt.getId() == ct.getGdsId() )
+									imgPath = "resources/images/kits/"+ kt.getImgPath();
+							}
+						}
+						cartView.put("gdsImgPath", imgPath);						
+						//
+						String creName = null;
+						if( ct.getCategoryId() == CartVO.CATEGORY_ID_TICKET )
+							creName = "admin";
+						else { // kit
+							for (KitVO kt : kitList) {
+								if( kt.getId() == ct.getGdsId() )
+									creName = kt.getTitle();
+							}
+						}
+						cartView.put("gdsCreName", creName);
+						//
+						cartViewList.add(cartView);
+					}
+					model.addAttribute("cartViewList", cartViewList);		
 				}
 			} else {
 				System.out.println("비회원으로 장바구니 이동!");
 				Map<String, Object> cMap = cartSvc.showCartProc(mbId);
 			}
-			System.out.println("payment/pay_cart.pays");
 			
 		} else {
 			// 여유 생기면 구현예정

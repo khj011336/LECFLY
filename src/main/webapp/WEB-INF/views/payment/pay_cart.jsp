@@ -26,29 +26,30 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach var="gd" items="${kitList}" varStatus="vs">
-							<input type="hidden" name="tic_id" value="${gd.title}">
+<%-- 						<c:if test="${not empty cartViewList}"> 카드 없어요!! </c:if> --%>
+						<c:forEach var="gd" items="${cartViewList}" varStatus="vs">
+							<input type="hidden" name="tic_id" value="${gd.Id}">	
 							<tr>
 								<td id="shoppingCart_td" class="checkbox">
 									<input type="checkbox" class="check-one check">
 								</td>
 								<td id="shoppingCart_td" colspan="2" class="goods">
-								<img src="${gd.imgPath}" alt="홈트레이닝" /> 
+								<img src="${gd.gdsImgPath}" alt="홈트레이닝" /> 
 									<span>
-										<a id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;&lt;${gd.category}&gt;${gd.title}</a>
+										<a id="shoppingCart_a" href="##" class="goodsTitle">&nbsp;&lt;${gd.gdType}&gt;${gd.gdsName}</a>
 									</span>
 									<span>
-										<a id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;${creList.get(vs.index).nickname}</a>
+										<a id="shoppingCart_a" href="##" class="sellerTitle">&nbsp;${gd.gdsCreName}</a>
 									</span>
 								</td>
-								<td id="shoppingCart_td" class="price">${gd.price}</td>
+								<td id="shoppingCart_td" class="price">${gd.gdsPrice}</td>
 								<td id="shoppingCart_td" class="count">
 									<span class="reduce">-</span>
 										<input type="text" class="count-input" value="1" />
 									<span class="add">+</span>
 								</td>
 								<td id="shoppingCart_td" class="subtotal">
-									${gd.price} 
+									${gd.gdsPrice} 
 								</td>
 								<td id="shoppingCart_td" class="opration">
 									<span class="deleteOne">삭 제</span>
@@ -93,7 +94,7 @@
 			$("#moveOrder").on("click", function() {
 				var URLHD = '${pageContext.request.contextPath}';
 				var url = URLHD + 'pay_order.LF';
-				var ticId = $('input=[name=tic_id]').val();
+				var ticId = $('input[name=tic_id]').val();
 				console.log("ticId = " + ticId);
 				var params = "ticId = " + ticId;
 				$.ajax({
@@ -107,15 +108,13 @@
 					},
 					error: function(status, xhr) {
 						alert("실패");
-						location.href = "pageContext.request.contextPath/member/login";
 					}
 				});
 			});
 		});
 		// javaScript의 html 내의 요소들을 움직일 수 있는 dom 객체를 조작하는 방법.
-	// 	window.onload = function() {
+		// 	window.onload = function() {
 			//호환document.getElementsByClassName 방법；
-	
 			// getElementsById() id 속성을 사용하여 접근.
 			// getElementsByClassName() class 속성을 사용하여 접근, 컬렉션 객체를 반환
 	

@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<title>카카오페이 결제</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_kakaopay.css">
 <%
-	String name = "김건우";//(String)request.getAttribute("name");
-	String email = "frostkim21@nate.com";//(String)request.getAttribute("email");
-	String phone = "010-6546-5634";//(String)request.getAttribute("phone");
-	String address = "경기도 부천시 원미로 144번길 51";//(String)request.getAttribute("address");
+	String name = ${member.name};//(String)request.getAttribute("name");
+	String email = ${member.email};//(String)request.getAttribute("email");
+	String phone = ${member.phNumber};//(String)request.getAttribute("phone");
+	String address = ${member.basicAddress};//${member.detailAddress};//(String)request.getAttribute("address");
 	int totalPrice = 1000000;//(int)request.getAttribute("totalPrice");
 %>
 <script type="text/javascript">
@@ -25,13 +24,13 @@
             buyer_tel : '<%=phone%>', // 구매자 전화번호
             buyer_addr : '<%=address%>', // 구매자 주소
             buyer_postcode : '123-456', // 구매자 우편번호
-            m_redirect_url : 'http://localhost:8081/LF/home.jsp' // 결제 완료 후 보냄 컨트롤러의 메소드 명
+            m_redirect_url : 'http://localhost:8081/LECFLY/home.jsp' // 결제 완료 후 보냄 컨트롤러의 메소드 명
         }, function(rsp) {
             if ( rsp.success ) { // 성공시
                 //[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 //                cross-domain error가 발생하지 않도록 주의해주세요
                 jQuery.ajax({
-                    url: $('#homemain').load('<%=request.getContextPath()%>/payment/paymentFinished.jsp'), 
+                    url: $('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF'), 
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -50,7 +49,7 @@
                         alert(msg);
                         
                       //성공시 이동할 페이지
-                      $('#homemain').load('<%=request.getContextPath()%>/payment/paymentFinished.jsp');
+                      $('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF');
                     } else {
                         //[3] 아직 제대로 결제가 되지 않았습니다.
                         //[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
@@ -61,7 +60,7 @@
                 msg = '결제에 실패하였습니다.';
                 msg += '에러내용 : ' + rsp.error_msg;
                 //실패시 이동할 페이지
-                $('#homemain').load('<%=request.getContextPath()%>/payment/fundingPayment.jsp');
+                $('#homemain').load('${pageContext.request.contextPath}' + '/pay_order.LF');
 				alert(msg);
 			}
 		});
