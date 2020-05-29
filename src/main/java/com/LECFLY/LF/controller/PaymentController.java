@@ -22,6 +22,7 @@ import com.LECFLY.LF.model.dao.impl.Test;
 import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.PostscriptVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.cart.TicketListVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;

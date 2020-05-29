@@ -23,7 +23,7 @@ public class CartVO {
 	/** 회원의 PK          		/fk/*/
 	int mbId;
 	/** 상품분류        				0 이용권 1 키트*/
-	int categoryId;
+	int categoryId;       	 			
 	/** 이용권과 키트의 id			이용권과 키트에 따라 select로 가져올예정 여기서 해당 이미지 제목 가격을 뽑음  */
 	int gdsId;
 	/** 상품의 이름				*/
@@ -31,7 +31,7 @@ public class CartVO {
 	/** 상품의 가격				*/
 	int gdsPrice;
 	/** 이용권 또는 키트의 수량 */
-	int gdCnt;
+	int gdsCnt;    
 	/** 주문시 같이 했을경우 고유 id (주문주문 시 같이 구매한 내역일 경우 같은 번호로 표시번호)*/
 	String checkSameOrder;
 	/** 추가한 날짜*/
@@ -51,8 +51,8 @@ public class CartVO {
 	 * @param gdCnt
 	 * @param checkSameOrder
 	 */
-	public CartVO(int mbId, int categoryId, int gdsId, int gdCnt, String checkSameOrder) {
-		this(0, mbId, categoryId, gdsId, gdCnt, checkSameOrder, null);
+	public CartVO(int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, String checkSameOrder, int state) {
+		this(0, mbId, categoryId, gdsId, gdsName, gdsPrice, 1, checkSameOrder, null, state);
 	}
 	/**
 	 * @param id
@@ -63,18 +63,20 @@ public class CartVO {
 	 * @param checkSameOrder
 	 * @param createdAt
 	 */
-	public CartVO(int id, int mbId, int categoryId, int gdsId, int gdCnt, String checkSameOrder, Timestamp createdAt, int state) {
-
-	super();
-	this.id = id;
-	this.mbId = mbId;
-	this.categoryId = categoryId;
-	this.gdsId = gdsId;
-	this.gdCnt = gdCnt;
-	this.checkSameOrder = checkSameOrder;
-	this.createdAt = createdAt;
-	this.state = state;
-}
+	public CartVO(int id, int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, int gdsCnt,
+			String checkSameOrder, Timestamp createdAt, int state) {
+		super();
+		this.id = id;
+		this.mbId = mbId;
+		this.categoryId = categoryId;
+		this.gdsId = gdsId;
+		this.gdsName = gdsName;
+		this.gdsPrice = gdsPrice;
+		this.gdsCnt = gdsCnt;
+		this.checkSameOrder = checkSameOrder;
+		this.createdAt = createdAt;
+		this.state = state;
+	}
 
 	public int getId() {
 		return id;
@@ -145,10 +147,11 @@ public class CartVO {
 	public static int getCategoryIdKit() {
 		return CATEGORY_ID_KIT;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "CartVO [id=" + id + ", mbId=" + mbId + ", categoryId=" + categoryId + ", gdsId=" + gdsId + ", gdsName="
 				+ gdsName + ", gdsPrice=" + gdsPrice + ", gdsCnt=" + gdsCnt + ", checkSameOrder=" + checkSameOrder
 				+ ", createdAt=" + createdAt + ", state=" + state + "]";
 	}
+}
