@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminMemberDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
-import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
 
@@ -66,14 +65,22 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 			"SELECT COUNT(ID) FROM MEMBERS";
 	/** 전체 멤버목록 조회(페이지별) */
 	public static String SQL_SELECT_MEMBER_ALL_PG = 
+			"SELECT * FROM MEMBERS ORDER BY ID LIMIT ?,?";
+	/** 전체 멤버목록 조회(신규가입순) */
+	public static String SQL_SELECT_MEMBER_ALL_NEW_PG = 
 			"SELECT * FROM MEMBERS ORDER BY ID DESC LIMIT ?,?";
-	
+	/** 전체 멤버목록 조회(승인요청순) */
+	public static String SQL_SELECT_MEMBER_ALL_APPROVAL_PG = 
+			"SELECT * FROM MEMBERS WHERE CHECK_CREATOR >= 1 ORDER BY field (check_creator, 1, 2, 3) asc LIMIT ?,?";
+	/** 전체 멤버목록 조회(승인완료순) */
+	public static String SQL_SELECT_MEMBER_ALL_APPROVAL_DONE_PG = 
+			"SELECT * FROM MEMBERS ORDER BY check_creator desc LIMIT ?,?";
 	/** 전체 크리에이터 수 조회 */
 	public static String SQL_SELECT_CREATOR_NUMBER=
 			"SELECT COUNT(ID) FROM CREATOR";
 	/** 전체 크리에이터 목록 조회(페이지별) */
 	public static String SQL_ADMIN_CREATOR__SELECT_ALL_PG=
-			"SELECT * FROM CREATOR ORDER BY ID DESC LIMIT ?,?";
+			"SELECT * FROM CREATOR ORDER BY grant_date DESC LIMIT ?,?";
 
 	/** 통계파트 최근 1년 월별 회원가입 인원 조회 */
 	public static String SQL_COUNT_MEMBER_BY_MONTH = 
@@ -176,6 +183,24 @@ public class AdminMemberMysqlDAO implements IAdminMemberDAO {
 	@Override
 	public List<MemberStatVO> statCountMemberByMonth() {
 		return jtem.query(SQL_COUNT_MEMBER_BY_MONTH, BeanPropertyRowMapper.newInstance(MemberStatVO.class));
+	}
+
+	@Override
+	public List<MemberVO> searchMemberForAllByApproval(int offset, int limit) {
+		return jtem.query(SQL_SELECT_MEMBER_ALL_APPROVAL_PG, BeanPropertyRowMapper.newInstance(MemberVO.class),
+				offset, limit);
+	}
+
+	@Override
+	public List<MemberVO> searchMemberForAllByApprovalDone(int offset, int limit) {
+		return jtem.query(SQL_SELECT_MEMBER_ALL_APPROVAL_DONE_PG, BeanPropertyRowMapper.newInstance(MemberVO.class),
+				offset, limit);
+	}
+
+	@Override
+	public List<MemberVO> searchMemberForAllByNew(int offset, int limit) {
+		return jtem.query(SQL_SELECT_MEMBER_ALL_NEW_PG, BeanPropertyRowMapper.newInstance(MemberVO.class),
+				offset, limit);
 	}
 	
 }

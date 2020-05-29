@@ -155,13 +155,7 @@
 			break;	
 		case "delete_member_list":
 			url = "admin_delete_member_list.LF";
-			break;	
-		case "update_approval_creator":
-			url = "admin_update_approval_member.LF";
-			break;	
-		case "update_disapproval_creator":
-			url = "admin_update_disapproval_member.LF";
-			break;	
+			break;
 		case "delete_creator_list":
 			url = "admin_delete_creator_list.LF";
 			break;		
