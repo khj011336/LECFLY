@@ -193,7 +193,7 @@ public class Test {
 	
 	/** 사용하지않은쿠폰(사용가능한 쿠폰의 갯수를 세어주는 함수) */
 	public static final String SQL_COUNT_NOT_USE_COUPONS_BY_MBID = 
-			"SELECT COUNT(*) FORM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
+			"SELECT COUNT(*) FROM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
 	
 	public CouponVO selectOneCouponByCode (String code) {
 		System.out.println("selectOneCouponByCode()");
@@ -334,11 +334,11 @@ public class Test {
 	public static final String SQL_SELECT_ONE_TIKET_BY_MBID = 
 			"SELECT * FROM TICKETS WHERE MB_ID = ?";
 	
-	public TicketVO selectOneTiketByMbId(int mbId) {
+	public List<TicketVO> selectOneTiketByMbId(int mbId) {
 		System.out.println("dao : selectOneTiketByMbId()");
 		try {
 			System.out.println(SQL_SELECT_ONE_TIKET_BY_MBID + " / mb_id = " + mbId);
-			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, TicketVO.class, mbId);
+			return  jtem.query(SQL_SELECT_ONE_TIKET_BY_MBID, BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();
@@ -436,7 +436,7 @@ public class Test {
 	///////// 『  KitImpl 에서 사용하세요~~
 	
 	public static final String SQL_SELECT_ONE_KIT_BY_ID = 
-			"select * from kits where id = ?"; 
+			"select * from kit where id = ?"; 
 	public KitVO selectOneKitById(int id) {
 		try {
 			return jtem.queryForObject(SQL_SELECT_ONE_KIT_BY_ID, 
