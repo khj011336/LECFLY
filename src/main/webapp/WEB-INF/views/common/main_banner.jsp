@@ -65,6 +65,8 @@
 	<div class="container1" style="height: 300px;">
 	<c:forEach items="${bannerList}" var="bn">
         <div><img src="resources/imges/banner/${bn.fileName}"><a href="${pageContext.request.contextPath}/goods_detail.LF?CFId=${bn.fileLectureId}">클래스 바로가기</a></div>
+<%--          <div><img src="resources/imges/banner/${bn.fileName}"><a href="${pageContext.request.contextPath}/goods_detail.LF?CFId=90">클래스 바로가기</a></div> --%>
+<%--         <div><img src="resources/imges/banner/${bn.fileName}"><a href="${pageContext.request.contextPath}/pay_goodsDetail.LF?lecId=${bn.fileLectureId}">클래스 바로가기</a></div> --%>
     </c:forEach>
     </div>
 

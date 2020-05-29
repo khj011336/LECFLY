@@ -10,7 +10,6 @@ function goTrack(Cfid){
 		$(document).on("click","#register_lec_apply",function(){
 			href.location = "creator_lecplay.LF?CFId=" + ${CFId};
 		});
-		$("#register_lec_apply")
 		
 		//댓글추가
 		$("#submit_comment").on("click", function() {
