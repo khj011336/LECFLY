@@ -371,8 +371,12 @@ public class Test {
 	public TicketVO selectOneTiketForCanUseByMbId(int mbId) {
 		try{
 			System.out.println(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID + " / mbId = " + mbId);
-			return jtem.queryForObject(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID,
-						BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
+			TicketVO tk = jtem.queryForObject(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID,
+					BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
+			if( tk != null)
+				return tk;
+			else
+				System.out.println("티켓없음");
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();

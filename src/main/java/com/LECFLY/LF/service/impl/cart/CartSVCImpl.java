@@ -135,8 +135,8 @@ public class CartSVCImpl implements ICartSVC {
 			state = 0;
 		} else { // ticket
 			TicketVO tv = gdDao.getOneTicketById(kitId);
-			gdName = tv.STR_TICKET_NAME_MAP[kitId];
-			gdPrice = tv.TICKET_PRICE_MAP[kitId];
+			gdName = tv.STR_TICKET_NAME_MAP.get(kitId);
+			gdPrice = tv.TICKET_PRICE_MAP.get(kitId);
 			state = 0;
 		}
 		return cartDAO.insertNewCartByTicId(mbId, categoryId, kitId, "", gdName, gdPrice, state);
