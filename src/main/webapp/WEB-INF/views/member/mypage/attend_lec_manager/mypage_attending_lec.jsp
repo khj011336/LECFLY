@@ -4,7 +4,7 @@
 	
 <c:if test="${!empty laList}">
 	<div class="mypage_bottom_info">
-		<h2 class="mypage_bottom_title">${msg_status}</h2>
+		<h2 class="mypage_bottom_title"><c:out value="${msg_status}" /></h2>
 		<div class="mypage_bottom_contents">
 			<div class="list_video_wrapper">
 				<c:forEach var="la" items="${laList}" varStatus="vs">

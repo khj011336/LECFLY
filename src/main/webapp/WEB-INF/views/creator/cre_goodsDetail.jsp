@@ -8,9 +8,33 @@ function goTrack(Cfid){
 }
 	$(document).ready(function() {
 		$(document).on("click","#register_lec_apply",function(){
-			href.location = "creator_lecplay.LF?CFId="
+			href.location = "creator_lecplay.LF?CFId=" + ${CFId};
 		});
 		$("#register_lec_apply")
+		
+		//댓글추가
+		$("#submit_comment").on("click", function() {
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'insert_comment.LF';
+			var comment = $("textarea[name=feedback]").val();
+			var CFId = ${CFId};
+			console.log("댓글내용" + comment + "/게시글id" + CFId);
+			var params = "ct=" + comment + "&CFId=" + CFId;
+			$.ajax({
+				type: 'POST',
+				url : url,
+				data: params,
+	 			dataType: "JSON",
+				success: function(res, status ,xhr){
+					console.log(res.result);
+					$('#comment_all').remove();
+					$('#comment_div').html(res.temp);
+				},
+				error: function(status, xhr){
+					alert("실패");
+				}
+			});
+		});
 // 		$("#moveCart").on("click", function() {
 // 			var URLHD = '${pageContext.request.contextPath}/';
 //  			var url = URLHD+'check_pay_cart.LF';
@@ -41,13 +65,6 @@ function goTrack(Cfid){
 			
 // 		});
 // 		 $("#goods_detail_modal_popup_submitbtn").onclick()
-	});
-	
-	// 별점 추가
-	$('#register_review a').click(function() {
-		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
-		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-		return false;
 	});
 	
 </script>
@@ -108,45 +125,15 @@ function goTrack(Cfid){
 		<p id="register_wri"> ${cre.info}</p>
 		<br> <br>
 		<h1 id="register_review_info">후기</h1>
-		<br> <br>
-		<p id="register_review">
-			<span class="review_name">명주</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>일주일 전</small></span> <small>
-
-				저렴하고 양도 적당하고 좋네요! 저는 남은 재료랑 미니하트 다 써서 몽땅 큰 비누 만들었어요~ 그런데 비누가 굳을까봐
-				초조해져서 차분히 할 수가 없는 것 같아요 계속 초초..ㅎㅎ 다음에 하면 더 잘할 수 있을 것 같아요! 감사합니다!</small>
-		</p>
-		<p id="register_review">
-			<span class="review_name">수현</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>일주일 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">건우</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>한달 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">세현</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>3개월 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">기민</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>1년 전</small></span>
-		</p>
-		<br> <br>
-		<h1 id="register_qna_info">QnA</h1>
 		<br>
-		
-		 ${comment}
-			
-		 
-		 <br>
+			${!empty postscript ? postscript: ''}
+		<br>
+		<h1 id="register_qna_info">QnA</h1>
+		<div id="comment_div">
+			${!empty comment ? comment : ''}
+		</div>
 		<textarea name="feedback" rows="5" cols="20" placeholder="댓글을 입력해주세요"></textarea>
-		<input type="button" value="입력">
+		<input id="submit_comment" type="button" value="입력">
 	</div>
 </div>
 <div id="register_content">

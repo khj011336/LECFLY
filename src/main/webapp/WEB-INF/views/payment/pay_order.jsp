@@ -123,7 +123,7 @@
 					<img src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
 				</a>
 				<div class="orderfunding_imgInfo">
-					<a class="orderfunding_a"> 
+					<a class="orderfunding_a">
 						<strong><c:out value="${ct.categoryId[STR_CATEGORY_ID]}"  default="회원권"/></strong><br>
 					 	<strong>${ct.gdsName}</strong>
 					</a>
@@ -187,8 +187,8 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-    	// 주소찾기 
-    	
+    	// 주소찾기
+
     	function fundingPayment_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -223,7 +223,7 @@
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
                     document.getElementById("fundingPayment_extraAddress").value = extraAddr;
-                
+
                 } else {
                     document.getElementById("fundingPayment_extraAddress").value = '';
                 }
@@ -236,11 +236,10 @@
             }
         }).open();
     }
-    
+
 	</script>
 
 	<div id="footer" class="footer">
 		<%@ include file="../common/footer.jsp"%>
 	</div>
 </div>
-

@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <title>상품 상세페이지</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_goodsDetail.css">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
@@ -9,7 +11,7 @@
 			var URLHD = '${pageContext.request.contextPath}/';
  			var url = URLHD+'pay_cart.LF';
  			var kitId = $("input[name=kit_id]").val();
- 			var param = "kitId=" + kitId + "&gdType=kit";
+ 			var params = "kitId=" + kitId;
  			$.ajax({
 				type: 'POST',
 				url : url,
@@ -32,10 +34,87 @@
 				error: function(status, xhr) {
 					console.log("실패");
 				}
-			});	
+			});
+		});
+
+
+		$("#goods_detail_modal_popup_submitbtn").on("click", function() {
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'pay_cart.LF';
+			var kitId = $("input[name=kit_id]").val();
+			console.log("goods_detail 눌렀을때 kitId = " + kitId);
+			var params = "kitId=" + kitId;
+			$.ajax({
+				type: 'POST',
+				url : url,
+				data: params,
+				success: function(res, status ,xhr){
+					alert("성공");
+					console.log(res);
+					$('#homemain').html(res);
+				},
+				error: function(status, xhr){
+					alert("실패");
+				}
+			});
+		});
+
+		//댓글추가
+		$("#submit_comment").on("click", function() {
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'insert_comment.LF';
+			var comment = $("textarea[name=feedback]").val();
+			var lecId = ${lec.id};
+			console.log("댓글내용" + comment + "/게시글id" + lecId);
+			var params = "ct=" + comment + "&lecId=" + lecId;
+			$.ajax({
+				type: 'POST',
+				url : url,
+				data: params,
+	 			dataType: "JSON",
+				success: function(res, status ,xhr){
+					console.log(res.result);
+					$('#comment_all').remove();
+					$('#comment_div').html(res.temp);
+				},
+				error: function(status, xhr){
+					alert("실패");
+				}
+			});
+		});
+
+		// 대댓글 달기
+		$("#submit_under_ct").on("click", function() {
+			var URLHD = '${pageContext.request.contextPath}/';
+			var url = URLHD+'insert_under_comment.LF';
+			var comment = $("textarea[name=feedback]").val();
+			var lecId = ${lec.id};
+			console.log("댓글내용" + comment + "/게시글id" + lecId);
+			var params = "ct=" + comment + "&lecId=" + lecId;
+			$.ajax({
+				type: 'POST',
+				url : url,
+				data: params,
+	 			dataType: "JSON",
+				success: function(res, status ,xhr){
+					console.log(res.result);
+					$('#comment_div').html().remove();
+					$('#comment_div').html(res.temp);
+				},
+				error: function(status, xhr){
+					alert("실패");
+				}
+			});
 		});
 	});
-	
+
+	// 대댓글 입력칸?
+// 	${'#under_comment'}.click(function() {
+// 		${'#under_ct_form'}.html(
+// 				"<textarea name='feedback' rows='5' cols='20' placeholder='댓글을 입력해주세요'></textarea><input id='submit_under_ct' type='button' value='입력'>");
+// 	});
+
+
 	// 별점 추가
 	$('#register_review a').click(function() {
 		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
@@ -43,7 +122,20 @@
 		return false;
 	});
 
-	
+	// 강의 수강페이지로 이동(비디오페이지)
+	$('#register_lec_apply').on("click", function() {
+		console.log('클릭됨');
+		var mbId = ${member.id};
+		var lecId = ${lecId};
+		var lecCate = ${strCategory};
+		var mbCate0 = ${mbStrCate0};
+		var mbCate1 = ${mbStrCate1};
+		var mbCate2 = ${mbStrCate2};
+		var URL = "${pageContext.request.contextPath}/creator_lecplay.LF?mbId="+mbId+"&lecId="+lecId+"&lecCate="+lecCate+
+		"&mbC0="+mbCate0+"&mbC1="+mbCate1+"&mbC2="+mbCate2;
+		console.log(URL);
+		location.href = URL;
+	});
 </script>
 <div id="register_wrapper">
 	<div id="register_nav">
@@ -92,46 +184,46 @@
 		<br> <br>
 		<h1 id="register_review_info">후기</h1>
 		<br> <br>
-		<p id="register_review">
-			<span class="review_name">명주</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>일주일 전</small></span> <small>
+		<div id="lecture_reviews">
+			${postscript}
+<!-- 			<p id="register_review"> -->
+<!-- 				<span class="review_name">명주</span> <a href="#">★</a><a href="#">★</a><a -->
+<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
+<!-- 					class="review_week"> <small>일주일 전</small></span> <small> -->
 
-				저렴하고 양도 적당하고 좋네요! 저는 남은 재료랑 미니하트 다 써서 몽땅 큰 비누 만들었어요~ 그런데 비누가 굳을까봐
-				초조해져서 차분히 할 수가 없는 것 같아요 계속 초초..ㅎㅎ 다음에 하면 더 잘할 수 있을 것 같아요! 감사합니다!</small>
-		</p>
-		<p id="register_review">
-			<span class="review_name">수현</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>일주일 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">건우</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>한달 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">세현</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>3개월 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">기민</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>1년 전</small></span>
-		</p>
+<!-- 					저렴하고 양도 적당하고 좋네요! 저는 남은 재료랑 미니하트 다 써서 몽땅 큰 비누 만들었어요~ 그런데 비누가 굳을까봐 -->
+<!-- 					초조해져서 차분히 할 수가 없는 것 같아요 계속 초초..ㅎㅎ 다음에 하면 더 잘할 수 있을 것 같아요! 감사합니다!</small> -->
+<!-- 			</p> -->
+<!-- 			<p id="register_review"> -->
+<!-- 				<span class="review_name">수현</span> <a href="#">★</a><a href="#">★</a><a -->
+<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
+<!-- 					class="review_week"> <small>일주일 전</small></span> -->
+<!-- 			</p> -->
+<!-- 			<p id="register_review"> -->
+<!-- 				<span class="review_name">건우</span> <a href="#">★</a><a href="#">★</a><a -->
+<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
+<!-- 					class="review_week"> <small>한달 전</small></span> -->
+<!-- 			</p> -->
+<!-- 			<p id="register_review"> -->
+<!-- 				<span class="review_name">세현</span> <a href="#">★</a><a href="#">★</a><a -->
+<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
+<!-- 					class="review_week"> <small>3개월 전</small></span> -->
+<!-- 			</p> -->
+<!-- 			<p id="register_review"> -->
+<!-- 				<span class="review_name">기민</span> <a href="#">★</a><a href="#">★</a><a -->
+<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
+<!-- 					class="review_week"> <small>1년 전</small></span> -->
+<!-- 			</p> -->
+		</div>
 		<br> <br>
 		<h1 id="register_qna_info">QnA</h1>
 		<br>
-		
-		<c:forEach var="rp" items="${ccList}" varStatus="vs">
-			<br> <i class="fas fa-user"> ${rp.mbId} <input type="date" value="<fmt:formatDate value='${rp.createdAt}' pattern='yyyy년-MM월-dd일 - HH시 mm분'/>" readonly>
-			${rp.comment}
-			</i> <br> <br> ${rp.mbNic} <br>
-		</c:forEach>
+		<div id="comment_div">
+			${!empty comment ? comment : ''}
+		</div>
 		 <br>
 		<textarea name="feedback" rows="5" cols="20" placeholder="댓글을 입력해주세요"></textarea>
-		<input type="button" value="입력">
+		<input id="submit_comment" type="button" value="입력">
 	</div>
 </div>
 <div id="register_content">
@@ -167,4 +259,14 @@
 		class="register_lec_pick"> 강의 찜하기 </span> <br> <br> <br>
 	<p id="register_warning">'라이프스타일' 회원권 보유시 신청가능합니다.</p>
 	<br> <span id="register_lec_apply">강의 신청하기</span>
+
+<!-- 	<div id="will_show_update_confirm" class="overlay"> -->
+<!-- 		<div class="popup"> -->
+<!-- 			<a class="close" href="#">x</a> -->
+<!-- 			<div class="mypage_mb_update_popup_content"> -->
+<%-- 				<h2 class="mypage_mb_isupdate">'${member.name}'님 회원정보 수정 성공</h2> --%>
+<!-- 			</div> -->
+<!-- 			<input id="mypage_mb_update_popup_submitbtn" type="button" value="확인" class="close"> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 </div>

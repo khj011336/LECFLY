@@ -12,9 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.InvalidTimeoutException;
 
 import com.LECFLY.LF.model.dao.impl.Test;
-
+import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
-import com.LECFLY.LF.model.dao.inf.creator.IKitDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.dao.inf.creator.IVideoDAO;
 import com.LECFLY.LF.model.dao.inf.cscenter.IQnaCommentDAO;
@@ -33,6 +32,7 @@ import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -42,111 +42,127 @@ public class MyPageSVCImpl implements IMypageSVC {
 
 	@Autowired
 	private IMemberDAO mbDao;
-	
+
 	@Autowired
 	private IVideoDAO vdDao;
-	
+
 	@Autowired
 	private ICreatorDAO creDao;
-	
+
 	@Autowired
 	private ILectureDAO lecDao;
-	
-//	@Autowired
-//	private IQnaCommentDAO qnacomDao;		// 디버그용 잠시닫음
-	
+
+	@Autowired
+	private ICommentDAO comDao;
+
 	@Autowired
 	private IQnaDAO qnaDao;
-	
+
 	@Autowired				// 지금 저기에 분배할 sql 마이페이지에 필요한거 넣어뒀습니다 가져가시고 해당하는 인터페이스 같이 생성해주세요.
 	private Test testDao;
-	
+
 //	@Autowired
 //	private ICouponDAO couponDao;			// 디버그용 잠시닫음
-	
+
 	@Autowired
 	private ILecTypeDAO ltDao;
-	
+
 	@Autowired
 	private ILecAttendDAO laDao;
-	
+
 //	@Autowired
 //	private ITiketDAO tiketDao;
-	
+
 //	@Autowired
 //	private IPayHistoryDAO phisDao;
-	
-//	@Autowired  
+
+//	@Autowired
 //	private IKitDAO kitDao; // IKITDAO 로되어있는데 확인부탁.
-	
-	
-	
+
+
+
 	private static final int PAGE_SIZE = 10;
-	
+
 	public static final int ERR_CONT_PARAM = 20;
 	public static final int ERR_DB_PARAM = 21;
-	
+
 	public static final Map<Integer, String> MYPAGE_ERR_MAP = new HashMap<Integer, String>(){
 		{
 			put(ERR_CONT_PARAM, "controller 에서 들어온값 오류");
 			put(ERR_DB_PARAM, "DB에 들어가는 값 오류");
 		}
 	};
-	
-	
-	
+
+
+
 	/**
 	 *	마이페이지 들어올시 필요한 것들
-	 *	Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수 + 
-	 *	뷰단하단에 아무것도안보여주려고함(ResponseBody json map으로 데이터리턴해야될거같은데) 
+	 *	Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수 +
+	 *	뷰단하단에 아무것도안보여주려고함(ResponseBody json map으로 데이터리턴해야될거같은데)
 	 */
 	@Override
 	public Map<String, Object> selectMyPageContents(int mbId) {
 		System.out.println("selectMyPageContents()..");
-		Map<String, Object> rMap = new HashMap<>(); 
+		Map<String, Object> rMap = new HashMap<>();
 		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
-		List<TicketVO> ticket = //tiketDao.selectOneTiketByMbId(mbId);
-				 testDao.selectOneTiketByMbId(mbId);
-		if(ticket != null) {
-			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
-			//쿠폰
-			int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
-					testDao.checkNumberOfCouponseByMbId(mbId);
-			if(cntCoupon >= 0) {
-				int cntLecture = testDao.checkNumberOfLectureByMbId(mbId); // 회원이듣는강의개수
-				if(cntLecture >= 0) {
-					int cntUseCategory = ticket.get(0).getName(); // 몇개의 클래스를 고를수있는지??
-					int rtCnt = (cntUseCategory == 1 ? 
-								1 : cntUseCategory == 2 ? 
-										3 : cntUseCategory == 3 ? 
-												7 : -1); // 1 아니면 3 아니면 7 아니면 -1 이나옴
-					
-					rMap.put("cntUseCategory", rtCnt); // 티켓 이용권 이름? 가지고 몇개의 카테고리를 인지 확인해야되고 // 들을수있는 개수
-					
-					/* 개수가지고 카테고리를 어떻게? 하는지 확인이필요함 
-					 티켓을 가지고 있다가 강의볼떄마다 하나씩사용하는지 애초에 살떄 3개짜리를사게되는 
-					순간 정해져서 오는지 오게되면은 번호로 하는데 스플릿을 나타나는지 알아야한다 */
-					rMap.put("strCateList", ""); 
-					rMap.put("tiketEndDay", ""); // 티켓의 종류날짜
-					rMap.put("cntCoupon", cntCoupon);
-					rMap.put("cntLecture", cntLecture);
-					return rMap;
-				} else {
-					System.out.println("cntLecture = 음수");
+
+		//쿠폰
+		int cntCoupon = // couponDao.checkNumberOfCouponseByMbId(mbId);
+				testDao.checkNumberOfCouponseByMbId(mbId);
+
+		int cntLecture =
+				ltDao.checkNumberOfLectureByMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING); // 회원이듣는강의개수
+
+		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
+				 testDao.selectOneTiketForCanUseByMbId(mbId);
+
+		if(ticket != null) { // 티켓에대한정보들
+			int cntUseCategory = ticket.getName();
+			String ticketFrontName = "";
+			String ticketName = "";
+			List<String> strCateList = new ArrayList<>();
+
+			if(cntUseCategory == 1) {
+				ticketFrontName = "1";
+				ticketName = "카테고리 이용권";
+				String strCate =
+						LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
+				strCateList.add(strCate);
+			} else if(cntUseCategory == 2) {
+				ticketFrontName = "3";
+				ticketName = "카테고리 이용권";
+				String[] arrayCategories = ticket.getCategory().split("_");
+				for (int i = 0; i < arrayCategories.length; i++) {
+					String strCate =
+							LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])];
+					strCateList.add(strCate);
 				}
-			} else {
-				System.out.println("cntCoupon = 음수 ");
+			} else if(cntUseCategory == 3) {
+				ticketFrontName = "무제한";
+				ticketName = "카테고리 이용권";
+				String strCate = "";
+				strCateList.add(strCate);
 			}
+			rMap.put( "cntTicket", (ticket != null ? 1 : 0) );
+			rMap.put("ticketFrontName", ticketFrontName);
+			rMap.put("ticketName", ticketName);
+			rMap.put("strCateList", strCateList);
+			rMap.put("tiketEndDay", ticket.getEndDay()); // 티켓의 종류날짜
+			rMap.put("rtCheck", 1);
 		} else {
-			System.out.println("ticket = null");
-		} 	
-		return null;
+			System.out.println("ticket == null");
+			rMap.put("cntTicket", 0);
+		}
+		rMap.put("cntCoupon", cntCoupon);
+		rMap.put("cntLecture", cntLecture);
+		return rMap;
+
 	}
-	
-	
+
+
 	@Override // 마이페이지 멤버가 사진업데이트 하려면..~~~
 	public boolean updateMemberProfileImg(int mbId, String pic) {
-		System.out.println("updateMemberProfileImg()..."); 
+		System.out.println("updateMemberProfileImg()...");
 		boolean r = mbDao.updateMemberProfileImg(mbId, pic); // 미구현
 		if( r ) {
 			System.out.println("member 사진 업데이트 성공");
@@ -157,7 +173,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		return false;
 	}
 
-	
+
 	/**
 	 *	mbId 랑 status 회원이 강의를 수강한건지 or 찜하기한건지 or 좋아요 한건지 구분을하고
 	 *	mbId status 를 넣어 해당하는 lectureId를 가지고있는 LecTypeVO List를 뽑고
@@ -168,13 +184,13 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Override //회원이 신청한수강중인 강의목록(비디오) 표시하기
 	public List<LecAttendVO> selectLecToStatusForMbIdStatus(int mbId, int status){
 		System.out.println("mpSvc : selectLecToStatusForMbIdStatus()");
-		if( mbId > 0 && 
+		if( mbId > 0 &&
 			status >= LecTypeVO.STATUS_ATTENDING &&
-			status <= LecTypeVO.STATUS_LIKE ) 
+			status <= LecTypeVO.STATUS_LIKE )
 		{
 			// 멤버아이디랑 저걸로 판달수있는거 lecType
 			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
-			
+
 			//여기서 클래스아이디를 통해 내가 수강중인 비디로들을 뽑아야됨 얼마만큼 저거리스트만큼 돌아야되
 			if(ltList != null) {
 				List<LecAttendVO> rtLaList = new ArrayList<>();
@@ -188,18 +204,18 @@ public class MyPageSVCImpl implements IMypageSVC {
 							LecAttendVO la = laList.get(j);
 							rtLaList.add(la);
 						}
-						
+
 					} else {
 						System.out.println("laList < 0 ::  음수");
 					}
 				}
-				
+
 				return rtLaList;
 			} else {
 				System.out.println("ltList == null ");
 			}
 		} else {
-			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) + 
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) +
 							" / mbId = " + mbId  + " / status = " + status);
 		}
 		return null;
@@ -216,7 +232,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Override
 	public Map<String, Object> selectVideoAndCreImgPathAndCreNicname(int mbId, int status){
 		System.out.println("MyPageSVCImpl / selectVideoAndCreImgPathAndCreNicname()..");
-		if(mbId > 0 && status >= LecTypeVO.STATUS_ATTENDING 
+		if(mbId > 0 && status >= LecTypeVO.STATUS_ATTENDING
 								&& status <= LecTypeVO.STATUS_LIKE) {
 			// 판단하는게 있어야되 회원을기준으로  찜하기/좋아요 한
 			List<LecTypeVO> ltList = ltDao.selectAllLecTypeByMbIdStatus(mbId, status);
@@ -232,59 +248,63 @@ public class MyPageSVCImpl implements IMypageSVC {
 				for (int i = 0; i < LTLIST_SIZE; i++) {
 					LecTypeVO lecType = ltList.get(i);
 					int classId = lecType.getClassId();
-					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId); 
-							testDao.selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId);
+					Map<String,Object> lecParamMap = // lecDao.Map<String, Object> selectOneIdFidCategotySubtitleTitleimgNicknameLikeCountImgPathById(classId);
+							testDao.selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById(classId);
 					if(lecParamMap != null) {
 						int id = (int)lecParamMap.get("id");
 						idList.add(id);
-						
+
 						int cate = (int)lecParamMap.get("category");
 						String strCate = LecTypeVO.STR_CATEGORY[cate];
 						strCateList.add(strCate);
-						
+
+
 						String subTitle = (String)lecParamMap.get("subtitle");
 						subTitleList.add(subTitle);
-						
+
+
 						String titleImgPath = (String)lecParamMap.get("title_img");
 						imgPathList.add(titleImgPath);
-						
+
+
 						String nickName = (String)lecParamMap.get("nickname");
 						nickNameList.add(nickName);
-						
+
+
 						int likeCount = (int)lecParamMap.get("like_count");
 						likeCountList.add(likeCount);
-						
+
+
 						/* 	크리에이터 프로필 이미지? 뽑는방법
-						 * LectureVO 타입의 객체를 뽑는다. 그곳의 LectureVO.getImgPath() 
+						 * LectureVO 타입의 객체를 뽑는다. 그곳의 LectureVO.getImgPath()
 						 * 	를 하면 제일마지막 이미지 이름이나옴.<1>
 						 * LectureVO.getImgPath().split("_")[1] 하면 크리에이터의 이름이나옴 <2>
 						 * creatorDao.get 경로하면 폴더경로가나옴.    ...<3>
-						 * <3> + <2> + img + <1> 하면 해당 이미지 사진의 경로가 완성이됨. 
+						 * <3> + <2> + img + <1> 하면 해당 이미지 사진의 경로가 완성이됨.
 						 * 	(경로니까 사이에 / 없으면 추가해주자)
 						*/
-						String localPath = "";// creDao.
+						String localPath = "/Images/2020/";// creDao.
 						String creImgPath = (String)lecParamMap.get("img_path");
+
 						String creNickName = creImgPath.split("_")[1];
-						System.out.println("creNickName = " + creNickName);
-						String creatorImgPath = localPath + creNickName + "img" + creImgPath;
+
+						String creatorImgPath = localPath + creNickName + "/Img" + creImgPath;
 						creatorImgPathList.add(creatorImgPath);
-						System.out.printf("%d회차 id = %d, strCate = %s, subTitle =  %s," + 
-						" titleImgPath = %s, nickName = %s, likeCount = %d, creatorImgPath =  %s\r\n" ,
-						i, id, strCate, subTitle, titleImgPath, nickName, likeCount, creatorImgPath);
+						System.out.println("creatorImgPath = " + creatorImgPath);
 					} else {
 						System.out.println("lecParamMap == null");
 					}
 				}
-				if( 	idList.size() > 0  && strCateList.size() > 0 && 
-						subTitleList.size() > 0 && imgPathList.size() > 0 && 
+				if( 	idList.size() > 0  && strCateList.size() > 0 &&
+						subTitleList.size() > 0 && imgPathList.size() > 0 &&
 						nickNameList.size() > 0 && likeCountList.size() > 0 &&
 						creatorImgPathList.size() > 0 &&
 						idList.size() == strCateList.size() &&
-						idList.size() == subTitleList.size() && 
+						idList.size() == subTitleList.size() &&
 						idList.size() == imgPathList.size() &&
-						idList.size() == nickNameList.size() && 
+						idList.size() == nickNameList.size() &&
 						idList.size() == likeCountList.size() &&
-						idList.size() == creatorImgPathList.size() ) 
+						idList.size() == creatorImgPathList.size() )
 				{ // 위조건이 참일때.
 					Map<String, Object> rMap = new HashMap<>();
 					rMap.put("idList", idList);
@@ -302,100 +322,104 @@ public class MyPageSVCImpl implements IMypageSVC {
 				System.out.println("ltList == null");
 			}
 		} else {
-			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) + 
+			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) +
 					" / mbId = " + mbId  + " / status = " + status);
 		}
 		return null;
 	}
-	
+
 	public VideoVO selectLecVideo(int vdId) {
 //		VideoVO vd = vdDao.selectOneVideo(vdId);
 //		return vd;
 		return null;
 	}
 
-	
-	
+
+
 	@Override
 	public Map<String, Object> selectAllMyComment(int mbId, int pn) {
 		System.out.println("mpSvc selectAllMyComment().");
-//		if(mbId > 0) {
-//			int totalRecords = //qnacomDao.checkNumberOfQnaCommentsForMember(mbId);
-//					testDao.checkNumberOfQnaCommentsForMember(mbId);
-//			int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
-//			System.out.println("totalRecorde = " + totalRecords + 
-//					" / maxPG = " + maxPG);
-//			if(pn > 0 && pn <= maxPG) {
-//				Map<String, Object> rMap = new HashMap<>();
-//				int offset = (pn-1) * 10;
-//				System.out.println("pn = " + pn + ", mbId = " + mbId + 
-//							", offset = " + offset +" ,PAGE_SIZE = " + PAGE_SIZE);
-//				List<QnaCommentVO> qnacomList = 
-//						//qnacomDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
-//						testDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
-//				System.out.println("qnacomList = " + qnacomList);
-//				if(qnacomList.size() >= 0) {
-//					final int QNACOM_LIST_SIZE = qnacomList.size();
-//					List<QnaVO> qnaList = new ArrayList<>();
-//					if(QNACOM_LIST_SIZE != 0) {
-//					for (int i = 0; i < QNACOM_LIST_SIZE; i++) {
-//						QnaVO qna = qnaDao.selectOneQna(qnacomList.get(i).getQnaId());
-//						if(qna != null) {
-//							qnaList.add(qna);
-//						}else {
-//							System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-//							System.out.println("qnacomList.get(i).getQnaId() = " + 
-//															qnacomList.get(i).getQnaId());
-//							rMap.put("err", MYPAGE_ERR_MAP.get(ERR_DB_PARAM));
-//							break;
-//						}
-//					}
-//					}
-//					rMap.put("totalRecords", totalRecords);
-//					rMap.put("maxPG", maxPG);
-//					rMap.put("qnacomList", qnacomList);
-//					rMap.put("qnaList", qnaList);
-//					return rMap;
-//				} else {
-//					System.out.println("qnacomList.size() <0 :: 음수");
-//				}
-//			} else {
-//				System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
-//				System.out.println("잘못된 페이지 번호: pn = " + pn);
-//			}
-//		}
+		if(mbId > 0) {
+			int totalRecords = //comDao.checkNumberOfCommentsForMember(mbId);
+					testDao.checkNumberOfCommentsForMember(mbId);
+			int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
+			System.out.println("totalRecorde = " + totalRecords +
+					" / maxPG = " + maxPG);
+			if(pn > 0 && pn <= maxPG) {
+				Map<String, Object> rMap = new HashMap<>();
+				int offset = (pn-1) * 10;
+				System.out.println("pn = " + pn + ", mbId = " + mbId +
+							", offset = " + offset +" ,PAGE_SIZE = " + PAGE_SIZE);
+				List<CommentVO> comList =
+						//comDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
+						testDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
+				System.out.println("comList = " + comList);
+				if(comList.size() >= 0) {
+
+					// 원글제목필요함
+					List<String> titleList = new ArrayList<>();
+					final int COM_LIST_SIZE = comList.size();
+					for (int i = 0; i < COM_LIST_SIZE; i++) {
+						int id = comList.get(i).getAtId();
+						if(comList.get(i).getTableCate() == 0) { //  0:클래스
+							String title = //lecDao.selectLectureSubTitleById(id);
+											 testDao.selectLectureTitleById(id);
+							titleList.add(title);
+						} else if(comList.get(i).getTableCate() == 1) { // 1:비디오
+							String title = //vdDao.selectVideoTitleById(id);
+											 testDao.selectVideoTitleById(id);
+							titleList.add(title);
+						}
+					}
+					rMap.put("totalRecords", totalRecords);
+					rMap.put("maxPG", maxPG);
+					rMap.put("comList", comList);
+					rMap.put("titleList", titleList);
+					return rMap;
+				} else {
+					System.out.println("qnacomList.size() <0 :: 음수");
+				}
+			} else {
+				System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
+				System.out.println("잘못된 페이지 번호: pn = " + pn);
+			}
+		}
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> selectAllMyQna(int mbId, int pn) {
+	public Map<String, Object> selectAllMyCommentQna(int mbId, int pn) {
 		System.out.println("selectAllMyQna()");
 		Map<String, Object> rMap = new HashMap<>();
 		if(mbId > 0) {
 			System.out.println("mbId = " + mbId);
-			List<QnaVO> qnaList = //qnaDao.showAllQnasByMemberId(mbId);
-									testDao.showAllQnasByMemberId(mbId);
-			if(qnaList != null) {
-				System.out.println( "qnaList.size() = " + qnaList.size() );
-				int totalRecords = qnaList.size();
+			List<CommentVO> comList = //comDao.showAllCommentsQnasByMemberId(mbId);
+									testDao.showAllCommentsQnasByMemberId(mbId);
+			if(comList != null) {
+				System.out.println( "comList.size() = " + comList.size() );
+				int totalRecords = comList.size();
 				int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
 				System.out.println("maxPG = " + maxPG);
-				System.out.println("totalRecords = " + totalRecords + " / PAGE_SIZE = " + 
+				System.out.println("totalRecords = " + totalRecords + " / PAGE_SIZE = " +
 						PAGE_SIZE + " / totalRecords % PAGE_SIZE = " + (totalRecords % PAGE_SIZE) );
 				if(pn > 0 && pn <= maxPG) {
 					List<QnaVO> rtQnaList = new ArrayList<>();
 					if(totalRecords > 0 && totalRecords <= PAGE_SIZE) {
 						for (int i = 0; i < totalRecords; i++) {
-							rtQnaList.add(qnaList.get( ((pn-1)*10) + i));
+							CommentVO com = comList.get( ((pn-1)*10) + i);
+							QnaVO qna = qnaDao.selectOneQna(com.getAtId());
+							rtQnaList.add(qna);
 						}
 					}
 					else {
 						for (int i = 0; i < PAGE_SIZE; i++) {
-							rtQnaList.add(qnaList.get( ((pn-1)*10) + i));
+							CommentVO com = comList.get( ((pn-1)*10) + i);
+							QnaVO qna = qnaDao.selectOneQna(com.getAtId());
+							rtQnaList.add(qna);
 						}
 					}
-					System.out.println("totalRecords = " + totalRecords + 
-								", maxPG = " + maxPG + ", qnaList = " + qnaList );
+					System.out.println("totalRecords = " + totalRecords +
+								", maxPG = " + maxPG + ", comList = " + comList );
 					rMap.put("totalRecords", totalRecords);
 					rMap.put("maxPG", maxPG);
 					rMap.put("qnaList", rtQnaList);
@@ -403,13 +427,13 @@ public class MyPageSVCImpl implements IMypageSVC {
 				} else {
 					System.out.println("pn > 0 && pn <= maxPG :: false");
 					System.out.println("pn = " + pn + " / maxPG = " + maxPG );
-					
-				}	
+
+				}
 			} else {
 				System.out.println(MYPAGE_ERR_MAP.get(ERR_DB_PARAM));
 				System.out.println("qnaList = null / mbId = " + mbId);
-				
-			} 
+
+			}
 		} else {
 			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
 			System.out.println("mbId = " + mbId);
@@ -421,7 +445,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 	public Map<String, Object> selectAllMyCoupon(int mbId, int pn) {
 		Map<String, Object> rMap = new HashMap<>();
 		if(mbId > 0) {
-			List<CouponVO> couponList = 
+			List<CouponVO> couponList =
 						//couponDao.selectAllCouponByMbId(mbId);
 						testDao.selectAllCouponByMbId(mbId);
 			System.out.println("couponList.size() = " + couponList.size());
@@ -432,11 +456,11 @@ public class MyPageSVCImpl implements IMypageSVC {
 				if(pn > 0 && pn <= maxPG) {
 					List<CouponVO> rtCouponList = new ArrayList<>();
 					if(totalRecords > 0 && totalRecords <= PAGE_SIZE) {
-						for (int i = 0; i < totalRecords; i++) { 
+						for (int i = 0; i < totalRecords; i++) {
 							rtCouponList.add(couponList.get( ((pn-1)*10) + i) );
 						}
 					} else {
-						for (int i = 0; i < PAGE_SIZE; i++) { 
+						for (int i = 0; i < PAGE_SIZE; i++) {
 							rtCouponList.add(couponList.get( ((pn-1)*10) + i) );
 						}
 					}
@@ -448,14 +472,14 @@ public class MyPageSVCImpl implements IMypageSVC {
 				} else {
 					System.out.println("pn > 0 && pn <= maxPG :: false");
 					System.out.println("pn = " + pn);
-				}	
+				}
 			} else {
 				System.out.println("couponList.size() 는 0 이거나 음수");
 				System.out.println("mbId = " + mbId);
 			}
 		} else {
 			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
-			System.out.println("mbId = " + mbId);		
+			System.out.println("mbId = " + mbId);
 		}
 		return null;
 	}
@@ -480,33 +504,33 @@ public class MyPageSVCImpl implements IMypageSVC {
 			if(phisList != null) {
 				List<CreatorVO> creList = new ArrayList<>();
 				List<KitVO> kitList = new ArrayList<>();
-				
+
 				int deliveryStatusPaymentWaiting = 0;
 				int deliveryStatusDeliveryPreparation = 0;
 				int deliveryStatusShippingInProgress = 0;
 				int deliveryStatusDeliveryCompleted = 0;
-				/* Order confirmation 주문서확인   == Payment waiting 결제 대기중  
+				/* Order confirmation 주문서확인   == Payment waiting 결제 대기중
 					Preparing product 상품준비중 == Delivery Preparation 배송준비
 					Shipping in progress 배송중
 					Delivery completed 	배송완료		*/
 				int kitCount = 0;
-				
+
 				final int P_HIS_LIST_SIZE = phisList.size();
 				for (int i = 0; i < P_HIS_LIST_SIZE; i++) {
 					int deliveryStatus = phisList.get(i).getDeliveryStatus();
 					// 상수가 있었으면 좋겠다
 					switch(deliveryStatus) {
 						case 0: // 주문확인(결제 대기중)
-							deliveryStatusPaymentWaiting 
+							deliveryStatusPaymentWaiting
 								= (deliveryStatusPaymentWaiting + 1); break;
 						case 1: // 상품준비중(배송준비)
-							deliveryStatusDeliveryPreparation 
+							deliveryStatusDeliveryPreparation
 								= (deliveryStatusDeliveryPreparation + 1); break;
 						case 2: // 배송중
-							deliveryStatusShippingInProgress 
+							deliveryStatusShippingInProgress
 								= (deliveryStatusShippingInProgress + 1); break;
 						case 3: // 배송완료
-							deliveryStatusDeliveryCompleted 
+							deliveryStatusDeliveryCompleted
 								= (deliveryStatusDeliveryCompleted + 1); break;
 					}
 					String creatorIds = phisList.get(i).getSellMbId();
@@ -515,13 +539,13 @@ public class MyPageSVCImpl implements IMypageSVC {
 					String[] arrayCreatorIds = creatorIds.split(",");
 					String[] arrayKitIds = kitIds.split(",");
 					kitCount = arrayKitIds.length;
-					
+
 					if(arrayCreatorIds.length >= 0 ) {
-						
+
 						for (int j = 0; j < arrayKitIds.length; j++) {
 							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
 							int intKitId = Integer.parseInt(arrayKitIds[j]);
-							
+
 							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
 							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
 											testDao.selectOneCreatorById(intCreatorId);
@@ -535,9 +559,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 					}
 				}
 				Map<String, Object> rMap = new HashMap<>();
-				int[] deliveryStatus = { deliveryStatusPaymentWaiting,  
-						deliveryStatusDeliveryPreparation, 
-						deliveryStatusShippingInProgress, 
+				int[] deliveryStatus = { deliveryStatusPaymentWaiting,
+						deliveryStatusDeliveryPreparation,
+						deliveryStatusShippingInProgress,
 						deliveryStatusDeliveryCompleted };
 				rMap.put("kitCount", kitCount);
 				rMap.put("phisList", phisList);
@@ -554,7 +578,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Map<String, Object> updateOneMemberInfo(MemberVO mb, String nickname, String ph1, String ph2, String agreeEmail, String agreeSms,
 			int postalcode, String basicAddress, String detailAddress) {
@@ -587,8 +611,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 			mb.setAgreeReceive(agreeReceive);
 			System.out.println(mb.getAgreeReceive());
 		}
-			
-		
+
+
 		if(postalcode!=0)
 			mb.setPostalCode(postalcode);
 		if(!basicAddress.isEmpty() && basicAddress!=null)
@@ -608,8 +632,8 @@ public class MyPageSVCImpl implements IMypageSVC {
 		System.out.println("svc: updateOneMember");
 		return mbDao.updateOneMemberInfo(mb);
 	}
-	
-	
+
+
 	@Override
 	public Map<String, Object> updateOneMemberPw(String email, String newPw, String newPwConfirm) {
 		System.out.println("svc: updateOneMemberPw");
@@ -628,7 +652,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		}
 		return rMap;
 	}
-	
+
 	@Override
 	public boolean updateOneMember(String email, String pw) {
 		System.out.println("svc: updateOneMemberPw");
@@ -653,12 +677,12 @@ public class MyPageSVCImpl implements IMypageSVC {
 					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
 					String[] arrayCreatorIds = creatorIds.split(",");
 					String[] arrayKitIds = kitIds.split(",");
-					
+
 					if(arrayCreatorIds.length >= 0 ) {
 						for (int j = 0; j < arrayKitIds.length; j++) {
 							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
 							int intKitId = Integer.parseInt(arrayKitIds[j]);
-							
+
 							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
 							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
 											testDao.selectOneCreatorById(intCreatorId);
@@ -702,23 +726,23 @@ public class MyPageSVCImpl implements IMypageSVC {
 			List<Map<String,Object>> phisMapList = //phisDao.selectMemberPayHistoryByBuyMbIdgdsType(mbId, payStat);
 												testDao.selectMemberPayHistoryByBuyMbIdgdsType(mbId, payStat);
 			if(phisMapList != null) {
-				final int PHIS_MAP_LIST_SIZE = phisMapList.size(); 
+				final int PHIS_MAP_LIST_SIZE = phisMapList.size();
 				for (int i = 0; i < PHIS_MAP_LIST_SIZE; i++) {
 					Map<String, Object> pMap = phisMapList.get(i);
 					int phisId = (int)pMap.get("id");
-					String phisGdsId = (String)pMap.get("gds_id"); // split 해서 잘라서 구분해야함 이미위에서 이용권이냐 키트냐로 뽑음 
-					int phisPayWay = (int)pMap.get("pay_way"); // 1 이면 신용카드 2면 카카오페이 
+					String phisGdsId = (String)pMap.get("gds_id"); // split 해서 잘라서 구분해야함 이미위에서 이용권이냐 키트냐로 뽑음
+					int phisPayWay = (int)pMap.get("pay_way"); // 1 이면 신용카드 2면 카카오페이
 					Timestamp phisDealDay = (Timestamp)pMap.get("deal_day");
 					String phisCheckSameOrder = (String)pMap.get("check_same_order"); // uuid String ver
 					int phisDeliveryStatus = (int)pMap.get("delivery_status"); // 0주문서확인 1상품준비중 2배송중 3 배송완료
 					int phisHistorySum = (int)pMap.get("pay_history_sum");
 				}
-				
-				
+
+
 			} else {
 				System.out.println("phisListMap ==  null");
 			}
-			
+
 		} else {
 			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
 			System.out.println("payStatus = " + payStatus + " / mbId = " + mbId );

@@ -21,9 +21,9 @@ public interface ICartDAO {
 	/**
 	 * @param categoryId // 0이면 이용권  1이면 키트
 	 * @param mbId
-	 * @param kitOrTicId // 이용권 or 키트 아이디 
-	 * 
+	 * @param kitOrTicId // 이용권 or 키트 아이디
+	 *
 	 */
 	int checkCartByMbIdKitId(int mbId, int kitId, int categoryId);
-	
+
 }
