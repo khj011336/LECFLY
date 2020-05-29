@@ -194,7 +194,6 @@
 	// /member/mypage.jsp
 	// 마이페이지 주문/배송 페이지로 이동
 	function mypageDelivery() {
-<%-- 		$('#homemain').load('<%=request.getContextPath()%>/member/mypage/order_manager/mypage_delivery_info.jsp'); --%>
 $('#homemain').load('<%=request.getContextPath()%>/member/mypage.jsp?dlv=on');
 	}
 	

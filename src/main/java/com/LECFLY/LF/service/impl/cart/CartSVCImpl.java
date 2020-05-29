@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.LECFLY.LF.model.dao.impl.TestGeon;
 import com.LECFLY.LF.model.dao.impl.TestGeon2;
 import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
@@ -33,40 +32,18 @@ import com.LECFLY.LF.service.inf.comment.ICommentSVC;
 public class CartSVCImpl implements ICartSVC {
 	@Autowired
 	private ICartDAO cartDAO;
-	
+
 	@Autowired
 	private IGoodsDAO gdDao;
-		
+
 	@Autowired
 	private ICommentDAO comDao;
-	
+
 	@Autowired
 	private TestGeon2 testDAO2;
-	
-	@Autowired
-	private ICreatorDAO creDao;
-	
-	@Override
-	public Map<String, List> myCartList(CartVO cartVO) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public boolean findCartGoods(CartVO cartVO) throws Exception {
-		return cartDAO.selectCountInCart(cartVO);
-	}
-
-	@Override
-	public void addGoodsInCart(CartVO cartVO) throws Exception {
-		cartDAO.insertGoodsInCart(cartVO);
-	}
-
-	@Override
-	public boolean modifyCartCnt(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public static final String[] STR_TICKET_NAME_MAP = {"", "1카테고리이용권", "3카테고리이용권", "전체이용권"};
+	public static final int[] TICKET_PRICE_MAP = { 0 , 12900, 30900, 49900};
 
 	@Override
 	public Map<String, Object> showLectureProc(int lecId) {
@@ -76,9 +53,9 @@ public class CartSVCImpl implements ICartSVC {
 			//5 5
 			int fId = lec.getFid(); // creator Foreign key
 			int cFId = lec.getId(); // class lecture Foreign Key
-			KitVO kit = testDAO2.selectOneKit(cFId); // KitDAO.selectOneKit(cFId); 
+			KitVO kit = testDAO2.selectOneKit(cFId); // KitDAO.selectOneKit(cFId);
 			List<VideoVO> vid = testDAO2.selectOneVideo(cFId); // vidDAO.selectOneKit(cFId);
-			
+
 			Map<String,Object> cMap = testDAO2.selectOneCreator(fId); //creDAO.selectOneCreator(fId);
 			String creName = (String)cMap.get("name");
 			String creNickname = (String)cMap.get("nickname");
@@ -107,91 +84,63 @@ public class CartSVCImpl implements ICartSVC {
 		return null;
 	}
 
-//	@Override
-//	public int insertNewCartRtKey(int mbId, int kitId) {
-//		CartVO cart = new CartVO(mbId, 1, kitId, 1);
-//		int rtKey = cartDAO.insertNewCartRtKey(cart);
-//		return rtKey;
-//	}
-
 	@Override
-	public Map<String, Object> showCartProc(int mbId, int kitId) {
+	public Map<String, Object> showCartProc(int mbId) {
 		System.out.println("cartSvc :: showCartProc()");
-		// 장바구니 리스트를 뽑는다. (아이디 기준으로)
-		// 장바구니에서 필요한 것 (kit의 사진 제목, 가격, 카테고리), (cre의 판매자 이름)
-		// 장바구니에서 내가 뽑고 싶은거 => <gdsId>
-		
-		// 목적은
-		// 장바구니의 리스트를 뽑는다. gdsId랑 kitId랑 같은 걸로.
-		// 키트의 리스트를 뽑는다.
-		// 크리에이터의 리스트를 뽑느다. <FK랑 참조>
-		List<CartVO> ctList = cartDAO.selectCartListByMbId(mbId);
+		List<CartVO> cartList = cartDAO.selectCartListByMbId(mbId);
 		List<CreatorVO> creList = new ArrayList<>();
-		List<KitVO> kitList = new ArrayList<>();	
-		for (int i = 0; i < ctList.size(); i++) {
-			KitVO kit = testDAO2.selectOneKitbyId( ctList.get(i).getGdsId() );
-			System.out.println("kit.get.Title()" + kit.getTitle());
-			CreatorVO cre = testDAO2.selectOneCreByfId(kit.getfId());
-			System.out.println("cre.getName()" + cre.getName());
-			creList.add(cre);
-			kitList.add(kit);
-		}
-		
+		List<KitVO> kitList = new ArrayList<>();
+		List<TicketListVO> ticketList = new ArrayList<>();
+
 		Map<String, Object> rMap = new HashMap<>();
-		rMap.put("cartList", ctList);
+		rMap.put("cartList", cartList);
 		rMap.put("kitList", kitList);
 		rMap.put("creList", creList);
-		
-		return rMap;		
+		rMap.put("ticketList", ticketList);
+		return rMap;
 	}
-
-//	@Override
-//	public int insertNewCartByMbIdTicId(int mbId, int kitId, String kitName, int kitPrice) {
-//		int categoryId = CartVO.CATEGORY_ID_KIT;
-//		Map<String, Object> rMap = new HashMap<>();
-//		
-//		int r = cartDAO.insertNewCartByMbIdTicId( categoryId, mbId, kitId, null, kitName, kitPrice);
-//		return r;
-//	}
 
 	@Override
 	public Map<String, Object> showCartByNoMbProc(int kitId) {
-		// 비회원이 등록시 하려고함 
-		//int r = cartDAO.insertNewCartForNoMb();
+		// 비회원이 등록시 하려고함
+		// 미 구현
 		return null;
 	}
 
 	@Override
-	public boolean checkCartForKitMb(int mbId, int kitId) {
-		int r = cartDAO.checkCartByMbIdKitId(mbId, kitId);
+	public boolean checkCartForKitMb(int mbId, int kitId, int categoryId) {
+		int r = cartDAO.checkCartByMbIdKitId(mbId, kitId, categoryId);
 		System.out.println("r = " + r);
 		if( r == 1 ) {
-			System.out.println("1개있음 더이만만들필요없음");
+			System.out.println("상품 1개 존재");
 			return true;
 		} else if (r > 1) {
-			System.out.println("r  == 2개이상 확인필요 무저건 한개만있어야됨");
+			System.out.println("상품 에러(1개 이상 존재)");
 		}
 		return false;
 	}
 
 	@Override
-	public int insertNewCartByMbIdTicId(int mbId, int kitId,  String gdType) {
+	public int insertNewCartByTicId(int mbId, int kitId, String gdType) {
 		String gdName = "";
 		int gdPrice = 0;
 		int categoryId = 0; // ticket
-		
+		int state = 0;
+
 		if( gdType.equals("kit") == true ) {
 			KitVO kv = gdDao.getOneKitById(kitId);
 			gdName = kv.getTitle();
 			gdPrice = kv.getPrice();
 			categoryId = 1;
+			state = 0;
 		} else { // ticket
-			TicketListVO tv = gdDao.getOneTicketById(kitId);
-			gdName = tv.getName();
-			gdPrice = tv.getPrice();
+			TicketVO tv = gdDao.getOneTicketById(kitId);
+			gdName = tv.STR_TICKET_NAME_MAP.get(kitId);
+			gdPrice = tv.TICKET_PRICE_MAP.get(kitId);
+			state = 0;
 		}
-		
-		return cartDAO.insertNewCartByMbIdTicId(categoryId, mbId, kitId, "", gdName, gdPrice);
+		return cartDAO.insertNewCartByTicId(mbId, categoryId, kitId, "", gdName, gdPrice, state);
+		//return cartDAO.insertNewCartByTicId(mbId, categoryId, kitId, "", gdName, gdPrice, state);
 
 	}
 
@@ -201,10 +150,10 @@ public class CartSVCImpl implements ICartSVC {
 		return 0;
 	}
 
-	
-	
 
-	
+
+
+
 
 
 }

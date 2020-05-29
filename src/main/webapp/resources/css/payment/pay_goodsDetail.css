@@ -1,3 +1,10 @@
+새 텍스트 문서 (2).txt
+오늘
+오전 11:23
+김
+김동현님이 항목 1개를 업로드했습니다.
+텍스트
+새 텍스트 문서 (2).txt
 /* 레퍼 ( nav, content 포함) */
 #register_wrapper {
 	margin: 0px auto;
@@ -13,7 +20,11 @@
 	display: inline-block;
 }
 
-#register_nav>.register_video {
+#register_nav > .register_video_img {
+	width: 774px;
+	height: 400px;
+}
+#goodsimgcss{
 	width: 774px;
 	height: 400px;
 }
@@ -53,15 +64,51 @@
 	letter-spacing: 3px;
 	line-height: 20px;
 	white-space: pre-line;
+	 font-weight: bold;
 }
 
 .register_soap_img {
-	display: inline-block;
 	text-align: center;
-	padding: 25px;
+	margin:25px 25px 25px 0px;
 	width: 350px;
 	height: 250px;
 	float: left;
+}
+#selftest{
+	 margin:20px 25px 25px 0px;
+}
+.register_soap_imgcb {
+	 margin:40px 25px 25px 0px;
+	width: 350px;
+	height: 250px;
+	clear: both;
+}
+#infoself{
+	 margin:25px 25px 25px 0px;
+	 font-size: 12px;
+	 font-weight: bold;
+	 letter-spacing: 3px;
+	line-height: 20px;
+		white-space: pre-line;
+}
+.register_soap_imgb {
+	position: relative;
+	text-align: center;
+	margin: 25px;
+	width: 350px;
+	height: 250px;
+	float: left;
+	bottom: 20px;
+}
+
+.register_soap_imgb {
+	position: relative;
+	text-align: center;
+	margin: 25px;
+	width: 350px;
+	height: 250px;
+	float: left;
+	bottom: 20px;
 }
 
 #register_tb {
@@ -134,8 +181,8 @@ textarea[name=feedback] {
 
 input[value=입력] {
 	position: relative;
-	bottom: 42px;
-	height: 70px;
+	bottom: 38px;
+	height: 65px;
 	width: 70px;
 	display: inline-block;
 	border-radius: 5px;
@@ -168,6 +215,7 @@ input[value=입력] {
 }
 
 #register_content .register_kit_select {
+	cursor: pointer;
 	font-weight: bold;
 	font-size: 15pt;
 }
@@ -187,7 +235,8 @@ input[value=입력] {
 	width: 250px;
 }
 
-#register_soap_title {
+#moveCart {
+	cursor: pointer;
 	width: 100px;
 	padding: 3px;
 	border: 1px solid darkgray;
@@ -197,13 +246,15 @@ input[value=입력] {
 	float: right;
 	position: relative;
 	text-align: center;
+
 }
 
-#register_soap_title:hover {
+#moveCart:hover {
 	color: white;
 }
 
 .register_like_num {
+	cursor: pointer;
 	position: relative;
 	top: 10px;
 	font-size: 12pt;
@@ -212,6 +263,7 @@ input[value=입력] {
 	border-radius: 5px;
 	color: white;
 	background-color: purple;
+	z-index: -1;
 }
 
 .fa-heart {
@@ -223,6 +275,7 @@ input[value=입력] {
 }
 
 .register_lec_pick {
+	cursor: pointer;
 	display: block;
 	padding: 10px;
 	border: 1px solid lightgray;
@@ -235,6 +288,7 @@ input[value=입력] {
 }
 
 #register_lec_apply {
+	cursor: pointer;
 	display: block;
 	padding: 10px;
 	border: 1px solid lightgray;
@@ -242,7 +296,7 @@ input[value=입력] {
 	font-weight: bold;
 	background-color: lightgray;
 	float: right;
-	width: 375px;
+	width: 353px;
 	text-align: center;
 }
 
@@ -257,4 +311,69 @@ input[value=입력] {
 
 #register_lec_apply:hover {
 	color: white;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.7);
+	transition: opacity 500ms;
+	visibility: hidden;
+	opacity: 0;
+}
+
+.overlay:target {
+	visibility: visible;
+	opacity: 1;
+}
+
+.popup {
+	text-align: center;
+	margin: 280px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	width: 400px;
+	height: 220px;
+	position: relative;
+	transition: all 5s ease-in-out;
+}
+
+.goods_detail_modal_coupon_h2 {
+	margin-top: 0;
+	padding: 15px 0px;
+}
+
+.popup .close {
+	position: absolute;
+	top: 0px;
+	right: 10px;
+	transition: all 200ms;
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #333;
+}
+
+.popup .close:hover {
+	color: black;
+}
+
+.popup .goods_detail_modal_content {
+	max-height: 200px;
+	overflow: auto;
+	text-align: center;
+}
+.goods_detail_modal_popup_content {
+	padding-top: 50px;
+}
+
+#goods_detail_modal_popup_submitbtn {
+	margin-top: 30px;
+	width: 180px;
+	height: 40px;
+	background-color: orange;
 }

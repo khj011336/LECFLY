@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<title>주문페이지</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_order.css">
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <div id="wrapper">
@@ -20,23 +19,23 @@
 					<tbody>
 						<tr>
 							<th class="ordererInfo_table_th">주문자명</th>
-							<td colspan="2" class="ordererInfo_table_td"><input
-								type="text" name="fundingPayment_name" size="20"></td>
+							<td colspan="2" class="ordererInfo_table_td">
+								<input type="text" name="fundingPayment_name" size="20" value="${member.name}" readonly>
+							</td>
 						</tr>
 						<tr>
 							<th class="ordererInfo_table_th">이메일</th>
-							<td colspan="2" class="ordererInfo_table_td"><input
-								type="email" name="fundingPayment_email" required></td>
+							<td colspan="2" class="ordererInfo_table_td">
+								<input type="email" name="fundingPayment_email" required value="${member.email}" readonly>
+							</td>
 						</tr>
 						<tr>
 							<th class="ordererInfo_table_th">휴대전화</th>
-							<td class="ordererInfo_table_td"><input type="tel"
-								name="fundingPayment_tel" required
-								pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####">
-
+							<td class="ordererInfo_table_td">
+							<input type="tel" name="fundingPayment_tel" required pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####" value="${member.phNumber}" readonly>
 							</td>
 							<td class="ordererInfo_table_td">
-								<button type="button" name="phoneIdentity_button">인증 완료</button>
+								<button type="button" name="phoneIdentity_button"disabled>인증 완료</button>
 							</td>
 						</tr>
 					</tbody>
@@ -48,69 +47,64 @@
 					<tbody>
 						<tr>
 						<td class="deliveryPlaceInfo_table_td">
-							<input type="checkbox" name="default_deliveryInfo_save" checked> 기본 배송지로 저장
+							<input type="radio" name="default_deliveryInfo_save" checked> 기본 배송지로 저장
 						</td>
 						<td class="deliveryPlaceInfo_table_td">
-							<input type="checkbox" name="new_deliveryPlaceInfo_check"> 새로운 배송지
+							<input type="radio" name="default_deliveryInfo_save"> 새로운 배송지
 						</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">배송지명</th>
-							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
-								type="text" name="deliveryPlace_name" size="20"></td>
+							<td colspan="3" class="deliveryPlaceInfo_table_td">
+								<input type="text" name="deliveryPlace_name" size="20" value="기본 배송지" readonly>
+							</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">수령자명</th>
-							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
-								type="text" name="receiver_name" size="10"></td>
+							<td colspan="3" class="deliveryPlaceInfo_table_td">
+								<input type="text" name="receiver_name" size="10" value="${member.name}" readonly>
+							</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">휴대전화</th>
 							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
 								type="tel" name="deliveryPlaceInfo_tel" required
-								pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####">
+								pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####" value="${member.phNumber}" readonly>
 							</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">추가번호(선택)</th>
-							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
-								type="tel" name="deliveryPlaceInfo_tel_add" required
-								pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="###-####-####">
+							<td colspan="3" class="deliveryPlaceInfo_table_td">
+							<input type="tel" name="deliveryPlaceInfo_tel_add" pattern="[0-10]{3}-[4-10]{4}-[7-14]{4}" title="###-####-####" value="01036845634" readonly>
 							</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">주소</th>
-							<td class="deliveryPlaceInfo_table_td"><input type="text"
-								id="fundingPayment_postcode" placeholder="우편번호"></td>
-							<td class="deliveryPlaceInfo_table_td"><input type="button"
-								name="fundingPayment_postcode_button"
-								onclick="fundingPayment_execDaumPostcode()" value="우편번호 ">
+							<td class="deliveryPlaceInfo_table_td">
+								<input type="text" id="fundingPayment_postcode" placeholder="우편번호" value="${member.postalCode}" readonly>
+							</td>
+							<td class="deliveryPlaceInfo_table_td">
+								<input type="button" name="fundingPayment_postcode_button" onclick="fundingPayment_execDaumPostcode()" value="우편번호 " disabled>
 							</td>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th_nbsp">&nbsp;</th>
-							<td colspan="3" class="deliveryPlaceInfo_table_td_nbsp"><input
-								type="text" id="fundingPayment_address" placeholder="주소">
+							<td colspan="3" class="deliveryPlaceInfo_table_td_nbsp">
+							<input type="text" id="fundingPayment_address" placeholder="주소" value="${member.basicAddress}" readonly>
 							</td>
 						</tr>
 						<tr>
 							<th class="deliveryPlaceInfo_table_th_nbsp">&nbsp;</th>
-							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
-								type="text" id="fundingPayment_detailAddress" placeholder="상세주소">
+							<td colspan="3" class="deliveryPlaceInfo_table_td">
+							<input type="text" id="fundingPayment_detailAddress" placeholder="상세주소" value="${member.detailAddress}" readonly>
 							</td>
 						</tr>
 						<tr>
-						<tr>
-							<th class="deliveryPlaceInfo_table_th"></th>
-							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
-								type="text" id="fundingPayment_extraAddress" placeholder="참고항목">
-							</td>
-						</tr>
-						<tr>
-							<th class="deliveryPlaceInfo_table_th"></th>
-							<td class="deliveryPlaceInfo_table_td"><input
-								type="checkbox" name="default_deliveryInfo_save" checked>
-								기본 배송지로 저장</td>
-						</tr>
+<!-- 						<tr> -->
+<!-- 							<th class="deliveryPlaceInfo_table_th"></th> -->
+<!-- 							<td colspan="3" class="deliveryPlaceInfo_table_td"><input -->
+<!-- 								type="text" id="fundingPayment_extraAddress" placeholder="참고항목"> -->
+<!-- 							</td> -->
+<!-- 						</tr> -->
 						<tr>
 							<th class="deliveryPlaceInfo_table_th">배송요청 사항</th>
 							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
@@ -129,7 +123,7 @@
 					<img src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
 				</a>
 				<div class="orderfunding_imgInfo">
-					<a class="orderfunding_a"> 
+					<a class="orderfunding_a">
 						<strong><c:out value="${ct.categoryId[STR_CATEGORY_ID]}"  default="회원권"/></strong><br>
 					 	<strong>${ct.gdsName}</strong>
 					</a>
@@ -147,7 +141,7 @@
 						<th class="paymentInfo_table_th">결제수단</th>
 						<td class="paymentInfo_table_td"><input type="radio"
 							name="paymentMethod" value="creditCard">신용카드 <input
-							type="radio" name="paymentMethod" value="kakaoPay">카카오페이
+							type="radio" name="paymentMethod" value="">카카오페이
 							<input type="radio" name="paymentMethod" value="payCo">페이코
 						</td>
 					</tr>
@@ -161,8 +155,8 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td class="paymentInfo_table_td_point">현재 보유 쿠폰:<span
-							class="point_color"> 5</span>개
+						<td class="paymentInfo_table_td_point">현재 보유 쿠폰:
+							<span class="point_color"> 0 </span>개
 						</td>
 						<td></td>
 					</tr>
@@ -193,8 +187,8 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-    	// 주소찾기 
-    	
+    	// 주소찾기
+
     	function fundingPayment_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -229,7 +223,7 @@
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
                     document.getElementById("fundingPayment_extraAddress").value = extraAddr;
-                
+
                 } else {
                     document.getElementById("fundingPayment_extraAddress").value = '';
                 }
@@ -242,14 +236,10 @@
             }
         }).open();
     }
-    
-    	function movePaymentFinished() {
-    		$('#homemain').load('<%=request.getContextPath()%>/payment/paymentFinished.jsp');
-		}
+
 	</script>
 
 	<div id="footer" class="footer">
 		<%@ include file="../common/footer.jsp"%>
 	</div>
 </div>
-

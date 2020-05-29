@@ -3,27 +3,31 @@
  */	
  	$(document).ready(function() {
  		
- 		$("#tabs-mom-1").mouseenter(function() {
+ 		$("#tabs-mom-1").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-2").css("display", "none");
  			$("#tabs-3").css("display", "none");
  			$("#tabs-4").css("display", "none");
  			$("#tabs-1").css("display", "block");
  		});
  		
- 		$("#tabs-mom-2").mouseenter(function() {
+ 		$("#tabs-mom-2").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-1").css("display", "none");
  			$("#tabs-3").css("display", "none");
  			$("#tabs-4").css("display", "none");
  			$("#tabs-2").css("display", "block");
  		});
- 		$("#tabs-mom-3").mouseenter(function() {
+ 		$("#tabs-mom-3").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-1").css("display", "none");
  			$("#tabs-2").css("display", "none");
  			$("#tabs-4").css("display", "none");
  			$("#tabs-3").css("display", "block");
  		});
  		
- 		$("#tabs-mom-4").mouseenter(function() {
+ 		$("#tabs-mom-4").on("click", function(e) {
+ 			e.preventDefault();
  			$("#tabs-1").css("display", "none");
  			$("#tabs-2").css("display", "none");
  			$("#tabs-3").css("display", "none");
