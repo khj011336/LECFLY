@@ -28,8 +28,8 @@
 						<tbody>
 <%-- 						<c:if test="${not empty cartViewList}"> 카드 없어요!! </c:if> --%>
 						<c:forEach var="gd" items="${cartViewList}" varStatus="vs">
-							<input type="hidden" name="tic_id" value="${gd.Id}">	
-							<tr>
+							<input type="hidden" name="tic_id" value="${gd.id}">	
+							<tr id="ctTr_${gd.id}">
 								<td id="shoppingCart_td" class="checkbox">
 									<input type="checkbox" class="check-one check">
 								</td>
@@ -92,15 +92,18 @@
 		<script type="text/javascript">
 		$(document).ready(function() {
 			$("#moveOrder").on("click", function() {
-				var URLHD = '${pageContext.request.contextPath}';
-				var url = URLHD + 'pay_order.LF';
+				
 				var ticId = $('input[name=tic_id]').val();
-				console.log("ticId = " + ticId);
-				var params = "ticId = " + ticId;
+				console.log("ticId = " + ticId);				
 				$.ajax({
 					type: 'POST',
-					url: url,
-					data: params,
+					url: '${pageContext.request.contextPath}' + '/pay_order.LF',							
+					contentType: 'application/json',
+					data: JSON.stringify({
+							"ticId": ticId,
+							"totalPts": '1',
+							
+					}),
 					success: function(res, status, xhr) {
 						alert("성공");
 						console.log(res);

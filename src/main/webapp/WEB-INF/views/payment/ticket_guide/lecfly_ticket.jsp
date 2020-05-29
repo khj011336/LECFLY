@@ -9,8 +9,44 @@
 
 <script type="text/javascript">
 	var gIntName = 0;
+	var gTicket = null;
 	function showPayMenu(intName) {
 		gIntName = intName;
+		
+		switch(gIntName) {
+			case 1: // 메뉴1
+				gTicket = {
+						"gdsId": gIntName - 1,
+						"gdsName": "1카테고리 회원권",
+						"gdType": 0,
+						"gdsImgPath": "resources/images/tickets/ticket_0.png",
+						"gdsPrice": 12900,
+						"gdsCnt": 1
+				};
+				break;
+			case 2:
+				gTicket = {
+						"gdsId": gIntName - 1,
+						"gdsName": "3카테고리 회원권",
+						"gdType": 0,
+						"gdsImgPath": "resources/images/tickets/ticket_1.png",
+						"gdsPrice": 30900,
+						"gdsCnt": 1
+				};
+				break;
+			case 3:
+				gTicket = {
+						"gdsId": gIntName - 1,
+						"gdsName": "무제한 회원권",
+						"gdType": 0,
+						"gdsImgPath": "resources/images/tickets/ticket_2.png",
+						"gdsPrice": 49900,
+						"gdsCnt": 1
+				};
+				break;	
+				
+		}
+		
 		location.href = "#lecfly_ticket_modal";
 	}
 </script>	
@@ -217,9 +253,11 @@
 							url: '${pageContext.request.contextPath}' + '/pay_order.LF',							
 							contentType: 'application/json',
 							data: JSON.stringify({
-									"kitId": gIntName,
-									"totalPts": '1',
-									
+									"via" : "fromBaro",
+									"size": 1,
+									"totalPts": 1,
+									"totalPrice": gTicket.gdsPrice,
+									"data": [ gTicket ]									
 							}),							
 							success: function(res2, status2, xhr2) {
 								console.log(res2);

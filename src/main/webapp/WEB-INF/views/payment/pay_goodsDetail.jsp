@@ -2,49 +2,7 @@
 	pageEncoding="UTF-8"%>
 <title>상품 상세페이지</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_goodsDetail.css">
-<script type="text/javascript">
 
-	$(document).ready(function() {
-		$("#moveCart").on("click", function() {
-			var URLHD = '${pageContext.request.contextPath}/';
- 			var url = URLHD+'pay_cart.LF';
- 			var kitId = $("input[name=kit_id]").val();
- 			var param = "kitId=" + kitId + "&gdType=kit";
- 			$.ajax({
-				type: 'POST',
-				url : url,
-				data: param,
-				dataType: "JSON",
-				success: function(res, status ,xhr){
-					// res == 1 키트 Id 존재 / 0 이면 존재하지 않음(장바구니 페이지로 이동)
-					var r = res.c;
-					console.log("r = " + r);
-					if (r == 0) {
-						alert("상품이 등록되었습니다 !");
-						$("#homemain").load('${pageContext.request.contextPath}' + '/show_cart.LF');
-					} else if( r == 1 || r == 2 ) {
-						location.href = "#goods_detail_modal";
-					} else {
-						if( r == 3 )
-						$("#homemain").load('${pageContext.request.contextPath}' + '/login.LF');
-					}
-				},
-				error: function(status, xhr) {
-					console.log("실패");
-				}
-			});	
-		});
-	});
-	
-	// 별점 추가
-	$('#register_review a').click(function() {
-		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
-		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-		return false;
-	});
-
-	
-</script>
 <div id="register_wrapper">
 	<div id="register_nav">
 		<div class="register_video_img">

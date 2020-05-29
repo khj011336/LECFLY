@@ -98,18 +98,49 @@ public class PaymentController {
 	public String showPayOrder(HttpSession ses,@RequestBody Map<String,Object> poData, Model model) {
 		
 		System.out.println("poMap: " + poData);
-			MemberVO mb = (MemberVO)ses.getAttribute("memeber");
+			MemberVO mb = (MemberVO)ses.getAttribute("member");
+			
+			System.out.println(">>po mb = " + mb);
+			
 			if(mb != null) {
 			int mbId = mb.getId();
-			int totalPrice = (Integer)poData.get("totalPrice");
-			String totalPts = (String)poData.get("totalPts");
+			//int totalPrice = (Integer)poData.get("totalPrice");
+			//String totalPts = (String)poData.get("totalPts");			
+			//System.out.println("totalPts: " + totalPts);
+			
+			String via = (String)poData.get("via"); // 루트
+			
+			model.addAttribute("pd", poData);
+			
+//			"via" : "fromBaro",
+//			"size": 1,
+//			"totalPts": 1,
+//			"totalPrice": gTicket.gdsPrice,
+//			"data": [ gTicket ]
+//			if( via.equals("fromBaro") ) {
+//				
+//				List<Map<String,Object>> dataList = (List<Map<String,Object>>)poData.get("data");
+////				"gdsId": gIntName - 1,
+////				"gdsName": "1카테고리 회원권",
+////				"gdType": 0,
+////				"gdsImgPath": "resources/images/tickets/ticket_0.png",
+////				"gdsPrice": 12900
+//				Map<String,Object> poticket = dataList.get(0);
+//				String pogdsTitle = (String) poticket.get("gdsName");
+//				
+//			} else if( via.equals("fromCart") ) {
+//				
+//			} else {
+//				System.out.println("from error!");
+//			}
+			
 			model.addAttribute("mbId", mbId);
-			model.addAttribute("totalPrice", totalPrice);
-			model.addAttribute("totalPts", totalPts);
+			//model.addAttribute("totalPrice", totalPrice);
+			return "payment/pay_order.pays";
+			
 			} else { // mb == null이면 
-				return "payment/pay_order.pays";
-			}
-			return "member/login";
+				return "member/login";				
+			}			
 	}
 	
 	// 회원이 세션 로그인 후, 강의 상세페이지로 이동 할 수 있다.

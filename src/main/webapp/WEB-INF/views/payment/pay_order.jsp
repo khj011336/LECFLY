@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_order.css">
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <div id="wrapper">
 	<div id="fundingPayment_wrapper">
 		<div id="fundingPayment_main_title">
@@ -118,13 +119,13 @@
 		<div id="fundingPayment_sidebar">
 			<div id="orderfundingInfo_title">주문 상품</div>
 			<div class="orderfundingInfo_set">
-			<c:forEach var="ct" items="${ctList}" varStatus="vs">
+			<c:forEach var="ct" items="${pd.data}" varStatus="vs">
 				<a class="orderfunding_img" target="_target" href="javascript:void(0);" onclick="pageContext.request.contextPath/payment">
 					<img src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
 				</a>
 				<div class="orderfunding_imgInfo">
 					<a class="orderfunding_a"> 
-						<strong><c:out value="${ct.categoryId[STR_CATEGORY_ID]}"  default="회원권"/></strong><br>
+						<strong>${ct.gdType == 0 ? '회원권': '키트'}</strong><br>
 					 	<strong>${ct.gdsName}</strong>
 					</a>
 					<div class="orderfunding_cnt">구매수량 <c:out value="${ct.gdsCnt}" default="1"/> 개</div>
@@ -162,7 +163,7 @@
 					</tr>
 					<tr>
 						<th class="paymentInfo_sum_th">상품금액</th>
-						<td colspan="2" class="paymentInfo_sum_td">210,000원</td>
+						<td colspan="2" class="paymentInfo_sum_td">${pd.totalPrice}원</td>
 					</tr>
 					<tr>
 						<th class="paymentInfo_sum_th">할인금액</th>
@@ -174,7 +175,7 @@
 					</tr>
 					<tr>
 						<th class="paymentInfo_sum_th_last">전체 주문금액</th>
-						<td colspan="2" class="paymentInfo_sum">210,000원</td>
+						<td colspan="2" class="paymentInfo_sum">${pd.totalPrice}</td>
 					</tr>
 				</table>
 			</div>
@@ -182,13 +183,12 @@
 		<div id="fundingPayment_order_button">
 			<p class="fundingPayment_desc">위 주문 내용을 확인 하였으며, 회원 본인은 결제에
 				동의합니다.</p>
-			<a href="javascript:void(0)" onclick="movePaymentFinished()"
-				class="fundingPayment_confirm_order"> 주문하기 </a>
+			<a href="javascript:void(0)" id="goFinish" class="fundingPayment_confirm_order"> 주문하기 </a>
 		</div>
 	</div>
+</div>
 	<script type="text/javascript">
-    	// 주소찾기 
-    	
+		// 주소찾기
     	function fundingPayment_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -236,11 +236,68 @@
             }
         }).open();
     }
-    
+		
+    	// 카카오페이 결제
+    		$(document).ready(function() {
+    			$("#goFinish").on("click", function() {
+    				var IMP = window.IMP; // 생략가능
+    		        IMP.init('imp94738326'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+    		        var msg;
+    		        var name = '${member.name}';
+    		        var email = '${member.email}';
+    		        var tel = '${member.phNumber}';
+    		        var addr = '${member.basicAddress}';
+    		        var postcode = '${member.postalCode}';
+    		        var amount = ${pd.totalPrice};
+    		        IMP.request_pay({
+    		            pg : 'kakaopay', // 결제방식
+    		            pay_method : 'card', // 결제수단
+    		            merchant_uid : 'merchant_' + new Date().getTime(),
+    		            name : 'LecFly 클래스 결제', // order 테이블에 들어갈 주문명 혹은 주문 번호
+    		            amount : amount, //결제 금액
+    		            buyer_email : email,   //구매자 eamil
+    		            buyer_name : name, // 구매자 이름
+    		            buyer_tel : tel, // 구매자 전화번호
+    		            buyer_addr : addr, // 구매자 주소
+    		            buyer_postcode : postcode, // 구매자 우편번호
+    		           m_redirect_url : 'http://localhost:8081/LECFLY/home.jsp' // 결제 완료 후 보냄 컨트롤러의 메소드 명
+    		       }, function(rsp) {
+    		           if ( rsp.success ) { // 성공시
+    		               jQuery.ajax({
+    		                   url: $('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF'), 
+    		                   type: 'POST',
+    		                   dataType: 'json',
+    		                   data: {
+    		                       imp_uid : rsp.imp_uid
+    		                       //기타 필요한 데이터가 있으면 추가 전달
+    		                   }
+    		               }).done(function(data) {
+    		                   //[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
+    		                   if ( everythings_fine ) {
+    		                       msg = '결제가 완료되었습니다.';
+    		                       msg += '\n고유ID : ' + rsp.imp_uid;
+    		                       msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+    		                       msg += '\결제 금액 : ' + rsp.paid_amount;
+    		                       msg += '카드 승인번호 : ' + rsp.apply_num;
+    		                       
+    		                       alert(msg);
+    		                       
+    		                     //성공시 이동할 페이지
+    		                     $('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF');
+    		                   } else {
+    		                       //[3] 아직 제대로 결제가 되지 않았습니다.
+    		                       //[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
+    		                   }
+    		               });
+    		               
+    		           } else {
+    		               msg = '결제에 실패하였습니다.';
+    		               msg += '에러내용 : ' + rsp.error_msg;
+    		               //실패시 이동할 페이지
+    		               $('#homemain').load('${pageContext.request.contextPath}' + '/pay_order.LF');
+    						alert(msg);
+    					}
+    		       });
+				});
+			});
 	</script>
-
-	<div id="footer" class="footer">
-		<%@ include file="../common/footer.jsp"%>
-	</div>
-</div>
-
