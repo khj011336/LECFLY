@@ -3,6 +3,7 @@ package com.LECFLY.LF.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +64,8 @@ public class CscenterController {
 
 	@Autowired
 	private FileSVCImpl fsSvc;
-	
+	@Autowired
+	private ICommentSVC ctSvc;
 //	@Autowired
 //	private IMemberSVC mbSvc;
 	
@@ -148,42 +150,51 @@ public class CscenterController {
 		if( qa != null ) {
 			System.out.println("게시글 상세조회 성공 " + qa);
 			model.addAttribute("qna", qa);
-//			String qaFilePath = qa.getFile();
-//			int fpsCount = -1;
-//			if( qaFilePath != null && qaFilePath.isEmpty()) {
-//				String fps[] = null;
-//				if( qaFilePath.indexOf(ICscenterFileSVC.MULTI_SEP) != -1 ) {
-//					fps = qaFilePath.split("\\" + ICscenterFileSVC.MULTI_SEP);
-//					fpsCount = fps.length;
-//				} else {
-//					fpsCount = 1;
-//					fps = new String[]{qaFilePath};
-//				}
-//				model.addAttribute("fps", fps);
-//			} else {
-//				//첨부파일 없는 정상 게시글 상세보기
-//				fpsCount = 0;
-//			}
-//			model.addAttribute("fpsCount", fpsCount);
+
 			model.addAttribute("pn", pn);
 			// 댓글 등록
 			
 			//댓글 리스트
-			List<CommentVO> qcList = cmSvc.selectCommentsForOrderNumAsc(2, qa.getId());
-			if(qcList != null ) {
-				System.out.println("댓글 상세조회 성공 " + qcList);
-				model.addAttribute("qcSize", qcList.size());
-				model.addAttribute("qnaComment", qcList);
-			}else {
-				System.out.println("댓글 상세조회 실패 " + qcList);
-				model.addAttribute("msg", "댓글리스트 조회 실패");
+//			/*List<CommentVO> qcList = cmSvc.selectCommentsForOrderNumAsc(2, qa.getId());
+//			if(qcList != null ) {
+//				System.out.println("댓글 상세조회 성공 " + qcList);
+//				model.addAttribute("qcSize", qcList.size());
+//				model.addAttribute("qnaComment", qcList);
+//			}else {
+//				System.out.println("댓글 상세조회 실패 " + qcList);
+//				model.addAttribute("msg", "댓글리스트 조회 실패");
+//			}
+//			return "cscenter/cs_qna_receive.ho";
+//			
+//		} else {
+//			model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
+//			return "redirect:cs_qna.ho";
+//		}*/
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String comment = "";
+			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(2,  qa.getId());
+			//comment += "<div style=\"padding: 40px;\">";
+			for (int i = 0; i < ctList.size(); i++) {
+				CommentVO ctori = ctList.get(i);
+				String dep = "";
+				int margin = 0;
+				margin = 30;
+				if(ctori.getDepth() != 0) {
+					dep = "ㄴ";
+					margin = margin - ctori.getDepth() * 10;
+				} 
+				comment += "			<div style='display:inline-block;margin-top:10px; width:120px; "+(ctori.getDepth()==0?"'":" padding-left:"+ctori.getDepth()*10+"px;'")+">"+dep+"<image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n</div>" + 
+						"				<div style=\"display:inline-block;margin-top:10px; width:500px;  margin-left:"+margin+"px;\"><label style=\"width: 500px; \">" + ctori.getComment() + "</label>\r\n" +
+						"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
+						"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" class=\"fas fa-comments\"></i>" + 
+						"				</div><div id='udner_ct_form'></div>";
 			}
-			return "cscenter/cs_qna_receive.ho";
-			
-		} else {
-			model.addAttribute("msg", "게시글 상세조회 실패 - " + id);
-			return "redirect:cs_qna.ho";
-		}
+			//comment += "</div>";	
+			model.addAttribute("qcSize", ctList.size());
+			model.addAttribute("comment", comment);
+		
+	}
+		return "cscenter/cs_qna_receive.ho";	
 	}
 	// QnA 글 수정하기
 	@RequestMapping(value = "/cs_edit_qna.LF", method = {RequestMethod.GET, RequestMethod.POST})

@@ -349,6 +349,7 @@ input:focus {
 	display: table-cell;
 	vertical-alighn: middle;
 	padding: 0 0px 45px 10px;
+	max-width: 282px;
 }
 
 .main_video_block_rec:first-child { /* 비디오 리스트_ 추천 강의 비디오블럭 first */
@@ -375,29 +376,43 @@ input:focus {
 .main_video_block_row { /* 비디오 리스트_ 비디오 row */
 	display: table-row;
 	table-layout: fixed;
-/* 	float: left; */
+	float: left;
 }
-
+.main_video_thumb_rec, .main_video_thumb {
+	overflow : hidden;
+}
 .main_video_thumb_rec img { /* 비디오 리스트_추천강의 썸네일 */
 	width: 100%;
 	height: 450px;
 	max-width: 340px;
 	
 }
-
+.main_video_thumb_rec img:hover{
+	transform:scale(1.1);
+	transition:transform .5s;
+}
 .main_video_thumb img { /* 비디오 리스트_일반강의 썸네일 */
 	width: 100%;
 	height: 180px;
 	max-width: 300px;
+	overflow: hidden;
 }
-
-.main_video_info { /* 비디오 리스트_정보창 래퍼 */
+.main_video_thumb img:hover {
+	transform:scale(1.1);
+	transition:transform .2s;
+}
+.main_video_info_lec { /* 비디오 리스트_정보창 래퍼 */
 	padding: 10px 0;
 	text-align: justify;
 	max-width: 350px;
 	margin: 0px;
 }
-
+.main_video_info { /* 비디오 리스트_정보창 래퍼 */
+	padding: 10px 0;
+	text-align: justify;
+	max-width: 282px;
+	margin: 0px;
+}
 .main_video_info_category { /* 비디오 리스트_카테고리 */
 	display: inline-block;
 	font-size: 1.0em;
@@ -515,3 +530,4 @@ input:focus {
 .search_wrapper {
 	min-height: 700px;
 }
+

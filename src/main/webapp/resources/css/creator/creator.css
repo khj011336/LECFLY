@@ -272,9 +272,18 @@ margin-top: 19px;
     line-height: 1.5;
 }
 .CRname{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* 여러 줄 자르기 - 2줄 제한*/
+	text-align: left;
+	word-wrap: break-word;
     height: 30px;
+    width: 330px;
     font-size: 20px;
     font-weight: bold;
+       
+       
 }
 .CRstatus{
     height: 25px;
@@ -1224,6 +1233,7 @@ span.order_sheet, span.order_finish {
 
 .goods img {
 	width: 130px;
+	height: 110px;
 	margin-right: 5px;
 	float: left;
 }

@@ -75,12 +75,22 @@ public interface IAdminLectureSVC {
 	int selectCreatorApprovalCnt();
 	int selectQnaCommentCnt();
 	List<CategoryLectureStatVO> selectCategoryLectureCnt();
-	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
-	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
-	boolean delectLectureforIds(ArrayList<Integer> checkList);
 	Map<String, Integer> checkLectureMaxPageNumberSearch(Map<String, Object> searchMap);
+	// 상세조회
 	List<LectureVO> selectAllLectureSearch(Map<String, Object> searchMap);
 	List<LectureVO> selectAllLectureByApproval(int pageNumber);
 	List<LectureVO> selectAllLectureByLike(int pageNumber);
 	List<LectureVO> selectAllLectureByApprovalDone(int pageNumber);
+	// 승인 일괄 처리
+	boolean updateLectureApprovalforIds(ArrayList<Integer> checkList);
+	boolean updateMemberApprovalforIds(ArrayList<Integer> checkList);
+	boolean updateCreatorApprovalforIds(ArrayList<Integer> checkList);
+	// 승인 거절 일괄 처리
+	boolean updateLectureDisapprovalforIds(ArrayList<Integer> checkList);
+	boolean updateMemberDisapprovalforIds(ArrayList<Integer> checkList);
+	boolean updateCreatorDisapprovalforIds(ArrayList<Integer> checkList);
+	// 일괄 삭제 처리
+	boolean deleteLectureforIds(ArrayList<Integer> checkList);
+	boolean deleteMemberforIds(ArrayList<Integer> checkList);
+	boolean deleteCreatorforIds(ArrayList<Integer> checkList);
 }

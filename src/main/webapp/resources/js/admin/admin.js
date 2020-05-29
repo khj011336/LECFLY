@@ -1,5 +1,7 @@
 //$(document).ready(function() {
 //window.addEventListener("load",function() { 
+
+	// 사이드네비 목록 선택
 	$(".sidebar-dropdown > a").click(function() {
 		$(".sidebar-submenu").slideUp(200);
 		if ($(this).parent().hasClass("active")) {
@@ -11,7 +13,8 @@
 			$(this).parent().addClass("active");
 		}
 	});
-
+	
+	// 사이드네비 닫기
 	$("#close-sidebar").click(function() {
 		$(".page-wrapper").removeClass("toggled");
 	});
@@ -25,12 +28,14 @@
 			$("input[name=checked]").prop("checked", false);
 		}
 	};
-
+	
+	// 전체선택
 	function clickAllCheckBtn() {
 		$("#checkAll").prop("checked", true);
 		checkAll();
 	};
-
+	
+	// 전체선택취소
 	function unclickAllCheckBtn() {
 		$("#checkAll").prop("checked", false);
 		checkAll();
@@ -52,6 +57,19 @@
 			}
 		}
 	};
+	
+	// (공통)long 시간 -> date 출력형식변경
+	function longToDate(val){  
+		  var date = new Date(val); 
+		  var yyyy=date.getFullYear().toString(); 
+		  var mm = (date.getMonth()+1).toString();
+		  var dd = date.getDate().toString(); 
+
+		  var Str = '';
+		  Str += yyyy + '-' + (mm[1] ? mm : '0' + mm[0]) + '-' +(dd[1] ? dd : '0' + dd[0]);
+		  return Str;
+	};
+	
 	// (공통) 검색할 숫자가 한자리인 경우 0 붙이기
 	var leadingZeros = function (date, num) {
 		 var zero = '';
@@ -102,13 +120,12 @@
 	$("input[name='start_date']").val("2020-01-01");
 	$("input[name='end_date']").val(ed);
 
-
 	var check = document.getElementById("checkAll");
 	check.onclick = checkAll;
 	
-	/////////////////////////////////////////////////조회 
-	
-	$("#update_approval_lecture").click(function() {
+//////////////////////////////////////////////////////////// 
+	$(".btn_filter").click(function() {
+		
 		if(checkCheckbox() == false){
 			return;
 		}
@@ -117,40 +134,43 @@
 		$('input[name="checked"]:checked').each(function(i) {
 			checkArray.push($(this).val());
 		});		
-		// 파람으로 보낼 정보들 저장
-// 		var params = {
-// 				"checkList" : checkArray,
-// 		}
-		// ajax 호출
-		$.ajax({
-			url : "admin_update_approval_lecture.LF",
-			contentType: 'application/json',
-			dataType: "json",
-			type: "post",
-			data: JSON.stringify(checkArray), 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-		location.reload();
-	});
-	$("#update_disapproval_lecture").click(function() {
-		if(checkCheckbox() == false){
+		
+		var btn = $(this).attr('id');
+		var url = "";
+		switch (btn) {
+		case "update_approval_lecture":
+			url = "admin_update_approval_lecture.LF";
+			break;
+		case "update_disapproval_lecture":
+			url = "admin_update_disapproval_lecture.LF";
+			break;
+		case "delete_lecture_list":
+			url = "admin_delete_lecture_list.LF";
+			break;
+		case "update_approval_member":
+			url = "admin_update_approval_member.LF";
+			break;	
+		case "update_disapproval_member":
+			url = "admin_update_disapproval_member.LF";
+			break;	
+		case "delete_member_list":
+			url = "admin_delete_member_list.LF";
+			break;	
+		case "update_approval_creator":
+			url = "admin_update_approval_member.LF";
+			break;	
+		case "update_disapproval_creator":
+			url = "admin_update_disapproval_member.LF";
+			break;	
+		case "delete_creator_list":
+			url = "admin_delete_creator_list.LF";
+			break;		
+		default:
 			return;
+			break;
 		}
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// ajax 호출
 		$.ajax({
-			url : "admin_update_disapprove_lecture.LF",
+			url : url,
 			contentType: 'application/json',
 			dataType: "json",
 			type: "post",
@@ -164,33 +184,8 @@
 		});
 		location.reload();
 	});
-	$("#delete_lecture_list").click(function() {
-		if(checkCheckbox() == false){
-			return;
-		}
-		// 배열 선언 및 체크된 리스트 저장 
-		var checkArray = [];
-		
-		$('input[name="checked"]:checked').each(function(i) {
-			checkArray.push($(this).val());
-		});
-		
-		// ajax 호출
-		$.ajax({
-			url : "admin_delete_lecture_list.LF",
-			contentType: 'application/json',
-			dataType: "json",
-			type: "post",
-			data: JSON.stringify(checkArray), 
-			success: function(res) {
-				console.log(res);
-			},
-			error: function(request, status, error) {
-				console.log("send checkedlist error");
-			}
-		});
-		location.reload();
-	});
+	
+	// 강의 상세 조회
 	$("#search_filter_btn").click(function() {
 		var p = $("input[name='pn']").val();
 		var sd = $("input[name='start_date']").val();
@@ -218,13 +213,13 @@
 			data: JSON.stringify(params), 
 			success: function(res) {
 				console.log(res);
-//				// 결과 가져오기
+			// 결과 가져오기
  				var results = res.lecList;
  				var listSize = res.listSize;
  				var maxPn = res.maxPn;	
  				var totalRecords = res.totalRecords;
  				var pn = res.pn;
-// // 			// 결과 출력
+ 			// 결과 출력
  				$('#page_result_cnt').html(listSize);
  				$('#all_result_cnt').html(totalRecords);
  				var resultTable = formatTable(results);
@@ -236,6 +231,7 @@
 			}
 		});
 	});
+	// 강의 검색결과 작성
 	function formatTable(list) {
 		var fmt = '<tr class="admin_table_head" style="text-align: center">'+
 			'<th width=2%><input type="checkbox" id="checkAll" onclick="checkAll()"/></th> '+
@@ -285,15 +281,13 @@
 		});
 		return fmt;
 	};
-	function longToDate(val){  // long 시간 -> date 출력형식변경
-		  var date = new Date(val); 
-		  var yyyy=date.getFullYear().toString(); 
-		  var mm = (date.getMonth()+1).toString();
-		  var dd = date.getDate().toString(); 
 
-		  var Str = '';
-		  Str += yyyy + '-' + (mm[1] ? mm : '0' + mm[0]) + '-' +(dd[1] ? dd : '0' + dd[0]);
-		  return Str;
-	};
-	
+//	$("input[name=adminsearch]").keydown(function(e){
+//	if (e.keyCode === 13) {
+//	var currentVal = $(this).val();
+//	console.log(currentVal);
+//	var selector = "p:contains("+ currentVal +")";
+//	$(selector).cilck;
+//	}
+//});
 //});	

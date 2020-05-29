@@ -1,6 +1,7 @@
 package com.LECFLY.LF.service.impl.creator;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,11 @@ import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ILectureDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
+import com.LECFLY.LF.service.inf.comment.ICommentSVC;
 import com.LECFLY.LF.service.inf.creator.ILectureSVC;
 @Service
-public class LectureSVCImpl{
+public class LectureSVCImpl implements ILectureSVC{
 	final int INPUT_EMPTY_CHECK = 3;
 	final int LECTURE_CHECK_VAR_SIZE = 8;
 	@Autowired
@@ -159,5 +162,28 @@ public class LectureSVCImpl{
 				model.addAttribute(LcVO);
 			}
 		}
+	}
+	public String tempCommentList(ICommentSVC ctSvc, int CFId, int lecCategory) {
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String comment = "";
+			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(lecCategory, CFId);
+			comment += "<div style=\"padding: 40px;\">";
+			for (int i = 0; i < ctList.size(); i++) {
+				CommentVO ctori = ctList.get(i);
+				String dep = "";
+				int margin = 0;
+				margin = 30;
+				if(ctori.getDepth() != 0) {
+					dep = "ㄴ";
+					margin = margin - ctori.getDepth() * 10;
+				} 
+				comment += "			<div style='display:inline-block;margin-top:4px; width:160px; "+(ctori.getDepth()==0?"'":" padding-left:"+ctori.getDepth()*10+"px;'")+">"+dep+"<image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n</div>" + 
+						"				<div style=\"display:inline-block;margin-top:4px; width:400px;  margin-left:"+margin+"px;\"><label style=\" \">" + ctori.getComment() + "</label>\r\n" +
+						"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
+						"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
+						"				</div><div id='udner_ct_form'></div>";
+			}
+			comment += "</div>";
+			return comment;
 	}
 }
