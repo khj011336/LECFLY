@@ -129,13 +129,13 @@
 					<img src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
 				</a>
 				<div class="orderfunding_imgInfo">
-					<a class="orderfunding_a"> 
+					<a class="orderfunding_a">
 						<strong><c:out value="${ct.categoryId[STR_CATEGORY_ID]}"  default="회원권"/></strong><br>
-					 	<strong>${ct.gdsName}</strong>
+					 	<strong>${ct.gdsId}</strong>
 					</a>
-					<div class="orderfunding_cnt">구매수량 <c:out value="${ct.gdsCnt}" default="1"/> 개</div>
+					<div class="orderfunding_cnt">구매수량 <c:out value="${ct.gdCnt}" default="1"/> 개</div>
 					<div>
-						<span class="orderfunding_price">${ct.gdsPrice}<em class="orderfunding_won">원</em></span>
+						<span class="orderfunding_price">${ctSize}<em class="orderfunding_won">원</em></span>
 					</div>
 				</div>
 			</c:forEach>
@@ -193,8 +193,8 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-    	// 주소찾기 
-    	
+    	// 주소찾기
+
     	function fundingPayment_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -229,7 +229,7 @@
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
                     document.getElementById("fundingPayment_extraAddress").value = extraAddr;
-                
+
                 } else {
                     document.getElementById("fundingPayment_extraAddress").value = '';
                 }
@@ -242,7 +242,7 @@
             }
         }).open();
     }
-    
+
     	function movePaymentFinished() {
     		$('#homemain').load('<%=request.getContextPath()%>/payment/paymentFinished.jsp');
 		}
@@ -252,4 +252,3 @@
 		<%@ include file="../common/footer.jsp"%>
 	</div>
 </div>
-

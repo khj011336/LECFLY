@@ -139,6 +139,20 @@
     			});
     		});
     	});
+        $(function() {
+            $("#imgProc").on('change', function(){
+                readURL(this);
+            });
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+               var reader = new FileReader();
+               reader.onload = function (e) {
+                  $('#preImage').attr('src', e.target.result);
+               }
+               reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
     
 </head>
@@ -152,9 +166,9 @@
 	    <!--각종 약관들? 이 페이지 넘어오기전에 새로운 페이지에서 처리한단.-->
 	    <div id="cnm_wrap2">
 	    	<div id="cnm_pic">
-	            <img src="resources/imges/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
+	            <img id="preImage" src="resources/imges/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
 <!-- 	          	<input type="button" value="EDIT"> -->
-	          	<input type="file" name="cnm_upload_pic" placeholder="사진 추가" size='64'>
+				<input type="file" accept="image/*" id="imgProc" name="cnm_upload_pic" placeholder="사진 추가" size='64'>
 	        </div>
 	        
 		    <div id="cnm_table">

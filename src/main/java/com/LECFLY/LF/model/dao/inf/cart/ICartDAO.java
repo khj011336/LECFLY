@@ -10,7 +10,7 @@ import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 
 public interface ICartDAO {
-	int insertNewCartByMbIdTicId(int categoryId, int mbId, int kitOrTicId, String uuid, String ticketName, int ticketPrice);
+	int insertNewCartByMbIdTicId(int categoryId, int mbId, int kitOrTicId, String uuid);
 	// 회원이 장바구니의 목록을 조회할 수 있다.
 	public List<CartVO> selectCartListByMbId(int mbId) throws DataAccessException;
 	public List<TicketVO> selectTicketList(int ticId) throws DataAccessException;
@@ -26,6 +26,5 @@ public interface ICartDAO {
 	public int insertNewCartRtKey(CartVO cart);
 	CartVO selectOneCartByUUId(int mbId, String uuid);
 	int checkCartByMbIdKitId(int mbId, int kitId);
-	List<CartVO> selectCartListByCategoryIdMbId(int categoryId, int mbId);
-	
+
 }
