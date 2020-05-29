@@ -251,15 +251,15 @@ public class AdminController {
 	@RequestMapping(value = "/admin_lecture.LF")
 	public String adminLecture(Model model,
 			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
-		List<LectureVO> lecList = adLecSvc.selectAllLecture(pageNumber);
-		if(lecList != null && rMap != null) {
-			model.addAttribute("listSize", lecList.size());
-			model.addAttribute("lecList", lecList);
-			model.addAttribute("maxPn", rMap.get("maxPg"));
-			model.addAttribute("totalRecords", rMap.get("totalRecords"));
-			model.addAttribute("pn", pageNumber);
-		}
+//		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
+//		List<LectureVO> lecList = adLecSvc.selectAllLecture(pageNumber);
+//		if(lecList != null && rMap != null) {
+//			model.addAttribute("listSize", lecList.size());
+//			model.addAttribute("lecList", lecList);
+//			model.addAttribute("maxPn", rMap.get("maxPg"));
+//			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+//			model.addAttribute("pn", pageNumber);
+//		}
 		return "admin/adminLecture/admin_lecture.ad";
 	}
 	// 관리자 강의관리(전체조회)
@@ -427,12 +427,34 @@ public class AdminController {
 	public String adminMember() {
 		return "admin/adminMember/admin_member.ad";
 	}
+
 	// 관리자 회원리스트 출력
 	@RequestMapping(value = "/admin_member_list.LF", method = RequestMethod.GET)
 	public String adminMemberListProc(Model model, 
-			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber,
+			@RequestParam(value = "o",required = false, defaultValue = "0") int order) {
 		Map<String,Integer> rMap = adMbSvc.checkMaxPageNumber();
-		List<MemberVO> mbList = adMbSvc.selectAllMember(pageNumber);
+		List<MemberVO> mbList = new ArrayList<>();
+		switch (order) {
+		case 0: // 가입오래된순
+			System.out.println("회원_가입오래된순");
+			mbList = adMbSvc.selectAllMember(pageNumber);
+			break;
+		case 1: // 신규가입순
+			System.out.println("회원_신규가입순");
+			mbList = adMbSvc.selectAllMemberByNew(pageNumber);
+			break;	
+		case 2: // 정렬 승인대기순
+			System.out.println("회원_승인대기순");
+			mbList = adMbSvc.selectAllMemberByApproval(pageNumber);
+			break;	
+		case 3: // 정렬 승인완료
+			System.out.println("회원_승인완료순");
+			mbList = adMbSvc.selectAllMemberByApprovalDone(pageNumber);
+			break;
+		default:
+			break;
+		}
 		if(mbList != null && rMap != null) {
 			model.addAttribute("listSize", mbList.size());
 			model.addAttribute("mbList", mbList);
@@ -449,8 +471,8 @@ public class AdminController {
 		for (Integer id : checkList) {
 			System.out.println(id); // 수정할 id 값들 전달
 		}
-		boolean mb = adLecSvc.updateMemberApprovalforIds(checkList);
-		boolean cb = adLecSvc.updateCreatorApprovalforIds(checkList);
+		boolean mb = adLecSvc.updateMemberApprovalforIds(checkList); // id
+		boolean cb = adLecSvc.updateCreatorApprovalforIds(checkList); // fid
 		if( !mb && !cb) {
 			System.out.println("승인완료");
 		} else {

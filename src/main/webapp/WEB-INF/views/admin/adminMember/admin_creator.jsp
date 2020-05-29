@@ -36,7 +36,7 @@
 		</tr>
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" id="search_filter_btn_creator">상세조회</button>
+<!-- 		<button type="button" id="search_filter_btn_creator">상세조회</button> -->
 		<button type="button" onclick="location.href='admin_creator_list.LF'">전체조회</button>
 	</div>
 </div>
@@ -51,8 +51,8 @@
 		<li>
 			<button onclick="clickAllCheckBtn()">전체 선택</button>
 			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
-			<button class="btn_filter" id="update_approval_creator"> 승인 완료</button>
-			<button class="btn_filter" id="update_disapproval_creator">승인거절</button> |
+<!-- 			<button class="btn_filter" id="update_approval_creator"> 승인 완료</button> -->
+<!-- 			<button class="btn_filter" id="update_disapproval_creator">승인거절</button> | -->
 			<button class="btn_filter" id="delete_creator_list">삭제</button>
 		</li>
 	</ul>	

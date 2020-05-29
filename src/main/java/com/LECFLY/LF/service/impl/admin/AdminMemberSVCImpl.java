@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.admin.IAdminMemberDAO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
-import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.model.vo.virtual.MemberStatVO;
 import com.LECFLY.LF.service.inf.admin.IAdminMemberSVC;
@@ -118,6 +117,27 @@ public class AdminMemberSVCImpl implements IAdminMemberSVC {
 	@Override
 	public List<MemberStatVO> statCountMemberByMonth() {
 		return amDao.statCountMemberByMonth();
+	}
+
+	@Override
+	public List<MemberVO> selectAllMemberByApproval(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<MemberVO> mbList = amDao.searchMemberForAllByApproval(offset, AD_PAGE_SIZE);
+		return mbList;
+	}
+
+	@Override
+	public List<MemberVO> selectAllMemberByApprovalDone(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<MemberVO> mbList = amDao.searchMemberForAllByApprovalDone(offset, AD_PAGE_SIZE);
+		return mbList;
+	}
+
+	@Override
+	public List<MemberVO> selectAllMemberByNew(int pageNumber) {
+		int offset = (pageNumber -1)*AD_PAGE_SIZE;
+		List<MemberVO> mbList = amDao.searchMemberForAllByNew(offset, AD_PAGE_SIZE);
+		return mbList;
 	}
 
 }
