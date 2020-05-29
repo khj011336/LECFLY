@@ -64,8 +64,11 @@
 
 	<div class="container1" style="height: 300px;">
 	<c:forEach items="${bannerList}" var="bn">
+	<!-- cre_goods_detail로 입력받은 id값으로 가는 코드 -->
         <div><img src="resources/imges/banner/${bn.fileName}"><a href="${pageContext.request.contextPath}/goods_detail.LF?CFId=${bn.fileLectureId}">클래스 바로가기</a></div>
+	<!-- cre_goods_detail로 고정된 id=90으로 가는 코드 -->
 <%--          <div><img src="resources/imges/banner/${bn.fileName}"><a href="${pageContext.request.contextPath}/goods_detail.LF?CFId=90">클래스 바로가기</a></div> --%>
+	<!-- pay_goods_detail로 입력받은 id값으로 가는 코드 -->
 <%--         <div><img src="resources/imges/banner/${bn.fileName}"><a href="${pageContext.request.contextPath}/pay_goodsDetail.LF?lecId=${bn.fileLectureId}">클래스 바로가기</a></div> --%>
     </c:forEach>
     </div>
