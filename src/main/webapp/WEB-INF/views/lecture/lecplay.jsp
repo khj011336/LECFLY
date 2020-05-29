@@ -87,8 +87,9 @@
 					<div class="PvideoContent">
 						<c:forEach begin="0" end="${videoList.size()-1}" varStatus="index">
 							<div
-								class='alter <c:out value="${index.index == 0? '' : 'Limg'}" /> '
-								onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList[index.current].info}','${videoList[index.current].duration}','${videoList[index.current].title}')">
+								 class='alter <c:out value="${index.index == 0? '' : 'Limg'}" />'
+								onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList[index.current].info}'
+								,'${videoList[index.current].duration}','${videoList[index.current].title}')">
 								<img
 									src="${crPath}${fn:split(videoList[index.current].imgPath,'-')[0]}"
 									alt="img" class='playimgs'
