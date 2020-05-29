@@ -6,26 +6,24 @@
 	<div class="mypage_bottom_contents">
 	<c:if test="${not empty phisList}">
 		<div class="mypage_table">
-		
-			<c:forEach var="phis" items="phisList" varStatus="vs">
 			<table border="0">
-
+				<c:forEach var="phis" items="phisList" varStatus="vs">
+					
 				<tr>
-					<th rowspan="3" style='width: 250px;'><img src="<c:out value="${kitList.get(vs.index).imgPath}" />" width="240px" height="125px"></th>
-					<td colspan="2"><b><c:out value="${kitList.get(vs.index).title}" /></b></td><td></td><td><button>주문상세조회</button></td>
+					<th rowspan="3" style='width: 250px;'><img src="<c:out value="${kitList[vs.index].imgPath}" />" width="240px" height="125px"></th>
+					<td colspan="2"><b><c:out value="${kitList[vs.index].title}" /></b></td><td></td><td><button>주문상세조회</button></td>
 				</tr>
 				<tr>
-					<td>판매자:</td><td><c:out value="${creList.get(vs.index).nickname}" /></td><td>주문번호 : <c:out value="${phis.checSameOrder}" /></td><td>주문일자 : <fmt:formatDate value="${phis.dealDay}"  pattern="yyyy.MM.dd" /></td>
+					<td>판매자:</td><td><c:out value="${creList[vs.index].nickname}" /></td><td>주문번호 : <c:out value="" /></td><td>주문일자 : <fmt:formatDate value="${phis.dealDay}"  pattern="yyyy.MM.dd" /></td>
 				</tr>
 				<tr>
-					<td>수량: </td><td><c:out value="${kitCount}"/>개</td><td>총 결제금액:</td><td><c:out value="${phis.payHistorySum}"/>원</td>
+					<td>수량: </td><td><c:out value="${phis.buyProductCount}"/>개</td><td>총 결제금액:</td><td><c:out value="${phis.payHistorySum}"/>원</td>
 				</tr>
 				<tr>
 					<td></td>
 				</tr>
+				</c:forEach>
 			</table>
-			</c:forEach>
-		
 		</div>
 	</c:if>
 	

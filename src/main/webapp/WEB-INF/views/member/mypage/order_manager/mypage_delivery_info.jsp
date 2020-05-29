@@ -1,7 +1,7 @@
 <!-- 배송 정보 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <c:if test="${not empty phisList}">     --%>
+<c:if test="${not empty phisList}">    
 	<div class="mypage_bottom_info">
 		<h2 class="mypage_bottom_title">배송 정보</h2>
 		<div class="mypage_bottom_contents">
@@ -31,8 +31,8 @@
 				</div>
 			</div>
 			<div class="dilivery_status_chart">
-				<%@ include file="delivery_stat1.jsp"%>
+<%-- 				<%@ include file="delivery_stat.jsp"%> --%>
 			</div>
 		</div>
 	</div>
-<%-- </c:if> --%>
+</c:if>

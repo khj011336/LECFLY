@@ -39,10 +39,10 @@
 						<td><c:out value="${(pn-1) * 10 + vs.index}"/></td>
 						<td><c:out value="${coupon.couponName}" default="쿠폰" /></td>
 						<td><c:out value="${coupon.discount}"/></td> <!-- Property [discount] not found on type [java.lang.String] -->
-						<td><c:out value="${coupon.applyTo}" default="모든회원" /></td>
+						<td><c:out value="${couponApplyList[vs.index]}" default="모든회원" /></td>
 
-						<td><c:out value="${coupon.useCheck eq 0 ? 'O': 'X'}" /></td>
-						<td><fmt:formatDate value="${coupon.createdDay}" pattern="yyyy.MM.dd HH:mm" /></td>
+						<td><c:out value="${strCanUse[vs.index]}" /></td>
+						<td><fmt:formatDate value="${coupon.endDay}" pattern="yyyy.MM.dd HH:mm" /></td>
 					</tr>
 					</c:forEach>
 				</table>

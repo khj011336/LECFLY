@@ -15,7 +15,7 @@
 					<td colspan="2"><b><c:out value="${kitList.get(vs.index).title}" /></b></td><td></td><td><button>주문상세조회</button></td>
 				</tr>
 				<tr>
-					<td>판매자:</td><td><c:out value="${creList.get(vs.index).nickname}" /></td><td>주문번호 : <c:out value="${phis.checSameOrder}" /></td><td>주문일자 : <fmt:formatDate value="${phis.dealDay}"  pattern="yyyy.MM.dd" /></td>
+					<td>판매자:</td><td><c:out value="${creList.get(vs.index).nickname}" /></td><td>주문번호 : <c:out value="${phis.checkSameOrder}" /></td><td>주문일자 : <fmt:formatDate value="${phis.dealDay}"  pattern="yyyy.MM.dd" /></td>
 				</tr>
 				<tr>
 					<td>수량: </td><td><c:out value="${kitCount}"/>개</td><td>총 결제금액:</td><td><c:out value="${phis.payHistorySum}"/>원</td>

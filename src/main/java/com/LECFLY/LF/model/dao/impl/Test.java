@@ -3,20 +3,24 @@ package com.LECFLY.LF.model.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
+import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
-import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
+import com.LECFLY.LF.model.vo.member.CommentVO;
 
 @Repository
 public class Test {
@@ -41,6 +45,21 @@ public class Test {
 		}
 		return null;
 	}
+	
+	public static final String SQL_SELECT_VIDEO_TITLE_BY_ID = 
+			"select title from video where id = ?";
+	
+	public String selectVideoTitleById(int id) {
+		try {
+			System.out.println(SQL_SELECT_VIDEO_TITLE_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_VIDEO_TITLE_BY_ID, String.class, id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	//                            』
 	
@@ -84,7 +103,7 @@ public class Test {
 	public CreatorVO selectOneCreatorById(int id) {
 		try {
 			System.out.println(SQL_SELECT_ONE_CREATOR_BY_ID + " / id = " + id);
-			jtem.queryForObject(SQL_SELECT_ONE_CREATOR_BY_ID, 
+			return jtem.queryForObject(SQL_SELECT_ONE_CREATOR_BY_ID, 
 					BeanPropertyRowMapper.newInstance(CreatorVO.class), id);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
@@ -97,21 +116,20 @@ public class Test {
 	
 	/** */
 	
-	//    『     QnaCommentMysqlDAOImpl 가져가세요
+	//    『     CommentMysqlDAOImpl 가져가세요
 
 	// 세현추가 0515
-	public static final String SQL_CHECK_NUMBER_OF_QNA_COMMENTS_FOR_MEMBER = 
-			"select count(*) from qna_comment where mb_id = ?";
+	public static final String SQL_CHECK_NUMBER_OF_COMMENTS_FOR_MEMBER = 
+			"select count(*) from comments where mb_id = ? and table_cate = 0 or table_cate = 1";
 	// 세현추가 0515
-	public static final String SQL_SELECT_ALL_QNA_COMMENT_FOR_ID_OFFSET_LIMIT = 
-			"select * from qna_comment where mb_id = ? order by writed_day desc limit ?, ?";
-
+	public static final String SQL_SELECT_ALL_COMMENT_FOR_ID_OFFSET_LIMIT = 
+			"select * from comments where mb_id = ? and table_cate = 0 or table_cate = 1 order by created_at desc limit ?, ?";
+	
 	//@Override /** 세현 추가*/
-	public int checkNumberOfQnaCommentsForMember(int mbId) {
-		System.out.println("checkNumberOfQnaCommentsForMember()");
-		try {
-			System.out.println(SQL_CHECK_NUMBER_OF_QNA_COMMENTS_FOR_MEMBER + " / mb_id = " + mbId );
-			return jtem.queryForObject(SQL_CHECK_NUMBER_OF_QNA_COMMENTS_FOR_MEMBER,
+	public int checkNumberOfCommentsForMember(int mbId) {
+		System.out.println("checkNumberOfCommentsForMember()");
+		try {			System.out.println(SQL_CHECK_NUMBER_OF_COMMENTS_FOR_MEMBER + " / mb_id = " + mbId );
+			return jtem.queryForObject(SQL_CHECK_NUMBER_OF_COMMENTS_FOR_MEMBER,
 						Integer.class, mbId);
 		}catch (DataAccessException e) {
 			System.out.println("DataAccessException");
@@ -122,13 +140,13 @@ public class Test {
 	}
 	
 	//@Override/** 세현추가 */
-	public List<QnaCommentVO> selectAllMyComment(int mbId, int offset, int limit) {
+	public List<CommentVO> selectAllMyComment(int mbId, int offset, int limit) {
 		System.out.println("selectAllMyComment()");
 		try {
-			System.out.println(SQL_SELECT_ALL_QNA_COMMENT_FOR_ID_OFFSET_LIMIT + 
+			System.out.println(SQL_SELECT_ALL_COMMENT_FOR_ID_OFFSET_LIMIT + 
 					" / mb_id = " + mbId + " / offset = " + offset + " / limit = " + limit);
-			return  jtem.query(SQL_SELECT_ALL_QNA_COMMENT_FOR_ID_OFFSET_LIMIT, 
-					BeanPropertyRowMapper.newInstance(QnaCommentVO.class), mbId, offset, limit);
+			return  jtem.query(SQL_SELECT_ALL_COMMENT_FOR_ID_OFFSET_LIMIT, 
+					BeanPropertyRowMapper.newInstance(CommentVO.class), mbId, offset, limit);
 		}catch (DataAccessException e) {
 			System.out.println("DataAccessException");
 			e.printStackTrace();
@@ -136,32 +154,40 @@ public class Test {
 		return null;
 	}		
 	
+	public static final String SQL_SELECT_COMMENTS_COMMENT_BY_ID = 
+			"select comment from comments where id = ?";
 	
-	///////////////////////       』
+	public String selectCommentCommentById(int id) {
+		try {
+			System.out.println(SQL_SELECT_COMMENTS_COMMENT_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_COMMENTS_COMMENT_BY_ID, String.class, id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
-	/** */
 	
-	//   『 QnaMysqlDAOImpl 가져가세요
-
-
-	public static final String SQL_SELECT_ALL_QNAS_BY_MEMBER_ID = 
-				"select * from qnas where mb_id = ? order by writed_day desc";
+	public static final String SQL_SELECT_ALL_COMMENTS_QNAS_BY_MEMBER_ID = 
+			"select * from comments where mb_id = ? and table_cate = 2 order by created_at desc";
 
 
 	//@Override/** 0515 세현추가 mb_id가있는 모든 qna 문장을 찾음  */
-	public List<QnaVO> showAllQnasByMemberId(int mbId) {
+	public List<CommentVO> showAllCommentsQnasByMemberId(int mbId) {
 		try{
-			return jtem.query(SQL_SELECT_ALL_QNAS_BY_MEMBER_ID, 
-				BeanPropertyRowMapper.newInstance(QnaVO.class), mbId);
+			return jtem.query(SQL_SELECT_ALL_COMMENTS_QNAS_BY_MEMBER_ID, 
+				BeanPropertyRowMapper.newInstance(CommentVO.class), mbId);
 		} catch (DataAccessException e) {
 			System.out.println("DataAccessException");
 			e.printStackTrace();
 		}
 		return null;
 	}
-
-	/////////////////////////////////	 』
 	
+	
+	
+	///////////////////////       』
 	
 	/** */
 	
@@ -181,7 +207,7 @@ public class Test {
 	
 	/** 마이페이지에서 쿠폰 조회할떄 사용하는 문장 사용한쿠폰 + 사용안한쿠폰 이 날짜순으로 섞여있다. */
 	public static final String SQL_SELECT_ALL_MY_COUPONS_BY_MBID = 
-			"SELECT * FROM COUPONS WHERE MB_ID = ? ORDER BY END_DAY";
+			"SELECT * FROM COUPONS WHERE MB_ID = ?";
 	
 //	/** 사용한다면 ?? 마이페이지에서 사용한 쿠폰 리스트 뽑을떄 출력*/
 //	public static final String SQL_SELECT_ALL_USE_MY_COUPONS_BY_MBID = 
@@ -193,7 +219,7 @@ public class Test {
 	
 	/** 사용하지않은쿠폰(사용가능한 쿠폰의 갯수를 세어주는 함수) */
 	public static final String SQL_COUNT_NOT_USE_COUPONS_BY_MBID = 
-			"SELECT COUNT(*) FORM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
+			"SELECT COUNT(*) FROM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
 	
 	public CouponVO selectOneCouponByCode (String code) {
 		System.out.println("selectOneCouponByCode()");
@@ -269,21 +295,18 @@ public class Test {
 	
 	/////////////// ILectureDAO
 	
-	public static final String SQL_SELECT_ONE_ID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
-			= "select id, category, subtitle, title_img nickname, like_count, img_path from lectures where id = ?";
+	public static final String SQL_SELECT_ONE_ID_CATEGOTY_TITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID 
+			= "select id, category, title, title_img, nickname, like_count, img_path from lectures where id = ?";
 	
-	public static final String SQL_SELECT_COUNT_LECTURES_BY_MBID = 
-			"select count(*) from lectures where fid = ?";	
-	
-	public Map<String, Object> selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById(int lecId) {
-		System.out.println("selectOneIdCategotySubtitleTitleimgNicknameLikeCountImgPathById()");
+	public Map<String, Object> selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById(int lecId) {
+		System.out.println("selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById()");
 		try {
 			System.out.println(
-					SQL_SELECT_ONE_ID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID + 
+					SQL_SELECT_ONE_ID_CATEGOTY_TITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID + 
 						" / id = " + lecId);
 			Map<String, Object> rMap = 
 					jtem.queryForMap(
-							SQL_SELECT_ONE_ID_CATEGOTY_SUBTITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID, lecId);
+							SQL_SELECT_ONE_ID_CATEGOTY_TITLE_TITLEIMG_NICKNAME_LIKECOUNT_IMGPATH_BY_ID, lecId);
 			return rMap;
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
@@ -292,23 +315,19 @@ public class Test {
 		return null;
 	}
 
+	public static final String SQL_SELECT_LECTURE_TITLE_BY_ID = 
+			"select title from lectures where id = ?";
 	
-	/**
-	 * 회원의 아이디로 검색할경우 그회원이 듣고있는 lectuer 의개수
-	 */
-	public int checkNumberOfLectureByMbId(int fId) {
-		System.out.println("checkNumberOfLectureByMbId()");
+	public String selectLectureTitleById(int id) {
 		try {
-			System.out.println(SQL_SELECT_COUNT_LECTURES_BY_MBID + " / fId = " + fId);
-			return jtem.queryForObject(SQL_SELECT_COUNT_LECTURES_BY_MBID, Integer.class, fId);
+			System.out.println(SQL_SELECT_LECTURE_TITLE_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_LECTURE_TITLE_BY_ID, String.class, id);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();
 		}
-		return 0;
+		return null;
 	}
-	
-	
 
 	///////////
 	
@@ -331,20 +350,53 @@ public class Test {
 	
 	////////// 『 TiketDAOImpl 에서 사용하세요~
 	
-	public static final String SQL_SELECT_ONE_TIKET_BY_MBID = 
+	public static final String SQL_SELECT_TIKET_BY_MBID = 
 			"SELECT * FROM TICKETS WHERE MB_ID = ?";
 	
-	public TicketVO selectOneTiketByMbId(int mbId) {
-		System.out.println("dao : selectOneTiketByMbId()");
+	public List<TicketVO> selectTiketByMbId(int mbId) {
+		System.out.println("dao : selectTiketByMbId()");
 		try {
-			System.out.println(SQL_SELECT_ONE_TIKET_BY_MBID + " / mb_id = " + mbId);
-			return  jtem.queryForObject(SQL_SELECT_ONE_TIKET_BY_MBID, TicketVO.class, mbId);
+			System.out.println(SQL_SELECT_TIKET_BY_MBID + " / mb_id = " + mbId);
+			return  jtem.query(SQL_SELECT_TIKET_BY_MBID, 
+					BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
 		} catch(DataAccessException e) {
 			System.out.println("DataAccessException..");
 			e.printStackTrace();
 		}
 		return null;
 	}
+	
+	public static final String SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID =
+			"SELECT * FROM TICKETS WHERE MB_ID = ? and (now() <= end_day)";
+	public TicketVO selectOneTiketForCanUseByMbId(int mbId) {
+		try{
+			System.out.println(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID + " / mbId = " + mbId);
+			return jtem.queryForObject(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID, 
+						BeanPropertyRowMapper.newInstance(TicketVO.class), mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	public static final String SQL_SELECT_ONE_TICKET_BY_ID = 
+			"select * from ticket where id = ?";
+
+	public TicketVO selectOneTiketById(int id) {
+		try {
+			System.out.println(SQL_SELECT_ONE_TICKET_BY_ID + " / id =" + id);
+			return jtem.queryForObject(SQL_SELECT_ONE_TICKET_BY_ID, 
+					BeanPropertyRowMapper.newInstance(TicketVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	////////////////////////////////// 』
 	
@@ -436,9 +488,10 @@ public class Test {
 	///////// 『  KitImpl 에서 사용하세요~~
 	
 	public static final String SQL_SELECT_ONE_KIT_BY_ID = 
-			"select * from kits where id = ?"; 
+			"select * from kit where id = ?"; 
 	public KitVO selectOneKitById(int id) {
 		try {
+			System.out.println(SQL_SELECT_ONE_KIT_BY_ID + " / id = " + id);
 			return jtem.queryForObject(SQL_SELECT_ONE_KIT_BY_ID, 
 					BeanPropertyRowMapper.newInstance(KitVO.class), id);
 		} catch(DataAccessException e) {
@@ -447,7 +500,89 @@ public class Test {
 		}
 		return null;
 	}
+
+
 	
 	/////// 』
+
+	/** */
 	
+	///////// 『  PayHistoryImpl 에서 사용하세요~~
+	
+	public static final String SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID = 
+			"select * from pay_histories where buy_mb_id = ?";
+	
+	public static final String SQL_SELECT_COUNT_PAYHISTORIES_BY_BUYMBID = 
+			"select count(*) from pay_histories where buy_mb_id = ?";
+	
+	public List<PayHistoryVO> selectPayHistoriesByBuyMbId(int mbId) {
+		try {
+			System.out.println(SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID + "buyMbId = " + mbId);
+			return jtem.query("SQL_SELECT_ALL_PAYHISTORIES_BY_BUYMBID",
+					BeanPropertyRowMapper.newInstance(PayHistoryVO.class),mbId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public int checkNumberOfPayHistoriesByBuyMbId(int mbId) {
+		try {
+			System.out.println(SQL_SELECT_COUNT_PAYHISTORIES_BY_BUYMBID 
+					+ "buyMbId = " + mbId);
+			
+			return jtem.queryForObject(SQL_SELECT_COUNT_PAYHISTORIES_BY_BUYMBID, 
+					Integer.class, mbId);
+			
+		}catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	
+	public static final String SQL_SELECT_PAYHISTORIES_BY_BUYMBID_OFFSET_PAGESIZE = 
+			"select * from pay_histories where buy_mb_id = ? order by deal_day desc limit ?, ?";	
+	
+	public List<PayHistoryVO> selectAllMyPayHistory(int mbId, int offset, int pageSize) {
+		try {
+			System.out.println(SQL_SELECT_PAYHISTORIES_BY_BUYMBID_OFFSET_PAGESIZE + 
+					" / buyMbId = " + mbId + " / offset = " + offset + " / pageSzie = " + pageSize);
+			return jtem.query(SQL_SELECT_PAYHISTORIES_BY_BUYMBID_OFFSET_PAGESIZE, 
+					BeanPropertyRowMapper.newInstance(PayHistoryVO.class), mbId, offset, pageSize);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+			
+		}
+		return null;
+	}
+	
+	
+	//////////////////////
+	
+	/**  */
+	
+	/////////// cartImpl 에서 가져가세요
+	public static final String SQL_SELECT_ONE_CART_BYID = 
+			"select * from cart where id = ?";
+	
+	public CartVO selectOneCartById(int id) {
+		try {
+			System.out.println(SQL_SELECT_ONE_CART_BYID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_ONE_CART_BYID,
+					BeanPropertyRowMapper.newInstance(CartVO.class), id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException.. ");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	//////
+
+
 }

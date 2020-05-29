@@ -28,7 +28,7 @@ public class PayHistoryVO {
 	/** 결제날자 CURRENT_TIMESTAMP*/
 	private Timestamp dealDay;
 	/** 주문시 같이 했을경우 고유 id (주문주문 시 같이 구매한 내역일 경우 같은 번호로 표시번호)*/
-	private int checkSameOrder;
+	private String checkSameOrder;
 	/** 배송상태                               0: 주문서 확인 1:상품준비중 2: 배송중 3: 배송완료*/
 	private int deliveryStatus;
 	/** 배송요청 사항*/
@@ -36,7 +36,7 @@ public class PayHistoryVO {
 	/** 상태업데이트 날짜                 최종 배송완료 시간으로 마지막 저장	CURRENT_TIMESTAMP*/
 	private Timestamp updatedAt;
 	/** 총 결제 금액*/
-	int PayHistorySum;
+	private int payHistorySum;
 	
 	/**
 	 * 더미 
@@ -62,7 +62,7 @@ public class PayHistoryVO {
 	 */
 	public PayHistoryVO(int buyMbId, String sellMbId, int goodsType, 
 			String goodsId, int payWay, int couponId, int buyProductCount, 
-			int diliveryPrice, int checkSameOrder, int deliveryStatus, 
+			int diliveryPrice, String checkSameOrder, int deliveryStatus, 
 			String deliveryRequire, Timestamp updatedAt, int payHistorySum) {
 		this(0, buyMbId, sellMbId, goodsType, goodsId, 
 				payWay, couponId, buyProductCount, diliveryPrice, 
@@ -89,7 +89,7 @@ public class PayHistoryVO {
 	 * @param payHistorySum
 	 */
 	public PayHistoryVO(int id, int buyMbId, String sellMbId, int goodsType, String goodsId, int payWay, int couponId,
-			int buyProductCount, int diliveryPrice, Timestamp dealDay, int checkSameOrder, int deliveryStatus,
+			int buyProductCount, int diliveryPrice, Timestamp dealDay, String checkSameOrder, int deliveryStatus,
 			String deliveryRequire, Timestamp updatedAt, int payHistorySum) {
 		super();
 		this.id = id;
@@ -106,9 +106,9 @@ public class PayHistoryVO {
 		this.deliveryStatus = deliveryStatus;
 		this.deliveryRequire = deliveryRequire;
 		this.updatedAt = updatedAt;
-		PayHistorySum = payHistorySum;
+		this.payHistorySum = payHistorySum;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -209,12 +209,12 @@ public class PayHistoryVO {
 	}
 
 
-	public int getCheckSameOrder() {
+	public String getCheckSameOrder() {
 		return checkSameOrder;
 	}
 
 
-	public void setCheckSameOrder(int checkSameOrder) {
+	public void setCheckSameOrder(String checkSameOrder) {
 		this.checkSameOrder = checkSameOrder;
 	}
 
@@ -250,12 +250,12 @@ public class PayHistoryVO {
 
 
 	public int getPayHistorySum() {
-		return PayHistorySum;
+		return payHistorySum;
 	}
 
 
 	public void setPayHistorySum(int payHistorySum) {
-		PayHistorySum = payHistorySum;
+		this.payHistorySum = payHistorySum;
 	}
 
 
@@ -265,10 +265,8 @@ public class PayHistoryVO {
 				+ ", goodsId=" + goodsId + ", payWay=" + payWay + ", couponId=" + couponId + ", buyProductCount="
 				+ buyProductCount + ", diliveryPrice=" + diliveryPrice + ", dealDay=" + dealDay + ", checkSameOrder="
 				+ checkSameOrder + ", deliveryStatus=" + deliveryStatus + ", deliveryRequire=" + deliveryRequire
-				+ ", updatedAt=" + updatedAt + ", PayHistorySum=" + PayHistorySum + "]";
+				+ ", updatedAt=" + updatedAt + ", payHistorySum=" + payHistorySum + "]";
 	}
-
-
 	
 	
 }
