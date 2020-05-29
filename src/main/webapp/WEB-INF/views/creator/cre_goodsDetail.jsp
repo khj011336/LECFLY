@@ -84,7 +84,7 @@ function goTrack(Cfid){
 		<h1 id="register_kit_info">KIT 소개</h1>
 		<input type="hidden" name="kit_id" value="${kit.id}">
 		<br> <br><div id = "selftest"> <img class="kit_img" src='<c:out value="${crPath}${kit.imgPath}" default="abc.jpg"/>' onError ="this.src='resources/imges/logo/LecFly_SLOGO_W_W.png'"></div> <br> <br>
-		<p id = "infoself">소개소개소개</p>
+		<p id = "infoself">${kit.info}</p>
 		<h1 id="register_curri_info">커리큘럼</h1>
 		<table id="register_tb">
 		
@@ -101,8 +101,8 @@ function goTrack(Cfid){
 		</table>
 		<br> <br>
 		<h1 id="register_writer_info">작가소개</h1>
-		<div><img class="register_soap_imgcb" src="<c:out value='${crPath}${lec.infoImg}' default='soap.jpg' />"></div>
-		<p id="register_wri"> 테스트테스트</p>
+		<div><img class="register_soap_imgcb" src="<c:out value='${crPath}${cre.imgPath}' default='soap.jpg' />"></div>
+		<p id="register_wri"> ${cre.info}</p>
 		<br> <br>
 		<h1 id="register_review_info">후기</h1>
 		<br> <br>

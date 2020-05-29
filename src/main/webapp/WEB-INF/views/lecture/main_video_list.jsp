@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
-function gotoDetail(CFID){
-	location.href= "goods_detail.LF?CFId="+CFID;
-}
-</script>
+ 
 <style>
 .main_video_block{
 cursor: pointer;
