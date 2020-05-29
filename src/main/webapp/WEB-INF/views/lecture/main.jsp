@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<style>
+.main_video_block{
+cursor: pointer;
+}
+.main_video_block_rec{
+cursor: pointer;
+}
+</style>
+	<script>
+function gotoDetail(CFID){
+	location.href= "goods_detail.LF?CFId="+CFID;
+}
+</script>
 <div class="main_banner">
 	<c:choose>
 		<c:when test="${empty bannerList}">

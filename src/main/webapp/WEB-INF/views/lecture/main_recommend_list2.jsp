@@ -4,7 +4,7 @@
 <div class="main_video_wrapper">
 	<div class="main_video_block_row">
 		<!-- 한 행에 전시할 강의 시작점마다 -->
-		<div class="main_video_block_rec">
+		<div class="main_video_block_rec" onclick ="gotoDetail(92)">
 			<div class="main_video_thumb_rec">
 				<div class="main_video_thumb_btn">
 						<i class="far fa-heart fa-2x"></i>
@@ -25,7 +25,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="main_video_block_rec">
+		<div class="main_video_block_rec" onclick ="gotoDetail(93)">
 			<div class="main_video_thumb_rec">
 				<a href="#">
 					<div class="main_video_thumb_btn">
@@ -47,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="main_video_block_rec">
+		<div class="main_video_block_rec"  onclick = "gotoDetail(10)">
 			<div class="main_video_thumb_rec">
 				<a href="#">
 					<div class="main_video_thumb_btn">

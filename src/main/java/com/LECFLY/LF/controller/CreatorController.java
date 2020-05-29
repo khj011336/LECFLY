@@ -515,6 +515,7 @@ public class CreatorController {
 		}
 		String videoPath = "/images/2020/" + username + "/video";
 		String imgPath = "/images/2020/" + username + "/Img";
+		model.addAttribute("cre",cre);
 		model.addAttribute("crPath", imgPath);
 		model.addAttribute("viPath", videoPath);
 		model.addAttribute("lecList", Lec);
