@@ -150,23 +150,7 @@ public class CscenterController {
 		if( qa != null ) {
 			System.out.println("게시글 상세조회 성공 " + qa);
 			model.addAttribute("qna", qa);
-//			String qaFilePath = qa.getFile();
-//			int fpsCount = -1;
-//			if( qaFilePath != null && qaFilePath.isEmpty()) {
-//				String fps[] = null;
-//				if( qaFilePath.indexOf(ICscenterFileSVC.MULTI_SEP) != -1 ) {
-//					fps = qaFilePath.split("\\" + ICscenterFileSVC.MULTI_SEP);
-//					fpsCount = fps.length;
-//				} else {
-//					fpsCount = 1;
-//					fps = new String[]{qaFilePath};
-//				}
-//				model.addAttribute("fps", fps);
-//			} else {
-//				//첨부파일 없는 정상 게시글 상세보기
-//				fpsCount = 0;
-//			}
-//			model.addAttribute("fpsCount", fpsCount);
+
 			model.addAttribute("pn", pn);
 			// 댓글 등록
 			
@@ -189,7 +173,7 @@ public class CscenterController {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String comment = "";
 			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(2,  qa.getId());
-			comment += "<div style=\"padding: 40px;\">";
+			//comment += "<div style=\"padding: 40px;\">";
 			for (int i = 0; i < ctList.size(); i++) {
 				CommentVO ctori = ctList.get(i);
 				String dep = "";
@@ -199,13 +183,15 @@ public class CscenterController {
 					dep = "ㄴ";
 					margin = margin - ctori.getDepth() * 10;
 				} 
-				comment += "			<div style='display:inline-block;margin-top:4px; width:160px; "+(ctori.getDepth()==0?"'":" padding-left:"+ctori.getDepth()*10+"px;'")+">"+dep+"<image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n</div>" + 
-						"				<div style=\"display:inline-block;margin-top:4px; width:400px;  margin-left:"+margin+"px;\"><label style=\" \">" + ctori.getComment() + "</label>\r\n" +
+				comment += "			<div style='display:inline-block;margin-top:10px; width:120px; "+(ctori.getDepth()==0?"'":" padding-left:"+ctori.getDepth()*10+"px;'")+">"+dep+"<image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n</div>" + 
+						"				<div style=\"display:inline-block;margin-top:10px; width:500px;  margin-left:"+margin+"px;\"><label style=\"width: 500px; \">" + ctori.getComment() + "</label>\r\n" +
 						"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
-						"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
+						"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" class=\"fas fa-comments\"></i>" + 
 						"				</div><div id='udner_ct_form'></div>";
 			}
-			comment += "</div>";	
+			//comment += "</div>";	
+			model.addAttribute("qcSize", ctList.size());
+			model.addAttribute("comment", comment);
 		
 	}
 		return "cscenter/cs_qna_receive.ho";	
