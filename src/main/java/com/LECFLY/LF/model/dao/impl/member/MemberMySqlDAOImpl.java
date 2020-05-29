@@ -67,6 +67,7 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 			"update members set nicname=?,ph_number=?,agree_receive=?,basic_address=?,detail_address=?,postalcode=? where id=?";
 	private static final String SQL_INC_MEMBER_LOGIN_CNT="update members set login_count=login_count+1 where id=?";
 	private static final String SQL_UPDATE_MEMBER_LOGIN_DATE="update members set logined_at=now() where id=?";
+	private static final String SQL_UPDATE_MEMBER_PRO_PIC = "update members set pic=? where id=?";
 //	private static final String SQL_="";
 	
 	@Autowired
@@ -275,8 +276,10 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	// 세현 추가 마이페이지에서 회원 id, 업데이트할 사진 path 입력하면은 sql 에 업데이트 하려고함
 	@Override
 	public boolean updateMemberProfileImg(int mbId, String filePath) {
-		
-		return false;
+		System.out.println("jdbc: updateMemberProfileImg");
+		int r = this.jtem.update(SQL_UPDATE_MEMBER_PRO_PIC, filePath, mbId);
+		System.out.println("프로필 사진 업데이트 sql 지나감");
+		return r==1;
 	}
 	
 	

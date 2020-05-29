@@ -222,7 +222,7 @@ public class MemberController {
 			System.out.println("agreeReceive " + agreeReceive);
 			fiSvc.makeDir(name);
 			Map rMap = fiSvc.writeFile(cnm_upload_pic, 1, name);
-			String pic = (String)rMap.get("file");
+			String pic = "/"+(String)rMap.get("file");
 			if(logSvc.joinMember(pic, name, nickname, birth, gen,
 					email, password, ph, agreeReceive, basic_address,
 					detail_address, code)) {
@@ -445,6 +445,8 @@ public class MemberController {
 				model.addAttribute("mb", mb);
 				model.addAttribute("mbLoginNicname", mb.getNicname());
 				model.addAttribute("mpNone", "");
+				
+				// member pic path 입력
 
 				List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING);
 				if(laList != null) {
@@ -459,6 +461,8 @@ public class MemberController {
 				model.addAttribute("mbLoginNicname", mb.getNicname());
 				model.addAttribute("mpNone", "");
 			}
+			String path = "/images/2020/"+mb.getName()+"/Img";
+			model.addAttribute("pic", path);
 			return "member/mypage.ho";
 		} else {
 			// 실패시 로그인창으로~
@@ -1093,7 +1097,24 @@ public class MemberController {
 
 ////////////////////////////////////////////////////
 
-
+	// 05/29 마이페이지 프로필 사진 수정
+	@RequestMapping(value="mypage_change_pic_proc.LF", method=RequestMethod.POST) // ???/
+	@ResponseBody
+	public Map<String, Object> mypageChangePicProc(
+			HttpSession ses, Model model, MultipartFile mypageimgProc
+			) {
+		System.out.println("mypageChangePicProc()...");
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb==null)
+			return rMap;
+		rMap.put("file",fiSvc.writeFile(mypageimgProc, mb.getId(), mb.getName()).get("file"));
+		if(rMap.get("file")!=null) {
+			mpSvc.updateMemberProfileImg(mb.getId(), (String)rMap.get("file"));
+		}
+		return rMap;
+	}
+	
 
 
 
