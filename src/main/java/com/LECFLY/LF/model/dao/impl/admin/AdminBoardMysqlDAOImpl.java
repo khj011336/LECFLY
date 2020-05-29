@@ -109,7 +109,7 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 
 	// Comment 목록 보여주기
 	public static final String SQL_COMMENT_SHOWALL
-		= "select * from comments order by created_at desc";
+		= "select * from comments order by created_at asc";
 	// Comment 등록하기
 	public static final String SQL_COMMENT_INSERT_VO
 		= "insert into comments values(0, ?, ?, ?, ?, ?, ?, ?, now())";
@@ -121,7 +121,7 @@ public class AdminBoardMysqlDAOImpl implements IAdminBoardDAO{
 		= "delete comments where id = ?";
 	// Comment 페이지 조회
 	public static final String SQL_COMMENT_SHOWALL_PG
-		= "SELECT * FROM comments order by id desc limit ?, ?";
+		= "SELECT * FROM comments order by id asc limit ?, ?";
 	// Comment 갯수 카운트
 	public static final String SQL_CHECK_COMMENT_NUMBERS
 	= "select count(id) as cnt from comments";	

@@ -72,20 +72,26 @@ function goTrack(Cfid){
 		</ul>
 		<br> <br>
 		<h1 id="register_lecture_info">강의소개</h1>
+		
 		<p id="register_lec">
 			<img class="register_soap_img" src="<c:out value='${crPath}${lec.infoImg}' default='soap.jpg' />">
 			<img class="register_soap_imgb" src="<c:out value='${crPath}${lec.infoImgb}' default='soapb.jpg' />">
 <!-- 			강의소개단 -->
+			<div style="margin-left: 10px; float: center; font-size:22px; width: 700px; font-weight: bold;">
 			${lec.info}
+			</div>
+			
 		<br>
 		</p>
 		<br> <br>
 		<h1 id="register_kit_info">KIT 소개</h1>
 		<input type="hidden" name="kit_id" value="${kit.id}">
 		<br> <br><div id = "selftest"> <img class="kit_img" src='<c:out value="${crPath}${kit.imgPath}" default="abc.jpg"/>' onError ="this.src='resources/imges/logo/LecFly_SLOGO_W_W.png'"></div> <br> <br>
-		<p id = "infoself">소개소개소개</p>
+		<p id = "infoself">${kit.info}</p>
 		<h1 id="register_curri_info">커리큘럼</h1>
 		<table id="register_tb">
+		
+		<c:if test= "${not empty video }">
 		 <c:forEach begin="0" end="${video.size()-1}" varStatus="vs">
 				<tr>
 					<td class="register_td">${vs.index+1}.${video[vs.current].title}</td>
@@ -93,13 +99,13 @@ function goTrack(Cfid){
 					<td class="register_td register_tb_num">${video[vs.current].duration}분</td>
 				</tr>
 		</c:forEach>
-				 
+				 </c:if>
 		 
 		</table>
 		<br> <br>
 		<h1 id="register_writer_info">작가소개</h1>
-		<div><img class="register_soap_imgcb" src="<c:out value='${crPath}${lec.infoImg}' default='soap.jpg' />"></div>
-		<p id="register_wri"> 테스트테스트</p>
+		<div><img class="register_soap_imgcb" src="<c:out value='${crPath}${cre.imgPath}' default='soap.jpg' />"></div>
+		<p id="register_wri"> ${cre.info}</p>
 		<br> <br>
 		<h1 id="register_review_info">후기</h1>
 		<br> <br>
@@ -148,7 +154,7 @@ function goTrack(Cfid){
 	<h1 id="register_content_title">
 		<c:out value="${lec.title}" default="없음" />	
 	</h1>
-	<div id="register_wri_name">by. ${cre.nickName}</div>
+	<div id="register_wri_name">by. ${cre.nickname}</div>
 	<br> <br>
 	<p>
 		<span class="register_kit_select">&lt;준비물 KIT&gt;</span> <span

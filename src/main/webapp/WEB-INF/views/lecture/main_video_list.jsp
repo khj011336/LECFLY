@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script>
-function gotoDetail(CFID){
-	location.href= "goods_detail.LF?CFId="+CFID;
-}
-</script>
+ 
 <style>
 .main_video_block{
 cursor: pointer;
@@ -30,7 +26,7 @@ cursor: pointer;
 					</c:forEach>
 				</div> 
 				<!-- 좋아요 버튼 --> 
-				<img src="resources/imges/dummy_lec_img/art/art_2m.jpg" alt="${lec.title }">
+				<img src="/images/2020/${fn:split(lec.titleImg,'_')[1]}/Img${lec.titleImg}" alt="">
 			</div>
 			<div class="main_video_info">
 				<p class="main_video_info_category">

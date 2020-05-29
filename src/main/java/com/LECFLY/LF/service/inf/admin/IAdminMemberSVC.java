@@ -41,4 +41,7 @@ public interface IAdminMemberSVC {
 	
 	//통계파트
 	List<MemberStatVO>statCountMemberByMonth();
+	List<MemberVO> selectAllMemberByApproval(int pageNumber);
+	List<MemberVO> selectAllMemberByApprovalDone(int pageNumber);
+	List<MemberVO> selectAllMemberByNew(int pageNumber);
 }

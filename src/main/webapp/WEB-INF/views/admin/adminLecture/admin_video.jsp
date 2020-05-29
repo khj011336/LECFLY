@@ -41,7 +41,7 @@
 		
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" id="search_filter_btn_video">상세조회</button>
+		<button type="button" onclick="location.href='admin_video_list.LF'">상세조회</button>
 		<button type="button" onclick="location.href='admin_video_list.LF'">조회하기</button>
 	</div>
 </div>

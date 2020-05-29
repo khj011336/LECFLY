@@ -105,7 +105,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 		System.out.println("selectMyPageContents()..");
 		Map<String, Object> rMap = new HashMap<>(); 
 		// Str카테고리리스트 (카테고리 이용권개수에 맞춰서(티켓)), 쿠폰개수, 강의신청 목록개수
-		TicketVO ticket = //tiketDao.selectOneTiketByMbId(mbId);
+		List<TicketVO> ticket = //tiketDao.selectOneTiketByMbId(mbId);
 				 testDao.selectOneTiketByMbId(mbId);
 		if(ticket != null) {
 			/** 이거 category 어떻게되는거인가 split 으로 나눌라고하는건가 아니면 하나씩 따로따로인가 */
@@ -115,7 +115,7 @@ public class MyPageSVCImpl implements IMypageSVC {
 			if(cntCoupon >= 0) {
 				int cntLecture = testDao.checkNumberOfLectureByMbId(mbId); // 회원이듣는강의개수
 				if(cntLecture >= 0) {
-					int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
+					int cntUseCategory = ticket.get(0).getName(); // 몇개의 클래스를 고를수있는지??
 					int rtCnt = (cntUseCategory == 1 ? 
 								1 : cntUseCategory == 2 ? 
 										3 : cntUseCategory == 3 ? 
@@ -319,49 +319,51 @@ public class MyPageSVCImpl implements IMypageSVC {
 	@Override
 	public Map<String, Object> selectAllMyComment(int mbId, int pn) {
 		System.out.println("mpSvc selectAllMyComment().");
-		if(mbId > 0) {
-			int totalRecords = //qnacomDao.checkNumberOfQnaCommentsForMember(mbId);
-					testDao.checkNumberOfQnaCommentsForMember(mbId);
-			int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
-			System.out.println("totalRecorde = " + totalRecords + 
-					" / maxPG = " + maxPG);
-			if(pn > 0 && pn <= maxPG) {
-				Map<String, Object> rMap = new HashMap<>();
-				int offset = (pn-1) * 10;
-				System.out.println("pn = " + pn + ", mbId = " + mbId + 
-							", offset = " + offset +" ,PAGE_SIZE = " + PAGE_SIZE);
-				List<QnaCommentVO> qnacomList = 
-						//qnacomDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
-						testDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
-				System.out.println("qnacomList = " + qnacomList);
-				if(qnacomList.size() >= 0) {
-					final int QNACOM_LIST_SIZE = qnacomList.size();
-					List<QnaVO> qnaList = new ArrayList<>(QNACOM_LIST_SIZE);
-					for (int i = 0; i < QNACOM_LIST_SIZE; i++) {
-						QnaVO qna = qnaDao.selectOneQna(qnacomList.get(i).getQnaId());
-						if(qna != null)
-							qnaList.add(qna);
-						else {
-							System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
-							System.out.println("qnacomList.get(i).getQnaId() = " + 
-															qnacomList.get(i).getQnaId());
-							rMap.put("err", MYPAGE_ERR_MAP.get(ERR_DB_PARAM));
-							break;
-						}
-					}
-					rMap.put("totalRecords", totalRecords);
-					rMap.put("maxPG", maxPG);
-					rMap.put("qnacomList", qnacomList);
-					rMap.put("qnaList", qnaList);
-					return rMap;
-				} else {
-					System.out.println("qnacomList.size() <0 :: 음수");
-				}
-			} else {
-				System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
-				System.out.println("잘못된 페이지 번호: pn = " + pn);
-			}
-		}
+//		if(mbId > 0) {
+//			int totalRecords = //qnacomDao.checkNumberOfQnaCommentsForMember(mbId);
+//					testDao.checkNumberOfQnaCommentsForMember(mbId);
+//			int maxPG = totalRecords / PAGE_SIZE + (totalRecords % PAGE_SIZE == 0 ? 0 : 1);
+//			System.out.println("totalRecorde = " + totalRecords + 
+//					" / maxPG = " + maxPG);
+//			if(pn > 0 && pn <= maxPG) {
+//				Map<String, Object> rMap = new HashMap<>();
+//				int offset = (pn-1) * 10;
+//				System.out.println("pn = " + pn + ", mbId = " + mbId + 
+//							", offset = " + offset +" ,PAGE_SIZE = " + PAGE_SIZE);
+//				List<QnaCommentVO> qnacomList = 
+//						//qnacomDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
+//						testDao.selectAllMyComment(mbId, offset, PAGE_SIZE);
+//				System.out.println("qnacomList = " + qnacomList);
+//				if(qnacomList.size() >= 0) {
+//					final int QNACOM_LIST_SIZE = qnacomList.size();
+//					List<QnaVO> qnaList = new ArrayList<>();
+//					if(QNACOM_LIST_SIZE != 0) {
+//					for (int i = 0; i < QNACOM_LIST_SIZE; i++) {
+//						QnaVO qna = qnaDao.selectOneQna(qnacomList.get(i).getQnaId());
+//						if(qna != null) {
+//							qnaList.add(qna);
+//						}else {
+//							System.out.println( MYPAGE_ERR_MAP.get(ERR_DB_PARAM) );
+//							System.out.println("qnacomList.get(i).getQnaId() = " + 
+//															qnacomList.get(i).getQnaId());
+//							rMap.put("err", MYPAGE_ERR_MAP.get(ERR_DB_PARAM));
+//							break;
+//						}
+//					}
+//					}
+//					rMap.put("totalRecords", totalRecords);
+//					rMap.put("maxPG", maxPG);
+//					rMap.put("qnacomList", qnacomList);
+//					rMap.put("qnaList", qnaList);
+//					return rMap;
+//				} else {
+//					System.out.println("qnacomList.size() <0 :: 음수");
+//				}
+//			} else {
+//				System.out.println( MYPAGE_ERR_MAP.get(ERR_CONT_PARAM) );
+//				System.out.println("잘못된 페이지 번호: pn = " + pn);
+//			}
+//		}
 		return null;
 	}
 
