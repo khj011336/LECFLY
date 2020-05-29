@@ -154,7 +154,7 @@
 	    	<div id="cnm_pic">
 	            <img src="resources/imges/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
 <!-- 	          	<input type="button" value="EDIT"> -->
-	          	<input type="file" name="cnm_upload_pic" placeholder="사진 추가" size='64'>
+				<input type="file" accept="image/*" id="imgProc" name="cnm_upload_pic" placeholder="사진 추가" size='64'>
 	        </div>
 	        
 		    <div id="cnm_table">

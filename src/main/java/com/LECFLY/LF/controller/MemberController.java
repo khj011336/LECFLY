@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.LECFLY.LF.model.vo.LecAttendVO;
 import com.LECFLY.LF.model.vo.LecTypeVO;
@@ -31,6 +31,7 @@ import com.LECFLY.LF.model.vo.cscenter.QnaCommentVO;
 import com.LECFLY.LF.model.vo.cscenter.QnaVO;
 import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
+import com.LECFLY.LF.service.inf.creator.IFileSVC;
 import com.LECFLY.LF.service.inf.member.ILoginSVC;
 import com.LECFLY.LF.service.inf.member.IMypageSVC;
 
@@ -41,6 +42,8 @@ public class MemberController {
 	ILoginSVC logSvc;
 	@Autowired
 	private IMypageSVC mpSvc;
+	@Autowired
+	IFileSVC fiSvc;
 
 
 	// 로그인창 으로 이동했을때
@@ -105,7 +108,7 @@ public class MemberController {
 	// 회원가입하는 proc
 	//member_join.lf (proc; post; dao; 비회원)
 	@RequestMapping(value="join_member_proc.LF", method=RequestMethod.POST)
-	public String join_member_proc( HttpSession ses, Model model, String cnm_upload_pic,
+	public String join_member_proc( HttpSession ses, Model model, MultipartFile cnm_upload_pic,
 			String name, String nickname, @DateTimeFormat(pattern="yyyy-MM-dd")Date birthday,
 			String gender, String email, String password,
 			String pw_confirm, String phNumber, String phNumber2,
@@ -217,8 +220,10 @@ public class MemberController {
 				System.out.println("agree있음");
 			}
 			System.out.println("agreeReceive " + agreeReceive);
-
-			if(logSvc.joinMember(cnm_upload_pic, name, nickname, birth, gen,
+			fiSvc.makeDir(name);
+			Map rMap = fiSvc.writeFile(cnm_upload_pic, 1, name);
+			String pic = (String)rMap.get("file");
+			if(logSvc.joinMember(pic, name, nickname, birth, gen,
 					email, password, ph, agreeReceive, basic_address,
 					detail_address, code)) {
 				System.out.println(name + "회원 생성 성공");

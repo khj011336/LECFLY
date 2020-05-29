@@ -84,8 +84,9 @@ public class loginSVCImpl implements ILoginSVC {
 
 		}
 		
-		return mbDao.insertNewMember(pic, name, nicname, birthday, gender, email, password, 
+		boolean r = mbDao.insertNewMember(pic, name, nicname, birthday, gender, email, password, 
 				phNumber, agreeReceive, basicAddress, detailAddress, postalCode);
+		return r;
 	}
 	
 	@Override
