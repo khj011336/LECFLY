@@ -122,12 +122,10 @@ function goTrack(Cfid){
 		<p id="register_wri"> 테스트테스트</p>
 		<br> <br>
 		<h1 id="register_review_info">후기</h1>
-		<br> <br>
-		<p id="register_review">
-			${!empty postscript ? postscript: ''}
-		<br> <br>
-		<h1 id="register_qna_info">QnA</h1>
 		<br>
+			${!empty postscript ? postscript: ''}
+		<br>
+		<h1 id="register_qna_info">QnA</h1>
 		<div id="comment_div">
 			${!empty comment ? comment : ''}
 		</div>
