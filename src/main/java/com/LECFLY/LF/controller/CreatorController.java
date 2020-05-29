@@ -117,6 +117,7 @@ public class CreatorController {
 			videoPath = "/images/2020/" + USERNAME + "/video";
 			CreatorVO creVO = CreDAO.selectOneCreator(memberId);
 			System.out.println(creVO);
+			
 			if (creVO != null) {
 				ses.setAttribute("creator", creVO);
 				if (creVO.getStatus() == GRANT) {
@@ -129,7 +130,9 @@ public class CreatorController {
 					isCreator = REFUSE;
 				}
 			}
+			System.out.println(isCreator +"isCreator");
 		} else {
+			System.out.println(isCreator +"isCreator");
 			return "member/login";
 		}
 
@@ -181,7 +184,8 @@ public class CreatorController {
 		model.addAttribute("isCreator", isCreator);
 		model.addAttribute("crPath", imgPath);
 		model.addAttribute("LecId", id);
-		if (lec.getId() == 0) {
+		System.out.println(lec);
+		if(up ==5 ) {
 			LectureVO LecVO = LecDAO.selectOneLectureForUpdate(id);
 			model.addAttribute("Lecture", LecVO);
 		}
