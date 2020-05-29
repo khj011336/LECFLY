@@ -77,7 +77,10 @@ function goTrack(Cfid){
 			<img class="register_soap_img" src="<c:out value='${crPath}${lec.infoImg}' default='soap.jpg' />">
 			<img class="register_soap_imgb" src="<c:out value='${crPath}${lec.infoImgb}' default='soapb.jpg' />">
 <!-- 			강의소개단 -->
+			<div style="margin-left: 10px; float: center; font-size:22px; width: 700px; font-weight: bold;">
 			${lec.info}
+			</div>
+			
 		<br>
 		</p>
 		<br> <br>
