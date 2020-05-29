@@ -149,16 +149,21 @@ public class PaymentController {
 				
 				// 5.27 댓글을 위한 추가사항
 				sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String comment = "";
+				String comment = "<div id='comment_all'>";
 				List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
 				for (int i = 0; i < ctList.size(); i++) {
 					CommentVO ctori = ctList.get(i);
-					comment += "			<div"+(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
+					comment += "			<div id='ct_"+ctori.getOrderNum()+"' " +(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
 							"				<label style=\"padding-left:45px;\">" + ctori.getComment() + "</label>\r\n" +
 							"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
-							"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
-							"				</div><div id='udner_ct_form'></div>";
+							"				<input type=\"hidden\" value='"+ ctori.getId()+"'>" + 
+//							"				<i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>\r\n" + 
+							"				</div>\r\n" //+ 
+//							"				<div id='udner_ct_form'></div>"
+							;
 				}
+				comment+="</div>";
+				System.out.println(comment);
 				model.addAttribute("comment", comment);
 //				List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
 //				for (CommentVO ct : ctList) {
@@ -167,28 +172,28 @@ public class PaymentController {
 //				model.addAttribute("ctList", ctList);
 				
 				// 5.27 해당 회원이 현재 이용권을 이용하는지 확인하는 기능
-				MemberVO mb = (MemberVO)ses.getAttribute("member");
-				if(mb != null) {
-					TicketVO ticket = testDao.selectOneTiketByMbId(mb.getId());
-					if(ticket != null) {
-						int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
-						String mbStrCate = "";
-						if(cntUseCategory == 1) {
-							mbStrCate = LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
-							model.addAttribute("mbStrCate0",mbStrCate);
-						} else if(cntUseCategory == 2) {
-							String[] arrayCategories = ticket.getCategory().split("_");
-							for (int i = 0; i < arrayCategories.length; i++) {
-								mbStrCate = LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])];
-								model.addAttribute("mbStrCate"+i,mbStrCate);
-							}
-						} else if(cntUseCategory == 3) {
-							mbStrCate = LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
-							model.addAttribute("mbStrCate0",mbStrCate);
-						}
-					}
-				} else
-					model.addAttribute("mbStrCate0", null);
+//				MemberVO mb = (MemberVO)ses.getAttribute("member");
+//				if(mb != null) {
+//					TicketVO ticket = testDao.selectOneTiketByMbId(mb.getId());
+//					if(ticket != null) {
+//						int cntUseCategory = ticket.getName(); // 몇개의 클래스를 고를수있는지??
+//						String mbStrCate = "";
+//						if(cntUseCategory == 1) {
+//							mbStrCate = LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
+//							model.addAttribute("mbStrCate0",mbStrCate);
+//						} else if(cntUseCategory == 2) {
+//							String[] arrayCategories = ticket.getCategory().split("_");
+//							for (int i = 0; i < arrayCategories.length; i++) {
+//								mbStrCate = LecTypeVO.STR_CATEGORY[Integer.parseInt(arrayCategories[i])];
+//								model.addAttribute("mbStrCate"+i,mbStrCate);
+//							}
+//						} else if(cntUseCategory == 3) {
+//							mbStrCate = LecTypeVO.STR_CATEGORY[Integer.parseInt(ticket.getCategory())];
+//							model.addAttribute("mbStrCate0",mbStrCate);
+//						}
+//					}
+//				} else
+//					model.addAttribute("mbStrCate0", null);
 				
 				
 //				for (int i = 0; i < strCateList.size(); i++) {
@@ -244,17 +249,22 @@ public class PaymentController {
 			break;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String comment = "<div id='comment_all'>";
 		List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, lecId);
 		for (int i = 0; i < ctList.size(); i++) {
 			CommentVO ctori = ctList.get(i);
-			temp += "			<div"+(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
+			comment += "			<div id='ct_"+ctori.getOrderNum()+"' " +(ctori.getDepth()==0?"":" style='padding-left:"+ctori.getDepth()*20+"px'")+"><image src='resources/imges/unknown/no_profile_img.PNG' style='width:15px; heigth:15px;'/><label>" + ctori.getMbNic() + "님</label>\r\n" + 
 					"				<label style=\"padding-left:45px;\">" + ctori.getComment() + "</label>\r\n" +
 					"				<small style=\"text-align:right; color:lightgrey;\">(" + sdf.format(ctori.getCreatedAt()) +")</small>\r\n" +
-					"				<input type=\"hidden\" value='"+ ctori.getId()+"'><i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>" + 
-					"				</div><div id='udner_ct_form'></div>";
+					"				<input type=\"hidden\" value='"+ ctori.getId()+"'>" + 
+//					"				<i id=\"under_comment\" style=\"padding-left:10px\" class=\"fas fa-comments\"></i>\r\n" + 
+					"				</div>\r\n" //+ 
+//					"				<div id='udner_ct_form'></div>"
+					;
 		}
-		rMap.put("temp", temp);
-		System.out.println(temp);
+		comment+="</div>";
+		rMap.put("temp", comment);
+		System.out.println(comment);
 		return rMap;
 	}
 	

@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <title>상품 상세페이지</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_goodsDetail.css">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#moveCart").on("click", function() {
@@ -31,8 +33,6 @@
 					console.log("실패");
 				}
 			});
-
-			
 		});
 		
 		
@@ -72,30 +72,7 @@
 	 			dataType: "JSON",
 				success: function(res, status ,xhr){
 					console.log(res.result);
-					$('#comment_div').html().remove();
-					$('#comment_div').html(res.temp);
-				},
-				error: function(status, xhr){
-					alert("실패");
-				}
-			});
-		});
-		// 대댓글 달기
-		$("#submit_under_ct").on("click", function() {
-			var URLHD = '${pageContext.request.contextPath}/';
-			var url = URLHD+'insert_under_comment.LF';
-			var comment = $("textarea[name=feedback]").val();
-			var lecId = ${lec.id};
-			console.log("댓글내용" + comment + "/게시글id" + lecId);
-			var params = "ct=" + comment + "&lecId=" + lecId;
-			$.ajax({
-				type: 'POST',
-				url : url,
-				data: params,
-	 			dataType: "JSON",
-				success: function(res, status ,xhr){
-					console.log(res.result);
-					$('#comment_div').html().remove();
+					$('#comment_all').remove();
 					$('#comment_div').html(res.temp);
 				},
 				error: function(status, xhr){
@@ -104,20 +81,29 @@
 			});
 		});
 		
-		// 강의 수강페이지로 이동(비디오페이지)
-		$('#register_lec_apply').on("click", function() {
-			console.log('클릭됨');
-			var mbId = ${member.id};
-			var lecId = ${lecId};
-			var lecCate = ${strCategory};
-			var mbCate0 = ${mbStrCate0};
-			var mbCate1 = ${mbStrCate1};
-			var mbCate2 = ${mbStrCate2};
-			var URL = "${pageContext.request.contextPath}/creator_lecplay.LF?mbId="+mbId+"&lecId="+lecId+"&lecCate="+lecCate+
-			"&mbC0="+mbCate0+"&mbC1="+mbCate1+"&mbC2="+mbCate2;
-			console.log(URL);
-			location.href = URL;
-		});
+		// 대댓글 달기
+// 		$("#submit_under_ct").on("click", function() {
+// 			var URLHD = '${pageContext.request.contextPath}/';
+// 			var url = URLHD+'insert_under_comment.LF';
+// 			var comment = $("textarea[name=feedback]").val();
+// 			var lecId = ${lec.id};
+// 			console.log("댓글내용" + comment + "/게시글id" + lecId);
+// 			var params = "ct=" + comment + "&lecId=" + lecId;
+// 			$.ajax({
+// 				type: 'POST',
+// 				url : url,
+// 				data: params,
+// 	 			dataType: "JSON",
+// 				success: function(res, status ,xhr){
+// 					console.log(res.result);
+// 					$('#comment_div').html().remove();
+// 					$('#comment_div').html(res.temp);
+// 				},
+// 				error: function(status, xhr){
+// 					alert("실패");
+// 				}
+// 			});
+// 		});
 	});
 	
 	// 대댓글 입력칸?
@@ -128,13 +114,26 @@
 	
 	
 	// 별점 추가
-	$('#register_review a').click(function() {
-		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
-		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
-		return false;
-	});
-
+// 	$('#register_review a').click(function() {
+// 		$(this).parent().children("a").removeClass("on"); /* 별점의 on 클래스 전부 제거 */
+// 		$(this).addClass("on").prevAll("a").addClass("on"); /* 클릭한 별과, 그 앞 까지 별점에 on 클래스 추가 */
+// 		return false;
+// 	});
 	
+	// 강의 수강페이지로 이동(비디오페이지)
+// 	$('#register_lec_apply').on("click", function() {
+// 		console.log('클릭됨');
+// 		var mbId = ${member.id};
+// 		var lecId = ${lecId};
+// 		var lecCate = ${strCategory};
+// 		var mbCate0 = ${mbStrCate0};
+// 		var mbCate1 = ${mbStrCate1};
+// 		var mbCate2 = ${mbStrCate2};
+// 		var URL = "${pageContext.request.contextPath}/creator_lecplay.LF?mbId="+mbId+"&lecId="+lecId+"&lecCate="+lecCate+
+// 		"&mbC0="+mbCate0+"&mbC1="+mbCate1+"&mbC2="+mbCate2;
+// 		console.log(URL);
+// 		location.href = URL;
+// 	});
 </script>
 <div id="register_wrapper">
 	<div id="register_nav">
@@ -218,33 +217,7 @@
 		<h1 id="register_qna_info">QnA</h1>
 		<br>
 		<div id="comment_div">
-			${comment}
-<%-- 			<c:forEach var="rp" items="${ccList}" varStatus="vs"> --%>
-<%-- 				<br> <i class="fas fa-user"><label>${rp.mbNic}님</label></i> --%>
-<%-- 				<label style="padding-left:45px;">${rp.comment}</label> --%>
-<!-- 				<br> -->
-<%-- 				<label><fmt:formatDate value='${rp.createdAt}' pattern='yyyy-MM-dd HH:mm:ss'/></label> --%>
-<!-- 				<input type="hidden" value="rp.id"><i style="padding-left:10px" class="fas fa-comments"></i> -->
-<!-- 				<br> -->
-<%-- 			</c:forEach> --%>
-<!-- 			<table id="comment_table"> -->
-<%-- 				<c:forEach var="rp" items="${ccList}" varStatus="vs"> --%>
-<!-- 				<tr> -->
-<%-- 					<td><i class="fas fa-user"><label>${rp.mbNic}님</label></i></td> --%>
-<%-- 					<td><label style="padding-left:45px;">${rp.comment}</label></td> --%>
-<%-- 					<td><label><fmt:formatDate value='${rp.createdAt}' pattern='yyyy-MM-dd HH:mm:ss'/></label></td> --%>
-<!-- 					<td><a href="#">댓글</a></td> -->
-<!-- 				</tr> -->
-<%-- 				</c:forEach> --%>
-<!-- 				<tr> -->
-<!-- 					<td></td><td></td><td></td> -->
-<!-- 				</tr> -->
-<!-- 			</table> -->
-<%-- 			<c:forEach var="rp" items="${ccList}" varStatus="vs"> --%>
-<%-- 				<br> <i class="fas fa-user"> ${rp.mbId} <input type="date" value="<fmt:formatDate value='${rp.createdAt}' pattern='yyyy년-MM월-dd일 - HH시 mm분'/>" readonly> --%>
-<%-- 				${rp.comment} --%>
-<%-- 				</i> <br> <br> ${rp.mbNic} <br> --%>
-<%-- 			</c:forEach> --%>
+			${!empty comment ? comment : ''}
 		</div>
 		 <br>
 		<textarea name="feedback" rows="5" cols="20" placeholder="댓글을 입력해주세요"></textarea>
