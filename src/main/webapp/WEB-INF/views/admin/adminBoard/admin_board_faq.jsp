@@ -57,6 +57,7 @@
 		<li>
 			<button onclick="clickAllCheckBtn()">전체 선택</button>
 			<button onclick="unclickAllCheckBtn()">선택 취소</button> |
+			<button class="btn_filter" id="insert_faq"> 등록</button>
 			<button class="btn_filter" id="update_faq"> 수정</button>
 			<button class="btn_filter" id="delete_faq_list">삭제</button>
 		</li>
