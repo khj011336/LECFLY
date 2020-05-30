@@ -52,7 +52,7 @@
        			<div class="cls_text1"><span class="creator_h3">강의 소개하기</span></div>
        			<div id="cls_imgbox2" class="cls_imgbox2"><img src="${crPath }${Lecture.infoImg}" class="cls_imgbox2" id ="imgshow" onError ="this.src='resources/imges/unknown/l4.PNG'">
        			<input  type="file" accept="image/gif, image/jpeg, image/png"  name = "infoImgM" id ="infoimg"></div>
-       			<div id="cls_imgbox3" class="cls_imgbox2"><img src="${crPath }${Lecture.infoImg}" class="cls_imgbox2" id ="imgshowb" onError ="this.src='resources/imges/unknown/l4.PNG'">
+       			<div id="cls_imgbox3" class="cls_imgbox2"><img src="${crPath }${Lecture.infoImgb}" class="cls_imgbox2" id ="imgshowb" onError ="this.src='resources/imges/unknown/l4.PNG'">
        			<input  type="file" accept="image/gif, image/jpeg, image/png" name = "infoImgbM" id ="infoimgb"></div>
        			<div id="cls_contentbox"></div>
        		</div>

@@ -98,12 +98,12 @@ function goTrack(Cfid){
 			</div>
 			
 		<br>
-		</p>
+		 
 		<br> <br>
 		<h1 id="register_kit_info">KIT 소개</h1>
 		<input type="hidden" name="kit_id" value="${kit.id}">
 		<br> <br><div id = "selftest"> <img class="kit_img" src='<c:out value="${crPath}${kit.imgPath}" default="abc.jpg"/>' onError ="this.src='resources/imges/logo/LecFly_SLOGO_W_W.png'"></div> <br> <br>
-		<p id = "infoself">${kit.info}</p>
+		<p id = "infoself">${kit.detailInfo}</p>
 		<h1 id="register_curri_info">커리큘럼</h1>
 		<table id="register_tb">
 		
@@ -150,9 +150,9 @@ function goTrack(Cfid){
 			class="register_kit_info"><a href="#register_kit_info">구성 안내 바로보기&gt;</a></span>
 	</p>
 	<br> <br>
-	<select class = "register_kit_select">
-		<option selected="selected">선택안함</option>
-		<option>스타터를 위한 KIT (${kit.price})</option>
+	<select class = "register_kit_select" style ="overflow: hidden;  width: 270px;">
+		<option>${kit.title } (${kit.price})</option>
+		<option >선택안함</option>
 	</select>
 	<input id="moveCart" type="button" value="장바구니 담기">
 	<div id="goods_detail_modal" class="overlay">

@@ -5,12 +5,12 @@
 	$(document).ready(function() {
 		
 	});
-	function videoLoad(videoPath, info, views, title) {
+	function videoLoad(videoPath,  views, title) {
 		$("#Htext p b").text(title);
 		$("#videSource").attr("src",videoPath );
 		$("#vide")[0].load();
 		$("#vide")[0].play();
-		$("#text1 p").text(info);
+		 
 		$("#usrpick").text("조회수"+views+"명");
 	}
 	function mouseEven(path, gif, png) {
@@ -88,8 +88,7 @@
 						<c:forEach begin="0" end="${videoList.size()-1}" varStatus="index">
 							<div
 								 class='alter <c:out value="${index.index == 0? '' : 'Limg'}" />'
-								onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList[index.current].info}'
-								,'${videoList[index.current].duration}','${videoList[index.current].title}')">
+onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList[index.current].duration}','${videoList[index.current].title}')">
 								<img
 									src="${crPath}${fn:split(videoList[index.current].imgPath,'-')[0]}"
 									alt="img" class='playimgs'
@@ -110,5 +109,8 @@
 		<hr>
 	</div>
 
+
+
+		"videoLoad('/images/2020/김슬기/video/LF_김슬기_1_4_145.216667_202005291441.mp4','물레로 컵 만드는 과정을 처음부터 끝까지 담아보았어요.성형부터 굽깎기-시유하는 모습까지! 편안하게 감상해주세요','145','도자기 입문 - 어린이 도예를 위한 기초 테크닉 영상')"
 </body>
 
