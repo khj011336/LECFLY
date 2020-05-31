@@ -6,17 +6,13 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-	function goPayOrder(intName) { // 카테고리 이용권 1개인지 3개인지 전체인지 1 2 3 들어올예정
-		console.log("intName = " + intName);
-		var param = "ticName=" + intName;
 
 <script type="text/javascript">
 	var gIntName = 0;
 	var gTicket = null;
 	function showPayMenu(intName) {
 		gIntName = intName;
-
+		
 		switch(gIntName) {
 			case 1: // 메뉴1
 				gTicket = {
@@ -47,16 +43,14 @@
 						"gdsPrice": 49900,
 						"gdsCnt": 1
 				};
-				break;
-
+				break;	
+				
 		}
-
+		
 		location.href = "#lecfly_ticket_modal";
 	}
-</script>
+</script>	
 
-	}
-</script>
 <div class="CSsection">
 	<div id="CSsec_title">
 		<h2>홈페이지 안내</h2>
@@ -107,7 +101,7 @@
 				</c:forEach>
 			</div>
 
-		</div>
+		</div> 
 
 		<div id="lecflyticket_box">
 			<span style="color: gray;"> <i class="fas fa-crown fa-5x"></i>
@@ -125,8 +119,7 @@
 			이용 가능합니다.<br>
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a class="lecflyticket" onclick="goPayOrder(1)">바로가기&nbsp;&gt;</a>
-
+					<a class="lecflyticket" onclick="showPayMenu(1)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
 			<div id="lecfly_ticket_modal" class="overlay">
@@ -158,7 +151,7 @@
 			이용 가능합니다.
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a class="nav_mypage" onclick="goPayOrder(2)">바로가기&nbsp;&gt;</a>
+					<a class="lecflyticket" onclick="showPayMenu(2)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
 			<div id="lecfly_ticket_modal" class="overlay">
@@ -189,7 +182,7 @@
 			<br> Lecfly에 업로드된<br>모든 카테고리 강의를<br>무제한으로 이용 가능합니다.<br>&nbsp;
 			<div id="lecflyticket_gopay">
 				<h4>
-					<a onclick="goPayOrder(3)">바로가기&nbsp;&gt;</a>
+					<a class="lecflyticket" onclick="showPayMenu(3)">바로가기&nbsp;&gt;</a>
 				</h4>
 			</div>
 			<div id="lecfly_ticket_modal" class="overlay">
@@ -207,9 +200,9 @@
 	</div>
 </div>
 <script type="text/javascript">
-
+	
 	// // 카테고리 이용권 1개인지 3개인지 전체인지 1 2 3 들어올예정
-
+		
 		$("#lecfly_ticket_modal_popup_goCart").on("click", function() {
 			console.log("gIntName = " + gIntName);
 			var URLHD = '${pageContext.request.contextPath}/';
@@ -238,7 +231,7 @@
 				}
 			});
 		});
-
+		
 		$("#lecfly_ticket_modal_popup_goOrder").on("click", function() {
 			console.log("gIntName = " + gIntName);
 			var URLHD = '${pageContext.request.contextPath}/';
@@ -257,15 +250,15 @@
 					if( res.result == "yes") {
 						$.ajax({
 							type: 'POST',
-							url: '${pageContext.request.contextPath}' + '/pay_order.LF',
+							url: '${pageContext.request.contextPath}' + '/pay_order.LF',							
 							contentType: 'application/json',
 							data: JSON.stringify({
 									"via" : "fromBaro",
 									"size": 1,
 									"totalPts": 1,
 									"totalPrice": gTicket.gdsPrice,
-									"data": [ gTicket ]
-							}),
+									"data": [ gTicket ]									
+							}),							
 							success: function(res2, status2, xhr2) {
 								console.log(res2);
 								$('#homemain').html(res2);
@@ -302,7 +295,7 @@
 //					alert("실패");
 //				}
 //			});
-//		});
+//		});	
 
 	//$('#homemain').html(res);
 	//window.location.href = '${pageContext.request.contextPath}' + '/pay_order.LF';
