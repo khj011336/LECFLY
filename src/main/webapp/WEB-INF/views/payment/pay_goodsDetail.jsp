@@ -186,34 +186,6 @@
 		<br> <br>
 		<div id="lecture_reviews">
 			${postscript}
-<!-- 			<p id="register_review"> -->
-<!-- 				<span class="review_name">명주</span> <a href="#">★</a><a href="#">★</a><a -->
-<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
-<!-- 					class="review_week"> <small>일주일 전</small></span> <small> -->
-
-<!-- 					저렴하고 양도 적당하고 좋네요! 저는 남은 재료랑 미니하트 다 써서 몽땅 큰 비누 만들었어요~ 그런데 비누가 굳을까봐 -->
-<!-- 					초조해져서 차분히 할 수가 없는 것 같아요 계속 초초..ㅎㅎ 다음에 하면 더 잘할 수 있을 것 같아요! 감사합니다!</small> -->
-<!-- 			</p> -->
-<!-- 			<p id="register_review"> -->
-<!-- 				<span class="review_name">수현</span> <a href="#">★</a><a href="#">★</a><a -->
-<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
-<!-- 					class="review_week"> <small>일주일 전</small></span> -->
-<!-- 			</p> -->
-<!-- 			<p id="register_review"> -->
-<!-- 				<span class="review_name">건우</span> <a href="#">★</a><a href="#">★</a><a -->
-<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
-<!-- 					class="review_week"> <small>한달 전</small></span> -->
-<!-- 			</p> -->
-<!-- 			<p id="register_review"> -->
-<!-- 				<span class="review_name">세현</span> <a href="#">★</a><a href="#">★</a><a -->
-<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
-<!-- 					class="review_week"> <small>3개월 전</small></span> -->
-<!-- 			</p> -->
-<!-- 			<p id="register_review"> -->
-<!-- 				<span class="review_name">기민</span> <a href="#">★</a><a href="#">★</a><a -->
-<!-- 					href="#">★</a><a href="#">★</a><a href="#">★</a> <span -->
-<!-- 					class="review_week"> <small>1년 전</small></span> -->
-<!-- 			</p> -->
 		</div>
 		<br> <br>
 		<h1 id="register_qna_info">QnA</h1>
