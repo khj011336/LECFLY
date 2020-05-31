@@ -70,7 +70,7 @@ function goTrack(Cfid){
 <div id="register_wrapper">
 	<div id="register_nav">
 		<div class="register_video_img">
-			<img src='<c:out value="${crPath}${lec.titleImg}" default="비디오 이미지.jpg"  />' id ="goodsimgcss" alt="비디오 이미지">
+			<img src='<c:out value="${pic}${lec.titleImg}" default="비디오 이미지.jpg"  />' id ="goodsimgcss" alt="비디오 이미지">
 		</div>
 		<ul id="register_tag_ul">
 			<li class="register_tag_li"><a class="register_tag_li_a"
