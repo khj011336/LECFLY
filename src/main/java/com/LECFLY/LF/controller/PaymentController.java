@@ -283,27 +283,13 @@ public class PaymentController {
 		}
 		return "payment/pay_cart.pays";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// 회원이 주문페이지에서 결제완료페이지로 이동할 수 있다.
+	@RequestMapping(value = "pay_orderFinished.LF", method = RequestMethod.GET)
+	public String showOrderFinishedProc() {
+		System.out.println("결제완료 페이지로 이동");
+		return "payment/pay_orderFinished.pay";
+	}
 	
 	
 	 //테스트 용.

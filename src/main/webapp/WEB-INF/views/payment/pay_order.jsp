@@ -264,7 +264,7 @@
     		       }, function(rsp) {
     		           if ( rsp.success ) { // 성공시
     		               jQuery.ajax({
-    		                   url: $('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF'), 
+    		                   url: window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF', 
     		                   type: 'POST',
     		                   dataType: 'json',
     		                   data: {
@@ -283,7 +283,8 @@
     		                       alert(msg);
     		                       
     		                     //성공시 이동할 페이지
-    		                     $('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF');
+    		                     window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF';
+    		                     //$('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF');
     		                   } else {
     		                       //[3] 아직 제대로 결제가 되지 않았습니다.
     		                       //[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
@@ -294,7 +295,8 @@
     		               msg = '결제에 실패하였습니다.';
     		               msg += '에러내용 : ' + rsp.error_msg;
     		               //실패시 이동할 페이지
-    		               $('#homemain').load('${pageContext.request.contextPath}' + '/pay_order.LF');
+    		               window.location.href = '${pageContext.request.contextPath}' + '/home.LF';
+//     		               $('#homemain').load('${pageContext.request.contextPath}' + '/home.LF');
     						alert(msg);
     					}
     		       });

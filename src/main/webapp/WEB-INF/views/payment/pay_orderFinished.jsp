@@ -34,7 +34,7 @@
 					<tbody>
 						<tr>
 							<th class="orderInfo_table_th">주문자</th>
-							<td class="orderInfo_table_td">김건우</td>
+							<td class="orderInfo_table_td">${member.name}</td>
 						</tr>
 						<tr>
 							<th class="orderInfo_table_th">주문일자</th>

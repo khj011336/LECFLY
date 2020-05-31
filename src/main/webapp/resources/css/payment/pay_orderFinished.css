@@ -221,7 +221,6 @@ span.basket, span.order_sheet {
 .paymentFinished_orderPage, .paymentFinished_goHomePage {
 	display: inline-block;
 	margin: 20px 0 0;
-	padding: 15px;
 	border-radius: 5px;
 	background: #babc00;
 	color: black;
