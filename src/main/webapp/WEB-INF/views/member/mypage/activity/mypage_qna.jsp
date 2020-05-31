@@ -13,7 +13,7 @@
 					<c:forEach var="qna" items="${qnaList}" varStatus="vs">
 					<tr>
 						<td><c:out value="${((pn-1) * 10) + (vs.index + 1)}" /></td> <!-- 게시글번호 -->
-						<td><c:out value="${qna.title}"/></td> <!-- Property [title] not found on type [java.lang.String] qna 제목 -->
+						<td><c:out value="${qna.title}"/></td>
 						<td><c:out value="${qna.hits}"/></td> <!-- 조회수 -->
 						<td><c:out value="${qna.comment}"/></td> <!--  댓글수 -->
 						<td><fmt:formatDate value="${qna.writedDay}" pattern="yyyy.MM.dd HH:mm"/></td> <!-- 작성날짜 -->

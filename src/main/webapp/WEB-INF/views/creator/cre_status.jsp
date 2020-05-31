@@ -43,7 +43,7 @@ function setImageFromFile(input, expression, tempses) {
     	$(document).on("click","#fl1",function(){
     		if(!ispty()){
     			if(isCreator == 4){
-    				location.href ="creator_writing_profile.LF";
+    				location.href ="creator_writing_profile.LF?LecId="+LecId;
     			}else{
     		location.href ="creator_new_profile.LF";
     			}
@@ -52,7 +52,7 @@ function setImageFromFile(input, expression, tempses) {
     	$(document).on("click","#fl2",function(){
     		if(!ispty()){
     			if(isCreator == 4){
-    				location.href ="creator_writing_lecture.LF?LecId="+LecId;
+    				location.href ="creator_writing_lecture.LF?LecId="+LecId+"&isUpdate=5";
     			}else{
     			location.href ="creator_new_lecture.LF";
     			}
@@ -65,7 +65,7 @@ function setImageFromFile(input, expression, tempses) {
     		if(!ispty()){
     			if(${p} != 5){
     			if(isCreator == 4){
-    				ex = true; location.href ="creator_writing_lecture.LF?LecId="+LecId;
+    				ex = true; location.href ="creator_writing_lecture.LF?LecId="+LecId+"&isUpdate=5";
     			}else{
     			ex = true; location.href ="creator_new_lecture.LF";
     			}

@@ -47,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="main_video_block_rec">
+		<div class="main_video_block_rec"  onclick = "gotoDetail(10)">
 			<div class="main_video_thumb_rec">
 				<a href="#">
 					<div class="main_video_thumb_btn">

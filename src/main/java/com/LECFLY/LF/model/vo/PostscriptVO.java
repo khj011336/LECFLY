@@ -33,6 +33,18 @@ public class PostscriptVO {
 	}
 	
 	/**
+	 * normal constructor
+	 * @param classId
+	 * @param mbId
+	 * @param mbLogin
+	 * @param content
+	 * @param rate
+	 */
+	public PostscriptVO(int classId, int mbId, String mbLogin, String content, float rate) {
+		this(0, classId, mbId, mbLogin, content, rate, null, 0, null, null, null);
+	}
+	
+	/**
 	 * full constructor
 	 * @param id
 	 * @param classId

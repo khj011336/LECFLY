@@ -39,8 +39,8 @@ public interface IMypageSVC {
 
 	Map<String, Object> selectAllMyComment(int mbId, int pn);
 
-	Map<String, Object> selectAllMyQna(int mbId, int pn);
-
+	Map<String, Object> selectAllMyCommentQna(int mbId, int pn);
+	
 	Map<String, Object> selectAllMyCoupon(int mbId, int pn);
 
 	MemberVO selectOneMember(int mbId);

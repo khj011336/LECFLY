@@ -169,8 +169,9 @@ public class LectureSVCImpl implements ILectureSVC{
 	public String tempCommentList(ICommentSVC ctSvc, int CFId, int lecCategory) {
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String comment = "";
-			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(lecCategory, CFId);
-			comment += "<div style=\"padding: 40px;\">";
+//			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(lecCategory, CFId);
+			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, CFId);
+			comment += "<div id='comment_all' style=\"padding: 40px;\">";
 			for (int i = 0; i < ctList.size(); i++) {
 				CommentVO ctori = ctList.get(i);
 				String dep = "";

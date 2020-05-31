@@ -7,7 +7,7 @@ import com.LECFLY.LF.model.vo.cart.TicketVO;
 
 
 public interface ICartSVC {
-	
+
 	// 회원이 로그인 시 , 강의 상세페이지로 이동 할 수 있다.
 	public Map<String, Object>showLectureProc(int lecId);
 	public List<TicketVO> selectOneTicket(int ticId);
@@ -17,5 +17,5 @@ public interface ICartSVC {
 	int insertNewCartByMbIdTicId(int mbId, int kitId);
 	int insertNewCartByTicId(int mbId, int kitId, String gdType);
 
-	
+
 }

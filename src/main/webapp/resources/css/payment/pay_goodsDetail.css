@@ -1,3 +1,10 @@
+새 텍스트 문서 (2).txt
+오늘
+오전 11:23
+김
+김동현님이 항목 1개를 업로드했습니다.
+텍스트
+새 텍스트 문서 (2).txt
 /* 레퍼 ( nav, content 포함) */
 #register_wrapper {
 	margin: 0px auto;
@@ -14,6 +21,10 @@
 }
 
 #register_nav > .register_video_img {
+	width: 774px;
+	height: 400px;
+}
+#goodsimgcss{
 	width: 774px;
 	height: 400px;
 }
@@ -53,14 +64,41 @@
 	letter-spacing: 3px;
 	line-height: 20px;
 	white-space: pre-line;
+	 font-weight: bold;
 }
 
 .register_soap_img {
+	text-align: center;
+	margin:25px 25px 25px 0px;
+	width: 350px;
+	height: 250px;
+	float: left;
+}
+#selftest{
+	 margin:20px 25px 25px 0px;
+}
+.register_soap_imgcb {
+	 margin:40px 25px 25px 0px;
+	width: 350px;
+	height: 250px;
+	clear: both;
+}
+#infoself{
+	 margin:25px 25px 25px 0px;
+	 font-size: 12px;
+	 font-weight: bold;
+	 letter-spacing: 3px;
+	line-height: 20px;
+		white-space: pre-line;
+}
+.register_soap_imgb {
+	position: relative;
 	text-align: center;
 	margin: 25px;
 	width: 350px;
 	height: 250px;
 	float: left;
+	bottom: 20px;
 }
 
 .register_soap_imgb {
@@ -208,7 +246,7 @@ input[value=입력] {
 	float: right;
 	position: relative;
 	text-align: center;
-	
+
 }
 
 #moveCart:hover {

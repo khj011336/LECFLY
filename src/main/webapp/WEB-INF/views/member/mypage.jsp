@@ -12,12 +12,72 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	<script src="resources/js/member/mypage.js"></script>
+	<script type="text/javascript">
+		//jquery
+		$(document).ready( function() {
+	        $("#mypageimgProc").on('change', function(){
+	            readURL(this);
+		 		console.log("mypageimgProc 눌럿다");
+		 		
+                var form = $('#FILE_FORM')[0];
+                var formData = new FormData(form);
+                formData.append("mypageimgProc", $("#mypageimgProc")[0].files[0]);
+ 
+                $.ajax({
+                	url: "${pageContext.request.contextPath}/mypage_change_pic_proc.LF",
+			        processData: false,
+			        contentType: false,
+			        data: formData,
+			        type: 'POST',
+			        success: function(result){
+		 				console.log("수정성공");
+			            alert("프로필 사진 수정 성공!!");
+			        },
+		 			error: function(status, xhr) {
+		 				console.log("수정실패")
+			            alert("프로필 사진 수정 실패");
+		 			}
+				});
+		 	});
+		});
 
+	    function readURL(input) {
+	        if (input.files && input.files[0]) {
+	           var reader = new FileReader();
+	           reader.onload = function (e) {
+	              $('#proImage').attr('src', e.target.result);
+	           }
+	           reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+		
+// 		// 변경시 자동으로 프로필 사진 보여짐
+// 	    $(function() {
+// 	        $("#mypageimgProc").on('change', function(){
+// 	            readURL(this);
+// 	        });
+// 	    });
+// 	    function readURL(input) {
+// 	        if (input.files && input.files[0]) {
+// 	           var reader = new FileReader();
+// 	           reader.onload = function (e) {
+// 	              $('#proImage').attr('src', e.target.result);
+// 	           }
+// 	           reader.readAsDataURL(input.files[0]);
+// 	        }
+// 	    }
+	</script>
 			<div id="mypage_wrap"> 											<!-- 조각페이지 -->	
 				<div id="mypage_top"> 										<!-- 개인정보 영역 -->
 					<div id="mypage_pic">
-			            <img src="resources/imges/logo/LecFly_SLOGO_LW_W.png" width="148px" height="148px">
-			          	<input type="button" value="프로필 사진 편집" onclick="changeProPic()">
+						<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">
+				            <img id="proImage" width="148px" height="148px" 
+				            src=<c:out value="${pic}${member.pic}" default="resources/imges/logo/LecFly_SLOGO_LW_W.png"/>>
+				            ${pic}${member.pic}
+<%-- 				            ${!empty member.pic ? ${pic} : "resources/imges/logo/LecFly_SLOGO_LW_W.png"}> --%>
+<!-- 				            src="resources/imges/logo/LecFly_SLOGO_LW_W.png"> -->
+							<input type="file" accept="image/*" id="mypageimgProc" name="mypage_upload_pic" placeholder="프로필 사진 편집" size='64'>
+						</form>
 			        </div>
 			        <div id="mypage_mb_IF">
 			        	<br><br>
@@ -30,28 +90,33 @@
 			        		<h1><u>크리에이터 회원</u> 입니다.</h1>
 			        	</c:if>
 			        	<br><br>
-			        	<a href="Creator/_classdes.jsp"><h3>크리에이터 신청하기</h3></a>
+			        	<a href="creator.LF"><h3>크리에이터 신청하기</h3></a>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_attendlec">
 			        	<img src="resources/imges/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">
 						<br><br><br>
-						<span>강의 신청 목록<b>6</b> 개</span>
+						<span>강의 신청 목록<b><c:out value="${cntLecture}" default ="0" /></b> 개</span>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_coupon">
 			        	<img src="resources/imges/mypage/mypage_coupon.png" class="mypage_1" alt="쿠폰" width="64px" height="64px">
 						<br><br><br>
-						<span>쿠폰 <b>4</b> 개</span>
+						<span>쿠폰 <b><c:out value="${cntCoupon}" default="0" /></b> 개</span>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_ticket">
 			        	<img src="resources/imges/mypage/mypage_ticket.png" class="mypage_1" alt="이용권" width="64px" height="64px">
 						<br><br><br>
-						<span><b>3</b> 카테고리 이용권</span>
+						<span><b><c:out value="${ticketFrontName}" default="" /></b> <c:out value="${ticketName}" default="보유중인 티켓 없음" /></span>
 						<br>
 						<p>
-						<!--  여기서 포문 -->
-							<a>미술</a> / <a>요리</a> / <a>라이프스타일</a> 
-							<!--  여기서 포문 끝 마지막에는 / 없어야됨 -->
+							<c:set var="lastCt" value="${(fn:length(strCateList) - 1)}" />
+							<c:forEach var="strCate" items="${strCateList}" varStatus="vs">
+								<a><c:out value="${strCate}"/></a>
+								<c:if test="${vs.index ne lastCt}"> / </c:if>
+								<c:if test="${vs.index eq lastCt}"> </c:if>
+							</c:forEach>
 						</p>
+						<br>
+						<span><small><fmt:formatDate value="${ticketEndDay}" pattern="yyyy-MM-dd" />까지</small></span>
 			        </div>
 			    </div>
 				<div id="mypage_middle">									<!-- 정보 영역 및 메뉴영역 -->
@@ -94,10 +159,11 @@
 				</div>
 				
 				<div id="mypage_bottom">									<!-- 조각페이지 영역 -->
-					<c:if test="${not empty mpNone}">
+<%-- 					<c:if test="${not empty mpNone}"> --%>
 						<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%>
-					</c:if>
-					<c:if test="${empty mpNone}">
+<%-- 					</c:if> --%>
+<%-- 					<c:if test="${empty mpNone}"> --%>
 						
-					</c:if>
+<%-- 					</c:if> --%>
 				</div>
+			</div>

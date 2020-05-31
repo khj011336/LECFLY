@@ -36,14 +36,14 @@ $(document).ready(function() {
 			error: function(status, xhr) {
 				console.log("실패");
 			}
-		});	
+		});
 	});
 });
 
  </script>
 
 
- 
+
 <div id="register_wrapper">
 	<div id="register_nav">
 		<div class="register_video_img">
@@ -65,7 +65,7 @@ $(document).ready(function() {
 		</ul>
 		<br> <br>
 		<h1 id="register_lecture_info">강의소개</h1>
-		
+
 		<p id="register_lec">
 			<img class="register_soap_img" src="<c:out value='${crPath}${lec.infoImg}' default='soap.jpg' />">
 			<img class="register_soap_imgb" src="<c:out value='${crPath}${lec.infoImgb}' default='soapb.jpg' />">
@@ -73,27 +73,30 @@ $(document).ready(function() {
 			<div style="margin-left: 10px; float: center; font-size:22px; width: 700px; font-weight: bold;">
 			${lec.info}
 			</div>
-			
+
 		<br>
-		</p>
+
 		<br> <br>
 		<h1 id="register_kit_info">KIT 소개</h1>
 		<input type="hidden" name="kit_id" value="${kit.id}">
 		<br> <br><div id = "selftest"> <img class="kit_img" src='<c:out value="${crPath}${kit.imgPath}" default="abc.jpg"/>' onError ="this.src='resources/imges/logo/LecFly_SLOGO_W_W.png'"></div> <br> <br>
-		<p id = "infoself">${kit.info}</p>
+		<p id = "infoself">${kit.detailInfo}</p>
 		<h1 id="register_curri_info">커리큘럼</h1>
 		<table id="register_tb">
-		
+
 		<c:if test= "${not empty video }">
 		 <c:forEach begin="0" end="${video.size()-1}" varStatus="vs">
 				<tr>
-					<td class="register_td">${vs.index+1}.${video[vs.current].title}</td>
-					<td class="register_td">${video[vs.current].info}</td>
-					<td class="register_td register_tb_num">${video[vs.current].duration}분</td>
+					<td class="register_td" style="width: 600px;">${vs.index+1}.${video[vs.current].title}</td>
+					<td class="register_td register_tb_num" rowspan="2" style="width: 100px; text-align: center;" >${video[vs.current].duration}분</td>
+				</tr>
+				<tr>
+					<td class="register_td" style="font-size: 15px; font-weight: normal; padding-left: 30px;">${video[vs.current].info}</td>
+
 				</tr>
 		</c:forEach>
 				 </c:if>
-		 
+
 		</table>
 		<br> <br>
 		<h1 id="register_writer_info">작가소개</h1>
@@ -101,51 +104,21 @@ $(document).ready(function() {
 		<p id="register_wri"> ${cre.info}</p>
 		<br> <br>
 		<h1 id="register_review_info">후기</h1>
-		<br> <br>
-		<p id="register_review">
-			<span class="review_name">명주</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>일주일 전</small></span> <small>
-
-				저렴하고 양도 적당하고 좋네요! 저는 남은 재료랑 미니하트 다 써서 몽땅 큰 비누 만들었어요~ 그런데 비누가 굳을까봐
-				초조해져서 차분히 할 수가 없는 것 같아요 계속 초초..ㅎㅎ 다음에 하면 더 잘할 수 있을 것 같아요! 감사합니다!</small>
-		</p>
-		<p id="register_review">
-			<span class="review_name">수현</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>일주일 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">건우</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>한달 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">세현</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>3개월 전</small></span>
-		</p>
-		<p id="register_review">
-			<span class="review_name">기민</span> <a href="#">★</a><a href="#">★</a><a
-				href="#">★</a><a href="#">★</a><a href="#">★</a> <span
-				class="review_week"> <small>1년 전</small></span>
-		</p>
-		<br> <br>
-		<h1 id="register_qna_info">QnA</h1>
 		<br>
-		
-		 ${comment}
-			
-		 
-		 <br>
+			${!empty postscript ? postscript: ''}
+		<br>
+		<h1 id="register_qna_info">QnA</h1>
+		<div id="comment_div">
+			${!empty comment ? comment : ''}
+		</div>
 		<textarea name="feedback" rows="5" cols="20" placeholder="댓글을 입력해주세요"></textarea>
-		<input type="button" value="입력">
+		<input id="submit_comment" type="button" value="입력">
 	</div>
 </div>
 <div id="register_content">
 	<br><br><br>
 	<h1 id="register_content_title">
-		<c:out value="${lec.title}" default="없음" />	
+		<c:out value="${lec.title}" default="없음" />
 	</h1>
 	<div id="register_wri_name">by. ${cre.nickname}</div>
 	<br> <br>
@@ -154,9 +127,9 @@ $(document).ready(function() {
 			class="register_kit_info"><a href="#register_kit_info">구성 안내 바로보기&gt;</a></span>
 	</p>
 	<br> <br>
-	<select class = "register_kit_select">
-		<option selected="selected">선택안함</option>
-		<option>스타터를 위한 KIT (${kit.price})</option>
+	<select class = "register_kit_select" style ="overflow: hidden;  width: 270px;">
+		<option>${kit.title } (${kit.price})</option>
+		<option >선택안함</option>
 	</select>
 	<input id="moveCart" type="button" value="장바구니 담기">
 	<div id="goods_detail_modal" class="overlay">

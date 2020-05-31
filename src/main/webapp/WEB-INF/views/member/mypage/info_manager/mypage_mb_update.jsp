@@ -110,7 +110,7 @@
     	 			data: params,
     	 			dataType: "JSON",
     	 			success: function(res, status, xhr) {
-    	 				console.log("수정성공");
+    	 				console.log("성공");
     	 				$("#mypage_mb_update_confirm").html(res.temp);
     	 			},
     	 			error: function(status, xhr) {
@@ -142,28 +142,32 @@
 	                	</tr>
 				     	<tr>
 				     		<th><label class="cnm_subtitle" for="cnm_mb_name">이름</label></th>
-				     		<td><input type="text" id="cnm_mb_name" name="cnm_mb_name" class="input_cnm" style="background-color:lightgrey" readonly
-				     		value=${member.name}></td>
+				     		<td><label>${member.name}</label></td>
+<!-- 				     		<td><input type="text" id="cnm_mb_name" name="cnm_mb_name" class="input_cnm" style="background-color:lightgrey" readonly -->
+<!-- 				     		value=${member.name}></td> -->
 				     	</tr>
 				     	<tr>
 				        	<th><label class="cnm_subtitle" for="cnm_mb_birth">생년월일</label></th>
-		                    <td><input type="date" id="cnm_mb_birth" name="cnm_mb_birth" class="input_cnm" style="color:grey" readonly
-		                    value=<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>></td>
+				        	<td><label><fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/></label></td>
+<!-- 		                    <td><input type="date" id="cnm_mb_birth" name="cnm_mb_birth" class="input_cnm" style="color:grey" readonly -->
+<%-- 		                    value=<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>></td> --%>
 		                </tr>
 		                <tr>
 				        	<th><label class="cnm_subtitle">성별</label></th>
 		                    <td>
 <!-- 		                    	<input type="radio" id="cnm_mb_f" name="cnm_mb_gender" value="여" disabled><label for="cnm_mb_f" class="gender_sub_title">여성</label> -->
 <!-- 	    						<input type="radio" id="cnm_mb_m" name="cnm_mb_gender" value="남" disabled><label for="cnm_mb_m" class="gender_sub_title">남성</label> -->
-								<input type="text" id="cnm_mb_m" name="cnm_mb_gender" readonly value="${member.gender==1?'여성':'남성'}">
+								<label id="cnm_mb_m" name="cnm_mb_gender" class="gender_sub_title">${member.gender==1?'여성':'남성'}</label>
+<%-- 								<input type="text" id="cnm_mb_m" name="cnm_mb_gender" readonly value="${member.gender==1?'여성':'남성'}"> --%>
 	    					</td>
 		                </tr>
 		                <tr>
 				        	<th><label class="cnm_subtitle" for="cnm_mb_email2">이메일</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_email2" name="cnm_mb_email2" class="input_cnm" style="background-color:lightgrey" readonly
-		                    		value=${member.email}>
+		                    		<label>${member.email}</label>
+<!-- 		                    		<input type="text" id="cnm_mb_email2" name="cnm_mb_email2" class="input_cnm" style="background-color:lightgrey" readonly -->
+<!-- 		                    		value=${member.email}> -->
 		                    	</div>
 		                    </td>
 		                </tr>
@@ -182,7 +186,7 @@
 				        	<th><label class="cnm_subtitle" for="cnm_mb_nick">닉네임</label></th>
 		                    <td>
 		                    	<div style="display: inline-block">
-		                    		<input type="text" id="cnm_mb_nick" name="cnm_mb_nick" placeholder="닉네임">
+		                    		<input type="text" id="cnm_mb_nick" name="nickname" placeholder="닉네임" value=${member.nicname}>
 		                    		<input type="button" id="cnm_mb_nick_check_btn" value="중복확인">
 		                    	</div>
 		                    </td>
@@ -207,7 +211,7 @@
 		                    <td>
 		                    	<div style="display: inline-block">
 						    		<input type="text" id="cnm_mb_adress_num" name="postalcode" placeholder="우편번호" readonly
-						    		value=${member.postalCode}>
+						    		value=${postalcode}>
 						        	<input type="button" id="find_adress_btn" value="주소찾기" onclick="find_address()">
 					        	</div>
 		                    </td>

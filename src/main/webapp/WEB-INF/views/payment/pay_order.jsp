@@ -124,7 +124,7 @@
 					<img src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
 				</a>
 				<div class="orderfunding_imgInfo">
-					<a class="orderfunding_a"> 
+					<a class="orderfunding_a">
 						<strong>${ct.gdType == 0 ? '회원권': '키트'}</strong><br>
 					 	<strong>${ct.gdsName}</strong>
 					</a>
@@ -223,7 +223,7 @@
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
                     document.getElementById("fundingPayment_extraAddress").value = extraAddr;
-                
+
                 } else {
                     document.getElementById("fundingPayment_extraAddress").value = '';
                 }
@@ -236,7 +236,7 @@
             }
         }).open();
     }
-		
+
     	// 카카오페이 결제
     		$(document).ready(function() {
     			$("#goFinish").on("click", function() {
@@ -264,7 +264,7 @@
     		       }, function(rsp) {
     		           if ( rsp.success ) { // 성공시
     		               jQuery.ajax({
-    		                   url: window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF', 
+    		                   url: window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF',
     		                   type: 'POST',
     		                   dataType: 'json',
     		                   data: {
@@ -279,9 +279,9 @@
     		                       msg += '\n상점 거래ID : ' + rsp.merchant_uid;
     		                       msg += '\결제 금액 : ' + rsp.paid_amount;
     		                       msg += '카드 승인번호 : ' + rsp.apply_num;
-    		                       
+
     		                       alert(msg);
-    		                       
+
     		                     //성공시 이동할 페이지
     		                     window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF';
     		                     //$('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF');
@@ -290,7 +290,7 @@
     		                       //[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
     		                   }
     		               });
-    		               
+
     		           } else {
     		               msg = '결제에 실패하였습니다.';
     		               msg += '에러내용 : ' + rsp.error_msg;

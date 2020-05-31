@@ -35,7 +35,6 @@ public class CreatorMysqlDAOImpl implements ICreatorDAO {
 		try {
 			return jtem.queryForObject(SELECT_ONE_CREATOR, BeanPropertyRowMapper.newInstance(CreatorVO.class), fid);
 		} catch (DataAccessException e) {
-			System.out.println("셀렉트 크리에이터 에러");
 			System.out.println(e);
 			return null;
 		}

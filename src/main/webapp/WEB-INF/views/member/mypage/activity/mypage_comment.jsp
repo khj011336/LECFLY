@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<c:if test="${!empty qnacomList}">    
+<c:if test="${!empty comList}">    
 	<div class="mypage_bottom_info">
 		<h2 class="mypage_bottom_title">댓글내역</h2>
 		<div class="mypage_bottom_contents">
@@ -11,13 +11,13 @@
 					<tr>
 						<th style='width:100px'>번호</th><th>원본글</th><th>댓글</th><th style='width:100px'>대댓글</th><th style='width:200px'>날짜</th>
 					</tr>
-					<c:forEach var="qnacom" items="${qnacomList}" varStatus="vs">
+					<c:forEach var="com" items="${comList}" varStatus="vs">
 					<tr>
 						<td><c:out value="${((pn-1) * 10) + (vs.index + 1)}" /></td> <!-- 지금 pn이 0이라서그럼.. 게시글번호 -->
-						<td><c:out value="${qnaList.get(vs.index).title}" /></td> <!-- 원글 제목 -->
-						<td><c:out value="${qnacom.content}" /></td> <!-- 내 댓글  -->    
-						<td><c:out value="${qnacom.parentsId}" /></td><!-- 대댓글 -->
-						<td><fmt:formatDate value="${qnacom.writedDay}" pattern="yyyy.MM.dd HH:mm" /></td><!-- 작성날짜 -->
+						<td><c:out value="${titleList.get(vs.index)}" /></td> <!-- 원글 제목 -->
+						<td><c:out value="${com.comment}" /></td> <!-- 내 댓글  -->    
+						<td><c:out value="${com.depth}" /></td><!-- 대댓글 -->
+						<td><fmt:formatDate value="${com.createdAt}" pattern="yyyy.MM.dd HH:mm" /></td><!-- 작성날짜 -->
 					</tr>
 					</c:forEach>
 				</table>
@@ -44,6 +44,6 @@
 		</div>
 	</div>
 </c:if>
-<c:if test="${empty qnacomList}">
+<c:if test="${empty comList}">
 	<%@ include file="../attend_lec_manager/mypage_no_list.jsp"  %>
 </c:if>
