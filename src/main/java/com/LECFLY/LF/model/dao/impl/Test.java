@@ -195,19 +195,19 @@ public class Test {
 
 	/** 회원이 쿠폰등록시 해당쿠폰이있는지확인할수잇는문장 */
 	public static final String SQL_SELECT_COUPON_BY_CODE =
-				"SELECT * FROM COUPONS WHERE CODE = ? AND USE_CHECK = 0";
+				"SELECT * FROM coupons WHERE CODE = ? AND USE_CHECK = 0";
 
 	/** SQL_SELECT_COUPON_BY_CODE를 쓴함수가게 VO로 리턴되고 유저를 등록하고싶다면. */
 	public static final String SQL_UPDATE_COUPON_MBID_BY_ID =
-						"UPDATE COUPONS SET MB_ID = ? WHERE ID = ?";
+						"UPDATE coupons SET MB_ID = ? WHERE ID = ?";
 
 	/** SQL_SELECT_COUPON_BY_CODE를 쓴함수가게 VO로 리턴되고 쿠폰을 사용하게하려면 */
 	public static final String SQL_UPDATE_COUPON_MB_USE_BY_ID_MBID =
-			"UPDATE COUPONS SET USE_CHECK = 1 WHERE ID = ? AND MB_ID=?";
+			"UPDATE coupons SET USE_CHECK = 1 WHERE ID = ? AND MB_ID=?";
 
 	/** 마이페이지에서 쿠폰 조회할떄 사용하는 문장 사용한쿠폰 + 사용안한쿠폰 이 날짜순으로 섞여있다. */
 	public static final String SQL_SELECT_ALL_MY_COUPONS_BY_MBID =
-			"SELECT * FROM COUPONS WHERE MB_ID = ?";
+			"SELECT * FROM coupons WHERE MB_ID = ?";
 
 //	/** 사용한다면 ?? 마이페이지에서 사용한 쿠폰 리스트 뽑을떄 출력*/
 //	public static final String SQL_SELECT_ALL_USE_MY_COUPONS_BY_MBID =
@@ -219,7 +219,7 @@ public class Test {
 
 	/** 사용하지않은쿠폰(사용가능한 쿠폰의 갯수를 세어주는 함수) */
 	public static final String SQL_COUNT_NOT_USE_COUPONS_BY_MBID =
-			"SELECT COUNT(*) FROM COUPONS WHERE MB_ID = ? AND USE_CHECK = 0";
+			"SELECT COUNT(*) FROM coupons WHERE MB_ID = ? AND USE_CHECK = 0";
 
 	public CouponVO selectOneCouponByCode (String code) {
 		System.out.println("selectOneCouponByCode()");
@@ -367,7 +367,7 @@ public class Test {
 	}
 
 	public static final String SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID =
-			"SELECT * FROM TICKETS WHERE MB_ID = ? and (now() <= end_day)";
+			"SELECT * FROM tickets WHERE MB_ID = ? and (now() <= end_day)";
 	public TicketVO selectOneTiketForCanUseByMbId(int mbId) {
 		try{
 			System.out.println(SQL_SELECT_ONE_TIKET_FOR_CANUSE_BUY_MBID + " / mbId = " + mbId);
@@ -589,7 +589,7 @@ public class Test {
 	//////////TiketDAOImpl 에서 사용하세요~
 
 	public static final String SQL_SELECT_ONE_TIKET_BY_MBID =
-			"SELECT * FROM TICKETS WHERE MB_ID = ?";
+			"SELECT * FROM tickets WHERE MB_ID = ?";
 
 	public TicketVO selectOneTiketByMbId(int mbId) {
 		System.out.println("dao : selectOneTiketByMbId()");

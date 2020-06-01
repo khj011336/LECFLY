@@ -48,14 +48,13 @@ public class homeController {
 		@ModelAttribute("categoryMap")
 		public Map<String, String> searchcategoryMap() {
 			Map<String, String> categoryMap = new HashMap<>();
-			categoryMap.put("0", "전체"); 
-			categoryMap.put("1", "미술");  
-			categoryMap.put("2", "음악"); 
-			categoryMap.put("3", "요리"); 
-			categoryMap.put("4", "라이프스타일");
-			categoryMap.put("5", "운동"); 
-			categoryMap.put("6", "커리어"); 
-			categoryMap.put("7", "여행"); 
+			categoryMap.put("1", "art");  
+			categoryMap.put("2", "Music"); 
+			categoryMap.put("3", "Cooking"); 
+			categoryMap.put("4", "LifeStyle");
+			categoryMap.put("5", "WorkingOut"); 
+			categoryMap.put("6", "Career"); 
+			categoryMap.put("7", "Journey"); 
 			
 			return categoryMap;
 		}
@@ -126,13 +125,13 @@ public class homeController {
 	@ModelAttribute("categoryMapTicket")
 	public Map<String, String> searchcategoryMapForTicket() {
 		Map<String, String> categoryMapTicket = new HashMap<>();
-		categoryMapTicket.put("1", "미술");  
-		categoryMapTicket.put("2", "음악"); 
-		categoryMapTicket.put("3", "요리"); 
-		categoryMapTicket.put("4", "라이프스타일");
-		categoryMapTicket.put("5", "운동"); 
-		categoryMapTicket.put("6", "커리어"); 
-		categoryMapTicket.put("7", "여행"); 
+		categoryMapTicket.put("1", "art");  
+		categoryMapTicket.put("2", "Music"); 
+		categoryMapTicket.put("3", "Cooking"); 
+		categoryMapTicket.put("4", "LifeStyle");
+		categoryMapTicket.put("5", "WorkingOut"); 
+		categoryMapTicket.put("6", "Career"); 
+		categoryMapTicket.put("7", "Journey"); 
 		
 		return categoryMapTicket;
 	}
