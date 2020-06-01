@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 
-import org.aspectj.weaver.tools.ISupportsMessageContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +30,6 @@ import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
 import com.LECFLY.LF.model.vo.creator.VideoVO;
 import com.LECFLY.LF.model.vo.cscenter.NoticeVO;
-import com.LECFLY.LF.model.vo.member.CommentVO;
 import com.LECFLY.LF.model.vo.member.MemberVO;
 import com.LECFLY.LF.service.impl.comment.CommentSVCImpl;
 import com.LECFLY.LF.service.impl.creator.CreatorSVCImpl;
@@ -42,8 +40,6 @@ import com.LECFLY.LF.service.inf.creator.IStatSVC;
 import com.LECFLY.LF.service.inf.creator.IVideoSVC;
 import com.LECFLY.LF.service.inf.cscenter.INoticeSVC;
 import com.LECFLY.LF.service.inf.member.IPostscriptSVC;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @SessionAttributes({ "creator", "Lecture", "video", "creatorKit"})
@@ -76,8 +72,6 @@ public class CreatorController {
 	private FileSVCImpl fileSVC;
 	@Autowired
 	private KitMysqlMybatisDAOImpl kitDAO;
-	@Autowired
-	private CommentSVCImpl commentSVC;
 	@Autowired
 	private INoticeSVC ntSvc;
 	@Autowired
