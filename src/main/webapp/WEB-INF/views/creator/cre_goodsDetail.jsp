@@ -38,6 +38,29 @@ $(document).ready(function() {
 			}
 		});
 	});
+	$("#submit_comment").on("click", function() {
+		var URLHD = '${pageContext.request.contextPath}/';
+		var url = URLHD+'insert_comment.LF';
+		var comment = $("textarea[name=feedback]").val();
+		var lecId = ${CFId};
+		console.log("댓글내용" + comment + "/게시글id" + lecId);
+		var params = "ct=" + comment + "&CFId=" + lecId;
+		$.ajax({
+			type: 'POST',
+			url : url,
+			data: params,
+ 			dataType: "JSON",
+			success: function(res, status ,xhr){
+				console.log(res.result);
+				$('#comment_all').remove();
+				$('#comment_div').html(res.temp);
+			},
+			error: function(status, xhr){
+				alert("실패");
+			}
+		});
+	});
+
 });
 
  </script>
