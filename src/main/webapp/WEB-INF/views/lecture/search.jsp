@@ -39,7 +39,7 @@
 			검색결과가 없습니다.
 			<!-- <video controls autoplay width="1200px" src="https://cdn.dribbble.com/users/3692521/screenshots/7955415/media/9c293cfb268a5606d77e33c90d657884.mp4"></video> -->
 			<!-- <img src="https://cdn.dribbble.com/users/252114/screenshots/3840347/mong03b.gif"> -->
-			<img src="resources/imges/error/500error.gif" width="1200px">
+			<!-- <img src="resources/imges/error/500error.gif" width="1200px"> -->
 		</div>
 		</c:when>
 		<c:when test="${not empty searchList }">
