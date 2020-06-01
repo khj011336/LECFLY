@@ -73,6 +73,8 @@ public class CreatorController {
 	@Autowired
 	private KitMysqlMybatisDAOImpl kitDAO;
 	@Autowired
+	private CommentSVCImpl commentSVC;
+	@Autowired
 	private INoticeSVC ntSvc;
 	@Autowired
 	private IStatSVC statSVC;
