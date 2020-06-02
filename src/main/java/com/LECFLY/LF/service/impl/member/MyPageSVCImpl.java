@@ -495,89 +495,89 @@ public class MyPageSVCImpl implements IMypageSVC {
 	}
 
 
-	@Override	/** mypage delivery_info 배송정보 조회*/
-	public Map<String, Object> selectMyPageDeliveryInfoMap(int mbId) {
-		System.out.println("mpSvc : selectMyPageDeliveryInfoMap()..");
-		if(mbId > 0) {
-			List<PayHistoryVO> phisList =  //phisDao.
-											testDao.selectAllPayHistoriesByMbId(mbId);
-			if(phisList != null) {
-				List<CreatorVO> creList = new ArrayList<>();
-				List<KitVO> kitList = new ArrayList<>();
-
-				int deliveryStatusPaymentWaiting = 0;
-				int deliveryStatusDeliveryPreparation = 0;
-				int deliveryStatusShippingInProgress = 0;
-				int deliveryStatusDeliveryCompleted = 0;
-				/* Order confirmation 주문서확인   == Payment waiting 결제 대기중
-					Preparing product 상품준비중 == Delivery Preparation 배송준비
-					Shipping in progress 배송중
-					Delivery completed 	배송완료		*/
-				int kitCount = 0;
-
-				final int P_HIS_LIST_SIZE = phisList.size();
-				for (int i = 0; i < P_HIS_LIST_SIZE; i++) {
-					int deliveryStatus = phisList.get(i).getDeliveryStatus();
-					// 상수가 있었으면 좋겠다
-					switch(deliveryStatus) {
-						case 0: // 주문확인(결제 대기중)
-							deliveryStatusPaymentWaiting
-								= (deliveryStatusPaymentWaiting + 1); break;
-						case 1: // 상품준비중(배송준비)
-							deliveryStatusDeliveryPreparation
-								= (deliveryStatusDeliveryPreparation + 1); break;
-						case 2: // 배송중
-							deliveryStatusShippingInProgress
-								= (deliveryStatusShippingInProgress + 1); break;
-						case 3: // 배송완료
-							deliveryStatusDeliveryCompleted
-								= (deliveryStatusDeliveryCompleted + 1); break;
-					}
-					String creatorIds = phisList.get(i).getSellMbId();
-					String kitIds = phisList.get(i).getGoodsId();
-					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
-					String[] arrayCreatorIds = creatorIds.split(",");
-					String[] arrayKitIds = kitIds.split(",");
-					kitCount = arrayKitIds.length;
-
-					if(arrayCreatorIds.length >= 0 ) {
-
-						for (int j = 0; j < arrayKitIds.length; j++) {
-							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
-							int intKitId = Integer.parseInt(arrayKitIds[j]);
-
-							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
-							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
-											testDao.selectOneCreatorById(intCreatorId);
-							KitVO kit = //kitDao.selectOneKitById(intKitId);
-										testDao.selectOneKitById(intKitId);
-							creList.add(cre);
-							kitList.add(kit);
-						}
-					} else {
-						System.out.println("arrayCreatorIds.length 는 음수 ");
-					}
-				}
-				Map<String, Object> rMap = new HashMap<>();
-				int[] deliveryStatus = { deliveryStatusPaymentWaiting,
-						deliveryStatusDeliveryPreparation,
-						deliveryStatusShippingInProgress,
-						deliveryStatusDeliveryCompleted };
-				rMap.put("kitCount", kitCount);
-				rMap.put("phisList", phisList);
-				rMap.put("creList", creList);
-				rMap.put("kitList", kitList);
-				rMap.put("deliveryStatusArray", deliveryStatus);
-				return rMap;
-			} else {
-				System.out.println("phisList == null");
-			}
-		} else {
-			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
-			System.out.println("mbId = " + mbId);
-		}
-		return null;
-	}
+//	@Override	/** mypage delivery_info 배송정보 조회*/
+//	public Map<String, Object> selectMyPageDeliveryInfoMap(int mbId) {
+//		System.out.println("mpSvc : selectMyPageDeliveryInfoMap()..");
+//		if(mbId > 0) {
+//			List<PayHistoryVO> phisList =  //phisDao.
+//											testDao.selectAllPayHistoriesByMbId(mbId);
+//			if(phisList != null) {
+//				List<CreatorVO> creList = new ArrayList<>();
+//				List<KitVO> kitList = new ArrayList<>();
+//
+//				int deliveryStatusPaymentWaiting = 0;
+//				int deliveryStatusDeliveryPreparation = 0;
+//				int deliveryStatusShippingInProgress = 0;
+//				int deliveryStatusDeliveryCompleted = 0;
+//				/* Order confirmation 주문서확인   == Payment waiting 결제 대기중
+//					Preparing product 상품준비중 == Delivery Preparation 배송준비
+//					Shipping in progress 배송중
+//					Delivery completed 	배송완료		*/
+//				int kitCount = 0;
+//
+//				final int P_HIS_LIST_SIZE = phisList.size();
+//				for (int i = 0; i < P_HIS_LIST_SIZE; i++) {
+//					int deliveryStatus = phisList.get(i).getDeliveryStatus();
+//					// 상수가 있었으면 좋겠다
+//					switch(deliveryStatus) {
+//						case 0: // 주문확인(결제 대기중)
+//							deliveryStatusPaymentWaiting
+//								= (deliveryStatusPaymentWaiting + 1); break;
+//						case 1: // 상품준비중(배송준비)
+//							deliveryStatusDeliveryPreparation
+//								= (deliveryStatusDeliveryPreparation + 1); break;
+//						case 2: // 배송중
+//							deliveryStatusShippingInProgress
+//								= (deliveryStatusShippingInProgress + 1); break;
+//						case 3: // 배송완료
+//							deliveryStatusDeliveryCompleted
+//								= (deliveryStatusDeliveryCompleted + 1); break;
+//					}
+//					String creatorIds = phisList.get(i).getSellMbId();
+//					String kitIds = phisList.get(i).getGoodsId();
+//					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
+//					String[] arrayCreatorIds = creatorIds.split(",");
+//					String[] arrayKitIds = kitIds.split(",");
+//					kitCount = arrayKitIds.length;
+//
+//					if(arrayCreatorIds.length >= 0 ) {
+//
+//						for (int j = 0; j < arrayKitIds.length; j++) {
+//							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
+//							int intKitId = Integer.parseInt(arrayKitIds[j]);
+//
+//							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
+//							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
+//											testDao.selectOneCreatorById(intCreatorId);
+//							KitVO kit = //kitDao.selectOneKitById(intKitId);
+//										testDao.selectOneKitById(intKitId);
+//							creList.add(cre);
+//							kitList.add(kit);
+//						}
+//					} else {
+//						System.out.println("arrayCreatorIds.length 는 음수 ");
+//					}
+//				}
+//				Map<String, Object> rMap = new HashMap<>();
+//				int[] deliveryStatus = { deliveryStatusPaymentWaiting,
+//						deliveryStatusDeliveryPreparation,
+//						deliveryStatusShippingInProgress,
+//						deliveryStatusDeliveryCompleted };
+//				rMap.put("kitCount", kitCount);
+//				rMap.put("phisList", phisList);
+//				rMap.put("creList", creList);
+//				rMap.put("kitList", kitList);
+//				rMap.put("deliveryStatusArray", deliveryStatus);
+//				return rMap;
+//			} else {
+//				System.out.println("phisList == null");
+//			}
+//		} else {
+//			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+//			System.out.println("mbId = " + mbId);
+//		}
+//		return null;
+//	}
 
 	@Override
 	public Map<String, Object> updateOneMemberInfo(MemberVO mb, String nickname, String ph1, String ph2, String agreeEmail, String agreeSms,
@@ -660,54 +660,54 @@ public class MyPageSVCImpl implements IMypageSVC {
 	}
 
 
-	@Override
-	public Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat) {
-		System.out.println("mpSvc : selectMyPageDeliveryStatMap()..");
-		System.out.println("mbId = " + mbId + " / deliveryStat = " + deliveryStat);
-		if(mbId > 0 && deliveryStat > 0 && deliveryStat < 5) {
-			List<PayHistoryVO> phisList = //phisDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
-											testDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
-			List<CreatorVO> creList = new ArrayList<>();
-			List<KitVO> kitList = new ArrayList<>();
-			if(phisList != null) {
-				final int PHIS_LIST_SIZE = phisList.size();
-				for (int i = 0; i < PHIS_LIST_SIZE; i++) {
-					String creatorIds = phisList.get(i).getSellMbId();
-					String kitIds = phisList.get(i).getGoodsId();
-					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
-					String[] arrayCreatorIds = creatorIds.split(",");
-					String[] arrayKitIds = kitIds.split(",");
-
-					if(arrayCreatorIds.length >= 0 ) {
-						for (int j = 0; j < arrayKitIds.length; j++) {
-							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
-							int intKitId = Integer.parseInt(arrayKitIds[j]);
-
-							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
-							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
-											testDao.selectOneCreatorById(intCreatorId);
-							KitVO kit = //kitDao.selectOneKitById(intKitId);
-										testDao.selectOneKitById(intKitId);
-							creList.add(cre);
-							kitList.add(kit);
-						}
-					} else {
-						System.out.println("arrayCreatorIds.length 는 음수 ");
-					}
-				} // for 문끝
-				Map<String, Object> rMap = new HashMap<>();
-				rMap.put("phisList", phisList);
-				rMap.put("creList", creList);
-				rMap.put("kitList", kitList);
-				return rMap;
-			} else {
-				System.out.println("phisList == null");
-			}
-		} else {
-			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
-		}
-		return null;
-	}
+//	@Override
+//	public Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat) {
+//		System.out.println("mpSvc : selectMyPageDeliveryStatMap()..");
+//		System.out.println("mbId = " + mbId + " / deliveryStat = " + deliveryStat);
+//		if(mbId > 0 && deliveryStat > 0 && deliveryStat < 5) {
+//			List<PayHistoryVO> phisList = //phisDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+//											testDao.selectAllPayHistoriesByMbIdDeliveryStatus(mbId, deliveryStat);
+//			List<CreatorVO> creList = new ArrayList<>();
+//			List<KitVO> kitList = new ArrayList<>();
+//			if(phisList != null) {
+//				final int PHIS_LIST_SIZE = phisList.size();
+//				for (int i = 0; i < PHIS_LIST_SIZE; i++) {
+//					String creatorIds = phisList.get(i).getSellMbId();
+//					String kitIds = phisList.get(i).getGoodsId();
+//					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
+//					String[] arrayCreatorIds = creatorIds.split(",");
+//					String[] arrayKitIds = kitIds.split(",");
+//
+//					if(arrayCreatorIds.length >= 0 ) {
+//						for (int j = 0; j < arrayKitIds.length; j++) {
+//							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
+//							int intKitId = Integer.parseInt(arrayKitIds[j]);
+//
+//							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
+//							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
+//											testDao.selectOneCreatorById(intCreatorId);
+//							KitVO kit = //kitDao.selectOneKitById(intKitId);
+//										testDao.selectOneKitById(intKitId);
+//							creList.add(cre);
+//							kitList.add(kit);
+//						}
+//					} else {
+//						System.out.println("arrayCreatorIds.length 는 음수 ");
+//					}
+//				} // for 문끝
+//				Map<String, Object> rMap = new HashMap<>();
+//				rMap.put("phisList", phisList);
+//				rMap.put("creList", creList);
+//				rMap.put("kitList", kitList);
+//				return rMap;
+//			} else {
+//				System.out.println("phisList == null");
+//			}
+//		} else {
+//			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
+//		}
+//		return null;
+//	}
 
 
 	@Override

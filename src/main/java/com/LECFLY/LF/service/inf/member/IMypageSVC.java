@@ -45,7 +45,7 @@ public interface IMypageSVC {
 
 	MemberVO selectOneMember(int mbId);
 
-	Map<String, Object> selectMyPageDeliveryInfoMap(int mbId);
+//	Map<String, Object> selectMyPageDeliveryInfoMap(int mbId);
 
 	Map<String, Object> selectMyPageContents(int mbId); 
 	
@@ -59,7 +59,7 @@ public interface IMypageSVC {
 	Map<String, Object> updateOneMemberPw(String email, String newPw, String newPwConfirm);
 	boolean updateOneMember(String email, String pw);
 
-	Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat);
+//	Map<String, Object> selectMyPageDeliveryStatMap(int mbId, int deliveryStat);
 
 	Map<String, Object> selectMemberPayHistoriesByPayStatusMbId(String payStatus, int mbId);
 	
