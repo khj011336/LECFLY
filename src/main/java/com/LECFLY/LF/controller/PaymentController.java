@@ -470,28 +470,24 @@ public class PaymentController {
 	@RequestMapping(value = "pay_orderFinished.LF", method = RequestMethod.GET)
 	public String showOrderFinishedProc(HttpSession ses,
 										@RequestParam(value = "result") int result,
-										@RequestParam(value = "payWay") int payWay,
-										@RequestParam(value = "couponId") int couponId,
+										@RequestParam(value = "payWay", required = false) int payWay,
+										@RequestParam(value = "couponId", required = false) int couponId,
+										@RequestParam(value = "imp_uid", required = false) String imp_uid,										
 										Model model) {
 		System.out.println("결제완료 페이지로 이동");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		String uuid = cartSvc.orderFinishedProc(mbId, result);
-		// 밖에서 받아와야할것
-		// 카트아이디 , 쿠폰아이디,
-		// 안에서 처리해야할거
-		// 판매자아이디는 키트나 티켓에있어 티켓이나 키트는 카트에있어 . 
-		// 		-> 두번찾아야되 먼저 카트를먼저찾고 카트에서 키트나 티켓을찾아야되 
-		// insert하고 select 
-		// select 한다는건 가져오는거에여 뭘가져와야되? PayHistoryVO 이게 리턴타입이야.
 		if(result == 2) {
-			int r = payhisSvc.insertPayHis(mbId, uuid, payWay, couponId); // 목표 PayHistory에 insert	
-			
-			
-			
+			Map<String, Object> phlist = payhisSvc.insertPayHis(mbId, uuid, payWay, couponId); // 목표 PayHistory에 insert
+			List<PayHistoryVO> phisList = (List<PayHistoryVO>)phlist.get("hisList");
+			List<String> titleList = (List<String>)phlist.get("titleList");
+			List<String> payNameList = (List<String>)phlist.get("payNameList");
 			
 			model.addAttribute("msg", "결제 성공");
-			model.addAttribute("ph", ph);
+			model.addAttribute("phlist", phisList);
+			model.addAttribute("titleList", titleList);
+			model.addAttribute("payNameList", payNameList);
 		} else {
 			model.addAttribute("msg", "결제 실패!");
 		}
