@@ -253,26 +253,33 @@ public class MyPageSVCImpl implements IMypageSVC {
 							testDao.selectOneIdCategotyTitleTitleimgNicknameLikeCountImgPathById(classId);
 					if(lecParamMap != null) {
 						int id = (int)lecParamMap.get("id");
+						System.out.println("sql에서 받아온Map id = " + id);
 						idList.add(id);
 						
 						int cate = (int)lecParamMap.get("category");
+						System.out.println("sql에서 받아온Map cate = " + cate);
 						String strCate = LecTypeVO.STR_CATEGORY[cate];
+						System.out.println("sql에서 받아온Map 변환 strCate = " + strCate);
 						strCateList.add(strCate);
 						
 						
-						String subTitle = (String)lecParamMap.get("subtitle");
+						String subTitle = (String)lecParamMap.get("title");
+						System.out.println("sql에서 받아온Map subTitle = " + subTitle);
 						subTitleList.add(subTitle);
 						
 						
 						String titleImgPath = (String)lecParamMap.get("title_img");
+						System.out.println("sql에서 받아온Map titleImgPath = " + titleImgPath);
 						imgPathList.add(titleImgPath);
 						
 						
 						String nickName = (String)lecParamMap.get("nickname");
+						System.out.println("sql에서 받아온Map nickName = " + nickName);
 						nickNameList.add(nickName);
 						
 						
 						int likeCount = (int)lecParamMap.get("like_count");
+						System.out.println("sql에서 받아온Map likeCount = " + likeCount);
 						likeCountList.add(likeCount);
 						
 						
@@ -284,14 +291,18 @@ public class MyPageSVCImpl implements IMypageSVC {
 						 * <3> + <2> + img + <1> 하면 해당 이미지 사진의 경로가 완성이됨. 
 						 * 	(경로니까 사이에 / 없으면 추가해주자)
 						*/
-						String localPath = "/Images/2020/";// creDao.
-						String creImgPath = (String)lecParamMap.get("img_path");
+//						String localPath = "/Images/2020/";// creDao.
+//						String creImgPath = (String)lecParamMap.get("img_path");
+//						System.out.println("sql에서 받아온Map likeCount = " + likeCount);
+//						String creNickName = creImgPath.split("_")[1];
 						
-						String creNickName = creImgPath.split("_")[1];
+//						String creatorImgPath = localPath + creNickName + "/Img/" + creImgPath;
+//						creatorImgPathList.add(creatorImgPath);
 						
-						String creatorImgPath = localPath + creNickName + "/Img" + creImgPath;
-						creatorImgPathList.add(creatorImgPath);
-						System.out.println("creatorImgPath = " + creatorImgPath);
+//						System.out.println("creatorImgPath = " + creatorImgPath);
+						String lecImgPath = (String)lecParamMap.get("img_path");
+						System.out.println("lecImgPath = " + lecImgPath);
+						creatorImgPathList.add(lecImgPath);
 					} else {
 						System.out.println("lecParamMap == null");
 					}
