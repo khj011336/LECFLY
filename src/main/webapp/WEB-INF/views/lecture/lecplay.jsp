@@ -2,8 +2,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <script>
+
 	$(document).ready(function() {
-	 
+		if('${videoList[0].id}' == ''){
+			alert("동영상이없습니다");
+			location.href ="home.LF";
+		}
 	});
 	function videoLoad(videoPath,  views, title) {
 		$("#Htext p b").text(title);
