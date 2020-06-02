@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<script type="text/javascript">
+	var cartData = [];
+	var cartTotalPrice = 0;
+	var cartTotalPts = 0;
+</script>
+	
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_cart.css">
 		<div id="shoppingCart_wrapper">
 			<div id="shoppingCart_content">
@@ -45,7 +52,7 @@
 								<td id="shoppingCart_td" class="price">${gd.gdsPrice}</td>
 								<td id="shoppingCart_td" class="count">
 									<span class="reduce">-</span>
-										<input type="text" class="count-input" value="1" />
+										<input type="text" class="count-input" value="${gd.gdsCnt}" />
 									<span class="add">+</span>
 								</td>
 								<td id="shoppingCart_td" class="subtotal">
@@ -55,6 +62,18 @@
 									<span class="deleteOne">삭 제</span>
 								</td>
 							</tr>
+							<script>
+							 var ctData = { "gdsId": ${gd.gdsId},
+										"gdsName": '${gd.gdsName}',
+										"gdType": ${gd.gdType},
+										"gdsImgPath": '${gd.gdsImgPath}',
+										"gdsPrice": ${gd.gdsPrice},
+										"gdsCnt": ${gd.gdsCnt} 
+									};
+							 cartData.push(ctData);
+							 cartTotalPts += ctData.gdsCnt; 
+							 cartTotalPrice += (ctData.gdsCnt * ctData.gdsPrice);
+							</script>							
 							</c:forEach>
 						</tbody>
 					</table>
@@ -91,23 +110,21 @@
 		</div>
 		<script type="text/javascript">
 		$(document).ready(function() {
-			$("#moveOrder").on("click", function() {
-				
-				var ticId = $('input[name=tic_id]').val();
-				console.log("ticId = " + ticId);				
+			$("#moveOrder").on("click", function() {				
 				$.ajax({
 					type: 'POST',
 					url: '${pageContext.request.contextPath}' + '/pay_order.LF',							
 					contentType: 'application/json',
 					data: JSON.stringify({
-							"ticId": ticId,
-							"totalPts": '1',
-							
+							"via" : "fromCart",
+							"size": cartData.length,
+							"totalPts": cartTotalPts,
+							"totalPrice": cartTotalPrice,
+							"data": cartData
 					}),
 					success: function(res, status, xhr) {
 						alert("성공");
-						console.log(res);
-						window.location.href = '${pageContext.request.contextPath}' + '/pay_cart.LF';
+						$('#homemain').html(res);
 					},
 					error: function(status, xhr) {
 						alert("실패");

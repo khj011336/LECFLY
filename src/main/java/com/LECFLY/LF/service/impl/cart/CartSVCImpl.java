@@ -17,6 +17,7 @@ import com.LECFLY.LF.model.dao.inf.Comment.ICommentDAO;
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
 import com.LECFLY.LF.model.dao.inf.cart.IGoodsDAO;
 import com.LECFLY.LF.model.dao.inf.creator.ICreatorDAO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.TicketListVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
@@ -145,10 +146,18 @@ public class CartSVCImpl implements ICartSVC {
 	}
 
 	@Override
-	public int insertNewCartByMbIdTicId(int mbId, int kitId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String orderFinishedProc(int mbId, int result) {
+		String Uuid = UUID.randomUUID().toString();
+		boolean r = cartDAO.updateUuidStateBymbId(mbId, result, Uuid);
+		return Uuid;
 	}
+
+	@Override
+	public boolean updateStateForPayBegin(int mbId, int gdsId, int gdType) {
+		return cartDAO.updateStateByMbid(mbId, gdsId, gdType);
+	}
+
+	
 
 
 
