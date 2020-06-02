@@ -36,7 +36,7 @@ public class PayHistoryVO {
 	/** 상태업데이트 날짜                 최종 배송완료 시간으로 마지막 저장	CURRENT_TIMESTAMP*/
 	private Timestamp updatedAt;
 	/** 총 결제 금액*/
-	int PayHistorySum;
+	private int PayHistorySum;
 
 	public PayHistoryVO() {}
 	public PayHistoryVO(int buyMbId, int sellMbId, int goodsType, int goodsId, int couponId,

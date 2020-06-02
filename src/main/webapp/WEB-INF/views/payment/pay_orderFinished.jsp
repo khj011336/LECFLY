@@ -13,6 +13,7 @@
 				<span class="order_finish">&gt; 주문완료</span>
 			</h3>
 		</div>
+		<c:forEach var="ph" items="${phlist}" varStatus="vs">
 		<div id="finished_wrapper">
 			<div class="finished_background">
 				<div class="finished_backgroundInfo">
@@ -25,7 +26,7 @@
 						<div class="popup">
 							<p class="orderDetail_title">
 								<i class="fas fa-edit"></i>주문상세정보 
-								<span>&#8226; 결제번호 : 1286806568 | 주문일자: 2020년 04월 20일</span>
+								<span>&#8226; 결제번호 : ${ph.checkSameOrder} | 주문일자: ${ph.dealDay}</span>
 							</p>
 							<a class="close" href="#">x</a>
 							<div class="orderDetail_content">
@@ -43,15 +44,14 @@
 										<th class="orderDetail_center_th">주문상태</th>
 									</tr>
 									<tr>
-										<td class="orderDetail_center_td">B266091129<br>
-											(1725117585)
+										<td class="orderDetail_center_td">${ph.checkSameOrder}<br>
 										</td>
-										<td class="orderDetail_center_td">잘만 잘만 ZM</td>
-										<td class="orderDetail_center_td">21,500원<br>(1개)
+										<td class="orderDetail_center_td">${titleList[vs.index]}</td>
+										<td class="orderDetail_center_td">${ph.payHistorySum}원<br>(${ph.buyProductCount})
 										</td>
 										<td class="orderDetail_center_td">0원</td>
-										<td class="orderDetail_center_td">0원</td>
-										<td class="orderDetail_center_td">베스트픽업</td>
+										<td class="orderDetail_center_td">${ph.diliveryPrice}원</td>
+										<td class="orderDetail_center_td">${ph.sellMbId}</td>
 										<td class="orderDetail_center_td">거래완료</td>
 									</tr>
 								</table>
@@ -78,19 +78,19 @@
 									<table class="orderDetail_right">
 										<tr>
 											<th class="orderDetail_right_th">최종 결제금액</th>
-											<td class="orderDetail_right_td">21,420원</td>
+											<td class="orderDetail_right_td">${ph.payHistorySum + ph.diliveryPrice}원</td>
 										</tr>
 										<tr>
-											<th class="orderDetail_right_th">카카오페이</th>
-											<td class="orderDetail_right_td">카카오페이(일시불)</td>
+											<th class="orderDetail_right_th">결제방법</th>
+											<td class="orderDetail_right_td">${ph.payWay == 1 ? "카드결제" : "카카오페이"}</td>
 										</tr>
 										<tr>
 											<th class="orderDetail_right_th">상품금액</th>
-											<td class="orderDetail_right_td">21,500원</td>
+											<td class="orderDetail_right_td">${ph.payHistorySum}원</td>
 										</tr>
 										<tr>
 											<th class="orderDetail_right_th">배송비</th>
-											<td class="orderDetail_right_td">0원</td>
+											<td class="orderDetail_right_td">${ph.diliveryPrice}원</td>
 										</tr>
 										<tr>
 											<th class="orderDetail_right_th">쿠폰할인금액</th>
@@ -118,7 +118,7 @@
 						<tr>
 							<th class="orderInfo_table_th">주문번호</th>
 							<td class="orderInfo_table_td"><strong
-								style="color: #babc00;">Y1706060474490</strong></td>
+								style="color: #babc00;">${ph.checkSameOrder}</strong></td>
 						</tr>
 					</tbody>
 				</table>
@@ -132,18 +132,16 @@
 				</a>
 				<div class="deliveryGoods_imgInfo">
 					<a class="deliveryGoods_a" target="_self"
-						href="javascript:void(0);" onclick="fundingItem();"> <strong>${ct.gdType == 0 ? '회원권': '키트'}</strong><br>
-						${ct.gdsName}
+						href="javascript:void(0);" onclick="fundingItem();"> <strong>${ph.goodsType == 1 ? '회원권': '키트'}</strong><br>
+						${titleList[vs.index]}
 					</a>
 					<div class="deliveryGoods_cnt">
 						구매수량
-						<c:out value="${ct.gdsCnt}" default="1" />
-						개
+						<c:out value="${ph.buyProductCount}" default="1" />개
 					</div>
 					<div>
-						<span class="deliveryGoods_discount"> 0<em
-							style="display: inline-block; color: #b0b0b0; font-style: normal; font-size: 12px; vertical-align: 1px;">원</em>
-						</span> <span class="deliveryGoods_price">${ct.gdsPrice}<em
+						<span class="deliveryGoods_discount">0<em style="display: inline-block; color: #b0b0b0; font-style: normal; font-size: 12px; vertical-align: 1px;">원</em>
+						</span> <span class="deliveryGoods_price">${ph.payHistorySum}<em
 							class="korean_point">원</em>
 						</span>
 					</div>
@@ -178,32 +176,32 @@
 			<div class="paymentInfo_set">
 				<div>
 					<div class="paymentInfo_sumprice">
-						<strong>총 상품금액</strong> <span class="sumGoods_price">${pd.totalPrice}<em
-							class="korean_point">원</em></span>
+						<strong>총 상품금액</strong> <span class="sumGoods_price">${ph.payHistorySum}
+						<em class="korean_point">원</em></span>
 					</div>
 					<div class="paymentInfo_sumprice">
-						<strong>총 배송비</strong> <span class="sumDelivery_price">0<em
-							class="korean_point">원</em></span>
+						<strong>총 배송비</strong> <span class="sumDelivery_price">${ph.diliveryPrice}
+						<em class="korean_point">원</em></span>
 					</div>
 				</div>
 				<div>
 					<div class="paymentInfo_sumprice">
-						<strong>쿠폰</strong> <span class="point_discountprice">0<em
+						<strong>쿠폰</strong> <span class="point_discountprice">${ph.couponId}<em
 							class="korean_point">원</em></span>
 					</div>
 				</div>
 				<div class="paymentInfo_sumprice">
 					<div>
 						<strong style="color: #ff2828;">총 결제금액</strong> <span
-							class="sum_paymentPrice">${pd.totalPrice}<em
+							class="sum_paymentPrice">${ph.payHistorySum + ph.diliveryPrice}<em
 							class="korean_point">원</em>
 						</span>
 					</div>
 				</div>
 				<div>
 					<div class="paymentInfo_sumprice">
-						<strong> 결제수단 </strong> <span class="paymentInfo_method">카카오페이
-							<em class="method_record">일시불(2020.04.20 11:46:00)</em>
+						<strong> 결제수단 </strong> <span class="paymentInfo_method">${ph.payWay == 1 ? "카드결제" : "카카오페이"}
+							<em class="method_record">${ph.updatedAt}</em>
 						</span>
 					</div>
 				</div>
@@ -213,6 +211,7 @@
 					가기</button>
 			</div>
 		</div>
+		</c:forEach>
 	</div>
 </div>
 <script>

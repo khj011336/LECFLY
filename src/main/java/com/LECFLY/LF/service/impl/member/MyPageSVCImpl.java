@@ -533,30 +533,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 							deliveryStatusDeliveryCompleted
 								= (deliveryStatusDeliveryCompleted + 1); break;
 					}
-					String creatorIds = phisList.get(i).getSellMbId();
-					String kitIds = phisList.get(i).getGoodsId();
+					int creatorIds = phisList.get(i).getSellMbId();
+					int kitIds = phisList.get(i).getGoodsId();
 					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
-					String[] arrayCreatorIds = creatorIds.split(",");
-					String[] arrayKitIds = kitIds.split(",");
-					kitCount = arrayKitIds.length;
-
-					if(arrayCreatorIds.length >= 0 ) {
-
-						for (int j = 0; j < arrayKitIds.length; j++) {
-							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
-							int intKitId = Integer.parseInt(arrayKitIds[j]);
-
-							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
-							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
-											testDao.selectOneCreatorById(intCreatorId);
-							KitVO kit = //kitDao.selectOneKitById(intKitId);
-										testDao.selectOneKitById(intKitId);
-							creList.add(cre);
-							kitList.add(kit);
-						}
-					} else {
-						System.out.println("arrayCreatorIds.length 는 음수 ");
-					}
 				}
 				Map<String, Object> rMap = new HashMap<>();
 				int[] deliveryStatus = { deliveryStatusPaymentWaiting,
@@ -672,28 +651,9 @@ public class MyPageSVCImpl implements IMypageSVC {
 			if(phisList != null) {
 				final int PHIS_LIST_SIZE = phisList.size();
 				for (int i = 0; i < PHIS_LIST_SIZE; i++) {
-					String creatorIds = phisList.get(i).getSellMbId();
-					String kitIds = phisList.get(i).getGoodsId();
+					int creatorIds = phisList.get(i).getSellMbId();
+					int kitIds = phisList.get(i).getGoodsId();
 					// 이부분은 payhistries 에서 구분자를 무엇으로할꺼냐에서 달라진다.
-					String[] arrayCreatorIds = creatorIds.split(",");
-					String[] arrayKitIds = kitIds.split(",");
-
-					if(arrayCreatorIds.length >= 0 ) {
-						for (int j = 0; j < arrayKitIds.length; j++) {
-							int intCreatorId = Integer.parseInt(arrayCreatorIds[j]);
-							int intKitId = Integer.parseInt(arrayKitIds[j]);
-
-							// creDao.selectOneCreator(id) <== 이거쓰려고했으나 fid로 찾는거라서 내가찾는거는 Creator를찾는거라 사용할수없었음
-							CreatorVO cre = //creDao.selectOneCreatorById(intCreatorId);
-											testDao.selectOneCreatorById(intCreatorId);
-							KitVO kit = //kitDao.selectOneKitById(intKitId);
-										testDao.selectOneKitById(intKitId);
-							creList.add(cre);
-							kitList.add(kit);
-						}
-					} else {
-						System.out.println("arrayCreatorIds.length 는 음수 ");
-					}
 				} // for 문끝
 				Map<String, Object> rMap = new HashMap<>();
 				rMap.put("phisList", phisList);

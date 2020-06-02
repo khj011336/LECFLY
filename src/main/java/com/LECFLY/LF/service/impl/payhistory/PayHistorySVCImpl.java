@@ -1,5 +1,6 @@
 package com.LECFLY.LF.service.impl.payhistory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
+import com.LECFLY.LF.model.dao.inf.creator.IKitDAO;
 import com.LECFLY.LF.model.dao.inf.payHistory.IPayHistoryDAO;
 import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
@@ -22,7 +24,9 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 	IPayHistoryDAO payDao;
 	@Autowired
 	ICartDAO ctDao;
-	// 바로 결제를 위한 폼 준비하기.
+	@Autowired
+	IKitDAO kitDao;
+	
 	@Override
 	public Map<String, Object> showOrderProc(int mbId, int ticName) {
 		int categoryId = CartVO.CATEGORY_ID_TICKET;
@@ -42,11 +46,13 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 		rMap.put("cart", cart);
 		return rMap;
 	}
+	
 	@Override
-	public int insertPayHis(int mbId, String uuid, int payWay, int couponId) {
+	//public List<PayHistoryVO> insertPayHis(int mbId, String uuid, int payWay, int couponId) {
+	public Map<String, Object> insertPayHis(int mbId, String uuid, int payWay, int couponId) {
 		List<CartVO> ctList = ctDao.findListByUuid(uuid);
-		int addCntCount = 0;
-		int totalDelPrice = 0;
+		List<String> titleList = new ArrayList<>();
+		Map<String, Object> rMap = new HashMap<>();
 		for (int i = 0; i < ctList.size(); i++) {
 			CartVO cart = ctList.get(i);
 			if(cart.getCategoryId() == 0) {
@@ -55,13 +61,11 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 				cart.getGdsPrice();
 				cart.getGdsCnt();
 				cart.getCreatedAt();
-				
-				KitVO kit = kitDaoselectOneKitById(cart.getGdsId());
-				int kitDelPrice = kit.getDeliveryPrice();
-				int kitOwn = Intekit.getfId();
-				addCntCount += cart.getGdsCnt();
- 				int payHistorySum = addCntCount * cart.getGdsPrice(); 
-				PayHistoryVO phis = new PayHistoryVO(buyMbId, sellMbId, goodsType, goodsId, couponId, buyProductCount, diliveryPrice, checkSameOrder, payHistorySum);
+				String title = TicketVO.STR_TICKET_NAME_MAP.get(cart.getGdsName());
+				titleList.add(title);
+				PayHistoryVO phis = new PayHistoryVO(mbId, 0, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), 0, uuid, cart.getGdsPrice());
+				payDao.insertNewPayHistory(phis);
+				// insertNewPayHistory(mbId, kitSellMbId, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), kitDelPrice, uuid, payHistorySum);
 			} else if(cart.getCategoryId() == 1) {
 				//애가 키트의 아이디야.
 				cart.getGdsId();
@@ -69,27 +73,32 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 				cart.getGdsPrice();
 				cart.getGdsCnt();
 				cart.getCreatedAt();
-				addCntCount += cart.getGdsCnt();
-				// 카트중에숴 키트인애들이야
-				KitVO kit = kitDaoselectOneKitById(cart.getGdsId());
+				
+				KitVO kit = kitDao.selectOneKit(cart.getGdsId());
 				int kitDelPrice = kit.getDeliveryPrice();
-				totalDelPrice += kitDelPrice; 
+				int kitSellMbId = kit.getfId();
+				String title = kit.getTitle();
+				titleList.add(title);
+				PayHistoryVO phis = new PayHistoryVO(mbId, kitSellMbId, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), kitDelPrice, uuid, cart.getGdsPrice());
+				
+				payDao.insertNewPayHistory(phis);
+				// insertNewPayHistory(mbId, kitSellMbId, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), kitDelPrice, uuid, payHistorySum);
 			} else {
-				System.out.println(" 0 1 외의 잘못된값입력 ");
+				System.out.println("0 또는 1 외의 잘못된 값 입력 ");
 			}
-			
+		}
+		List<PayHistoryVO> hisList = payDao.selectPayHistorybyUuid(uuid);
+		List<String> payNameList = new ArrayList<>();
+		for (int i = 0; i < hisList.size(); i++) {
+			String payName = hisList.get(i).getPayWay() == 1 ? "카드결제" : "카카오페이"; 
+			payNameList.add(payName);		
 		}
 		
-		int buyProductCount = addCntCount;
-		int diliveryPrice = totalDelPrice;
-		int payHistorySum = 0;
-		
-		
-		category_id를 판단하여 0, 1에 따라.. 0이면 티켓 테이블 조회하여 payhistory에 관련 덷이터 입력 준비
-		1이면 키트 테이블 조회하여 역시 payhistory 관련 데이터를 입력준비한다. 
-		단, 키트테이블 조회에서 seller-fid를 통하여  creator 테이블에서 판매자 정보를 조회하여 가져와서 pqyhistory에 입력 준비
-		int r = payDao.insertNewHistory();
-		return r;
+		rMap.put("hisList", hisList);
+		rMap.put("titleList", titleList);
+		rMap.put("payNameList", payNameList);
+		//return hisList;
+		return rMap;
 	}
 	
 	
