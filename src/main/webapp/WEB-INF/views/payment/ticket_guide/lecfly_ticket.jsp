@@ -43,7 +43,7 @@
 						"gdsPrice": 49900,
 						"gdsCnt": 1
 				};
-				break;	
+				break;
 				
 		}
 		
@@ -265,13 +265,13 @@
 								$('#homemain').html(res2);
 							},
 							error: function(status2, xhr2) {
-								alert("실패");
+								alert("실패2");
 							}
 						});
 					}
 				},
 				error: function(status, xhr) {
-					alert("실패");
+					alert("실패3");
 				}
 			});
 		});

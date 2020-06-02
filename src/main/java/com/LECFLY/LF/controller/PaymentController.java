@@ -1,11 +1,15 @@
 package com.LECFLY.LF.controller;
 
+import java.net.PasswordAuthentication;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.velocity.tools.view.WebappUberspector.SetAttributeExecutor;
@@ -21,7 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.LECFLY.LF.model.dao.impl.Test;
 import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.PostscriptVO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketListVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
@@ -47,6 +53,8 @@ public class PaymentController {
 	CartVO cartVO;
 	@Autowired
 	MemberVO memberVO;
+	@Autowired
+	IPayHistorySVC payhisSvc;
 
 	//후기/댓글서비스 추가
 	@Autowired
@@ -125,7 +133,13 @@ public class PaymentController {
 			String via = (String)poData.get("via"); // 루트
 
 			model.addAttribute("pd", poData);
+			
+			List<Map<String,Object>> dataList = (List<Map<String,Object>>)poData.get("data");
 
+			for(Map<String,Object> m : dataList) {
+				cartSvc.updateStateForPayBegin(mbId, (int)m.get("gdsId"), (int)m.get("gdType")); // state 0대상, 0 -> 1
+			}
+			
 //			"via" : "fromBaro",
 //			"size": 1,
 //			"totalPts": 1,
@@ -449,39 +463,34 @@ public class PaymentController {
 
 	// 회원이 주문페이지에서 결제완료페이지로 이동할 수 있다.
 	@RequestMapping(value = "pay_orderFinished.LF", method = RequestMethod.GET)
-	public String showOrderFinishedProc() {
+	public String showOrderFinishedProc(HttpSession ses,
+										@RequestParam(value = "result") int result,
+										@RequestParam(value = "payWay", required = false) int payWay,
+										@RequestParam(value = "couponId", required = false) int couponId,
+										@RequestParam(value = "imp_uid", required = false) String imp_uid,										
+										Model model) {
 		System.out.println("결제완료 페이지로 이동");
-		return "payment/pay_orderFinished.pay";
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		String uuid = cartSvc.orderFinishedProc(mbId, result);
+		if(result == 2) {
+			Map<String, Object> phlist = payhisSvc.insertPayHis(mbId, uuid, payWay, couponId); // 목표 PayHistory에 insert
+			List<PayHistoryVO> phisList = (List<PayHistoryVO>)phlist.get("hisList");
+			List<String> titleList = (List<String>)phlist.get("titleList");
+			List<String> payNameList = (List<String>)phlist.get("payNameList");
+			int addPrice = (int)phlist.get("addPrice");
+			int addDelPrice = (int)phlist.get("addDelPrice");
+			
+			model.addAttribute("msg", "결제 성공");
+			model.addAttribute("phlist", phisList);
+			model.addAttribute("titleList", titleList);
+			model.addAttribute("payNameList", payNameList);
+			model.addAttribute("addPrice", addPrice);
+			model.addAttribute("addDelPrice", addDelPrice);
+		} else {
+			model.addAttribute("msg", "결제 실패!");
+		}
+		return "payment/pay_orderFinished.pays";
 	}
-
-
-	 //테스트 용.
-//	@RequestMapping(value = "pay_cart.LF", method = RequestMethod.GET)
-//	public String showCartProc() {
-//		System.out.println("장바구니 페이지로 이동");
-//		return "payment/pay_cart.pay";
-//	}
-//
-//	// - 주문 페이지로 이동할 수 있다.
-//		@RequestMapping(value = "/pay_order.LF", method = RequestMethod.GET)
-//		public String selectOrder() {
-//			System.out.println("결제 페이지로 이동");
-//			return "payment/pay_order.pay";
-//		}
-//
-//	// - 결제 페이지로 이동할 수 있다.
-//		@RequestMapping(value = "/pay_order_finish.LF", method = RequestMethod.GET)
-//		public String selectOrderFinish() {
-//			System.out.println("결제 완료페이지로 이동");
-//			return "payment/pay_order_finish.pay";
-//		}
-//
-//	// - 주문 상세페이지로 이동할 수 있다.
-//		@RequestMapping(value = "/pay_order_detail.LF", method = RequestMethod.GET)
-//		public String selectOrderDetail() {
-//			System.out.println("결제 상세페이지로 이동");
-//			return "payment/pay_order_detail.pay";
-//		}
-
 
 }
