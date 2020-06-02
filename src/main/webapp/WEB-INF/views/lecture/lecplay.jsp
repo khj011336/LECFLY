@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <script>
 	$(document).ready(function() {
-		
+	 
 	});
 	function videoLoad(videoPath,  views, title) {
 		$("#Htext p b").text(title);
@@ -29,6 +29,7 @@
 </style>
 <link href ="resources/css/creator/lecplay.css" rel ="stylesheet" type="text/css" >
 <body>
+ 
 	<div id="playWrap">
 
 		<div id="Tcontent">
@@ -85,6 +86,7 @@
 				</div>
 				<div id="PvideoList">
 					<div class="PvideoContent">
+					<c:if test="${not empty videoList }">
 						<c:forEach begin="0" end="${videoList.size()-1}" varStatus="index">
 							<div
 								 class='alter <c:out value="${index.index == 0? '' : 'Limg'}" />'
@@ -101,7 +103,7 @@ onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList
 								</div>
 							</div>
 						</c:forEach>
-
+</c:if>
 					</div>
 				</div>
 			</div>
