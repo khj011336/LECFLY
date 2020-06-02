@@ -64,4 +64,51 @@
 	<welcome-file-list>
 	<welcome-file>home.LF</welcome-file>
 	</welcome-file-list>
+	
+	
+	<error-page>
+	    <exception-type>java.lang.Throwable</exception-type>
+	    <location>/WEB-INF/views/common/error.jsp</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>404</error-code>
+	    <location>/WEB-INF/views/common/error404.jsp</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/WEB-INF/views/common/error500.jsp</location>
+	</error-page>
+
+	<!-- <error-page>
+
+        <exception-type>com.lgcns.ncd.common.exception.AuthException</exception-type>
+
+        <location>/WEB-INF/jsp/common/common/error.jsp</location>
+
+    </error-page>
+
+
+
+    <error-page>
+
+        <error-code>404</error-code>
+
+        <location>/WEB-INF/jsp/common/error/error404.jsp</location>
+
+    </error-page>
+
+    <error-page>
+
+        <error-code>500</error-code>
+
+        <location>/WEB-INF/jsp/common/error/error500.jsp</location>
+
+    </error-page> -->
+
+
+
+출처: https://zenomis.tistory.com/entry/webxml-errorpage-설정 [꿈꾸는 별나라]
+	
 </web-app>

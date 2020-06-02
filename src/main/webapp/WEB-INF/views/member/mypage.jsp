@@ -73,7 +73,6 @@
 						<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">
 				            <img id="proImage" width="148px" height="148px" 
 				            src=<c:out value="${pic}${member.pic}" default="resources/imges/logo/LecFly_SLOGO_LW_W.png"/>>
-				            ${pic}${member.pic}
 <%-- 				            ${!empty member.pic ? ${pic} : "resources/imges/logo/LecFly_SLOGO_LW_W.png"}> --%>
 <!-- 				            src="resources/imges/logo/LecFly_SLOGO_LW_W.png"> -->
 							<input type="file" accept="image/*" id="mypageimgProc" name="mypage_upload_pic" placeholder="프로필 사진 편집" size='64'>
@@ -85,12 +84,12 @@
 			        	<br><br>
 			        	<c:if test="${mb.checkCreator eq 0 or mb.checkCreator eq 1 or mb.checkCreator eq 2}">
 			        		<h1><u>일반회원</u> 입니다.</h1>
+				        	<br><br>
+				        	<a href="creator.LF"><h3>크리에이터 신청하기</h3></a>
 			        	</c:if>
 			        	<c:if test="${mb.checkCreator eq 3}">
 			        		<h1><u>크리에이터 회원</u> 입니다.</h1>
 			        	</c:if>
-			        	<br><br>
-			        	<a href="creator.LF"><h3>크리에이터 신청하기</h3></a>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_attendlec">
 			        	<img src="resources/imges/mypage/mypage_video.png" class="mypage_1" alt="강의" width="64px" height="64px">

@@ -108,9 +108,5 @@ onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList
 		</div>
 		<hr>
 	</div>
-
-
-
-		"videoLoad('/images/2020/김슬기/video/LF_김슬기_1_4_145.216667_202005291441.mp4','물레로 컵 만드는 과정을 처음부터 끝까지 담아보았어요.성형부터 굽깎기-시유하는 모습까지! 편안하게 감상해주세요','145','도자기 입문 - 어린이 도예를 위한 기초 테크닉 영상')"
 </body>
 
