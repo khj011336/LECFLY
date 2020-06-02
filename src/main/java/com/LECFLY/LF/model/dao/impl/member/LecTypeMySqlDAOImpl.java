@@ -104,5 +104,75 @@ public class LecTypeMySqlDAOImpl implements ILecTypeDAO {
 		}
 		return 0;
 	}
+
+	public static final String SQL_CHECK_LECTYPE_BY_MBID_CLASSID_TO_MBLIKE = 
+			"select count(*) from lec_types where mb_id = ? and status = " + 
+								LecTypeVO.STATUS_LIKE + " and class_id = ?";
+
+	@Override
+	public boolean checkLecTypeByMbidClassId(int mbId, int lecId) {
+		try {
+			System.out.println(SQL_CHECK_LECTYPE_BY_MBID_CLASSID_TO_MBLIKE + 
+					" / mbId = " + mbId + " /lecId = " + lecId);
+			int r = jtem.queryForObject(SQL_CHECK_LECTYPE_BY_MBID_CLASSID_TO_MBLIKE,
+					Integer.class, mbId, lecId);
+			System.out.println("selectOneLecTypeByMbidClassId() 결과 = " +
+					r + "\r\n (r == 1 일시 true)");
+			return (r == 1);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException..");
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public static final String SQL_SELECT_LECTYPE_BY_MBID_CLASSID_TO_MBLIKE = 
+			"select * from lec_types where mb_id = ? and status = " + 
+					LecTypeVO.STATUS_LIKE + " and class_id = ?";
+	@Override
+	public LecTypeVO selectOneLecTypeByMbidClassId(int mbId, int lecId) {
+		try {
+			System.out.println(SQL_SELECT_LECTYPE_BY_MBID_CLASSID_TO_MBLIKE + 
+					" / mbId = " + mbId + "lecId = " + lecId);
+			return jtem.queryForObject(SQL_SELECT_LECTYPE_BY_MBID_CLASSID_TO_MBLIKE, 
+					BeanPropertyRowMapper.newInstance(LecTypeVO.class), mbId, lecId);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static final String SQL_INSERT_NEW_LECTYPE = 
+			"insert into lec_types values(null, ?, " + LecTypeVO.STATUS_LIKE + ", ?, now())";
+	@Override
+	public boolean insertNewLecType(LecTypeVO lt) {
+		try {
+			System.out.println(SQL_INSERT_NEW_LECTYPE + 
+					"mbId = " + lt.getMbId() + "classId = " + lt.getClassId());
+			int r = jtem.update( SQL_INSERT_NEW_LECTYPE, lt.getMbId(), lt.getClassId() );
+			return (r == 1);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException");
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public static final String SQL_DELETE_ONE_LECTYPE_BY_ID = 
+			"delete from lec_types where id = ?";
+
+	@Override
+	public boolean deleteOneLecTypeById(int id) {
+		try {
+			System.out.println(SQL_DELETE_ONE_LECTYPE_BY_ID + " / id = " + id);
+			int r = jtem.update(SQL_DELETE_ONE_LECTYPE_BY_ID, id);
+			return (r == 1);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException");
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 }

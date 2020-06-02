@@ -616,6 +616,37 @@ public class Test {
 		} 
 		return null;
 	}
+
+	 
+			
+	
+	/** true 일경우 1개증가 false 일경우 1개 감소 */
+	public void updateLecutreLikeCountAddOrSubtractById(int id, boolean b) {
+		try {
+			String sql = "update lectures set like_count = like_count" + (b ? " +1 " : " -1 ") + "where id = ?";
+			System.out.println(sql + " / id = " + id);
+			int r = jtem.update(sql, id);
+			System.out.println("void 라 리턴값은 없지만 결과 = " + r + "\r\n 1일시 업데이트성공");
+		} catch(DataAccessException e) {
+			System.out.println();
+			e.printStackTrace();
+		}
+	}
+
+	public static final String SQL_SELECT_LECUTE_LIKECOUNT_BY_ID = 
+			"select like_count from lectures where id = ?";
+	
+	public int selectLectureLikeCountById(int id) {
+		try {
+			System.out.println(SQL_SELECT_LECUTE_LIKECOUNT_BY_ID + " / id = " + id);
+			return jtem.queryForObject(SQL_SELECT_LECUTE_LIKECOUNT_BY_ID, Integer.class, id);
+		} catch(DataAccessException e) {
+			System.out.println("DataAccessException");
+			e.printStackTrace();
+			
+		}
+		return 0;
+	}
 	
 	
 	//////////////

@@ -12,4 +12,12 @@ public interface ILecTypeDAO {
 
 	int checkNumberOfLectureByMbIdStatus(int mbId, int status);
 
+	boolean checkLecTypeByMbidClassId(int mbId, int lecId);
+
+	LecTypeVO selectOneLecTypeByMbidClassId(int mbId, int lecId);
+
+	boolean insertNewLecType(LecTypeVO lt);
+
+	boolean deleteOneLecTypeById(int id);
+
 }

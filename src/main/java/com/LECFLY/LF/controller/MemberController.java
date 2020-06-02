@@ -1170,6 +1170,45 @@ public class MemberController {
 		return "member/mypage/order_manager/mypage_delivery_info";
 	}
 
+	// 회원이 좋아요를 눌렀음
+	@RequestMapping(value="mb_click_lecture_like.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberClickLectureLike( HttpSession ses,
+			@RequestParam(value="like_cnt") int likeCnt,
+			@RequestParam(value="lec_id") int lecId
+			){
+		/* 목적
+		 *  회원아이와 lecId 를 통해 해당하는 lecture에 회원의 좋아요가 있는지먼저 확인하고 없으면 집어넣고
+		 *  좋아요도 insert 하고 카운트도 하나 늘려야되고 lecTypeVO 에도 좋아요쪽 하나늘려야되고
+		 *  있는 회원이라면 delete 해야되고~~~~
+		*/
+		// 뽑을값
+		// likeCnt
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb == null) {
+			
+			int mbId = mb.getId();
+			Map<String, Object> pMap = mpSvc.memberLikeProc(mbId, lecId);
+			int rtCheck =  -1;
+			if(pMap.containsKey("likeCnt")) {
+				int likeCount = (int)pMap.get("likeCnt");
+				rMap.put("likeCnt", likeCnt);
+			}else {
+				rMap.put("errCheck", "99");
+			}
+		} else {
+			System.out.println("mb == null");
+			rMap.put("errerrCheck", "99");
+		}
+		return rMap;
+	}
+	
+	
+	
+	
+	
+	
 
 ////////////////////////////////////////////////////
 

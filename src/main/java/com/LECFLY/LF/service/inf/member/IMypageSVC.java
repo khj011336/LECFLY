@@ -69,6 +69,8 @@ public interface IMypageSVC {
 
 	Map<String, Object> selectMypagePayHistoryListByMbId(int mbId, int pageNumber);
 
+	Map<String, Object> memberLikeProc(int mbId, int lecId);
+
 	
 //회원이 신청한 강의목록 표시하기							수강 관리
 //	mypage_attending_class.lf(proc, post, dao)			해당 조각페이지 불러오게 리턴			

@@ -927,6 +927,45 @@ public class MyPageSVCImpl implements IMypageSVC {
 		return null;
 	}
 
+	/**
+	 *  
+	 *	1회원이 좋아요를 눌렀을때 lecture에서 해당회원이 해당 lecture를 좋아요를 눌럿는지 확인하고 
+	 *  1.5 회원이 lecTypeVO에서 해당 classId를 좋아요했는지 status 2였나? 상수있을거임 확인하고
+	 *  해당 회원이있다면 delete lecTypeVO
+	 *  없다면 insert lecTypeVO
+	 *  그리고 리턴할거는 좋아요개수리턴해야됨
+	 */
+	@Override
+	public Map<String, Object> memberLikeProc(int mbId, int lecId) {
+		if(mbId > 0 && lecId > 0) {
+			boolean isLikeLectureToMb = ltDao.checkLecTypeByMbidClassId(mbId, lecId);
+			Map<String, Object> rMap = new HashMap<>();
+			if(isLikeLectureToMb) { // 해당하는게 있어 그러면 delete 해야됨
+				LecTypeVO lt = ltDao.selectOneLecTypeByMbidClassId(mbId, lecId);
+				boolean r = ltDao.deleteOneLecTypeById(lt.getId()); // true 일경우 delete 성공
+				if( r ) { // delete 성공
+					LectureVO lec = lecDao.selectLecture(lecId);
+					testDao.updateLecutreLikeCountAddOrSubtractById(lecId, false);
+					int likeCnt = testDao.selectLectureLikeCountById(lecId);
+					rMap.put("likeCnt", likeCnt);
+				}
+			} else { // 없어서 insert해야됨
+				LecTypeVO lt = new LecTypeVO(mbId, LecTypeVO.STATUS_LIKE, lecId);
+				boolean r = ltDao.insertNewLecType(lt); // true 일경우 insert 성공
+				if(r) { // true 일경우 insert 성공
+					LectureVO lec = lecDao.selectLecture(lecId);
+					testDao.updateLecutreLikeCountAddOrSubtractById(lecId, true);
+					int likeCnt = testDao.selectLectureLikeCountById(lecId);
+					rMap.put("likeCnt", likeCnt);
+				}
+			}
+			return rMap;
+		} else {
+			System.out.println("mbId or lecId 는 0 이하..");
+		}
+		return null;
+	}
+
 	
 
 
