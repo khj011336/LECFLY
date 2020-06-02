@@ -2,7 +2,13 @@
 	pageEncoding="UTF-8"%>
 <link type="text/css" rel="stylesheet"
 	href="resources/css/payment/pay_orderFinished.css">
-
+<script>
+   var reTotal = 0;
+   function showReceipt() {
+	$('#homemain').load("${pageContext.request.contextPath} + /pay_orderDetail.LF?retotal="+reTotal);
+	'${pageContext.request.contextPath}' + '/pay_orderDetail.LF'
+}
+</script>
 <div id="paymentFinished_wrapper">
 	<div id="paymentFinished_content">
 		<div class="paymentFinished_title_box">
@@ -13,6 +19,10 @@
 				<span class="order_finish">&gt; 주문완료</span>
 			</h3>
 		</div>
+		
+		
+		<c:set var="totalPriceph" value="0" scope="request" />
+		
 		<c:forEach var="ph" items="${phlist}" varStatus="vs">
 		<div id="finished_wrapper">
 			<div class="finished_background">
@@ -21,7 +31,7 @@
 					<div class="finished_font">
 						주문이 정상적으로 <strong style="color: orange">완료</strong>되었습니다.
 					</div>
-					<a class="finished_orderdelivery" href="#popup1">주문상세조회</a>
+					<a class="finished_orderdelivery" href="#popup1" onclick="showReceipt()">영수증</a>
 					<div id="popup1" class="overlay">
 						<div class="popup">
 							<p class="orderDetail_title">
@@ -176,6 +186,43 @@
 			<div class="paymentInfo_set">
 				<div>
 					<div class="paymentInfo_sumprice">
+						<strong>상품금액</strong> <span class="sumGoods_price">${ph.payHistorySum}
+						<em class="korean_point">원</em></span>
+					</div>
+					<div class="paymentInfo_sumprice">
+						<strong>배송비</strong> <span class="sumDelivery_price">${ph.diliveryPrice}
+						<em class="korean_point">원</em></span>
+					</div>
+				</div>
+				<div>
+					<div class="paymentInfo_sumprice">
+						<strong>쿠폰</strong> <span class="point_discountprice">${ph.couponId}<em
+							class="korean_point">원</em></span>
+					</div>
+				</div>
+				<div class="paymentInfo_sumprice">
+					<div>
+						<strong style="color: #ff2828;">결제금액</strong> <span
+							class="sum_paymentPrice">${ph.payHistorySum + ph.diliveryPrice}<em
+							class="korean_point">원</em>
+						</span>
+					</div>
+					<c:set var="totalPriceph" value="${totalPriceph + ph.payHistorySum + ph.diliveryPrice}" scope="request" />
+				</div>
+				<div>
+					<div class="paymentInfo_sumprice">
+						<strong> 결제수단 </strong> <span class="paymentInfo_method">${ph.payWay == 1 ? "카드결제" : "카카오페이"}
+							<em class="method_record">${ph.updatedAt}</em>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		</c:forEach>
+		<div id="paymentInfo_title">결제 정보</div>
+			<div class="paymentInfo_set">
+				<div>
+					<div class="paymentInfo_sumprice">
 						<strong>총 상품금액</strong> <span class="sumGoods_price">${ph.payHistorySum}
 						<em class="korean_point">원</em></span>
 					</div>
@@ -197,6 +244,7 @@
 							class="korean_point">원</em>
 						</span>
 					</div>
+					<c:set var="totalPriceph" value="${totalPriceph + ph.payHistorySum + ph.diliveryPrice}" scope="request" />
 				</div>
 				<div>
 					<div class="paymentInfo_sumprice">
@@ -206,32 +254,21 @@
 					</div>
 				</div>
 			</div>
-			<div id="paymentFinished_button">
+		</div>
+		<div id="paymentFinished_button">
 				<button type="button" class="paymentFinished_goHomePage">홈으로
 					가기</button>
 			</div>
-		</div>
-		</c:forEach>
+		<B> 진짜 총합 가격: ${totalPriceph}원</B>
+		<script type="text/javascript">
+			reTotal = ${totalPriceph};
+			console.log("reTotal = "+ reTotal );
+		</script>
 	</div>
-</div>
 <script>
-	$(document)
-			.ready(
-					function() {
-						$(".paymentFinished_goHomePage")
-								.on(
-										"click",
-										function() {
-											window.location.href = '${pageContext.request.contextPath}'
-													+ '/home.LF';
-										});
-
-						$(".finished_orderdelivery").on(
-								"click",
-								function() {
-									$('#homemain').load(
-											'${pageContext.request.contextPath}'
-													+ '/pay_orderDetail.LF');
-								})
-					});
+	$(document).ready(function() {
+		$(".paymentFinished_goHomePage").on( "click", function() {
+			window.location.href = '${pageContext.request.contextPath}' + '/home.LF';
+		});
+	});
 </script>
