@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
 import com.LECFLY.LF.model.dao.inf.payHistory.IPayHistoryDAO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.service.inf.payhistory.IPayHistorySVC;
@@ -40,4 +41,10 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 		rMap.put("cart", cart);
 		return rMap;
 	}
+	@Override
+	public int insertPayHis(int mbId, String uuid) {
+		int r = payDao.insertNewHistory(mbId, uuid);
+		return r;
+	}
+	
 }

@@ -1,10 +1,12 @@
 package com.LECFLY.LF.model.dao.inf.cart;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.dao.DataAccessException;
 
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
@@ -25,5 +27,8 @@ public interface ICartDAO {
 	 *
 	 */
 	int checkCartByMbIdKitId(int mbId, int kitId, int categoryId);
+	boolean updateUuidStateBymbId(int mbId, int result, String uuid);
+	boolean updateStateByMbid(int mbId, int gdsId, int gdType);
+	
 
 }

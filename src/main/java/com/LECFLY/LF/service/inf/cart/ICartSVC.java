@@ -2,6 +2,8 @@ package com.LECFLY.LF.service.inf.cart;
 
 import java.util.List;
 import java.util.Map;
+
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 
@@ -14,8 +16,9 @@ public interface ICartSVC {
 	public Map<String, Object> showCartProc(int mbId);
 	public Map<String, Object> showCartByNoMbProc(int kitId);
 	public boolean checkCartForKitMb(int mbId, int kitId, int i);
-	int insertNewCartByMbIdTicId(int mbId, int kitId);
 	int insertNewCartByTicId(int mbId, int kitId, String gdType);
+	public String orderFinishedProc(int mbId, int result);
+	public boolean updateStateForPayBegin(int mbId, int gdsId, int gdType);
 
 
 }

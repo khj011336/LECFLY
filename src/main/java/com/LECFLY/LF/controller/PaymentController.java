@@ -1,11 +1,20 @@
 package com.LECFLY.LF.controller;
 
+import java.net.PasswordAuthentication;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.velocity.tools.view.WebappUberspector.SetAttributeExecutor;
@@ -21,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.LECFLY.LF.model.dao.impl.Test;
 import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.PostscriptVO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.TicketListVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
@@ -47,6 +57,8 @@ public class PaymentController {
 	CartVO cartVO;
 	@Autowired
 	MemberVO memberVO;
+	@Autowired
+	IPayHistorySVC payhisSvc;
 
 	//후기/댓글서비스 추가
 	@Autowired
@@ -125,7 +137,13 @@ public class PaymentController {
 			String via = (String)poData.get("via"); // 루트
 
 			model.addAttribute("pd", poData);
+			
+			List<Map<String,Object>> dataList = (List<Map<String,Object>>)poData.get("data");
 
+			for(Map<String,Object> m : dataList) {
+				cartSvc.updateStateForPayBegin(mbId, (int)m.get("gdsId"), (int)m.get("gdType")); // state 0대상, 0 -> 1
+			}
+			
 //			"via" : "fromBaro",
 //			"size": 1,
 //			"totalPts": 1,
@@ -449,39 +467,63 @@ public class PaymentController {
 
 	// 회원이 주문페이지에서 결제완료페이지로 이동할 수 있다.
 	@RequestMapping(value = "pay_orderFinished.LF", method = RequestMethod.GET)
-	public String showOrderFinishedProc() {
+	public String showOrderFinishedProc(HttpSession ses, @RequestParam( value = "result") int result, Model model) {
 		System.out.println("결제완료 페이지로 이동");
-		return "payment/pay_orderFinished.pay";
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		int mbId = mb.getId();
+		String uuid = cartSvc.orderFinishedProc(mbId, result);
+		// 밖에서 받아와야할것
+		// 카트아이디 , 쿠폰아이디,
+		// 안에서 처리해야할거
+		// 판매자아이디는 키트나 티켓에있어 티켓이나 키트는 카트에있어 . 
+		// 		-> 두번찾아야되 먼저 카트를먼저찾고 카트에서 키트나 티켓을찾아야되 
+		// insert하고 select 
+		// select 한다는건 가져오는거에여 뭘가져와야되? PayHistoryVO 이게 리턴타입이야. 
+		// 
+		//int r = payhisSvc.insertPayHis(mbId, uuid); // 목표 PayHistory에 insert
+		
+		
+		//payhisSvc.orderFinishedProc(cartId, couponId, mbId, uuid);
+		return "payment/pay_orderFinished.pays";
 	}
 
-
-	 //테스트 용.
-//	@RequestMapping(value = "pay_cart.LF", method = RequestMethod.GET)
-//	public String showCartProc() {
-//		System.out.println("장바구니 페이지로 이동");
-//		return "payment/pay_cart.pay";
-//	}
-//
-//	// - 주문 페이지로 이동할 수 있다.
-//		@RequestMapping(value = "/pay_order.LF", method = RequestMethod.GET)
-//		public String selectOrder() {
-//			System.out.println("결제 페이지로 이동");
-//			return "payment/pay_order.pay";
-//		}
-//
-//	// - 결제 페이지로 이동할 수 있다.
-//		@RequestMapping(value = "/pay_order_finish.LF", method = RequestMethod.GET)
-//		public String selectOrderFinish() {
-//			System.out.println("결제 완료페이지로 이동");
-//			return "payment/pay_order_finish.pay";
-//		}
-//
-//	// - 주문 상세페이지로 이동할 수 있다.
-//		@RequestMapping(value = "/pay_order_detail.LF", method = RequestMethod.GET)
-//		public String selectOrderDetail() {
-//			System.out.println("결제 상세페이지로 이동");
-//			return "payment/pay_order_detail.pay";
-//		}
-
-
+	@RequestMapping(value = "pay_sendEmail.LF")
+	public void sendEmail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// 메일 관련 정보
+		String host ="smtp.naver.com";
+		final String username = "kgu5634";
+		final String password = "rlarjs1577";
+		//int port = 465;
+		int port = 587;
+		
+		//메일 내용
+		String recipient = "kgu5634@naver.com";
+		String subject = "[LECFLY] 결제하신 내역을 안내해드립니다.";
+		String body = "이름: 김건우입니다. \n\n";
+		
+		Properties props = System.getProperties();
+		
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", port);
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.ssl.enable", "true");
+		props.put("mail.smtp.ssl.trust", "host");
+		
+		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+			String un = username;
+			String pw = password;
+			protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+				return new javax.mail.PasswordAuthentication(un, pw);
+			}
+		});
+		session.setDebug(true);
+		
+		Message mimeMessage = new MimeMessage(session);
+		mimeMessage.setFrom(new InternetAddress("kgu5634@naver.com"));
+		mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+		mimeMessage.setSubject(subject);
+		mimeMessage.setText(body);
+		Transport.send(mimeMessage);
+	}
+	
 }

@@ -10,6 +10,8 @@ public interface IPayHistoryDAO {
 
 	List<TicketVO> insertOneCategorybyName(int ticName);
 
+	int insertNewHistory(int mbId, String uuid);
+
 	
 
 }

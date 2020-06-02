@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cart.ICartDAO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
@@ -31,6 +33,9 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	private static final String SQL_SELECT_TICKET_LIST = "select * from tickets where id = ?";
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	private static final String SQL_INSERT_IN_CART = "insert into cart values(null, ?, 1, ?, 1, now())";
+	private static final String SQL_UPDATE_CART_STATE_AND_ORDER = "update cart set state = ?, check_same_order = ? where mb_id = ? and state = 1";
+	private static final String SQL_DELETE_CART_LIST = "delete cart from where mb_id = ? and state = 1";
+	private static final String SQL_UPDATE_ORDER = "update cart set state = 1 where mb_id = ? and gds_id = ? and category_id = ? and state = 0";
 
 	/**
 	 * @param categoryId // 0이면 이용권  1이면 키트
@@ -117,4 +122,16 @@ public class CartMysqlDAOImpl implements ICartDAO {
 		return jtem.query(SQL, BeanPropertyRowMapper.newInstance(CartVO.class), mbId, categoryId);
 	}
 
+	@Override
+	public boolean updateStateByMbid(int mbId, int gdsId, int gdType) {
+		int r = jtem.update(SQL_UPDATE_ORDER, mbId, gdsId, gdType);
+		return r == 1;
+	}
+	
+	@Override
+	public boolean updateUuidStateBymbId(int mbId, int result, String uuid) {
+		int r = jtem.update(SQL_UPDATE_CART_STATE_AND_ORDER, result, uuid, mbId);
+		return r == 1;
+	}
+	
 }

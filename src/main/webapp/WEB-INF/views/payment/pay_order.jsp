@@ -6,7 +6,7 @@
 <div id="wrapper">
 	<div id="fundingPayment_wrapper">
 		<div id="fundingPayment_main_title">
-			<strong class="fundingPayment_main_title">상품</strong> 결제하기 <br />
+			<strong class="fundingPayment_main_title">상품</strong> 카트 결제하기 <br />
 			<div class="fundingPayment_subtitle">
 				<span class="fundingPayment_basket">장바구니</span><span
 					class="fundingPayment_order_sheet">&gt; 주문서</span> <span
@@ -100,13 +100,6 @@
 							</td>
 						</tr>
 						<tr>
-<!-- 						<tr> -->
-<!-- 							<th class="deliveryPlaceInfo_table_th"></th> -->
-<!-- 							<td colspan="3" class="deliveryPlaceInfo_table_td"><input -->
-<!-- 								type="text" id="fundingPayment_extraAddress" placeholder="참고항목"> -->
-<!-- 							</td> -->
-<!-- 						</tr> -->
-						<tr>
 							<th class="deliveryPlaceInfo_table_th">배송요청 사항</th>
 							<td colspan="3" class="deliveryPlaceInfo_table_td"><input
 								type="text" name="delivery_required"
@@ -118,23 +111,19 @@
 		</div>
 		<div id="fundingPayment_sidebar">
 			<div id="orderfundingInfo_title">주문 상품</div>
-			<div class="orderfundingInfo_set">
 			<c:forEach var="ct" items="${pd.data}" varStatus="vs">
-				<a class="orderfunding_img" target="_target" href="javascript:void(0);" onclick="pageContext.request.contextPath/payment">
-					<img src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
-				</a>
+			<div class="orderfundingInfo_set">
+					<img class="orderfunding_img" src="resource/img/payment/working out.jpg" width="85" height="85" alt="다이어트 패키지">
 				<div class="orderfunding_imgInfo">
-					<a class="orderfunding_a">
 						<strong>${ct.gdType == 0 ? '회원권': '키트'}</strong><br>
 					 	<strong>${ct.gdsName}</strong>
-					</a>
 					<div class="orderfunding_cnt">구매수량 <c:out value="${ct.gdsCnt}" default="1"/> 개</div>
 					<div>
 						<span class="orderfunding_price">${ct.gdsPrice}<em class="orderfunding_won">원</em></span>
 					</div>
 				</div>
-			</c:forEach>
 			</div>
+			</c:forEach>
 			<div id="paymentInfo_title">결제 정보</div>
 			<div class="paymentInfo_box">
 				<table class="paymentInfo_table">
@@ -183,7 +172,7 @@
 		<div id="fundingPayment_order_button">
 			<p class="fundingPayment_desc">위 주문 내용을 확인 하였으며, 회원 본인은 결제에
 				동의합니다.</p>
-			<a href="javascript:void(0)" id="goFinish" class="fundingPayment_confirm_order"> 주문하기 </a>
+			<button class="fundingPayment_confirm_order"> 주문하기 </button>
 		</div>
 	</div>
 </div>
@@ -239,7 +228,7 @@
 
     	// 카카오페이 결제
     		$(document).ready(function() {
-    			$("#goFinish").on("click", function() {
+    			$(".fundingPayment_confirm_order").on("click", function() {
     				var IMP = window.IMP; // 생략가능
     		        IMP.init('imp94738326'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
     		        var msg;
@@ -260,7 +249,9 @@
     		            buyer_tel : tel, // 구매자 전화번호
     		            buyer_addr : addr, // 구매자 주소
     		            buyer_postcode : postcode, // 구매자 우편번호
-    		           m_redirect_url : 'http://localhost:8081/LECFLY/home.jsp' // 결제 완료 후 보냄 컨트롤러의 메소드 명
+    		            m_redirect_url : 'http://localhost:8081/LECFLY/home.jsp',//window.location.href = '${pageContext.request.contextPath}' + '/payment/pay_sendEmail.LF', 
+    		            	//'http://localhost:8081/LECFLY/home.jsp', // 결제 완료 후 보냄 컨트롤러의 메소드 명 
+
     		       }, function(rsp) {
     		           if ( rsp.success ) { // 성공시
     		               jQuery.ajax({
@@ -283,7 +274,7 @@
     		                       alert(msg);
 
     		                     //성공시 이동할 페이지
-    		                     window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF';
+    		                     window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF?result=2';
     		                     //$('#homemain').load('${pageContext.request.contextPath}' + '/pay_orderFinished.LF');
     		                   } else {
     		                       //[3] 아직 제대로 결제가 되지 않았습니다.
@@ -295,7 +286,7 @@
     		               msg = '결제에 실패하였습니다.';
     		               msg += '에러내용 : ' + rsp.error_msg;
     		               //실패시 이동할 페이지
-    		               window.location.href = '${pageContext.request.contextPath}' + '/home.LF';
+    		               window.location.href = '${pageContext.request.contextPath}' + '/pay_orderFinished.LF?result=3';
 //     		               $('#homemain').load('${pageContext.request.contextPath}' + '/home.LF');
     						alert(msg);
     					}
