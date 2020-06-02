@@ -38,6 +38,7 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
 	$("#submit_comment").on("click", function() {
 		var URLHD = '${pageContext.request.contextPath}/';
 		var url = URLHD+'insert_comment.LF';
@@ -60,7 +61,38 @@ $(document).ready(function() {
 			}
 		});
 	});
-
+	
+	$(".register_like_num").on("click", function() {
+		console.log("좋아요버튼누름");
+		var likeCnt = $(".register_like_num i:first").text();
+		var lecId = $("input[name=like_lec]").val();
+		console.log("likeCnt = " + likeCnt + " lecId = " + lecId);
+		// ajax 보낼거준비 lecId + 좋아요개수 + 멤버는 세션에 존재함
+		var url = "mb_click_lecture_like.LF" 	
+		var params = "like_cnt=" + likeCnt + "&lec_id=" + lecId;
+		$.ajax({
+			type:"POST",
+			url: url,
+			data: params,
+			dataType: "JSON",
+			success: function(res, status, xhr) {
+				console.log(res);
+				// map 으로 받아서 res.likeCnt + 하트모양 받아야됨 그거를 넣을곳은?
+				// $(".register_like_num i:first").text(res.likeCnt);
+				// 하트 빈하트인지 색칠된 하트인지는 고민해보자.
+				if(res.likeCnt != null) {
+					$(".register_like_num i:first").text(res.likeCnt);
+				}
+			},
+			error: function(status, xhr) {
+				
+			}
+		});
+		
+	});
+	
+	
+	
 });
 
  </script>
@@ -164,6 +196,7 @@ $(document).ready(function() {
 			<input id="goods_detail_modal_popup_submitbtn" type="button" value="확인">
 		</div>
 	</div>
+	<input type="hidden" name="like_lec" value="${lec.id}">
 	<br> <br> <span class="register_like_num"><i
 		class="fas fa-heart">${lec.likeCount}</i>  </span> &nbsp; &nbsp; &nbsp; <span
 		class="register_lec_pick"> 강의 찜하기 </span> <br> <br> <br>

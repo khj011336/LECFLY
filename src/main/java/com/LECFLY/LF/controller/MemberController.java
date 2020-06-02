@@ -422,47 +422,30 @@ public class MemberController {
 			//마이페이지에 필요한거 카테고리 이용권개수(무엇을이용하는지(카테고리) + 종료날짜) + 쿠폰 개수 + 강의신청 목록 개수
 			int mbId = mb.getId();
 			Map<String, Object> pMap = mpSvc.selectMyPageContents(mbId);
-			if(pMap != null) {
+			int rtCheck = -1;
+			if( pMap.containsKey("rtCheck") )
+				rtCheck = (int)pMap.get("rtCheck");
+			int cntTicket = (int)pMap.get("cntTicket");
+			int cntCoupon = (int)pMap.get("cntCoupon");
+			int cntLecture = (int)pMap.get("cntLecture");
+			System.out.println("2020-05-28 rtCheck = " + rtCheck + " / cntTicket = " + cntTicket +
+					" / cntCoupon = " + cntCoupon + " / cntLecture = " + cntLecture );
+			if(rtCheck == 1) {
 				String ticketFrontName = (String)pMap.get("ticketFrontName");
-				String ticketName = (String)pMap.get("ticketName");
+				String ticketName = (String)pMap.get("ticketName");	
 				List<String> strCateList = (List<String>)pMap.get("strCateList");
-				Timestamp tiketEndDay = (Timestamp)pMap.get("tiketEndDay");
-				int cntCoupon = (int)pMap.get("cntCoupon");
-				int cntLecture = (int)pMap.get("cntLecture");
-
-
-				System.out.println("ticketFrontName = " + ticketFrontName + " / ticketName = " + ticketName +
-						" / strCateList.size() = " + strCateList.size() + " / tiketEndDay = " + tiketEndDay +
-						" / cntCoupon = " + cntCoupon + " / cntLecture = " + cntLecture);
-
+				Timestamp ticketEndDay = (Timestamp)pMap.get("ticketEndDay");
+				
+				model.addAttribute("rtCheck", rtCheck);
 				model.addAttribute("ticketFrontName", ticketFrontName);
 				model.addAttribute("ticketName", ticketName);
 				model.addAttribute("strCateList", strCateList);
-				model.addAttribute("ticketEndDay", tiketEndDay);
-				model.addAttribute("cntCoupon", cntCoupon);
-				model.addAttribute("cntLecture", cntLecture);
-
-				model.addAttribute("mb", mb);
-				model.addAttribute("mbLoginNicname", mb.getNicname());
-				model.addAttribute("mpNone", "");
-				
-				// member pic path 입력
-
-				List<LecAttendVO> laList = mpSvc.selectLecToStatusForMbIdStatus(mbId, LecTypeVO.STATUS_ATTENDING);
-				if(laList != null) {
-					model.addAttribute("msg_status", "수강중인 강의");
-					model.addAttribute("laList", laList);
-				} else {
-					model.addAttribute("msg_status", "수강중인 강의");
-				}
-			} else {
-				System.out.println("pMap == null ");
-				System.out.println("mb = " + mb);
-				model.addAttribute("mbLoginNicname", mb.getNicname());
-				model.addAttribute("mpNone", "");
+				model.addAttribute("ticketEndDay", ticketEndDay);
 			}
-			String path = "/images/2020/"+mb.getName()+"/Img";
-			model.addAttribute("pic", path);
+			model.addAttribute("cntTicket", cntTicket);
+			model.addAttribute("cntCoupon", cntCoupon);
+			model.addAttribute("cntLecture", cntLecture);
+			model.addAttribute("mb", mb);
 			return "member/mypage.ho";
 		} else {
 			// 실패시 로그인창으로~
@@ -729,13 +712,14 @@ public class MemberController {
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		System.out.println("mb = " + mb);
-		Map<String, Object> comqnaMap = mpSvc.selectAllMyCommentQna(mbId, pageNumber);
-
-		if( comqnaMap != null ) {
-			int totalRecords = (int)comqnaMap.get("totalRecords");
-			int maxPG = (int)comqnaMap.get("maxPG");
-			List<QnaVO> qnaList = (List<QnaVO>)comqnaMap.get("qnaList");
-
+//		Map<String, Object> comqnaMap = mpSvc.selectAllMyCommentQna(mbId, pageNumber);
+		Map<String, Object> qnaMap = mpSvc.selectAllMyQna(mbId, pageNumber);
+		if( qnaMap != null ) {
+			int totalRecords = (int)qnaMap.get("totalRecords");
+			int maxPG = (int)qnaMap.get("maxPG");
+			List<QnaVO> qnaList = (List<QnaVO>)qnaMap.get("qnaList");
+			
+			
 			model.addAttribute("totalRecords", totalRecords);
 			model.addAttribute("maxPG", maxPG);
 			model.addAttribute("qnaList", qnaList);
@@ -745,7 +729,7 @@ public class MemberController {
 			model.addAttribute("mp_msg", mb.getNicname() + " 님의 문의 내역이 없습니다.");
 		}
 		return "member/mypage/activity/mypage_qna";
-
+		
 	}
 //펀딩신청내역 확인하기	펀딩 날림. -세현
 
@@ -764,6 +748,11 @@ public class MemberController {
 			int totalRecords = (int)couponMap.get("totalRecords");
 			int maxPG = (int)couponMap.get("maxPG");
 			List<CouponVO> couponList = (List<CouponVO>)couponMap.get("couponList");
+			List<String> couponApplyList = (List<String>)couponMap.get("strCouponApplyToList");
+			List<String> strCanUseList = (List<String>)couponMap.get("strCanuseList");
+			
+			model.addAttribute("strCanUseList", strCanUseList);
+			model.addAttribute("couponApplyList", couponApplyList);
 			model.addAttribute("totalRecords", totalRecords);
 			model.addAttribute("maxPG", maxPG);
 			model.addAttribute("couponList", couponList);
@@ -921,71 +910,73 @@ public class MemberController {
 //	mypage_shopping.lf(form,post,dao)			해당 조각페이지 불러오게 리턴
 	@RequestMapping(value="mypage_shoppingcart.LF", method=RequestMethod.GET)
 	public String memberMypageShopping() {
-		System.out.println("memberMypageShopping()...");
+		System.out.println("memberMypageShopping()...");	
 		return "member/mypage/order_manager/mypage_shoppingcart";
 	}
-
+	
 	// 세현 테스트 mypage.jsp 관련(load 써먹을수있나 테스트중.)..
 	@RequestMapping(value="mypage_list.LF", method=RequestMethod.GET)
 	public String memberMypageList() {
-		System.out.println("memberMypageList()...");
+		System.out.println("memberMypageList()...");	
 		return "member/mypage/info_manager/mypage_mb_update";
 	}
-
+	
 	@RequestMapping(value="mypage_delivery_info.LF", method=RequestMethod.POST)
 	public String memberMypageDeliveryInfo(HttpSession ses,
-			Model model )
+			Model model ) 
 	{
-
-		// payHistory 에서 deliveryStatus 체크해야됨
+		
+		// payHistory 에서 deliveryStatus 체크해야됨 
 		System.out.println("memberMypageDeliveryInfo()...");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		System.out.println("mbId = " + mbId);
 		Map<String, Object> rMap = mpSvc.selectMyPageDeliveryInfoMap(mbId);
 		if(rMap != null) {
-			List<PayHistoryVO> phisList =
+			List<PayHistoryVO> phisList = 
 					(List<PayHistoryVO>)rMap.get("phisList");
 			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
 			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
 			int[] deliveryStatusArray = (int[])rMap.get("deliveryStatusArray");
 			int kitCount = (int)rMap.get("kitCount");
-
+			
 			model.addAttribute("phisList", phisList);
 			model.addAttribute("creList", creList);
 			model.addAttribute("kitList", kitList);
 			model.addAttribute("deliveryStatusArray", deliveryStatusArray);
 			model.addAttribute("kitCount", kitCount);
 		} else {
-
+			System.out.println("rMap = null");
 		}
-
+		
 		return "member/mypage/order_manager/mypage_delivery_info";
 	}
-
+	
 	/* Order confirmation 주문서확인   == Payment waiting 결제 대기중
 	Preparing product 상품준비중 == Delivery Preparation 배송준비
 	Shipping in progress 배송중
 	Delivery completed 	배송완료		*/
 	@RequestMapping(value="delivery_stat1.LF", method=RequestMethod.POST)
 	public String memberMyPageDeliveryStatPaymentWaiting(HttpSession ses,
-			@RequestParam(value="deliveryStat", defaultValue="1") int deliveryStat,
+			@RequestParam(value="deliveryStat", defaultValue="0") int deliveryStat,
 			Model model) {
 		System.out.println("delivery_stat1.LF 컨트롤러도착");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
-			int mbId = mb.getId();
+			int mbId = mb.getId(); 
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
 			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
 			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
-
+			
 			model.addAttribute("delStatHead", "결제대기");
 			model.addAttribute("phisList", phisList);
 			model.addAttribute("creList", creList);
 			model.addAttribute("kitList", kitList);
-
+			model.addAttribute("delStat", "결제대기중인");
+			
+			
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "결제대기");
 			model.addAttribute("delStat", "결제대기중인");
@@ -995,23 +986,24 @@ public class MemberController {
 
 	@RequestMapping(value="delivery_stat2.LF", method=RequestMethod.POST)
 	public String memberMyPageDeliveryStatDeliveryPreparation(HttpSession ses,
-			@RequestParam(value="deliveryStat", defaultValue="2") int deliveryStat,
+			@RequestParam(value="deliveryStat", defaultValue="1") int deliveryStat,
 			Model model) {
 		System.out.println("delivery_stat2.LF 컨트롤러도착");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
-			int mbId = mb.getId();
+			int mbId = mb.getId(); 
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
 			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
 			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
-
+			
 			model.addAttribute("delStatHead", "배송준비");
 			model.addAttribute("phisList", phisList);
 			model.addAttribute("creList", creList);
 			model.addAttribute("kitList", kitList);
-
+			model.addAttribute("delStat", "배송준비중인");
+			
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "결제대기");
 			model.addAttribute("delStat", "배송준비중인");
@@ -1021,22 +1013,22 @@ public class MemberController {
 
 	@RequestMapping(value="delivery_stat3.LF", method=RequestMethod.POST)
 	public String memberMyPageDeliveryStatShippingInProgress(HttpSession ses,
-			@RequestParam(value="deliveryStat", defaultValue="3") int deliveryStat,
+			@RequestParam(value="deliveryStat", defaultValue="2") int deliveryStat,
 			Model model) {
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
-			int mbId = mb.getId();
+			int mbId = mb.getId(); 
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
 			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
 			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
-
+			
 			model.addAttribute("delStatHead", "배송중");
 			model.addAttribute("phisList", phisList);
 			model.addAttribute("creList", creList);
 			model.addAttribute("kitList", kitList);
-
+			model.addAttribute("delStat", "배송중인");
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "배송중");
 			model.addAttribute("delStat", "배송중인");
@@ -1046,44 +1038,128 @@ public class MemberController {
 
 	@RequestMapping(value="delivery_stat4.LF", method=RequestMethod.POST)
 	public String memberMyPgeDeliveryStatDeliveryCompleted(HttpSession ses,
-			@RequestParam(value="deliveryStat", defaultValue="4") int deliveryStat,
+			@RequestParam(value="deliveryStat", defaultValue="3") int deliveryStat,
 			Model model) {
 		System.out.println("delivery_stat4.LF 컨트롤러도착");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		if(mb != null) {
-			int mbId = mb.getId();
+			int mbId = mb.getId(); 
 			Map<String, Object> rMap = mpSvc.selectMyPageDeliveryStatMap(mbId, deliveryStat);
 			// phisList kitList creList kitCount
-			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
-			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
-			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
-
+//			List<PayHistoryVO> phisList = (List<PayHistoryVO>)rMap.get("phisList");
+//			List<CreatorVO> creList = (List<CreatorVO>)rMap.get("creList");
+//			List<KitVO> kitList = (List<KitVO>)rMap.get("kitList");
+//			
 			model.addAttribute("delStatHead", "배송완료");
-			model.addAttribute("phisList", phisList);
-			model.addAttribute("creList", creList);
-			model.addAttribute("kitList", kitList);
-
+//			model.addAttribute("phisList", phisList);
+//			model.addAttribute("creList", creList);
+//			model.addAttribute("kitList", kitList);
+//			model.addAttribute("delStat", "배송완료된");
+//			for (int i = 0; i < phisList.size(); i++) {
+//				System.out.println("phisList.get(i).getCheckSameOrder() = " 
+//								+ phisList.get(i).getCheckSameOrder()  );
+//			}
 		} else { // mb == null 로그인페이지로 보내야됨
 			model.addAttribute("delStatHead", "배송완료");
 			model.addAttribute("delStat", "배송완료된");
 		}
 		return "member/mypage/order_manager/delivery_stat";
 	}
-
-	@RequestMapping(value="mypage_pay_{payStatus}.LF", method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> memberMyPageShowPayStatus(HttpSession ses,
-			@PathVariable(value="payStatus") String payStatus ){
-		System.out.println("controller :: memberMyPageShowPayStatus()..");
+	
+	
+	/* Order confirmation 주문서확인   == Payment waiting 결제 대기중  
+	Preparing product 상품준비중 == Delivery Preparation 배송준비
+	Shipping in progress 배송중
+	Delivery completed 	배송완료		*/
+//	@RequestMapping(value="delivery_stat1.LF", method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String, Object> memberMyPageDeliveryStatPaymentWaiting(HttpSession ses,
+//			@RequestParam(value="deliveryStat", defaultValue="0") int deliveryStat,
+//			Model model) {
+//		System.out.println("delivery_stat1.LF 컨트롤러도착");
+//		MemberVO mb = (MemberVO)ses.getAttribute("member");
+//		if(mb != null) {
+//			int mbId = mb.getId();
+//			Map<String,Object> pMap = mpSvc.showMyPageDeliveryContentsByMbIdDeliveryStat(mbId, deliveryStat);
+//			System.out.println("pMap.get(\"template\") = " + pMap.get("template"));
+//			return pMap;
+//		} else { // mb == null 로그인페이지로 보내야됨
+//			
+//		}
+//		return null;
+//	}
+//	
+//	@RequestMapping(value="delivery_stat2.LF", method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String, Object> memberMyPageDeliveryStatDeliveryPreparation(HttpSession ses,
+//			@RequestParam(value="deliveryStat", defaultValue="1") int deliveryStat,
+//			Model model) {
+//		System.out.println("delivery_stat2.LF 컨트롤러도착");
+//		MemberVO mb = (MemberVO)ses.getAttribute("member");
+//		if(mb != null) {
+//		
+//			
+//		} else { // mb == null 로그인페이지로 보내야됨
+//			
+//		}
+//		return null;
+//	}
+//	
+//	@RequestMapping(value="delivery_stat3.LF", method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String, Object> memberMyPageDeliveryStatShippingInProgress(HttpSession ses,
+//			@RequestParam(value="deliveryStat", defaultValue="2") int deliveryStat,
+//			Model model) {
+//		MemberVO mb = (MemberVO)ses.getAttribute("member");
+//		if(mb != null) {
+//		
+//			
+//		} else { // mb == null 로그인페이지로 보내야됨
+//			
+//		}
+//		return null;
+//	}
+//	
+//	@RequestMapping(value="delivery_stat4.LF", method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String, Object> memberMyPageDeliveryStatDeliveryCompleted(HttpSession ses,
+//			@RequestParam(value="deliveryStat", defaultValue="3") int deliveryStat,
+//			Model model) {
+//		System.out.println("delivery_stat4.LF 컨트롤러도착");
+//		MemberVO mb = (MemberVO)ses.getAttribute("member");
+//		if(mb != null) {
+//		
+//			
+//		} else { // mb == null 로그인페이지로 보내야됨
+//			
+//		}
+//		return null;
+//	}
+	
+	
+	// 결제내역
+	@RequestMapping(value="mypage_pay_list.LF", method=RequestMethod.POST)
+	public String memberMyPagePayHistoryList(HttpSession ses,
+			@RequestParam(value = "pn", required = false, defaultValue = "1" ) int pageNumber,
+			Model model) {
+		System.out.println("cont :: memberMyPagePayHistoryList()..");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
-		if(mb != null && payStatus != null && !payStatus.isEmpty()) {
+		if(mb != null) {
 			int mbId = mb.getId();
-			Map<String, Object> pMap =
-					mpSvc.selectMemberPayHistoriesByPayStatusMbId(payStatus, mbId);
+			Map<String, Object> pMap = 
+					mpSvc.selectMypagePayHistoryListByMbId(mbId, pageNumber);
+			if(pMap != null) {
+				
+				
+				
+			} else {
+				
+			}
+			return "maypage_payment_info";
 		} else {
-			System.out.println("mb == null 이거나 payStatus == null 이거나 payStatus.isEmpty() == true");
+			
 		}
-		return null;
+		return "member/login";
 	}
 
 
@@ -1094,6 +1170,45 @@ public class MemberController {
 		return "member/mypage/order_manager/mypage_delivery_info";
 	}
 
+	// 회원이 좋아요를 눌렀음
+	@RequestMapping(value="mb_click_lecture_like.LF", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> memberClickLectureLike( HttpSession ses,
+			@RequestParam(value="like_cnt") int likeCnt,
+			@RequestParam(value="lec_id") int lecId
+			){
+		/* 목적
+		 *  회원아이와 lecId 를 통해 해당하는 lecture에 회원의 좋아요가 있는지먼저 확인하고 없으면 집어넣고
+		 *  좋아요도 insert 하고 카운트도 하나 늘려야되고 lecTypeVO 에도 좋아요쪽 하나늘려야되고
+		 *  있는 회원이라면 delete 해야되고~~~~
+		*/
+		// 뽑을값
+		// likeCnt
+		Map<String, Object> rMap = new HashMap<>();
+		MemberVO mb = (MemberVO)ses.getAttribute("member");
+		if(mb == null) {
+			
+			int mbId = mb.getId();
+			Map<String, Object> pMap = mpSvc.memberLikeProc(mbId, lecId);
+			int rtCheck =  -1;
+			if(pMap.containsKey("likeCnt")) {
+				int likeCount = (int)pMap.get("likeCnt");
+				rMap.put("likeCnt", likeCnt);
+			}else {
+				rMap.put("errCheck", "99");
+			}
+		} else {
+			System.out.println("mb == null");
+			rMap.put("errerrCheck", "99");
+		}
+		return rMap;
+	}
+	
+	
+	
+	
+	
+	
 
 ////////////////////////////////////////////////////
 

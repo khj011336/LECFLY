@@ -14,7 +14,7 @@
 					<c:forEach var="com" items="${comList}" varStatus="vs">
 					<tr>
 						<td><c:out value="${((pn-1) * 10) + (vs.index + 1)}" /></td> <!-- 지금 pn이 0이라서그럼.. 게시글번호 -->
-						<td><c:out value="${titleList.get(vs.index)}" /></td> <!-- 원글 제목 -->
+						<td><c:out value="${titleList[vs.index]}" /></td> <!-- 원글 제목 -->
 						<td><c:out value="${com.comment}" /></td> <!-- 내 댓글  -->    
 						<td><c:out value="${com.depth}" /></td><!-- 대댓글 -->
 						<td><fmt:formatDate value="${com.createdAt}" pattern="yyyy.MM.dd HH:mm" /></td><!-- 작성날짜 -->

@@ -4,8 +4,8 @@
 	href="resources/css/payment/pay_orderFinished.css">
 <script>
    var reTotal = 0;
-   function showReceipt() {
-	$('#homemain').load("${pageContext.request.contextPath} + /pay_orderDetail.LF?retotal="+reTotal);
+   function showReceipt(phId) {
+	$('#homemain').load("${pageContext.request.contextPath} + /pay_orderDetail.LF?retotal="+reTotal+"phId="+phId);
 	'${pageContext.request.contextPath}' + '/pay_orderDetail.LF'
 }
 </script>
@@ -31,7 +31,7 @@
 					<div class="finished_font">
 						주문이 정상적으로 <strong style="color: orange">완료</strong>되었습니다.
 					</div>
-					<a class="finished_orderdelivery" href="#popup1" onclick="showReceipt()">영수증</a>
+					<a class="finished_orderdelivery" href="#popup1" onclick="showReceipt('${ph.id}')">영수증</a>
 					<div id="popup1" class="overlay">
 						<div class="popup">
 							<p class="orderDetail_title">

@@ -82,13 +82,20 @@
 			        	<br><br>
 			        	<label><b>'<c:out value="${mb.name}" default="guest" />'</b> 회원님은</label>
 			        	<br><br>
-			        	<c:if test="${mb.checkCreator eq 0 or mb.checkCreator eq 1 or mb.checkCreator eq 2}">
-			        		<h1><u>일반회원</u> 입니다.</h1>
-				        	<br><br>
-				        	<a href="creator.LF"><h3>크리에이터 신청하기</h3></a>
+			        	<c:if test="${member.id ne 1}">
+				        	<c:if test="${mb.checkCreator eq 0 or mb.checkCreator eq 1 or mb.checkCreator eq 2}">
+				        		<h1><u>일반회원</u> 입니다.</h1>
+				        	</c:if>
+				        	<c:if test="${mb.checkCreator eq 3}">
+				        		<h1><u>크리에이터 회원</u> 입니다.</h1>
+				        	</c:if>
 			        	</c:if>
-			        	<c:if test="${mb.checkCreator eq 3}">
-			        		<h1><u>크리에이터 회원</u> 입니다.</h1>
+			        	<c:if test="${member.id eq 1}">
+					        	<h1><u>관리자</u> 입니다.</h1>
+			        	</c:if>
+			        	<br><br>
+			        	<c:if test="${member.id ne 1}">
+			        		<a href="Creator/_classdes.jsp"><h3>크리에이터 신청하기</h3></a>
 			        	</c:if>
 			        </div>
 			        <div class="mypage_mb_t" id="mypage_mb_t_attendlec">
@@ -104,7 +111,12 @@
 			        <div class="mypage_mb_t" id="mypage_mb_t_ticket">
 			        	<img src="resources/imges/mypage/mypage_ticket.png" class="mypage_1" alt="이용권" width="64px" height="64px">
 						<br><br><br>
-						<span><b><c:out value="${ticketFrontName}" default="" /></b> <c:out value="${ticketName}" default="보유중인 티켓 없음" /></span>
+						<c:if test="${rtCheck eq 1}">
+							<span><b><c:out value="${ticketFrontName}" default="" /></b> <c:out value="${ticketName}" default="보유중인 티켓 없음" /></span>
+						</c:if>
+						<c:if test="${empty rtCheck}">
+							<span><b></b> 보유중인 티켓 없음</span>
+						</c:if>
 						<br>
 						<p>
 							<c:set var="lastCt" value="${(fn:length(strCateList) - 1)}" />
@@ -115,7 +127,7 @@
 							</c:forEach>
 						</p>
 						<br>
-						<span><small><fmt:formatDate value="${ticketEndDay}" pattern="yyyy-MM-dd" />까지</small></span>
+						<span><small><fmt:formatDate value="${ticketEndDay}" pattern="yyyy-MM-dd" /><c:if test="${addText}">까지</c:if></small></span>
 			        </div>
 			    </div>
 				<div id="mypage_middle">									<!-- 정보 영역 및 메뉴영역 -->
@@ -158,11 +170,6 @@
 				</div>
 				
 				<div id="mypage_bottom">									<!-- 조각페이지 영역 -->
-<%-- 					<c:if test="${not empty mpNone}"> --%>
-						<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%>
-<%-- 					</c:if> --%>
-<%-- 					<c:if test="${empty mpNone}"> --%>
-						
-<%-- 					</c:if> --%>
+<%-- 						<%@ include file="mypage/attend_lec_manager/mypage_attending_lec.jsp"%> --%>
 				</div>
 			</div>

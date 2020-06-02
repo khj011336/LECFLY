@@ -36,7 +36,8 @@ public class PayHistoryVO {
 	/** 상태업데이트 날짜                 최종 배송완료 시간으로 마지막 저장	CURRENT_TIMESTAMP*/
 	private Timestamp updatedAt;
 	/** 총 결제 금액*/
-	private int PayHistorySum;
+	private int payHistorySum;
+
 
 	public PayHistoryVO() {}
 	public PayHistoryVO(int buyMbId, int sellMbId, int goodsType, int goodsId, int couponId,
@@ -61,7 +62,7 @@ public class PayHistoryVO {
 		this.deliveryStatus = deliveryStatus;
 		this.deliveryRequire = deliveryRequire;
 		this.updatedAt = updatedAt;
-		PayHistorySum = payHistorySum;
+		this.payHistorySum = payHistorySum;
 	}
 	
 	public int getId() {
@@ -149,10 +150,10 @@ public class PayHistoryVO {
 		this.updatedAt = updatedAt;
 	}
 	public int getPayHistorySum() {
-		return PayHistorySum;
+		return payHistorySum;
 	}
 	public void setPayHistorySum(int payHistorySum) {
-		PayHistorySum = payHistorySum;
+		this.payHistorySum = payHistorySum;
 	}
 	
 	@Override
@@ -161,10 +162,9 @@ public class PayHistoryVO {
 				+ ", goodsId=" + goodsId + ", payWay=" + payWay + ", couponId=" + couponId + ", buyProductCount="
 				+ buyProductCount + ", diliveryPrice=" + diliveryPrice + ", dealDay=" + dealDay + ", checkSameOrder="
 				+ checkSameOrder + ", deliveryStatus=" + deliveryStatus + ", deliveryRequire=" + deliveryRequire
-				+ ", updatedAt=" + updatedAt + ", PayHistorySum=" + PayHistorySum + "]";
+				+ ", updatedAt=" + updatedAt + ", payHistorySum=" + payHistorySum + "]";
 	}
 
-	
 
 
 
