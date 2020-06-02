@@ -5,8 +5,7 @@
 <script>
    var reTotal = 0;
    function showReceipt(phId) {
-	$('#homemain').load("${pageContext.request.contextPath} + /pay_orderDetail.LF?retotal="+reTotal+"phId="+phId);
-	'${pageContext.request.contextPath}' + '/pay_orderDetail.LF'
+	$('#homemain').load("${pageContext.request.contextPath} + /pay_orderDetail.LF?retotal="+reTotal+"&phId="+phId);
 }
 </script>
 <div id="paymentFinished_wrapper">
@@ -219,15 +218,15 @@
 			</div>
 		</div>
 		</c:forEach>
-		<div id="paymentInfo_title">결제 정보</div>
+		<div id="paymentInfo_title">총 결제 정보</div>
 			<div class="paymentInfo_set">
 				<div>
 					<div class="paymentInfo_sumprice">
-						<strong>총 상품금액</strong> <span class="sumGoods_price">${ph.payHistorySum}
+						<strong>총 상품금액</strong> <span class="sumGoods_price">${addPrice}
 						<em class="korean_point">원</em></span>
 					</div>
 					<div class="paymentInfo_sumprice">
-						<strong>총 배송비</strong> <span class="sumDelivery_price">${ph.diliveryPrice}
+						<strong>총 배송비</strong> <span class="sumDelivery_price">${addDelPrice}
 						<em class="korean_point">원</em></span>
 					</div>
 				</div>
@@ -240,7 +239,7 @@
 				<div class="paymentInfo_sumprice">
 					<div>
 						<strong style="color: #ff2828;">총 결제금액</strong> <span
-							class="sum_paymentPrice">${ph.payHistorySum + ph.diliveryPrice}<em
+							class="sum_paymentPrice">${totalPriceph}<em
 							class="korean_point">원</em>
 						</span>
 					</div>
@@ -259,7 +258,6 @@
 				<button type="button" class="paymentFinished_goHomePage">홈으로
 					가기</button>
 			</div>
-		<B> 진짜 총합 가격: ${totalPriceph}원</B>
 		<script type="text/javascript">
 			reTotal = ${totalPriceph};
 			console.log("reTotal = "+ reTotal );

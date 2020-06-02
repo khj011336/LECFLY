@@ -53,24 +53,30 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 		List<CartVO> ctList = ctDao.findListByUuid(uuid);
 		List<String> titleList = new ArrayList<>();
 		Map<String, Object> rMap = new HashMap<>();
+		int addPrice = 0;
+		int addDelPrice = 0;
 		for (int i = 0; i < ctList.size(); i++) {
 			CartVO cart = ctList.get(i);
 			if(cart.getCategoryId() == 0) {
 				cart.getGdsId();
 				cart.getGdsName();
-				cart.getGdsPrice();
+				addPrice += cart.getGdsPrice();
 				cart.getGdsCnt();
+				addDelPrice += 0;
 				cart.getCreatedAt();
-				String title = TicketVO.STR_TICKET_NAME_MAP.get(cart.getGdsName());
+				System.out.println("cart.getGdsName() = " + cart.getGdsName());
+				System.out.println("TicketVO.STR_TICKET_NAME_MAP.get(1) = " + TicketVO.STR_TICKET_NAME_MAP.get(1));
+				String title = cart.getGdsName();
+				System.out.println("title = " + title);
 				titleList.add(title);
-				PayHistoryVO phis = new PayHistoryVO(mbId, 0, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), 0, uuid, cart.getGdsPrice());
+				PayHistoryVO phis = new PayHistoryVO(mbId, 0, 1, cart.getGdsId(), couponId, cart.getGdsCnt(), 0, uuid, cart.getGdsPrice());
 				payDao.insertNewPayHistory(phis);
 				// insertNewPayHistory(mbId, kitSellMbId, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), kitDelPrice, uuid, payHistorySum);
 			} else if(cart.getCategoryId() == 1) {
 				//애가 키트의 아이디야.
 				cart.getGdsId();
 				cart.getGdsName();
-				cart.getGdsPrice();
+				addPrice += cart.getGdsPrice();
 				cart.getGdsCnt();
 				cart.getCreatedAt();
 				
@@ -78,8 +84,10 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 				int kitDelPrice = kit.getDeliveryPrice();
 				int kitSellMbId = kit.getfId();
 				String title = kit.getTitle();
+				addDelPrice += kit.getDeliveryPrice();
+				System.out.println("title = " + title);
 				titleList.add(title);
-				PayHistoryVO phis = new PayHistoryVO(mbId, kitSellMbId, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), kitDelPrice, uuid, cart.getGdsPrice());
+				PayHistoryVO phis = new PayHistoryVO(mbId, kitSellMbId, 2, cart.getGdsId(), couponId, cart.getGdsCnt(), kitDelPrice, uuid, cart.getGdsPrice());
 				
 				payDao.insertNewPayHistory(phis);
 				// insertNewPayHistory(mbId, kitSellMbId, 0, cart.getGdsId(), couponId, cart.getGdsCnt(), kitDelPrice, uuid, payHistorySum);
@@ -94,6 +102,8 @@ public class PayHistorySVCImpl implements IPayHistorySVC {
 			payNameList.add(payName);		
 		}
 		
+		rMap.put("addPrice", addPrice);
+		rMap.put("addDelPrice", addDelPrice);
 		rMap.put("hisList", hisList);
 		rMap.put("titleList", titleList);
 		rMap.put("payNameList", payNameList);

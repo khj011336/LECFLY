@@ -483,11 +483,15 @@ public class PaymentController {
 			List<PayHistoryVO> phisList = (List<PayHistoryVO>)phlist.get("hisList");
 			List<String> titleList = (List<String>)phlist.get("titleList");
 			List<String> payNameList = (List<String>)phlist.get("payNameList");
+			int addPrice = (int)phlist.get("addPrice");
+			int addDelPrice = (int)phlist.get("addDelPrice");
 			
 			model.addAttribute("msg", "결제 성공");
 			model.addAttribute("phlist", phisList);
 			model.addAttribute("titleList", titleList);
 			model.addAttribute("payNameList", payNameList);
+			model.addAttribute("addPrice", addPrice);
+			model.addAttribute("addDelPrice", addDelPrice);
 		} else {
 			model.addAttribute("msg", "결제 실패!");
 		}
