@@ -65,7 +65,7 @@
         }
     }
     function ispty(){
-        var each =	$('#kitform').find("input[type!=hidden],textarea,select").not("input[type=button]").not("input[type=file]");
+        var each =	$('#kitform').find("input[type!=hidden],textarea,select").not("input[custom]").not("input[type=button]").not("input[type=file]");
         var a = 0;
         for(var i =0 ; i<each.length;i++ ){
         	if(each[i].value == undefined || each[i].value == null || each[i].value ==""){
@@ -160,7 +160,7 @@
 <!--                 					택배사 -->								 
                     <div id="sellkitregistration_delivery_companybox" class="sellkitregistration_mini_title_interval creator_h3">
                         <div class="sellkitregistration_inline sellkitregistration_nav1"><label for="sellkitregistration_delivery_company">택배사</label></div>
-                        <div class="sellkitregistration_inline"><input type="text" id="sellkitregistration_delivery_company" value="<c:out value='${creatorKit.deliver}' default ="대한통운택배" ></c:out>" name="deliver" class="sellkitregistration_bar1"></div>
+                        <div class="sellkitregistration_inline"><input custom = '' type="text" id="sellkitregistration_delivery_company" value="<c:out value='1'   />" placeholder="대한통운택배" readonly name="deliver" class="sellkitregistration_bar1"></div>
                     </div>
 <!-- 								배송비 -->
                     <div id="sellkitregistration_pricebox" class="sellkitregistration_mini_title_interval creator_h3">

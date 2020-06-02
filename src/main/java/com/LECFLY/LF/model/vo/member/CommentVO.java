@@ -1,6 +1,7 @@
 package com.LECFLY.LF.model.vo.member;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 public class CommentVO {
 	int id; 		// id
@@ -98,6 +99,11 @@ public class CommentVO {
 		return "CommentVO [id=" + id + ", mbId=" + mbId + ", tableCate=" + tableCate + ", atId=" + atId + ", orderNum="
 				+ orderNum + ", depth=" + depth + ", comment=" + comment + ", mbNic=" + mbNic + ", createdAt=" + createdAt
 				+ "]";
+	}
+	
+	
+	public static void main(String[] args) {
+		System.out.println(UUID.randomUUID().toString());
 	}
 	
 }

@@ -5,12 +5,12 @@
 	$(document).ready(function() {
 		
 	});
-	function videoLoad(videoPath, info, views, title) {
+	function videoLoad(videoPath,  views, title) {
 		$("#Htext p b").text(title);
 		$("#videSource").attr("src",videoPath );
 		$("#vide")[0].load();
 		$("#vide")[0].play();
-		$("#text1 p").text(info);
+		 
 		$("#usrpick").text("조회수"+views+"명");
 	}
 	function mouseEven(path, gif, png) {
@@ -54,7 +54,7 @@
 					<hr>
 					<div id="uplorder">
 						<div id='uplorderplayWrap'>
-							<img id='usr' src="${crPath}${lecList.imgPath}"><span
+							<img id='usr' src="${crPath}${cre.imgPath}"><span
 								id="usrname" class="usrab">
 								 ${lecList.nickname} 
 							</span> <span id="usrtitle" class="usrab"><b>${lecList.title}</b>-${lecList.subTitle}</span>
@@ -87,8 +87,8 @@
 					<div class="PvideoContent">
 						<c:forEach begin="0" end="${videoList.size()-1}" varStatus="index">
 							<div
-								class='alter <c:out value="${index.index == 0? '' : 'Limg'}" /> '
-								onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList[index.current].info}','${videoList[index.current].duration}','${videoList[index.current].title}')">
+								 class='alter <c:out value="${index.index == 0? '' : 'Limg'}" />'
+onclick="videoLoad('${viPath}${videoList[index.current].videoPath}','${videoList[index.current].duration}','${videoList[index.current].title}')">
 								<img
 									src="${crPath}${fn:split(videoList[index.current].imgPath,'-')[0]}"
 									alt="img" class='playimgs'
@@ -108,6 +108,5 @@
 		</div>
 		<hr>
 	</div>
-
 </body>
 

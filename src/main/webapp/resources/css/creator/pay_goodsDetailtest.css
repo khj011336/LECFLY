@@ -12,7 +12,9 @@
 	float: left;
 	display: inline-block;
 }
-
+#register_tag_ul{
+	padding-top: 40px;
+}
 #register_nav > .register_video_img {
 	width: 774px;
 	height: 400px;

@@ -27,18 +27,18 @@
 			</td>
 		</tr>
 		<tr>
-			<th>크리에이터 신청 여부</th>
-			<td>
-				<lable><input name="check_creator" type="radio" value="4" checked="checked">전체보기</lable>
-				<lable><input name="check_creator" type="radio" value="0">일반회원</lable>
-				<lable><input name="check_creator" type="radio" value="1">요청 취소</lable>
-				<lable><input name="check_creator" type="radio" value="2">신규 요청</lable>
-				<lable><input name="check_creator" type="radio" value="3">크리에이터</lable>
-			</td><td></td>
+<!-- 			<th>크리에이터 신청 여부</th> -->
+<!-- 			<td> -->
+<!-- 				<lable><input name="check_creator" type="radio" value="4" checked="checked">전체보기</lable> -->
+<!-- 				<lable><input name="check_creator" type="radio" value="0">일반회원</lable> -->
+<!-- 				<lable><input name="check_creator" type="radio" value="1">요청 취소</lable> -->
+<!-- 				<lable><input name="check_creator" type="radio" value="2">신규 요청</lable> -->
+<!-- 				<lable><input name="check_creator" type="radio" value="3">크리에이터</lable> -->
+<!-- 			</td><td></td> -->
 		</tr>
 	</table>
 	<div class="admin_search_btns">
-		<button type="button" id="search_filter_btn_member">상세조회</button>
+<!-- 		<button type="button" id="search_filter_btn_member">상세조회</button> -->
 		<button type="button" onclick="location.href='admin_member_list.LF'">전체조회</button>
 	</div>
 </div>
@@ -58,11 +58,11 @@
 			<button class="btn_filter" id="delete_member_list">삭제</button>
 		</li>
 	</ul>	
-<!-- 	<ul class="admin_search_sort">	 -->
-<%-- 		<li><a href="?p=${pn}&o=1">신규가입순</a></li> --%>
-<%-- 		<li><a href="?p=${pn}&o=2">승인대기순</a></li> --%>
-<%-- 		<li><a href="?p=${pn}&o=3">승인완료순</a></li> --%>
-<!-- 	</ul> -->
+	<ul class="admin_search_sort">	
+		<li><a href="?p=${pn}&o=1">신규가입순</a></li>
+		<li><a href="?p=${pn}&o=2">승인대기순</a></li>
+		<li><a href="?p=${pn}&o=3">승인완료순</a></li>
+	</ul>
 </div>    
 
 <div class="admin_table_wrap">

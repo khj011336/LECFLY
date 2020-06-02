@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -134,7 +135,12 @@ public class QnaMysqlDAOImpl implements IQnaDAO{
 
 	@Override
 	public QnaVO selectOneQna(int id) {
+		try {
 		return jtem.queryForObject(SQL_QNA_SHOWONE,BeanPropertyRowMapper.newInstance(QnaVO.class), id);
+		}catch(DataAccessException e) {
+			return null;
+		}
+		
 	}
 
 	@Override

@@ -65,7 +65,10 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 			"update members set password=hex(aes_encrypt(?,?)) where email=?";
 	private static final String SQL_UPDATE_ONE_MEMBER_BY_INFO = 
 			"update members set nicname=?,ph_number=?,agree_receive=?,basic_address=?,detail_address=?,postalcode=? where id=?";
-//	public static final String SQL_="";
+	private static final String SQL_INC_MEMBER_LOGIN_CNT="update members set login_count=login_count+1 where id=?";
+	private static final String SQL_UPDATE_MEMBER_LOGIN_DATE="update members set logined_at=now() where id=?";
+	private static final String SQL_UPDATE_MEMBER_PRO_PIC = "update members set pic=? where id=?";
+//	private static final String SQL_="";
 	
 	@Autowired
 	private JdbcTemplate jtem;
@@ -273,8 +276,10 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 	// 세현 추가 마이페이지에서 회원 id, 업데이트할 사진 path 입력하면은 sql 에 업데이트 하려고함
 	@Override
 	public boolean updateMemberProfileImg(int mbId, String filePath) {
-		
-		return false;
+		System.out.println("jdbc: updateMemberProfileImg");
+		int r = this.jtem.update(SQL_UPDATE_MEMBER_PRO_PIC, filePath, mbId);
+		System.out.println("프로필 사진 업데이트 sql 지나감");
+		return r==1;
 	}
 	
 	
@@ -301,5 +306,17 @@ public class MemberMySqlDAOImpl implements IMemberDAO {
 				mb.getNicname(), mb.getPhNumber(), mb.getAgreeReceive(), 
 				mb.getbasicAddress(), mb.getDetailAddress(), mb.getPostalCode(), mb.getId());
 		return r==1;
+	}
+
+	@Override
+	public boolean incLoginCnt(int id) {
+		System.out.println("DAO: incLoginCnt 로그인 횟수 증가");
+		return jtem.update(SQL_INC_MEMBER_LOGIN_CNT, id) == 1;
+	}
+
+	@Override
+	public boolean updateLoginDate(int id) {
+		System.out.println("DAO: updateLoginDate 로그인 날자 갱신");
+		return jtem.update(SQL_UPDATE_MEMBER_LOGIN_DATE, id) == 1;
 	}
 }

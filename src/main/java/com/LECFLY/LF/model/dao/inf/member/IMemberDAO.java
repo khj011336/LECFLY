@@ -110,6 +110,12 @@ public interface IMemberDAO {
 	
 	boolean updateOneMemberInfo(MemberVO mb);
 	
+	// 5.25 로그인 시 로그인 횟수 자동 증가
+	boolean incLoginCnt(int id);
+	
+	// 5.25 로그인 시 로그인 날자 갱신
+	boolean updateLoginDate(int id);
+	
 	
 	
 	

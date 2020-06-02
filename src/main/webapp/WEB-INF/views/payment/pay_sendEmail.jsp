@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<title>결제 이메일</title>
 <link type="text/css" rel="stylesheet" href="resources/css/payment/pay_sendEmail.css">
 <div id="paymentSendEmail_wrapper">
 	<div id="paymentSendEmail_content">

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -90,6 +91,13 @@ public interface IAdminLectureDAO {
 	boolean deleteLectureforIds(ArrayList<Integer> checkList);
 	boolean deleteMemberforIds(ArrayList<Integer> checkList);
 	boolean deleteCreatorforIds(ArrayList<Integer> checkList);
+	int checkNumberOfPayment();
+	List<PayHistoryVO> searchPaymentForAll(int offset, int limit);
+	int checkNumberOfCoupon();
+	List<CouponVO> searchCouponForAll(int offset, int limit);
+	int checkNumberOfKit();
+	List<KitVO> searchKitForAll(int offset, int limit);
+	List<PayHistoryVO> searchPaymentForAllOld(int offset, int limit);
 	
 
 }

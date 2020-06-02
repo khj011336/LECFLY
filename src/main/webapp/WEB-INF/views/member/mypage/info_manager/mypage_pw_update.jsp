@@ -46,11 +46,11 @@
 		     <table>
 		     	<tr>
 		        	<th>현재 비밀번호</th>
-                    <td><input class="update_pw_input" id="input_member_pw" type="password" placeholder="기존 패스워드를 입력하세요" name="oldPw" size="30" maxlength="30" required></td>
+                    <td><input class="update_pw_input" style="colore:black" id="input_member_pw" type="password" placeholder="기존 패스워드를 입력하세요" name="oldPw" size="30" maxlength="30" required></td>
                 </tr>
                 <tr>
 		        	<th>새 비밀번호</th>
-                    <td><input class="update_pw_input" id="new_password_1" type="password" placeholder="새로운 패스워드를 입력하세요" name="newPw" required></td>
+                    <td><input class="update_pw_input" style="colore:black" id="new_password_1" type="password" placeholder="새로운 패스워드를 입력하세요" name="newPw" required></td>
                 </tr>
                 <tr>
                 	<td></td>

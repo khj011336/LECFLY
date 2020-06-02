@@ -39,4 +39,7 @@ public interface IAdminMemberDAO {
 	
 	//통계
 	List<MemberStatVO> statCountMemberByMonth();
+	List<MemberVO> searchMemberForAllByApproval(int offset, int limit);
+	List<MemberVO> searchMemberForAllByApprovalDone(int offset, int limit);
+	List<MemberVO> searchMemberForAllByNew(int offset, int limit);
 }

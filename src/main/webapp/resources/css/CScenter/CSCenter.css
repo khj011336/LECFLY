@@ -542,6 +542,7 @@
     vertical-align: middle;
     background-color: black;
     color: white;
+    cursor: pointer;
 }
 #lecflyticket_gopay a {
     color: white;
@@ -613,13 +614,71 @@
 }
 
 
+/* 테스트 */
 
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.7);
+	transition: opacity 500ms;
+	visibility: hidden;
+	opacity: 0;
+}
 
+.overlay:target {
+	visibility: visible;
+	opacity: 1;
+}
 
+.popup {
+	text-align: center;
+	margin: 280px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	width: 400px;
+	height: 220px;
+	position: relative;
+	transition: all 5s ease-in-out;
+}
 
+.lecfly_ticket_modal_coupon_h2 {
+	margin-top: 0;
+	padding: 15px 0px;
+}
 
+.popup .close {
+	position: absolute;
+	top: 0px;
+	right: 10px;
+	transition: all 200ms;
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #333;
+}
 
+.popup .close:hover {
+	color: black;
+}
 
+.popup .lecfly_ticket_modal_content {
+	max-height: 200px;
+	overflow: auto;
+	text-align: center;
+}
+.lecfly_ticket_modal_popup_content {
+	padding-top: 50px;
+}
 
-
+#lecfly_ticket_modal_popup_goCart, #lecfly_ticket_modal_popup_goOrder {
+	margin-top: 30px;
+	width: 180px;
+	height: 40px;
+	background-color: orange;
+	cursor: pointer;
+}
 

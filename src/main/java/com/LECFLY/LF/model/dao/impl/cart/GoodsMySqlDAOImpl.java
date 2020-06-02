@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.dao.inf.cart.IGoodsDAO;
 import com.LECFLY.LF.model.vo.cart.TicketListVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 
 @Repository
@@ -22,9 +23,8 @@ public class GoodsMySqlDAOImpl implements IGoodsDAO {
 	}
 
 	@Override
-	public TicketListVO getOneTicketById(int id) {
-		return jtem.queryForObject("select * from ticket_list where id = ?", 
-				BeanPropertyRowMapper.newInstance(TicketListVO.class), id);
+	public TicketVO getOneTicketById(int id) {
+		return jtem.queryForObject("select * from tickets where id = ?", BeanPropertyRowMapper.newInstance(TicketVO.class), id);
 	}
 
 }

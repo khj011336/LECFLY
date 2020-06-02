@@ -522,6 +522,7 @@ a {
 .update_pw_input {
 	height: 32px;
 	width: 200px;
+	font-family: arial;
 }
 
 /* mypage 쿠폰 등록 CSS */

@@ -12,6 +12,10 @@
 			alias="lectureVO"></typeAlias>
 		<typeAlias type="com.LECFLY.LF.model.vo.creator.VideoVO" 
 			alias="videoVO"></typeAlias>
+			<typeAlias type="com.LECFLY.LF.model.vo.admin.PayHistoryVO" 
+			alias="payHistoryVO"></typeAlias>
+			<typeAlias type="com.LECFLY.LF.model.vo.cart.CouponVO" 
+			alias="couponVO"></typeAlias>
 		<typeAlias type="com.LECFLY.LF.model.vo.virtual.CategoryLectureStatVO" 
 			alias="categoryLectureStatVO"></typeAlias>
 				<typeAlias type="com.LECFLY.LF.model.vo.creator.KitVO" 

@@ -5,11 +5,19 @@ import java.sql.Timestamp;
 import org.springframework.stereotype.Component;
 @Component("cartVO")
 public class CartVO {
-	
+
 	public static final String[] STR_CATEGORY_ID = {"회원권", "키트"};
 	public static final int CATEGORY_ID_TICKET = 0;
 	public static final int CATEGORY_ID_KIT = 1;
-	
+
+	public static final String[] STR_CATEGORY_STATE = {"결제대기", "결제완료", "결제실패", "결제오류"};
+	public static final int CATEGORY_STATE_WAIT = 0;
+	public static final int CATEGORY_STATE_SUCCEED = 1;
+	public static final int CATEGORY_STATE_FAILED = 2;
+	public static final int CATEGORY_STATE_ERROR = 3;
+
+	public static final String[] STR_CATEGORY_NAME = {"1카테고리 회원권", "3카테고리 회원권", "무제한 회원권"};
+
 	/** 순서번호*/
 	int id;
 	/** 회원의 PK          		/fk/*/
@@ -28,13 +36,35 @@ public class CartVO {
 	String checkSameOrder;
 	/** 추가한 날짜*/
 	Timestamp createdAt;
+	/** 주문/결제 기록용 상태 (1.결제 전 2.성공 3.실패 4.기타 오류)*/
+	int state;
+
+
+	/**
+	 *
+	 */
 	public CartVO() {}
-	public CartVO(int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, int gdsCnt,
-			String checkSameOrder) {
-		this(0, mbId, categoryId, gdsId, gdsName, gdsPrice, gdsCnt, checkSameOrder, null);
+	/**
+	 * @param mbId
+	 * @param categoryId
+	 * @param gdsId
+	 * @param gdCnt
+	 * @param checkSameOrder
+	 */
+	public CartVO(int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, String checkSameOrder, int state) {
+		this(0, mbId, categoryId, gdsId, gdsName, gdsPrice, 1, checkSameOrder, null, state);
 	}
+	/**
+	 * @param id
+	 * @param mbId
+	 * @param categoryId
+	 * @param gdsId
+	 * @param gdCnt
+	 * @param checkSameOrder
+	 * @param createdAt
+	 */
 	public CartVO(int id, int mbId, int categoryId, int gdsId, String gdsName, int gdsPrice, int gdsCnt,
-			String checkSameOrder, Timestamp createdAt) {
+			String checkSameOrder, Timestamp createdAt, int state) {
 		super();
 		this.id = id;
 		this.mbId = mbId;
@@ -45,8 +75,9 @@ public class CartVO {
 		this.gdsCnt = gdsCnt;
 		this.checkSameOrder = checkSameOrder;
 		this.createdAt = createdAt;
+		this.state = state;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -101,6 +132,12 @@ public class CartVO {
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
+	}
 	public static String[] getStrCategoryId() {
 		return STR_CATEGORY_ID;
 	}
@@ -115,7 +152,6 @@ public class CartVO {
 	public String toString() {
 		return "CartVO [id=" + id + ", mbId=" + mbId + ", categoryId=" + categoryId + ", gdsId=" + gdsId + ", gdsName="
 				+ gdsName + ", gdsPrice=" + gdsPrice + ", gdsCnt=" + gdsCnt + ", checkSameOrder=" + checkSameOrder
-				+ ", createdAt=" + createdAt + "]";
+				+ ", createdAt=" + createdAt + ", state=" + state + "]";
 	}
-	
-}                           
+}

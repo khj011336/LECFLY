@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.LECFLY.LF.model.vo.CommentClassVO;
 import com.LECFLY.LF.model.vo.admin.HomeFileManagerVO;
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
@@ -251,15 +252,15 @@ public class AdminController {
 	@RequestMapping(value = "/admin_lecture.LF")
 	public String adminLecture(Model model,
 			@RequestParam(value = "pn",required = false, defaultValue = "1") int pageNumber) {
-		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
-		List<LectureVO> lecList = adLecSvc.selectAllLecture(pageNumber);
-		if(lecList != null && rMap != null) {
-			model.addAttribute("listSize", lecList.size());
-			model.addAttribute("lecList", lecList);
-			model.addAttribute("maxPn", rMap.get("maxPg"));
-			model.addAttribute("totalRecords", rMap.get("totalRecords"));
-			model.addAttribute("pn", pageNumber);
-		}
+//		Map<String,Integer> rMap = adLecSvc.checkLectureMaxPageNumber();
+//		List<LectureVO> lecList = adLecSvc.selectAllLecture(pageNumber);
+//		if(lecList != null && rMap != null) {
+//			model.addAttribute("listSize", lecList.size());
+//			model.addAttribute("lecList", lecList);
+//			model.addAttribute("maxPn", rMap.get("maxPg"));
+//			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+//			model.addAttribute("pn", pageNumber);
+//		}
 		return "admin/adminLecture/admin_lecture.ad";
 	}
 	// 관리자 강의관리(전체조회)
@@ -386,7 +387,8 @@ public class AdminController {
 	}
 	// 관리자 영상관리(전체조회)
 	@RequestMapping(value = "/admin_video_list.LF", method = RequestMethod.GET)
-	public String adminVideoListProc(Model model, 
+	public String adminVideoListProc(
+			Model model, 
 			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
 		Map<String,Integer> rMap = adLecSvc.checkVideoMaxPageNumber();
 		List<VideoVO> vdList = adLecSvc.selectAllVideo(pageNumber);
@@ -405,34 +407,108 @@ public class AdminController {
 	public String adminPayment() {
 		return "admin/adminProduct/admin_payment.ad";
 	}
-	
+	// 관리자 결제내역관리(전체조회)
+	@RequestMapping(value = "/admin_payment_list.LF")
+	public String adminPaymentList(
+			Model model, 
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber,
+			@RequestParam(value = "o",required = false, defaultValue = "0") int order) {
+		Map<String,Integer> rMap = adLecSvc.checkPaymentMaxPageNumber();
+		List<PayHistoryVO> payList = new ArrayList<>();
+		switch (order) {
+		case 0: // 최신순
+			payList = adLecSvc.selectAllPayment(pageNumber);
+			break;
+		case 1: // 오래된순
+			payList = adLecSvc.selectAllPaymentOld(pageNumber);
+			break;	
+		default:
+			break;
+		}
+		if(payList != null && rMap != null) {
+			model.addAttribute("listSize", payList.size());
+			model.addAttribute("payList", payList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminProduct/admin_payment.ad";
+	}
 	// 관리자 쿠폰관리
 	@RequestMapping(value = "/admin_coupon.LF")
 	public String adminCoupon(Model model) {
-		List<CouponVO> cpList = adLecSvc.selectCouponList();
-		model.addAttribute("cpList", cpList);
+
 		return "admin/adminProduct/admin_coupon.ad";
 	}
-	
-	// 관리자 키트관리
-		@RequestMapping(value = "/admin_kit.LF")
-		public String adminKit(Model model) {
-			List<KitVO> kitList = adLecSvc.selectKitList();
-			model.addAttribute("kitList", kitList);
-			return "admin/adminProduct/admin_kit.ad";
+	// 관리자 쿠폰관리
+	@RequestMapping(value = "/admin_coupon_list.LF")
+	public String adminCouponList(Model model,
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
+		Map<String,Integer> rMap = adLecSvc.checkCouponMaxPageNumber();
+		List<CouponVO> cpList = adLecSvc.selectAllCoupon(pageNumber);
+		if(cpList != null && rMap != null) {
+			model.addAttribute("listSize", cpList.size());
+			model.addAttribute("cpList", cpList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
 		}
-		
+		return "admin/adminProduct/admin_coupon.ad";
+	}
+	// 관리자 키트관리
+	@RequestMapping(value = "/admin_kit.LF")
+	public String adminKit(Model model) {
+
+		return "admin/adminProduct/admin_kit.ad";
+	}
+	// 관리자 키트관리
+	@RequestMapping(value = "/admin_kit_list.LF")
+	public String adminKitList(Model model,
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
+		Map<String,Integer> rMap = adLecSvc.checkKitMaxPageNumber();
+		List<KitVO> kitList = adLecSvc.selectAllKit(pageNumber);
+		if(kitList != null && rMap != null) {
+			model.addAttribute("listSize", kitList.size());
+			model.addAttribute("kitList", kitList);
+			model.addAttribute("maxPn", rMap.get("maxPg"));
+			model.addAttribute("totalRecords", rMap.get("totalRecords"));
+			model.addAttribute("pn", pageNumber);
+		}
+		return "admin/adminProduct/admin_kit.ad";
+	}	
 	// 관리자 회원관리
 	@RequestMapping(value = "/admin_member.LF")
 	public String adminMember() {
 		return "admin/adminMember/admin_member.ad";
 	}
+
 	// 관리자 회원리스트 출력
 	@RequestMapping(value = "/admin_member_list.LF", method = RequestMethod.GET)
 	public String adminMemberListProc(Model model, 
-			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber) {
+			@RequestParam(value = "p",required = false, defaultValue = "1") int pageNumber,
+			@RequestParam(value = "o",required = false, defaultValue = "0") int order) {
 		Map<String,Integer> rMap = adMbSvc.checkMaxPageNumber();
-		List<MemberVO> mbList = adMbSvc.selectAllMember(pageNumber);
+		List<MemberVO> mbList = new ArrayList<>();
+		switch (order) {
+		case 0: // 가입오래된순
+			System.out.println("회원_가입오래된순");
+			mbList = adMbSvc.selectAllMember(pageNumber);
+			break;
+		case 1: // 신규가입순
+			System.out.println("회원_신규가입순");
+			mbList = adMbSvc.selectAllMemberByNew(pageNumber);
+			break;	
+		case 2: // 정렬 승인대기순
+			System.out.println("회원_승인대기순");
+			mbList = adMbSvc.selectAllMemberByApproval(pageNumber);
+			break;	
+		case 3: // 정렬 승인완료
+			System.out.println("회원_승인완료순");
+			mbList = adMbSvc.selectAllMemberByApprovalDone(pageNumber);
+			break;
+		default:
+			break;
+		}
 		if(mbList != null && rMap != null) {
 			model.addAttribute("listSize", mbList.size());
 			model.addAttribute("mbList", mbList);
@@ -449,8 +525,8 @@ public class AdminController {
 		for (Integer id : checkList) {
 			System.out.println(id); // 수정할 id 값들 전달
 		}
-		boolean mb = adLecSvc.updateMemberApprovalforIds(checkList);
-		boolean cb = adLecSvc.updateCreatorApprovalforIds(checkList);
+		boolean mb = adLecSvc.updateMemberApprovalforIds(checkList); // id
+		boolean cb = adLecSvc.updateCreatorApprovalforIds(checkList); // fid
 		if( !mb && !cb) {
 			System.out.println("승인완료");
 		} else {

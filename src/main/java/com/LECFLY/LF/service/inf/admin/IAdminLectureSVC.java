@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -93,4 +94,11 @@ public interface IAdminLectureSVC {
 	boolean deleteLectureforIds(ArrayList<Integer> checkList);
 	boolean deleteMemberforIds(ArrayList<Integer> checkList);
 	boolean deleteCreatorforIds(ArrayList<Integer> checkList);
+	Map<String, Integer> checkPaymentMaxPageNumber();
+	List<PayHistoryVO> selectAllPayment(int pageNumber);
+	Map<String, Integer> checkCouponMaxPageNumber();
+	List<CouponVO> selectAllCoupon(int pageNumber);
+	Map<String, Integer> checkKitMaxPageNumber();
+	List<KitVO> selectAllKit(int pageNumber);
+	List<PayHistoryVO> selectAllPaymentOld(int pageNumber);
 }

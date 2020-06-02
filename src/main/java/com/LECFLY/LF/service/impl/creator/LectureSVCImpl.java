@@ -49,8 +49,11 @@ public class LectureSVCImpl implements ILectureSVC{
 				LecVO.getSubTitle(), LecVO.getTitle(), LecVO.getTitleImg(), LecVO.getInfoImg(), LecVO.getInfoImgb(),
 				LecVO.getInfo(),2, cr.getNickname(),
 				cr.getImgPath());
+		System.out.println("cr값확인");
 		if(isCreator != 3) {
 		cr.setStatus(2);
+		System.out.println("크리에이터 등록완료");
+		System.out.println(cr);
 		CreDAO.insertNewCreator(fid, cr.getImgPath(), cr.getName(),
 				cr.getNickname(), cr.getCellPhone(), cr.getSNS(), cr.getInfo(),2);
 		}
@@ -166,8 +169,9 @@ public class LectureSVCImpl implements ILectureSVC{
 	public String tempCommentList(ICommentSVC ctSvc, int CFId, int lecCategory) {
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String comment = "";
-			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(lecCategory, CFId);
-			comment += "<div style=\"padding: 40px;\">";
+//			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(lecCategory, CFId);
+			List<CommentVO> ctList = ctSvc.selectCommentsForOrderNumAsc(ctSvc.LEC_ARTICLE, CFId);
+			comment += "<div id='comment_all' style=\"padding: 40px;\">";
 			for (int i = 0; i < ctList.size(); i++) {
 				CommentVO ctori = ctList.get(i);
 				String dep = "";

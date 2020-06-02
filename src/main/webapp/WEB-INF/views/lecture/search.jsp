@@ -37,6 +37,9 @@
 		<c:when test="${empty searchList }">
 		<div class="main_video_wrapper">
 			검색결과가 없습니다.
+			<!-- <video controls autoplay width="1200px" src="https://cdn.dribbble.com/users/3692521/screenshots/7955415/media/9c293cfb268a5606d77e33c90d657884.mp4"></video> -->
+			<!-- <img src="https://cdn.dribbble.com/users/252114/screenshots/3840347/mong03b.gif"> -->
+			<!-- <img src="resources/imges/error/500error.gif" width="1200px"> -->
 		</div>
 		</c:when>
 		<c:when test="${not empty searchList }">
@@ -59,14 +62,14 @@
 						</c:forEach>
 					</div> 
 					<!-- 좋아요 버튼 --> 
-					<img src="resources/imges/dummy_lec_img/art/art_2m.jpg" alt="${lec.title }">
+					<img src="/images/2020/${fn:split(lec.titleImg,'_')[1]}/Img${lec.titleImg}" alt="${lec.title }">
 					</div>
 					<div class="main_video_info">
 						<p class="main_video_info_category">
 						<c:set var="i">${lec.category }</c:set>
 						<c:out value="${categoryMap[i]}"/></p>
 						<p class="main_video_info_title">"${lec.title}"</p>
-						<img src="resources/imges/dummy_lec_img/art/art_2m.jpg" class="video_info_creator_img">
+						<img src="/images/2020/${fn:split(lec.titleImg,'_')[1]}/Img${lec.titleImg}" class="video_info_creator_img">
 						<p class="main_video_info_creator_name">${lec.nickname}</p>
 						<div class="main_video_like">
 							<i class="fas fa-heart fa-lg"></i>${lec.likeCount} &nbsp;

@@ -99,7 +99,7 @@
 		$("#tabs-mom-2").click(function() {
 			var params = "pn=1";
 			$.ajax({
- 				type: "POST",
+ 				type: "get",
  				url: "mypage_comment.LF",
 	 			cache: true,
 				datatype: "text",

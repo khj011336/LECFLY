@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.LECFLY.LF.model.vo.CommentClassVO;
+import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
 import com.LECFLY.LF.model.vo.creator.KitVO;
 import com.LECFLY.LF.model.vo.creator.LectureVO;
@@ -82,6 +83,14 @@ public class TestGeon2 {
 	public CreatorVO selectOneCreByfId(int getfId) {
 		System.out.println(SQL_SELECT_CREATOR_FID + "getfId = " + getfId);
 		return jtem.queryForObject(SQL_SELECT_CREATOR_FID, BeanPropertyRowMapper.newInstance(CreatorVO.class), getfId);
+	}
+	
+	
+	private final String SQL_SELECT_ONE_TICKET_BY_ID = "select * from tickets where id = ?";
+	public TicketVO selectOneTiketById(int id) {
+		System.out.println(SQL_SELECT_ONE_TICKET_BY_ID + " / id =" + id );
+		return jtem.queryForObject(SQL_SELECT_ONE_TICKET_BY_ID, BeanPropertyRowMapper.newInstance(TicketVO.class), id);
+		
 	}
 
 }
