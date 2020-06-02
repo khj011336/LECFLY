@@ -17,8 +17,8 @@ public interface ICartSVC {
 	public Map<String, Object> showCartByNoMbProc(int kitId);
 	public boolean checkCartForKitMb(int mbId, int kitId, int i);
 	int insertNewCartByTicId(int mbId, int kitId, String gdType);
-	public String orderFinishedProc(int mbId, int result);
 	public boolean updateStateForPayBegin(int mbId, int gdsId, int gdType);
+	public String orderFinishedProc(int mbId, int result);
 
 
 }

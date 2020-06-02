@@ -29,6 +29,7 @@ public interface ICartDAO {
 	int checkCartByMbIdKitId(int mbId, int kitId, int categoryId);
 	boolean updateUuidStateBymbId(int mbId, int result, String uuid);
 	boolean updateStateByMbid(int mbId, int gdsId, int gdType);
+	List<CartVO> findListByUuid(String uuid);
 	
 
 }

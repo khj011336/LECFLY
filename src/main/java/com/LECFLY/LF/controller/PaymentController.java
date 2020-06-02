@@ -32,6 +32,7 @@ import com.LECFLY.LF.model.vo.LecTypeVO;
 import com.LECFLY.LF.model.vo.PostscriptVO;
 import com.LECFLY.LF.model.vo.admin.PayHistoryVO;
 import com.LECFLY.LF.model.vo.cart.CartVO;
+import com.LECFLY.LF.model.vo.cart.CouponVO;
 import com.LECFLY.LF.model.vo.cart.TicketListVO;
 import com.LECFLY.LF.model.vo.cart.TicketVO;
 import com.LECFLY.LF.model.vo.creator.CreatorVO;
@@ -467,7 +468,11 @@ public class PaymentController {
 
 	// 회원이 주문페이지에서 결제완료페이지로 이동할 수 있다.
 	@RequestMapping(value = "pay_orderFinished.LF", method = RequestMethod.GET)
-	public String showOrderFinishedProc(HttpSession ses, @RequestParam( value = "result") int result, Model model) {
+	public String showOrderFinishedProc(HttpSession ses,
+										@RequestParam(value = "result") int result,
+										@RequestParam(value = "payWay") int payWay,
+										@RequestParam(value = "couponId") int couponId,
+										Model model) {
 		System.out.println("결제완료 페이지로 이동");
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
@@ -478,12 +483,18 @@ public class PaymentController {
 		// 판매자아이디는 키트나 티켓에있어 티켓이나 키트는 카트에있어 . 
 		// 		-> 두번찾아야되 먼저 카트를먼저찾고 카트에서 키트나 티켓을찾아야되 
 		// insert하고 select 
-		// select 한다는건 가져오는거에여 뭘가져와야되? PayHistoryVO 이게 리턴타입이야. 
-		// 
-		//int r = payhisSvc.insertPayHis(mbId, uuid); // 목표 PayHistory에 insert
-		
-		
-		//payhisSvc.orderFinishedProc(cartId, couponId, mbId, uuid);
+		// select 한다는건 가져오는거에여 뭘가져와야되? PayHistoryVO 이게 리턴타입이야.
+		if(result == 2) {
+			int r = payhisSvc.insertPayHis(mbId, uuid, payWay, couponId); // 목표 PayHistory에 insert	
+			
+			
+			
+			
+			model.addAttribute("msg", "결제 성공");
+			model.addAttribute("ph", ph);
+		} else {
+			model.addAttribute("msg", "결제 실패!");
+		}
 		return "payment/pay_orderFinished.pays";
 	}
 

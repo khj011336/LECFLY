@@ -12,11 +12,11 @@ public class PayHistoryVO {
 	/** 구매회원아이디*/
 	private int buyMbId;
 	/**  판매회원아이디*/
-	private String sellMbId;
+	private int sellMbId;
 	/** 구매한종류                        (1:이용권 2:키트 3:펀딩...)*/
 	private int goodsType;
 	/** 구매 품목 id       fk는 없지만 윗 컬럼으로 테이블 판별 후 해당 테이블에서 데이터를 가져와야됨*/
-	private String goodsId;
+	private int goodsId;
 	/** 결제수단                          (1:신용카드 2:카카오페이)*/
 	private int	payWay;
 	/** 사용한 쿠폰*/
@@ -39,7 +39,11 @@ public class PayHistoryVO {
 	int PayHistorySum;
 
 	public PayHistoryVO() {}
-	public PayHistoryVO(int id, int buyMbId, String sellMbId, int goodsType, String goodsId, int payWay, int couponId,
+	public PayHistoryVO(int buyMbId, int sellMbId, int goodsType, int goodsId, int couponId,
+			int buyProductCount, int diliveryPrice, String checkSameOrder, int payHistorySum) {
+		this(0, buyMbId, sellMbId, goodsType, goodsId, 2, couponId, buyProductCount, diliveryPrice, null, checkSameOrder, diliveryPrice, "", null, payHistorySum);
+	}
+	public PayHistoryVO(int id, int buyMbId, int sellMbId, int goodsType, int goodsId, int payWay, int couponId,
 			int buyProductCount, int diliveryPrice, Timestamp dealDay, String checkSameOrder, int deliveryStatus,
 			String deliveryRequire, Timestamp updatedAt, int payHistorySum) {
 		super();
@@ -59,7 +63,7 @@ public class PayHistoryVO {
 		this.updatedAt = updatedAt;
 		PayHistorySum = payHistorySum;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -72,10 +76,10 @@ public class PayHistoryVO {
 	public void setBuyMbId(int buyMbId) {
 		this.buyMbId = buyMbId;
 	}
-	public String getSellMbId() {
+	public int getSellMbId() {
 		return sellMbId;
 	}
-	public void setSellMbId(String sellMbId) {
+	public void setSellMbId(int sellMbId) {
 		this.sellMbId = sellMbId;
 	}
 	public int getGoodsType() {
@@ -84,10 +88,10 @@ public class PayHistoryVO {
 	public void setGoodsType(int goodsType) {
 		this.goodsType = goodsType;
 	}
-	public String getGoodsId() {
+	public int getGoodsId() {
 		return goodsId;
 	}
-	public void setGoodsId(String goodsId) {
+	public void setGoodsId(int goodsId) {
 		this.goodsId = goodsId;
 	}
 	public int getPayWay() {
@@ -150,7 +154,7 @@ public class PayHistoryVO {
 	public void setPayHistorySum(int payHistorySum) {
 		PayHistorySum = payHistorySum;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "PayHistoryVO [id=" + id + ", buyMbId=" + buyMbId + ", sellMbId=" + sellMbId + ", goodsType=" + goodsType
@@ -159,6 +163,8 @@ public class PayHistoryVO {
 				+ checkSameOrder + ", deliveryStatus=" + deliveryStatus + ", deliveryRequire=" + deliveryRequire
 				+ ", updatedAt=" + updatedAt + ", PayHistorySum=" + PayHistorySum + "]";
 	}
+
+	
 
 
 

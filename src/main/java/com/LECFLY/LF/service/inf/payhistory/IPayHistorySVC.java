@@ -9,6 +9,6 @@ public interface IPayHistorySVC {
 
 	Map<String, Object> showOrderProc(int mbId, int ticName);
 
-	int insertPayHis(int mbId, String uuid);
+	int insertPayHis(int mbId, String uuid, int payWay, int couponId);
 	
 }

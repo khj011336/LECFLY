@@ -34,9 +34,9 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	private static final String SQL_INSERT_IN_CART = "insert into cart values(null, ?, 1, ?, 1, now())";
 	private static final String SQL_UPDATE_CART_STATE_AND_ORDER = "update cart set state = ?, check_same_order = ? where mb_id = ? and state = 1";
-	private static final String SQL_DELETE_CART_LIST = "delete cart from where mb_id = ? and state = 1";
 	private static final String SQL_UPDATE_ORDER = "update cart set state = 1 where mb_id = ? and gds_id = ? and category_id = ? and state = 0";
-
+	private static final String SQL_SELECT_CART_UUID = "select * from cart where check_same_order = ?";
+	
 	/**
 	 * @param categoryId // 0이면 이용권  1이면 키트
 	 * @param mbId
@@ -132,6 +132,11 @@ public class CartMysqlDAOImpl implements ICartDAO {
 	public boolean updateUuidStateBymbId(int mbId, int result, String uuid) {
 		int r = jtem.update(SQL_UPDATE_CART_STATE_AND_ORDER, result, uuid, mbId);
 		return r == 1;
+	}
+
+	@Override
+	public List<CartVO> findListByUuid(String uuid) {
+		return jtem.query(SQL_SELECT_CART_UUID, BeanPropertyRowMapper.newInstance(CartVO.class), uuid);
 	}
 	
 }
