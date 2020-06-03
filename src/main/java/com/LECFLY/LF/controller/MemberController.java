@@ -744,7 +744,7 @@ public class MemberController {
 		MemberVO mb = (MemberVO)ses.getAttribute("member");
 		int mbId = mb.getId();
 		Map<String, Object> couponMap = mpSvc.selectAllMyCoupon(mbId, pageNumber); // select 저함수안에서 디버그처리
-		if( couponMap != null ) {
+		if( couponMap.containsKey("rtCheck") ) {
 			int totalRecords = (int)couponMap.get("totalRecords");
 			int maxPG = (int)couponMap.get("maxPG");
 			List<CouponVO> couponList = (List<CouponVO>)couponMap.get("couponList");

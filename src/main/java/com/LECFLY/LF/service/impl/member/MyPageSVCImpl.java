@@ -516,21 +516,24 @@ public class MyPageSVCImpl implements IMypageSVC {
 					rMap.put("totalRecords", totalRecords);
 					rMap.put("maxPG", maxPG);
 					rMap.put("couponList", rtCouponList);
+					rMap.put("rtCheck", 1);
 					System.out.println("rtCouponList.size() = " + rtCouponList.size());
-					return rMap;
 				} else {
 					System.out.println("pn > 0 && pn <= maxPG :: false");
 					System.out.println("pn = " + pn);
+			
 				}
 			} else {
 				System.out.println("couponList.size() 는 0 이거나 음수");
 				System.out.println("mbId = " + mbId);
+				
 			}
 		} else {
 			System.out.println(MYPAGE_ERR_MAP.get(ERR_CONT_PARAM));
 			System.out.println("mbId = " + mbId);
+			
 		}
-		return null;
+		return rMap;
 	}
 
 
